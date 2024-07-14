@@ -33,8 +33,8 @@
             <div class="view-box">
                 <div class="view-top">
                     <div class="paper-info">
-                        <span>국어 1-1</span>
-                        노미숙(2015)
+                        <span th:text="${subject}"></span>
+                        <span th:text="${curriculum}" style="font-size: 16px ; color: #444444"></span>
                     </div>
                 </div>
                 <div class="view-bottom">
@@ -55,7 +55,8 @@
                                                 <div class="check-group title">
                                                     <div class="title-chk">
                                                         <input type="checkbox"
-                                                               class="que-allCheck depth01 large-check" th:id="${'large'+largeChapter.id}">
+                                                               class="que-allCheck depth01 large-check"
+                                                               th:id="${'large'+largeChapter.id}">
                                                         <label th:for="${'large'+largeChapter.id}">
                                                             <button type="button" class="dep-btn active"
                                                                     th:text="${largeChapter.name}">
@@ -67,7 +68,8 @@
                                                 <div class="depth02">
                                                     <th:block th:each="mediumChapter:${largeChapter.list}">
                                                         <div class="check-group">
-                                                            <input type="checkbox" class="que-allCheck depth01 medium-check"
+                                                            <input type="checkbox"
+                                                                   class="que-allCheck depth01 medium-check"
                                                                    th:id="${'medium'+mediumChapter.id}">
                                                             <label th:for="${'medium'+mediumChapter.id}">
                                                                 <button type="button" class="dep-btn active"
@@ -86,29 +88,32 @@
                                                             </div>-->
 
 
-                                                            <div class="depth04">
-                                                                <th:block th:each="smallChapter:${mediumChapter.list}">
-                                                                    <div class="check-group">
-                                                                        <input type="checkbox" th:id="${'small'+smallChapter.id}"
-                                                                               class="que-allCheck depth01 small-check">
-                                                                        <label th:for="${'small'+smallChapter.id}">
-                                                                            <button type="button" class="dep-btn active"
-                                                                                    th:text="${smallChapter.name}"></button>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="depth05">
-                                                                        <th:block th:each="topic:${smallChapter.list}">
-                                                                            <div class="check-group">
-                                                                                <input type="checkbox" class="topic-check"
-                                                                                th:id="${'topic'+topic.id}">
-                                                                                <label th:for="${'topic'+topic.id}">
-                                                                                    <span th:text="${topic.name}"></span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </th:block>
-                                                                    </div>
-                                                                </th:block>
-                                                            </div>
+                                                        <div class="depth04">
+                                                            <th:block th:each="smallChapter:${mediumChapter.list}">
+                                                                <div class="check-group">
+                                                                    <input type="checkbox"
+                                                                           th:id="${'small'+smallChapter.id}"
+                                                                           class="que-allCheck depth01 small-check">
+                                                                    <label th:for="${'small'+smallChapter.id}">
+                                                                        <button type="button" class="dep-btn active"
+                                                                                th:text="${smallChapter.name + ' ('+smallChapter.itemNo} +')'">
+                                                                        </button>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="depth05">
+                                                                    <th:block th:each="topic:${smallChapter.list}">
+                                                                        <div class="check-group">
+                                                                            <input type="checkbox" class="topic-check"
+                                                                                   th:id="${'topic'+topic.id}">
+                                                                            <label th:for="${'topic'+topic.id}">
+                                                                                    <span th:text="${topic.name + ' ('+topic.itemNo+')'}">
+                                                                                    </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </th:block>
+                                                                </div>
+                                                            </th:block>
+                                                        </div>
                                                         <!--</div>-->
                                                     </th:block>
                                                 </div>
@@ -162,13 +167,11 @@
                                         </div>
                                     </div>
                                     <div class="btn-wrap multi">
-                                        <button type="button" class="btn-line">자료 해석</button>
-                                        <button type="button" class="btn-line">이해</button>
-                                        <button type="button" class="btn-line">적용</button>
-                                    </div>
-                                    <div class="btn-wrap multi">
-                                        <button type="button" class="btn-line">지식</button>
-                                        <button type="button" class="btn-line">결론도출</button>
+
+                                        <th:block th:each="eval:${evaluationList}">
+                                            <button type="button" class="btn-line" th:id="${'eval'+eval.domainId}"
+                                                    th:text="${eval.domainName}"></button>
+                                        </th:block>
                                     </div>
                                 </div>
                                 <div class="box">
@@ -228,8 +231,7 @@
         </div>
         <div class="step-btn-wrap">
             <button type="button" class="btn-step">출제 방법 선택</button>
-            <button type="button" class="btn-step next pop-btn" data-pop="que-pop"
-            id="go-step2">STEP2 문항 편집</button>
+            <button type="button" class="btn-step next pop-btn" data-pop="que-pop">STEP2 문항 편집</button>
             <!-- 230629 pop-btn 추가-->
         </div>
 
@@ -397,7 +399,6 @@
             stepBtn.on('click', stepFunc);
         });
     </script>
-
     <script th:src="@{/js/step1/button_click.js}"></script>
 
 </div>
