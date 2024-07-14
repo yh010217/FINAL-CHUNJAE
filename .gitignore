@@ -38,3 +38,5 @@ out/
 
 **/resources/static/static
 **/resources/static/static/**
+
+**/resources/application.yml
