@@ -40,3 +40,11 @@ out/
 **/resources/static/static/**
 
 **/resources/application.yml
+
+/src/main/resources/static/asset-manifest.json
+/src/main/resources/static/favicon.ico
+/src/main/resources/static/index.html
+/src/main/resources/static/logo192.png
+/src/main/resources/static/logo512.png
+/src/main/resources/static/manifest.json
+/src/main/resources/static/robots.txt
