@@ -136,14 +136,14 @@
                                     </div>
                                     <div class="count-area">
                                         <div class="btn-wrap">
-                                            <button type="button" class="btn-line">10</button>
-                                            <button type="button" class="btn-line">15</button>
-                                            <button type="button" class="btn-line">20</button>
-                                            <button type="button" class="btn-line">25</button>
-                                            <button type="button" class="btn-line active">30</button>
+                                            <button type="button" onclick="count_change(10)" class="btn-line">10</button>
+                                            <button type="button" onclick="count_change(15)" class="btn-line">15</button>
+                                            <button type="button" onclick="count_change(20)" class="btn-line">20</button>
+                                            <button type="button" onclick="count_change(25)" class="btn-line">25</button>
+                                            <button type="button" onclick="count_change(30)" class="btn-line active">30</button>
                                         </div>
                                         <div class="input-area">
-                                            <span class="num">총 <input type="text" value="30"> 문제</span>
+                                            <span class="num">총 <input class="count-input" type="text" value="30"> 문제</span>
                                             <div class="txt">*5의 배수로 입력해주세요.</div>
                                         </div>
 
@@ -231,7 +231,7 @@
         </div>
         <div class="step-btn-wrap">
             <button type="button" class="btn-step">출제 방법 선택</button>
-            <button type="button" class="btn-step next pop-btn" data-pop="que-pop">STEP2 문항 편집</button>
+            <button type="button" class="btn-step next pop-btn" data-pop="que-pop" id="go-step2">STEP2 문항 편집</button>
             <!-- 230629 pop-btn 추가-->
         </div>
 
@@ -249,30 +249,21 @@
             <div class="pop-content">
                 <span class="txt">문제 수를 입력하여<br> 난이도별 문제 수를 조정하세요.</span>
                 <div class="range-wrap">
-                    <!-- S: 문제 수 맞지 않을 시 .fail 클래스 추가 -->
-                    <div class="range color01 fail">
-                        <span class="color01">최하</span>
-                        <input type="number">
-                    </div>
                     <div class="range color02">
                         <span class="color02">하</span>
-                        <input type="number">
+                        <input type="number" id="level_low" onchange="change_level()">
                     </div>
                     <div class="range color03">
                         <span class="color03">중</span>
-                        <input type="number">
+                        <input type="number" id="level_mid" onchange="change_level()">
                     </div>
                     <div class="range color04">
                         <span class="color04">상</span>
-                        <input type="number">
-                    </div>
-                    <div class="range color05">
-                        <span class="color05">최상</span>
-                        <input type="number">
+                        <input type="number" id="level_high" onchange="change_level()">
                     </div>
                     <div class="range total fail">
                         <span>합계</span>
-                        <span class="num">20</span>
+                        <span class="num" id="level_sum"></span>
                     </div>
                     <!-- E: 문제 수 맞지 않을 시 .fail 클래스 추가 -->
                 </div>
@@ -399,7 +390,10 @@
             stepBtn.on('click', stepFunc);
         });
     </script>
+
+
     <script th:src="@{/js/step1/button_click.js}"></script>
+    <script>set_subject('[[${subjectId}]]')</script>
 
 </div>
 </body>
