@@ -50,7 +50,7 @@
                                     <ul>
 
                                         <th:block th:each="largeChapter:${chapterGroup.list}">
-                                            <li>
+                                            <li class="large-li">
 
                                                 <div class="check-group title">
                                                     <div class="title-chk">
@@ -67,7 +67,7 @@
 
                                                 <div class="depth02">
                                                     <th:block th:each="mediumChapter:${largeChapter.list}">
-                                                        <div class="check-group">
+                                                        <div class="check-group medium-div">
                                                             <input type="checkbox"
                                                                    class="que-allCheck depth01 medium-check"
                                                                    th:id="${'medium'+mediumChapter.id}">
@@ -76,17 +76,6 @@
                                                                         th:text="${mediumChapter.name}"></button>
                                                             </label>
                                                         </div>
-                                                        <!--
-                                                        <div class="depth03">
-                                                            <div class="check-group">
-                                                                <input type="checkbox" class="que-allCheck depth01">
-                                                                <label>
-                                                                    <button type="button" class="dep-btn active"
-                                                                            th:text="${'소주제'}">
-                                                                    </button>
-                                                                </label>
-                                                            </div>-->
-
 
                                                         <div class="depth04">
                                                             <th:block th:each="smallChapter:${mediumChapter.list}">
@@ -341,7 +330,6 @@
             }
 
             depBtn.on('click', depFunc);
-
             // que-checkbox
             let queChkAll = $('.que-allCheck');
 
@@ -367,7 +355,6 @@
                 }
 
             }
-
             queChkAll.on('click', queCheckFunc);
 
             $(".type-box .box .range").hide();
