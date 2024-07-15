@@ -1,4 +1,4 @@
-function CNTLIST({ changeList, setSimilar, setTab, tab, setNo}) {
+function CNTLIST({changeList, setSimilar, setTab, tab, setNo}) {
 
     const similarData = (itemIdList, no) => {
         console.log(tab)
@@ -9,7 +9,7 @@ function CNTLIST({ changeList, setSimilar, setTab, tab, setNo}) {
 
     return (
         <div className="view-que-list scroll-inner">
-            {changeList.map((item) => (
+            {changeList.map((item, index) => (
                 <div key={item.itemId} className="view-que-box">
                     <div className="que-top">
                         <div className="title">
@@ -52,7 +52,7 @@ function CNTLIST({ changeList, setSimilar, setTab, tab, setNo}) {
                                         <img src={item.answerUrl} alt="정답"></img>
                                     </div>
                                 </div>
-                                <button className="btn-similar-que btn-default" onClick={() => similarData(item.itemId, item.itemNo)}>
+                                <button className="btn-similar-que btn-default" onClick={() => similarData(item.itemId, index)}>
                                     <i className="similar"></i>
                                     유사문제
                                 </button>

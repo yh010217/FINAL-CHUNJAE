@@ -14,7 +14,8 @@ function S2content() {
 
                 /** STEP 0 에서 넘겨주는 examIdList  **/
                 const data = {
-                    examIdList: ["1416", "1534"]
+                    // examIdList: ["1416", "1534"]
+                    examIdList: ["503"]
                     // examIdList: ["1534"]
                 };
 
