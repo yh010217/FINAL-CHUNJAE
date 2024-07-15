@@ -12,11 +12,14 @@
 
     <link rel="stylesheet" href="/inc/css/reset.css">
     <link rel="stylesheet" href="/inc/css/common.css">
+    <link rel="stylesheet" href="/inc/css/step0.css">
+    <script defer src="/inc/js/step0.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="/inc/js/common.js"></script>
+
 </head>
 
 <body>
@@ -35,13 +38,25 @@
                     <div class="paper-info">
                         <span class="subject-name" th:text="${chapterList[0].subjectName}"></span>
                         <span th:text="${chapterList[0].curriculumName}"></span>
-                        <span class="select-cnt">0</span>
+                        <span class="select-num">
+                            <span class="tooltip-wrap">
+                              <button class="tip-btn blue" th:id="chk_item_cnt">0</button>
+                                <span class="tooltip type02">
+<!--                                    <div class="tool-type01">선택한 문항</div>-->
+                                </span>
+                                </span>
                         <span>/</span>
-                        <span class="total-cnt">90</span>
+                            <span class="tooltip-wrap">
+                                <button class="tip-btn">90</button>
+                                <span class="tooltip type02">
+<!--                                    <div class="tool-type01">최대 문항수</div>-->
+                                </span>
+                            </span>
+                        </span>
                     </div>
                     <div class="btn-wrap">
-                        <button class="btn-icon"><i class="edit"></i>선택한 시험지 편집하기</button>
-                        <button class="btn-icon"><i class="newpaper"></i>신규 시험지 만들기</button>
+                        <button class="btn-icon" id="edit-selected"><i class="edit"></i>선택한 시험지 편집하기</button>
+                        <button class="btn-icon type-white" id="new-paper"><i class="newpaper"></i>신규 시험지 만들기</button>
                     </div>
                 </div>
                 <div class="view-bottom">
@@ -61,7 +76,9 @@
                                         </div>
                                         <div class="tbody">
                                             <div class="col" th:each="exam : ${examList[chapter.largeChapterId]}">
-                                                <span class="check-box" style="position: relative"><input type="checkbox" id="chk_0" th:name="${exam.itemCnt}" th:class="chk_paperId" style="position: absolute"></span>
+                                                <span class="check-box" style="position: relative">
+                                                    <input type="checkbox" class="chk_paperId" th:name="${exam.itemCnt}" th:item-cnt="${exam.itemCnt}" th:exam-id="${exam.examId}"
+                                                           th:class="chk_paperId" style="position: absolute"></span>
                                                 <span class="tit" th:text="${exam.examName}"></span>
                                                 <span class="que-count" th:text="${exam.itemCnt}"></span>
                                                 <span>
@@ -285,7 +302,6 @@
             </div> -->
         </div>
     </div>
+</div>
 </body>
-
-
 </html>

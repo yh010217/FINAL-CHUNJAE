@@ -1452,7 +1452,7 @@ input[type=checkbox]:checked + label::before {
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
 }
-.full-pop-que .full-pop-wrap .view-box .view-top .paper-info span {
+.full-pop-que .full-pop-wrap .view-box .view-top .paper-info .subject-name {
   font-size: 22px;
   font-weight: 800;
   color: #5670dc;
