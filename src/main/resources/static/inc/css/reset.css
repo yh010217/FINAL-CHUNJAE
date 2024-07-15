@@ -78,7 +78,12 @@ template { display: none; }
 
 [hidden] { display: none; }
 
+/*
 [type="checkbox"], [type="radio"] {border:0;clip:rect(0 0 0 0);width:1px;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute}
+*/
+
+/* 체크박스 안 보여서 수정 */
+[type="checkbox"], [type="radio"] {border:0;width:15px;height:15px;margin:-1px;overflow:hidden;padding:0;position:absolute}
 
 [type=number]::-webkit-inner-spin-button {
   opacity: 0
