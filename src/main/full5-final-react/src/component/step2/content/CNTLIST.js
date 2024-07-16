@@ -1,7 +1,6 @@
 function CNTLIST({changeList, setSimilar, setTab, tab, setNo}) {
 
     const similarData = (itemIdList, no) => {
-        console.log(tab)
         setSimilar(itemIdList);
         setTab(1);
         setNo(no);

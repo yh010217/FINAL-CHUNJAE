@@ -1,20 +1,7 @@
 import SIMLARLIST from "./SIMLARLIST";
 import {useEffect, useState} from "react";
 import axios from "axios";
-
-export const groupedData = (response) => {
-    return response.reduce((acc, item) => {
-        const {passageId} = item;
-        if (passageId !== undefined) {
-            if (!acc[passageId]) {
-                acc[passageId] = [item];
-            } else {
-                acc[passageId].push(item);
-            }
-        }
-        return acc;
-    }, {});
-};
+import React from "react";
 
 function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) {
     let [option, setOption] = useState(false);
@@ -77,11 +64,23 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
         }
     };
 
-    console.log(groupedData(response))
-
     useEffect(() => {
         fetchData();
     }, [similar, remove]); // similar 값이나 remove 배열이 변경될 때마다 호출
+
+    /** 그룹화 */
+    const groupedData = response.reduce((acc, item) => {
+        if (!acc[item.passageId]) {
+            acc[item.passageId] = {
+                passageUrl: item.passageUrl,
+                items: []
+            };
+        }
+        acc[item.passageId].items.push(item);
+        return acc;
+    }, {});
+    
+    console.log(groupedData, "데이터 확인하기")
 
     return <>
         <div className="contents on">
@@ -111,33 +110,48 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
                     <div className="view-que-list no-data" dangerouslySetInnerHTML={{ __html: insert }} />
                 ) : (
                     <div className="view-que-list scroll-inner">
-                        {response.map((item) => (
-                            <SIMLARLIST
-                                key={item.itemId}
-                                itemId={item.itemId}
-                                itemNo={item.itemNo}
-                                difficultyName={item.difficultyName}
-                                questionFormName={item.questionFormName}
-                                questionUrl={item.questionUrl}
-                                explainUrl={item.explainUrl}
-                                answerUrl={item.answerUrl}
-                                largeChapterName={item.largeChapterName}
-                                mediumChapterName={item.mediumChapterName}
-                                smallChapterName={item.smallChapterName}
-                                topicChapterName={item.topicChapterName}
-                                passageUrl={item.passageUrl}
-                                passageId={item.passageId}
-                                list={removeList}
-                                addToChangeList={addToChangeList}
-                                ChangeList={ChangeList}
-                                response={response}
-                                groupedData={groupedData}
-                            />
+                        {Object.values(groupedData).map((group, index) => (
+                            <>
+                                <div key={group.passageId} className="view-que-box">
+                                    <div className="que-top">
+                                        <div className="title">
+                                            {group.items.length > 1 ? (
+                                                <span className="num">{group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
+                                            ) : (
+                                                <span className="num">{group.items[0].itemNo}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="view-que">
+                                        <img src={group.passageUrl} alt="지문입니다..." />
+                                    </div>
+                                </div>
+                                {group.items.map((item, itemIndex) => (
+                                    <SIMLARLIST
+                                        key={item.itemId}
+                                        itemId={item.itemId}
+                                        itemNo={item.itemNo}
+                                        difficultyName={item.difficultyName}
+                                        questionFormName={item.questionFormName}
+                                        questionUrl={item.questionUrl}
+                                        explainUrl={item.explainUrl}
+                                        answerUrl={item.answerUrl}
+                                        largeChapterName={item.largeChapterName}
+                                        mediumChapterName={item.mediumChapterName}
+                                        smallChapterName={item.smallChapterName}
+                                        topicChapterName={item.topicChapterName}
+                                        passageUrl={item.passageUrl}
+                                        passageId={item.passageId}
+                                        list={removeList}
+                                        addToChangeList={addToChangeList}
+                                        ChangeList={ChangeList}
+                                    />
+                                ))}
+                            </>
                         ))}
                     </div>
                 )}
             </div>
-
         </div>
     </>
 }
