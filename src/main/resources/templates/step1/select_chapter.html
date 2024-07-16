@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/inc/css/font.css}">
     <link rel="stylesheet" th:href="@{/inc/css/reset.css}">
     <link rel="stylesheet" th:href="@{/inc/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/step1/step1.css}">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
@@ -79,7 +80,7 @@
 
                                                         <div class="depth04">
                                                             <th:block th:each="smallChapter:${mediumChapter.list}">
-                                                                <div class="check-group">
+                                                                <div class="check-group small-div">
                                                                     <input type="checkbox"
                                                                            th:id="${'small'+smallChapter.id}"
                                                                            class="que-allCheck depth01 small-check">
@@ -132,7 +133,7 @@
                                             <button type="button" onclick="count_change(30)" class="btn-line active">30</button>
                                         </div>
                                         <div class="input-area">
-                                            <span class="num">총 <input class="count-input" type="text" value="30"> 문제</span>
+                                            <span class="num">총 <input class="count-input" type="text" value="30" onchange="count_value_change()"> 문제</span>
                                             <div class="txt">*5의 배수로 입력해주세요.</div>
                                         </div>
 
@@ -146,7 +147,7 @@
                                     </div>
                                     <div class="btn-wrap multi">
                                         <button type="button" class="btn-line">교사용(교사용 DVD, 지도서, 신규 개발 등)</button>
-                                        <button type="button" class="btn-line">학생용(자습서, 평가문제집 등)</button>
+                                        <button type="button" class="disable-button" disabled>학생용(자습서, 평가문제집 등)</button>
                                     </div>
                                 </div>
                                 <div class="box">
@@ -155,7 +156,7 @@
                                         <div class="right-area">
                                         </div>
                                     </div>
-                                    <div class="btn-wrap multi">
+                                    <div class="btn-wrap multi" id="activityList">
 
                                         <th:block th:each="eval:${evaluationList}">
                                             <button type="button" class="btn-line" th:id="${'eval'+eval.domainId}"
@@ -170,8 +171,8 @@
                                         </div>
                                     </div>
                                     <div class="btn-wrap multi">
-                                        <button type="button" class="btn-line">객관식</button>
-                                        <button type="button" class="btn-line">주관식</button>
+                                        <button type="button" class="btn-line question_form" id="form_multiple">객관식</button>
+                                        <button type="button" class="btn-line question_form" id="form_subjective">주관식</button>
                                     </div>
                                 </div>
                                 <div class="box">
@@ -179,15 +180,11 @@
                                         <span class="tit-text">난이도 구성</span>
                                     </div>
                                     <div class="step-wrap">
-                                        <button type="button" class="btn-line type02 color01" data-step="stap1">최하
-                                        </button>
                                         <button type="button" class="btn-line type02 color02" data-step="stap2">하
                                         </button>
                                         <button type="button" class="btn-line type02 color03" data-step="stap3">중
                                         </button>
                                         <button type="button" class="btn-line type02 color04" data-step="stap4">상
-                                        </button>
-                                        <button type="button" class="btn-line type02 color05" data-step="stap5">최상
                                         </button>
                                     </div>
                                 </div>
@@ -200,17 +197,21 @@
 											</span>
                                     </div>
                                     <div class="range-wrap">
-                                        <span class="range color01" data-step="stap1">최하(n)</span>
-                                        <span class="range color02" data-step="stap2">하(n)</span>
-                                        <span class="range color03" data-step="stap3">중(n)</span>
-                                        <span class="range color04" data-step="stap4">상(n)</span>
-                                        <span class="range color05" data-step="stap5">최상(n)</span>
+                                        <span class="range color02" data-step="stap2">
+                                            하(<span id="range-low-count"></span>)
+                                        </span>
+                                        <span class="range color03" data-step="stap3">
+                                            중(<span id="range-mid-count"></span>)
+                                        </span>
+                                        <span class="range color04" data-step="stap4">
+                                            상(<span id="range-high-count"></span>)
+                                        </span>
                                     </div>
                                 </div>
 
                             </div>
                             <div class="bottom-box">
-                                <p class="total-num">총 <span>30</span>문제</p>
+                                <p class="total-num">총 <span class="que-num">30</span>문제</p>
                             </div>
                         </div>
                     </div>
@@ -220,7 +221,7 @@
         </div>
         <div class="step-btn-wrap">
             <button type="button" class="btn-step">출제 방법 선택</button>
-            <button type="button" class="btn-step next pop-btn" data-pop="que-pop" id="go-step2">STEP2 문항 편집</button>
+            <button type="button" class="btn-step next" data-pop="que-pop" id="go-step2">STEP2 문항 편집</button>
             <!-- 230629 pop-btn 추가-->
         </div>
 
@@ -238,15 +239,15 @@
             <div class="pop-content">
                 <span class="txt">문제 수를 입력하여<br> 난이도별 문제 수를 조정하세요.</span>
                 <div class="range-wrap">
-                    <div class="range color02">
+                    <div id="level_range_low" class="range color02 change_level_div not_contain_level">
                         <span class="color02">하</span>
                         <input type="number" id="level_low" onchange="change_level()">
                     </div>
-                    <div class="range color03">
+                    <div id="level_range_mid" class="range color03 change_level_div not_contain_level">
                         <span class="color03">중</span>
                         <input type="number" id="level_mid" onchange="change_level()">
                     </div>
-                    <div class="range color04">
+                    <div id="level_range_high" class="range color04 change_level_div not_contain_level">
                         <span class="color04">상</span>
                         <input type="number" id="level_high" onchange="change_level()">
                     </div>
@@ -259,7 +260,7 @@
             </div>
             <div class="pop-footer">
                 <button>초기화</button>
-                <button class="disabled">저장</button>
+                <button class="disabled" id="level_count_save">저장</button>
             </div>
         </div>
     </div>
@@ -372,10 +373,13 @@
                     $(".range[data-step='" + stepData + "']").hide();
                 }
 
+                change_que_count()
             }
 
             stepBtn.on('click', stepFunc);
         });
+
+
     </script>
 
 
