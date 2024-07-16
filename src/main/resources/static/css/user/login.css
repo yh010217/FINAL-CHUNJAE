@@ -1,0 +1,75 @@
+#wrap{
+    padding: 90px 0;
+}
+#login_box{
+    background-color: white;
+    border: 1px solid #cccccc;
+    width: 40%;
+    margin: 0 auto;
+    padding: 30px 30px 70px;
+    border-radius: 6px;
+}
+
+#login_box > h1{
+    text-align: center;
+    margin-bottom: 5px;
+    color: #5670DC;
+}
+
+#login_form ul li{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+.google{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    padding-left: 50px;
+}
+#login_form input:focus{
+    outline: 1px solid #5670DC;
+}
+
+#login_form ul input {
+    border: none;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+    width: 17vw;
+    padding: 1.5vh 0.9vw;
+    font-size: 1rem;
+
+}
+#google_login{
+    border: none;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+    width: 17vw;
+    padding: 0.9vh 0.9vw;
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+
+}
+#login_form ul button[type="submit"]{
+    width: 18.8vw;
+    padding: 1.5vh 0.9vw;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #5670DC;
+}
+.google_btn{
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+}
+#login_box .join_a{
+    color: #5670DC;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+}
