@@ -48,19 +48,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 선택된 examId 값 넘기기
             fetch('/step0/examid', {
-                    method : 'POST'
-                , headers : {
-                        'Accept' : 'application/json'
-                    }
-                , body: JSON.stringify({examIds: selectedExamIds}) // JSON 문자열로 변환하여 전달
-                }).then(response => response.json())
+                method: 'POST'
+                , headers: {
+                    'Accept': 'application/json'
+                    , 'Content-Type': 'application/json'
+                }
+                , body: JSON.stringify({examIdList: selectedExamIds}) // JSON 문자열로 변환하여 전달
+            }).then(response => response.text())
                 .then(data => {
                     console.log('응답!!!!', data);
-
+                    // 서버로 부터 데이터 성공적으로 받으면 step2로 이동
+                    window.location.href ='http://localhost:3000/step2';
                 }).catch(error => {
-                    console.log('에러 발생',error);
-                    alert('시험지 편집 중 에러 발생..')
+                console.log('에러 발생', error);
+                alert('에러 발생..')
             });
+
         }
     });
 
