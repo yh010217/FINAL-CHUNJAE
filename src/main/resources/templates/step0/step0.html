@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/inc/css/font.css">
 
-    <link rel="stylesheet" href="/inc/css/reset.css">
-    <link rel="stylesheet" href="/inc/css/common.css">
+    <link rel="stylesheet" href="/inc/css/reset_step0.css">
     <link rel="stylesheet" href="/inc/css/step0.css">
     <script defer src="/inc/js/step0.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -63,6 +62,7 @@
                     <div class="tab-list-type01 unit-acc-wrap">
                         <div class="scroll-inner">
                             <th:block th:each="chapter : ${chapterList}">
+                                <input type="hidden" th:name="${chapter.subjectId}" th:id="subjectId" th:value="${chapter.subjectId}">
                                 <button type="button" class="acc-btn"><p th:text="${chapter.largeChapterName}"></p>
                                 </button>
                                 <div class="cnt">
@@ -304,4 +304,7 @@
     </div>
 </div>
 </body>
+<script>
+
+</script>
 </html>

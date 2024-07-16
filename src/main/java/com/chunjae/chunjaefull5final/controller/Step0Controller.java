@@ -29,6 +29,7 @@ import java.util.Map;
 public class Step0Controller {
 
     private final RestTemplate restTemplate;
+    private List<String> seletedExamIds;
 
     @GetMapping("/step0/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, Model model) {
@@ -55,10 +56,12 @@ public class Step0Controller {
         model.addAttribute("examList", examList);
 
 //        return "step0/test0";
-        return  "step0/step0";
+        return "step0/step0";
     }
 
-    /** 대단원 목록 파싱 */
+    /**
+     * 대단원 목록 파싱
+     */
     private List<Map<String, Object>> chapterParsing(String chapterBody) {
 
         List<Map<String, Object>> parsedChapter = new ArrayList<>();
@@ -83,8 +86,8 @@ public class Step0Controller {
 
                 // largeChaterId 중복 확인
                 boolean isDulicate = false;
-                for(Map<String, Object> existingItem : parsedChapter) {
-                    if (existingItem.get("largeChapterId").equals(largeChapterId)){
+                for (Map<String, Object> existingItem : parsedChapter) {
+                    if (existingItem.get("largeChapterId").equals(largeChapterId)) {
                         isDulicate = true;
                         break;
                     }
@@ -106,13 +109,15 @@ public class Step0Controller {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("파싱 실패");
+           log.info("파싱 실패.....{}", e);
+
         }
         return parsedChapter;
     }
 
-    /** 시험지 목록 파싱 */
+    /**
+     * 시험지 목록 파싱
+     */
     public Map<Long, List<Map<String, Object>>> examParsing(String examResponse) {
 
         Map<Long, List<Map<String, Object>>> groupedExams = new HashMap<>();
@@ -147,8 +152,7 @@ public class Step0Controller {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("파싱 실패");
+            log.info("파싱 실패....{}",e);
         }
         return groupedExams;
     }
@@ -169,28 +173,30 @@ public class Step0Controller {
         return response;
     }
 
-    /** 선택한 시험지 JSON 배열 형식으로 리액트에 넘기기 */
-  /*  @PostMapping("/step0/examid")
-    public List<Map<String, Object>> SendExamId(@RequestBody ) {
+    /**
+     * 선택한 시험지 JSON 형식으로 받기
+     */
+    @PostMapping("/step0/examid")
+    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request){
 
-        List<Map<String,Object>> mapList = new ArrayList<>();
+        seletedExamIds = request.get("examIdList");
 
-        try {
-
-
-            for (int i = 0; i < mapList.size(); i++) {
-
-
-
-            }
-
-        }catch (Exception e){
-            log.info();
-            log.info("파싱 실패");
+        for (String item : seletedExamIds){
+            log.info("examid.....{}", item);
         }
 
-        return mapList;
+        return ResponseEntity.ok("ExamId 받기 성공");
     }
-*/
+
+    /** 선택한 시험지들 STEP2(react)로 보내기 */
+    @GetMapping("/step0/examid")
+    public ResponseEntity<Map<String, List<String>>> sendExamIds() {
+        Map<String,List<String>> response = new HashMap<>();
+        response.put("examIdList", seletedExamIds);
+
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }
