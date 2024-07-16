@@ -109,8 +109,8 @@ public class Step0Controller {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("파싱 실패");
+           log.info("파싱 실패.....{}", e);
+
         }
         return parsedChapter;
     }
@@ -152,8 +152,7 @@ public class Step0Controller {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("파싱 실패");
+            log.info("파싱 실패....{}",e);
         }
         return groupedExams;
     }
@@ -189,13 +188,12 @@ public class Step0Controller {
         return ResponseEntity.ok("ExamId 받기 성공");
     }
 
-    /** 선택한 시험지들 리액트로 보내기 */
+    /** 선택한 시험지들 STEP2(react)로 보내기 */
     @GetMapping("/step0/examid")
     public ResponseEntity<Map<String, List<String>>> sendExamIds() {
         Map<String,List<String>> response = new HashMap<>();
         response.put("examIdList", seletedExamIds);
 
-        log.info("reponse...........{}", response);
         return ResponseEntity.ok(response);
     }
 

@@ -62,7 +62,7 @@
                     <div class="tab-list-type01 unit-acc-wrap">
                         <div class="scroll-inner">
                             <th:block th:each="chapter : ${chapterList}">
-                                <input type="hidden" th:name="${chapter.subjectId}" id="subjectId">
+                                <input type="hidden" th:name="${chapter.subjectId}" th:id="subjectId" th:value="${chapter.subjectId}">
                                 <button type="button" class="acc-btn"><p th:text="${chapter.largeChapterName}"></p>
                                 </button>
                                 <div class="cnt">
