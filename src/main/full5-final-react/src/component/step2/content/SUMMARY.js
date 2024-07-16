@@ -1,13 +1,11 @@
-import {useEffect, useState} from "react";
-import dragHandleIcon from '../../../images/common/ico_move_type01.png';
+import { useEffect, useState } from "react";
+import outerDragHandleIcon from '../../../images/common/ico_move_type01.png';
+import innerDragHandleIcon from '../../../images/common/ico_move_type02.png';
 
-function SUMMARY({initialChangeList = [], onChangeList}) {
-
-    /** 바뀌는 리스트 저장 **/
+function SUMMARY({ initialChangeList = [], onChangeList }) {
     const [changeList, setChangeList] = useState(initialChangeList);
-    /** 리스트 바꾸기 위한 state **/
+    const [draggedGroup, setDraggedGroup] = useState(null);
     const [draggedItem, setDraggedItem] = useState(null);
-    /** 객관식 주관식 개수 계산 **/
     const [multipleCount, setMultiple] = useState(0);
     const [subjectiveCount, setSubjective] = useState(0);
 
@@ -19,13 +17,18 @@ function SUMMARY({initialChangeList = [], onChangeList}) {
         setSubjective(subjectiveCount);
     }, [changeList]);
 
-
     useEffect(() => {
-        setChangeList(initialChangeList)
+        setChangeList(initialChangeList);
     }, [initialChangeList]);
 
-    const handleDragStart = (e, index) => {
-        setDraggedItem(changeList[index]);
+    const handleDragStart = (e, item, isGroup) => {
+        if (isGroup) {
+            const group = changeList.filter(i => i.passageId === item.passageId);
+            setDraggedGroup(group);
+        } else {
+            setDraggedItem(item);
+        }
+        e.dataTransfer.effectAllowed = "move";
     };
 
     const handleDragOver = (e) => {
@@ -33,79 +36,116 @@ function SUMMARY({initialChangeList = [], onChangeList}) {
     };
 
     const handleDrop = (e, index) => {
-        /** Drop 이벤트에서 기본 동작 막기 **/
         e.preventDefault();
-        const updatedItems = [...changeList];
-        const draggedItemIndex = updatedItems.indexOf(draggedItem);
-        updatedItems.splice(draggedItemIndex, 1);
-        updatedItems.splice(index, 0, draggedItem);
+        let updatedItems = [...changeList];
+
+        if (draggedGroup) {
+            const draggedItemsIndices = draggedGroup.map(item => updatedItems.indexOf(item));
+            draggedItemsIndices.sort((a, b) => b - a).forEach(index => updatedItems.splice(index, 1));
+            updatedItems.splice(index, 0, ...draggedGroup);
+        } else if (draggedItem) {
+            const draggedIndex = updatedItems.indexOf(draggedItem);
+            updatedItems.splice(draggedIndex, 1);
+            updatedItems.splice(index, 0, draggedItem);
+        }
+
         setChangeList(updatedItems);
-        /** 상위 컴포넌트로 리스트 이동 **/
         onChangeList(updatedItems);
+        setDraggedGroup(null);
         setDraggedItem(null);
     };
 
-    return <div className="contents on">
-        <div className="table half-type no-passage">
-            <div className="fix-head">
-                <span>이동</span>
-                <span>번호</span>
-                <span>단원명</span>
-                <span>문제 형태</span>
-                <span>난이도</span>
+    return (
+        <div className="contents on">
+            <div className="table half-type no-passage">
+                <div className="fix-head">
+                    <span>이동</span>
+                    <span>번호</span>
+                    <span>단원명</span>
+                    <span>문제 형태</span>
+                    <span>난이도</span>
+                </div>
+
+                <div className="tbody">
+                    <div className="scroll-inner">
+                        <div className="test ui-sortable" id="table-1">
+                            {changeList.map((item, index) => (
+                                <div key={item.itemId} className="col">
+                                    {index === 0 || changeList[index - 1].passageId !== item.passageId ? (
+                                        <div className="depth-01 ui-sortable">
+                                            <div
+                                                className={`dragHandle drag-type02 ${draggedGroup && draggedGroup.includes(item) ? 'dragging' : ''}`}
+                                                draggable="true"
+                                                onDragStart={(e) => handleDragStart(e, item, true)}
+                                                onDragOver={handleDragOver}
+                                                onDrop={(e) => handleDrop(e, index)}
+                                            >
+                                                <img src={outerDragHandleIcon} alt='outer drag handle' />
+                                            </div>
+                                            <div className="col-group">
+                                                <div className="col depth-02">
+                                                    <span>{item.itemNo}</span>
+                                                    <span className="tit">
+                                                        <div className="txt">
+                                                            <p>{item.passageId}</p>
+                                                            {item.largeChapterName}{item.mediumChapterName}{item.smallChapterName}{item.topicChapterName}
+                                                        </div>
+                                                        <div className="tooltip-wrap">
+                                                            <button className="btn-tip"></button>
+                                                        </div>
+                                                    </span>
+                                                    <span>{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
+                                                    <span>{item.difficultyName}</span>
+                                                </div>
+                                                {changeList.filter(i => i.passageId === item.passageId).map((groupItem, groupIndex) => (
+                                                    <div key={groupItem.itemId} className="col depth-02">
+                                                        <span
+                                                            className={`dragHandle drag-type01 ${draggedItem === groupItem ? 'dragging' : ''}`}
+                                                            draggable="true"
+                                                            onDragStart={(e) => handleDragStart(e, groupItem, false)}
+                                                            onDragOver={handleDragOver}
+                                                            onDrop={(e) => handleDrop(e, groupIndex)}
+                                                        >
+                                                            <img src={innerDragHandleIcon} alt="inner drag handle" />
+                                                        </span>
+                                                        <span>{groupItem.itemNo}</span>
+                                                        <span className="tit">
+                                                            <div className="txt">
+                                                                <p>{groupItem.passageId}</p>
+                                                                {groupItem.largeChapterName}{groupItem.mediumChapterName}{groupItem.smallChapterName}{groupItem.topicChapterName}
+                                                            </div>
+                                                            <div className="tooltip-wrap">
+                                                                <button className="btn-tip"></button>
+                                                            </div>
+                                                        </span>
+                                                        <span>{groupItem.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
+                                                        <span>{groupItem.difficultyName}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div className="tbody">
-                <div className="scroll-inner">
-                    <div className="test ui-sortable" id="table-1">
-                        {changeList.map((item, index) => {
-                            return <div key={item.itemId} className="col ui-sortable-helper">
-                                {/** a 태그 클릭시 해당 문제로  **/}
-                                <a href={'/'}>
-                                    <span className={`dragHandle ui-sortable-handle ${item === draggedItem ? 'dragging' : ''}`}
-                                          // className={`item ${item === draggedItem ? 'dragging' : ''}`}
-                                          draggable="true"
-                                          onDragStart={(e) => handleDragStart(e, index)}
-                                          onDragOver={(e) => handleDragOver(e)}
-                                          onDrop={(e) => handleDrop(e, index)}
-                                    >
-
-                                        <img src={dragHandleIcon} alt="drag handle"/>
-                                    </span>
-                                    {/** 최종은 index로 **/}
-                                    {/*<span className="">{index+1}</span>*/}
-                                    <span>{item.itemNo}</span>
-                                    <span className="tit">
-                                        <div className="txt">
-                                            {item.largeChapterName}{item.mediumChapterName}{item.smallChapterName}{item.topicChapterName}
-                                        </div>
-                                        <div className="tooltip-wrap">
-                                            <button className="btn-tip"></button>
-                                        </div>
-                                    </span>
-                                    <span className="">{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
-                                    <span className="">{item.difficultyName}</span>
-                                </a>
-                            </div>
-                        })};
+            <div className="bottom-box">
+                <div className="que-badge-group">
+                    <div className="que-badge-wrap">
+                        <span className="que-badge gray">객관식</span>
+                        <span className="num">{multipleCount}</span>
+                    </div>
+                    <div className="que-badge-wrap">
+                        <span className="que-badge gray">주관식</span>
+                        <span className="num">{subjectiveCount}</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div className="bottom-box">
-            <div className="que-badge-group">
-                <div className="que-badge-wrap">
-                    <span className="que-badge gray">객관식</span>
-                    <span className="num">{multipleCount}</span>
-                </div>
-                <div className="que-badge-wrap">
-                    <span className="que-badge gray">주관식</span>
-                    <span className="num">{subjectiveCount}</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    );
 }
 
 export default SUMMARY;
