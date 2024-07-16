@@ -9,18 +9,27 @@ function S2content() {
     useEffect(() => {
         const List = async () => {
             try {
-                /** api 20번 **/
+
+                /** 시험지 편집하기 **/
+                /** STEP 0 api 20번 **/
                 const url = '/api/item-img/exam-list/item-list'
 
                 /** STEP 0 에서 넘겨주는 examIdList  **/
                 const data = {
-                    examIdList: ["1416", "1534"]
+                    // 영어, 수학
+                    // examIdList: ["1416", "1534"]
+                    // 국어
+                    examIdList: ["500"]
                     // examIdList: ["1534"]
                 };
+
+                /** 신규 시험지 만들기 **/
+                /** STEP 1 -> STEP 2 api 5번 **/
 
                 const response = await axios.post(url, data);
                 // console.log(response.data.itemList);
                 setItemList(response.data.itemList);
+
             } catch (error) {
                 console.error('Error response api .... ', error)
             }
