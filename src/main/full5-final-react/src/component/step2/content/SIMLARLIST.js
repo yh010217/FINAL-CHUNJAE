@@ -1,16 +1,61 @@
-import {useState} from "react";
+import React, { useState, useEffect } from "react";
 
 function SIMLARLIST(props) {
-
-    /** 신고 관련 모달창 구현 */
     const [modal, setModal] = useState();
 
     const errorPage =()=> {
-
     }
 
-    return <>
-        <div key={props.itemId} className="view-que-box">
+    /** 선택하면 remove에 저장 */
+    const removeList =(itemId)=> {
+        props.list(itemId); // 삭제하려고 저장
+    }
+
+    /** 추가하기 버튼 누르기 */
+    const addToChangeList =()=> {
+        // view-que-box 정보 저장하기
+        const itemToAdd = {
+            itemId: props.itemId,
+            itemNo: props.itemNo,
+            difficultyName: props.difficultyName,
+            questionFormName: props.questionFormName,
+            questionUrl: props.questionUrl,
+            explainUrl: props.explainUrl,
+            answerUrl: props.answerUrl,
+            mediumChapterName: props.mediumChapterName,
+            smallChapterName: props.smallChapterName,
+            topicChapterName: props.topicChapterName,
+        };
+
+        // addToChangeList 함수 호출 (VIEWBOTTOM의 addToChangeList)
+        props.addToChangeList(itemToAdd);
+
+        // removeList 함수 호출 (부모 컴포넌트에서 전달된 함수)
+        removeList(props.itemId);
+    }
+
+    /** 교체하기 */
+    const ChangeList =()=> {
+        const itemToAdd = {
+            itemId: props.itemId,
+            itemNo: props.itemNo,
+            difficultyName: props.difficultyName,
+            questionFormName: props.questionFormName,
+            questionUrl: props.questionUrl,
+            explainUrl: props.explainUrl,
+            answerUrl: props.answerUrl,
+            mediumChapterName: props.mediumChapterName,
+            smallChapterName: props.smallChapterName,
+            topicChapterName: props.topicChapterName,
+        };
+
+        props.ChangeList(itemToAdd);
+        removeList(props.itemId);
+    }
+
+
+    return <div className="view-que-box">
+        <div>
             <div className="que-top">
                 <div className="title">
                     <span className="num">{props.itemNo}</span>
@@ -19,15 +64,11 @@ function SIMLARLIST(props) {
                         <span className="que-badge">{props.questionFormName}</span>
                     </div>
                 </div>
-                {/** 에러 페이지 */}
                 <div className="btn-wrap">
                     <button className="btn-error" onClick={errorPage}></button>
                 </div>
             </div>
             <div className="view-que">
-                <div className="que-content">
-                    {/*<img src={} alt="지문"></img>*/}
-                </div>
                 <div>
                     <img src={props.questionUrl} alt="문제"></img>
                 </div>
@@ -52,11 +93,11 @@ function SIMLARLIST(props) {
                             </div>
                         </div>
                         <div className="btn-wrap">
-                            <button className="btn-default">
+                            <button className="btn-default" onClick={() => addToChangeList(props.itemId)}>
                                 <i className="add-type02"></i>
                                 추가
                             </button>
-                            <button className="btn-default">
+                            <button className="btn-default" onClick={() => ChangeList(props.itemId)}>
                                 <i className="replace"></i>
                                 교체
                             </button>
@@ -66,11 +107,11 @@ function SIMLARLIST(props) {
             </div>
             <div className="que-info-last">
                 <p className="chapter">
-                    {props.mediumChapterName}>{props.mediumChapterName}>{props.smallChapterName}>{props.topicChapterName}
+                    {props.mediumChapterName} > {props.mediumChapterName} > {props.smallChapterName} > {props.topicChapterName}
                 </p>
             </div>
         </div>
-    </>
+    </div>
 }
 
 export default SIMLARLIST;

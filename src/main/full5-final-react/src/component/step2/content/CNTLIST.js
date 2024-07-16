@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 function CNTLIST({ changeList, setSimilar, setTab, setNo, viewType, tab }) {
@@ -25,7 +26,8 @@ function CNTLIST({ changeList, setSimilar, setTab, setNo, viewType, tab }) {
 
     return (
         <div className="view-que-list scroll-inner">
-            {changeList.map((item) => {
+
+            {changeList.map((item, index) => {
                 const passageId = item.passageId && (groupedItems[item.passageId] || []).length > 1 ? item.passageId : 'individual';
                 const isFirstItemInGroup = passageId !== 'individual' && groupedItems[passageId]?.[0]?.itemId === item.itemId;
 
@@ -54,6 +56,7 @@ function CNTLIST({ changeList, setSimilar, setTab, setNo, viewType, tab }) {
                                         <span className="que-badge gray">{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
                                     </div>
                                 </div>
+
                                 <div className="btn-wrap">
                                     <button className="btn-error"></button>
                                     <button className="btn-delete"></button>
@@ -93,7 +96,7 @@ function CNTLIST({ changeList, setSimilar, setTab, setNo, viewType, tab }) {
                                 )}
                                 <button
                                     className="btn-similar-que btn-default"
-                                    onClick={() => similarData(item.itemId, item.itemNo)}
+                                    onClick={() => similarData(item.itemId, index)}
                                 >
                                     <i className="similar"></i>
                                     유사문제
