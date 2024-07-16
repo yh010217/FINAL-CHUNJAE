@@ -5,7 +5,7 @@ import SIMILAR from "./SIMILAR";
 import DELETE from "./DELETE";
 import "../../../css/mycss.css"
 
-function CNTRIGHT({initialChangeList, onChangeList, tab, setTab, similar, no, addToChangeList, setRemove, remove, ChangeList}) {
+function CNTRIGHT({initialChangeList, onChangeList, tab, setTab, similar, no, addToChangeList, setRemove, remove, ChangeList, delList, setDelList, addToDelList}) {
 
     // const [tab, setTab] = useState(0);
     const [changeList, setChangeList] = useState(initialChangeList);
@@ -32,7 +32,7 @@ function CNTRIGHT({initialChangeList, onChangeList, tab, setTab, similar, no, ad
             case 1:
                 return <SIMILAR changeList={changeList} similar={similar} no={no} addToChangeList={addToChangeList} setRemove={setRemove} remove={remove} ChangeList={ChangeList}/>;
             case 2:
-                return <div className="change_margin"><DELETE changeList={changeList}/></div>
+                return <div className="change_margin"><DELETE changeList={changeList} delList={delList} addToDelList={addToDelList} setDelList={setDelList}/></div>
 
             default:
                 return null;

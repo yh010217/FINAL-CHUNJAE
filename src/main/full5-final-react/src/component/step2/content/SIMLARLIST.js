@@ -25,6 +25,8 @@ function SIMLARLIST(props) {
             mediumChapterName: props.mediumChapterName,
             smallChapterName: props.smallChapterName,
             topicChapterName: props.topicChapterName,
+            passageId: props.passageId,
+            passageUrl: props.passageUrl
         };
 
         // addToChangeList 함수 호출 (VIEWBOTTOM의 addToChangeList)
@@ -47,69 +49,68 @@ function SIMLARLIST(props) {
             mediumChapterName: props.mediumChapterName,
             smallChapterName: props.smallChapterName,
             topicChapterName: props.topicChapterName,
+            passageId: props.passageId,
+            passageUrl: props.passageUrl
         };
 
         props.ChangeList(itemToAdd);
         removeList(props.itemId);
     }
 
-
-    return <div className="view-que-box">
-        <div>
-            <div className="que-top">
-                <div className="title">
-                    <span className="num">{props.itemNo}</span>
-                    <div className="que-badge-group">
-                        <span className="que-badge">{props.difficultyName}</span>
-                        <span className="que-badge">{props.questionFormName}</span>
-                    </div>
-                </div>
-                <div className="btn-wrap">
-                    <button className="btn-error" onClick={errorPage}></button>
+    return <div className="view-que-box" key={props.itemId}>
+        <div className="que-top">
+            <div className="title">
+                <span className="num">{props.itemNo}</span>
+                <div className="que-badge-group">
+                    <span className="que-badge">{props.difficultyName}</span>
+                    <span className="que-badge">{props.questionFormName}</span>
                 </div>
             </div>
-            <div className="view-que">
-                <div>
-                    <img src={props.questionUrl} alt="문제"></img>
-                </div>
-                <div className="que-bottom">
-                    <div className="data-area">
-                        <div className="que-info">
-                            <p className="answer">
-                                <span className="label">해설</span>
-                            </p>
-                            <div className="data-answer-area">
-                                <img src={props.explainUrl} alt="해설"></img>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="data-area type01">
-                        <div className="que-info">
-                            <p className="answer">
-                                <span className="label type01">정답</span>
-                            </p>
-                            <div className="data-answer-area">
-                                <img src={props.answerUrl} alt="정답"></img>
-                            </div>
-                        </div>
-                        <div className="btn-wrap">
-                            <button className="btn-default" onClick={() => addToChangeList(props.itemId)}>
-                                <i className="add-type02"></i>
-                                추가
-                            </button>
-                            <button className="btn-default" onClick={() => ChangeList(props.itemId)}>
-                                <i className="replace"></i>
-                                교체
-                            </button>
+            <div className="btn-wrap">
+                <button className="btn-error" onClick={errorPage}></button>
+            </div>
+        </div>
+        <div className="view-que">
+            <div>
+                <img src={props.questionUrl} alt="문제"></img>
+            </div>
+            <div className="que-bottom">
+                <div className="data-area">
+                    <div className="que-info">
+                        <p className="answer">
+                            <span className="label">해설</span>
+                        </p>
+                        <div className="data-answer-area">
+                            <img src={props.explainUrl} alt="해설"></img>
                         </div>
                     </div>
                 </div>
+                <div className="data-area type01">
+                    <div className="que-info">
+                        <p className="answer">
+                            <span className="label type01">정답</span>
+                        </p>
+                        <div className="data-answer-area">
+                            <img src={props.answerUrl} alt="정답"></img>
+                        </div>
+                    </div>
+                    <div className="btn-wrap">
+                        <button className="btn-default" onClick={() => addToChangeList()}>
+                            <i className="add-type02"></i>
+                            추가
+                        </button>
+                        <button className="btn-default" onClick={() => ChangeList()}>
+                            <i className="replace"></i>
+                            교체
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div className="que-info-last">
-                <p className="chapter">
-                    {props.mediumChapterName} > {props.mediumChapterName} > {props.smallChapterName} > {props.topicChapterName}
-                </p>
-            </div>
+        </div>
+        <div className="que-info-last">
+            <p className="chapter">
+                {props.mediumChapterName} > {props.mediumChapterName} > {props.smallChapterName} > {props.topicChapterName}
+            </p>
         </div>
     </div>
 }
