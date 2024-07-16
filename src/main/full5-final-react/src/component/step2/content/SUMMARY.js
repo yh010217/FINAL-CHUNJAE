@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import outerDragHandleIcon from '../../../images/common/ico_move_type01.png';
-import innerDragHandleIcon from '../../../images/common/ico_move_type02.png';
+import SummaryList from "./SummaryList";
 
 function SUMMARY({ initialChangeList = [], onChangeList }) {
     const [changeList, setChangeList] = useState(initialChangeList);
-    const [draggedGroup, setDraggedGroup] = useState(null);
     const [draggedItem, setDraggedItem] = useState(null);
     const [multipleCount, setMultiple] = useState(0);
     const [subjectiveCount, setSubjective] = useState(0);
@@ -12,52 +11,64 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
     useEffect(() => {
         const multipleCount = changeList.filter(item => item.questionFormName === '5지 선택').length;
         const subjectiveCount = changeList.filter(item => item.questionFormName === '단답 유순형').length;
-
         setMultiple(multipleCount);
         setSubjective(subjectiveCount);
     }, [changeList]);
 
+    // 초기 리스트 변경 시 상태 업데이트
     useEffect(() => {
         setChangeList(initialChangeList);
     }, [initialChangeList]);
 
-    const handleDragStart = (e, item, isGroup) => {
-        if (isGroup) {
-            const group = changeList.filter(i => i.passageId === item.passageId);
-            setDraggedGroup(group);
-        } else {
-            setDraggedItem(item);
-        }
-        e.dataTransfer.effectAllowed = "move";
+    // 드래그 시작 시 상태 업데이트
+    const handleDragStart = (e, item) => {
+        setDraggedItem(item);
     };
 
+    // 드래그 오버 시 기본 동작 막기
     const handleDragOver = (e) => {
         e.preventDefault();
     };
 
-    const handleDrop = (e, index) => {
+    // 드롭 시 아이템 이동 처리
+    const handleDrop = (e, passageId) => {
         e.preventDefault();
-        let updatedItems = [...changeList];
+        const updatedItems = [...changeList];
+        const draggedIndex = updatedItems.indexOf(draggedItem);
+        updatedItems.splice(draggedIndex, 1);
 
-        if (draggedGroup) {
-            const draggedItemsIndices = draggedGroup.map(item => updatedItems.indexOf(item));
-            draggedItemsIndices.sort((a, b) => b - a).forEach(index => updatedItems.splice(index, 1));
-            updatedItems.splice(index, 0, ...draggedGroup);
-        } else if (draggedItem) {
-            const draggedIndex = updatedItems.indexOf(draggedItem);
-            updatedItems.splice(draggedIndex, 1);
-            updatedItems.splice(index, 0, draggedItem);
-        }
+        const targetIndex = updatedItems.findIndex(
+            (item) => item.passageId === passageId
+        );
+        updatedItems.splice(targetIndex + 1, 0, draggedItem);
 
         setChangeList(updatedItems);
         onChangeList(updatedItems);
-        setDraggedGroup(null);
         setDraggedItem(null);
     };
 
+    /** SummaryList 에서 받아온 리스트 **/
+    const handleChangeList = (newChangeList) => {
+        // console.log('SUMMARY changeList:', newChangeList);
+        setChangeList(newChangeList);
+        onChangeList(newChangeList);
+    };
+
+
+    // passageId로 그룹화
+    const groupByPassageId = (list) => {
+        return list.reduce((grouped, item, index) => {
+            const key = item.passageId || `individual_${index}`;
+            (grouped[key] = grouped[key] || []).push(item);
+            return grouped;
+        }, {});
+    };
+    const groupedItems = useMemo(() => groupByPassageId(changeList), [changeList]);
+    // console.log(groupedItems);
+
     return (
         <div className="contents on">
-            <div className="table half-type no-passage">
+            <div className="table half-type ">
                 <div className="fix-head">
                     <span>이동</span>
                     <span>번호</span>
@@ -69,63 +80,29 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                 <div className="tbody">
                     <div className="scroll-inner">
                         <div className="test ui-sortable" id="table-1">
-                            {changeList.map((item, index) => (
-                                <div key={item.itemId} className="col">
-                                    {index === 0 || changeList[index - 1].passageId !== item.passageId ? (
-                                        <div className="depth-01 ui-sortable">
-                                            <div
-                                                className={`dragHandle drag-type02 ${draggedGroup && draggedGroup.includes(item) ? 'dragging' : ''}`}
-                                                draggable="true"
-                                                onDragStart={(e) => handleDragStart(e, item, true)}
-                                                onDragOver={handleDragOver}
-                                                onDrop={(e) => handleDrop(e, index)}
-                                            >
-                                                <img src={outerDragHandleIcon} alt='outer drag handle' />
-                                            </div>
-                                            <div className="col-group">
-                                                <div className="col depth-02">
-                                                    <span>{item.itemNo}</span>
-                                                    <span className="tit">
-                                                        <div className="txt">
-                                                            <p>{item.passageId}</p>
-                                                            {item.largeChapterName}{item.mediumChapterName}{item.smallChapterName}{item.topicChapterName}
-                                                        </div>
-                                                        <div className="tooltip-wrap">
-                                                            <button className="btn-tip"></button>
-                                                        </div>
-                                                    </span>
-                                                    <span>{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
-                                                    <span>{item.difficultyName}</span>
-                                                </div>
-                                                {changeList.filter(i => i.passageId === item.passageId).map((groupItem, groupIndex) => (
-                                                    <div key={groupItem.itemId} className="col depth-02">
-                                                        <span
-                                                            className={`dragHandle drag-type01 ${draggedItem === groupItem ? 'dragging' : ''}`}
-                                                            draggable="true"
-                                                            onDragStart={(e) => handleDragStart(e, groupItem, false)}
-                                                            onDragOver={handleDragOver}
-                                                            onDrop={(e) => handleDrop(e, groupIndex)}
-                                                        >
-                                                            <img src={innerDragHandleIcon} alt="inner drag handle" />
-                                                        </span>
-                                                        <span>{groupItem.itemNo}</span>
-                                                        <span className="tit">
-                                                            <div className="txt">
-                                                                <p>{groupItem.passageId}</p>
-                                                                {groupItem.largeChapterName}{groupItem.mediumChapterName}{groupItem.smallChapterName}{groupItem.topicChapterName}
-                                                            </div>
-                                                            <div className="tooltip-wrap">
-                                                                <button className="btn-tip"></button>
-                                                            </div>
-                                                        </span>
-                                                        <span>{groupItem.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
-                                                        <span>{groupItem.difficultyName}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
+                            {Object.keys(groupedItems).map((passageId, index) => (
+                                <React.Fragment key={passageId}>
+                                    <div className="depth-01 ui-sortable">
+                                        <div
+                                            className="dragHandle drag-type02"
+                                            draggable="true"
+                                            onDragStart={(e) => handleDragStart(e, groupedItems[passageId])}
+                                            onDragOver={(e) => handleDragOver(e)}
+                                            onDrop={(e) => handleDrop(e, passageId)}
+                                        >
+                                            <img src={outerDragHandleIcon} alt="outer drag handler img" />
                                         </div>
-                                    ) : null}
-                                </div>
+                                        <div className="col-group">
+                                            <SummaryList
+                                                key={`${passageId}-${index}`}
+                                                initialChangeList={initialChangeList}
+                                                onChangeList={handleChangeList}
+                                                groupedItems={groupedItems}
+                                                passageId={passageId}
+                                            />
+                                        </div>
+                                    </div>
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
