@@ -1,6 +1,5 @@
 package com.chunjae.chunjaefull5final.controller;
 
-import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 
 import com.chunjae.chunjaefull5final.service.user.UserService;
@@ -10,13 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @Controller
@@ -93,7 +89,8 @@ public class UserController {
         model.addAttribute("search", search);
         model.addAttribute("search_txt", search_txt);
 
-        return "admin/user";
+//        return "admin/user";
+        return "admin/admin_user";
     }
     @GetMapping("/admin/userdetail/{uid}")
     public String userAdminDetail(@PathVariable Long uid, Model model){
