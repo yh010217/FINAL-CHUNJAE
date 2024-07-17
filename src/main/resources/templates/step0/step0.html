@@ -62,7 +62,8 @@
                     <div class="tab-list-type01 unit-acc-wrap">
                         <div class="scroll-inner">
                             <th:block th:each="chapter : ${chapterList}">
-                                <input type="hidden" th:name="${chapter.subjectId}" th:id="subjectId" th:value="${chapter.subjectId}">
+                                <input type="hidden" th:name="${chapter.subjectId}" th:id="subjectId"
+                                       th:value="${chapter.subjectId}">
                                 <button type="button" class="acc-btn"><p th:text="${chapter.largeChapterName}"></p>
                                 </button>
                                 <div class="cnt">
@@ -77,7 +78,8 @@
                                         <div class="tbody">
                                             <div class="col" th:each="exam : ${examList[chapter.largeChapterId]}">
                                                 <span class="check-box" style="position: relative">
-                                                    <input type="checkbox" class="chk_paperId" th:name="${exam.itemCnt}" th:item-cnt="${exam.itemCnt}" th:exam-id="${exam.examId}"
+                                                    <input type="checkbox" class="chk_paperId" th:name="${exam.itemCnt}"
+                                                           th:item-cnt="${exam.itemCnt}" th:exam-id="${exam.examId}"
                                                            th:class="chk_paperId" style="position: absolute"></span>
                                                 <span class="tit" th:text="${exam.examName}"></span>
                                                 <span class="que-count" th:text="${exam.itemCnt}"></span>
@@ -86,7 +88,7 @@
                                                                 type="button" class="pop-btn btn-icon2"
                                                                 data-pop="prev-pop"><i
                                                                 class="preview"></i></button>
-                                                    </span>
+                                                </span>
                                                 <span>
                                                      <div class="btn-wrap">
                                                         <button type="button" class="btn-default">전체</button>
@@ -104,9 +106,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
 
     </div>
     <div class="dim"></div>
@@ -114,192 +114,93 @@
     <div id="q-preview" class="pop-wrap prev-type " data-pop="prev-pop">
         <div class="pop-inner">
             <div class="pop-header">
-                <span>미리보기</span>
+                <div class="tit-top">
+                    <span id="preview-tit">[시험지명]~</span>
+                    <em id="preview-cnt">[문항수]X문항</em>
+                </div>
+
                 <button type="button" class="pop-close"></button>
             </div>
             <div class="pop-content">
-                <div class="btn-wrap">
-                    <button type="button" class="btn-icon"><i class="download"></i>다운로드</button>
-                </div>
-                <div class="view-box">
-                    <div class="scroll-inner">
-                        <!-- <img src="../images/common/sample_prev.jpg" alt="">
-                        <img src="../images/common/sample_prev.jpg" alt=""> -->
-                        <!--230824 림 추가-->
-                        <div class="view-data">
-                            <div class="example-area">
-                                <div class="example-box">
-                                    <div class="item-question">
-                                        <span class="numbering">1.</span>
-                                        <img src="/images/common/sampling-question.png" alt="">
-                                    </div>
+                <div class="tab-wrap">
+                    <ul class="tab-menu-type02" id="preview-tab">
+                        <li>
+                            <a href="#" data-type="A">문제 + 정답 + 해설</a>
+                        </li>
+                        <li>
+                            <a href="#" data-type="Q">문제</a>
+                        </li>
+                        <li>
+                            <a href="#" data-type="E">정답 + 해설</a>
+                        </li>
+                        <li>
+                            <a href="#" data-type="C">문항 정보표</a>
+                        </li>
+                    </ul>
 
-                                    <div class="choice-contanier">
-                                        <ul class="answer-input">
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                        </ul>
-                                    </div>
+                    <div class="preview-data">
+                        <div class="btn-wrap" id="preview-btn-div">
+                            <button type="button" class="btn-icon preview-download" date-type="">
+                                <i class="download"></i>다운로드
+                            </button>
+                        </div>
 
-                                    <div class="answer-container">
-                                        <span class="answer-tit">(정답)</span>
-                                        <div class="answer-img" style="height:25px; background:lightgray"><img
-                                                src="/images/common/answer-img.png" alt=""></div>
-                                    </div>
+                        <div class="view-box type-line">
+                            <div class="scroll-inner">
+                                <div class="layout-wrap" id="preview-question-data">
+                                    <div class="view-data">
+                                        <div class="example-area">
+                                            <div class="example-box">
+                                                <div class="passage-area item-question">
+                                                    <span class="numbering numbering-numbers passage-num">1.</span>
+                                                    <img src="/images/common/sampling-question.png" alt="" width="">
+                                                </div>
 
-                                    <div class="explain-answer">
-                                        <span class="explain-tit">(해설)</span>
-                                        <div class="explain-img"><img src="/images/common/sampling-question2.png"
-                                                                      alt=""></div>
-                                    </div>
-                                </div>
-                            </div>
+                                                <div class="choice-contanier">
+                                                    <ul class="answer-input">
+                                                        <li>
+                                                            <img src="/images/common/sampling-question-1.png" alt="">
+                                                        </li>
+                                                        <li>
+                                                            <img src="/images/common/sampling-question-1.png" alt="">
+                                                        </li>
+                                                        <li>
+                                                            <img src="/images/common/sampling-question-1.png" alt="">
+                                                        </li>
+                                                        <li>
+                                                            <img src="/images/common/sampling-question-1.png" alt="">
+                                                        </li>
+                                                        <li>
+                                                            <img src="/images/common/sampling-question-1.png" alt="">
+                                                        </li>
+                                                    </ul>
+                                                </div>
 
-                            <div class="example-area">
-                                <div class="example-box">
-                                    <div class="item-question">
-                                        <span class="numbering numbering-numbers">10~20. </span>
-                                        <img src="/images/common/sampling-question.png" alt="">
-                                    </div>
+                                                <div class="answer-container">
+                                                    <span class="answer-tit">(정답)</span>
+                                                    <div class="answer-img" style="height:25px; background:lightgray">
+                                                        <img
+                                                                src="/images/common/answer-img.png" alt=""></div>
+                                                </div>
 
-                                    <div class="choice-contanier">
-                                        <ul class="answer-input">
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                <div class="explain-answer">
+                                                    <span class="explain-tit">(해설)</span>
+                                                    <div class="explain-img"><img
+                                                            src="/images/common/sampling-question2.png"
+                                                            alt=""></div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                    <div class="answer-container">
-                                        <span class="answer-tit">(정답)</span>
-                                        <div class="answer-img" style="height:25px; background:lightgray"><img
-                                                src="/images/common/answer-img.png" alt=""></div>
-                                    </div>
-
-                                    <div class="explain-answer">
-                                        <span class="explain-tit">(해설)</span>
-                                        <div class="explain-img"><img src="/images/common/sampling-question2.png"
-                                                                      alt=""></div>
                                     </div>
                                 </div>
+                                <!-- 문항 정보표 테이블 -->
+                                <div></div>
                             </div>
-
-                            <div class="example-area">
-                                <div class="example-box">
-                                    <div class="item-question">
-                                        <span class="numbering">1.</span>
-                                        <img src="/images/common/sampling-question.png" alt="">
-                                    </div>
-
-                                    <div class="choice-contanier">
-                                        <ul class="answer-input">
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="answer-container">
-                                        <span class="answer-tit">(정답)</span>
-                                        <div class="answer-img" style="height:25px; background:lightgray"><img
-                                                src="/images/common/answer-img.png" alt=""></div>
-                                    </div>
-
-                                    <div class="explain-answer">
-                                        <span class="explain-tit">(해설)</span>
-                                        <div class="explain-img"><img src="/images/common/sampling-question2.png"
-                                                                      alt=""></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="example-area">
-                                <div class="example-box">
-                                    <div class="item-question">
-                                        <span class="numbering">1.</span>
-                                        <img src="/images/common/sampling-question.png" alt="">
-                                    </div>
-
-                                    <div class="choice-contanier">
-                                        <ul class="answer-input">
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                            <li>
-                                                <img src="/images/common/sampling-question-1.png" alt="">
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="answer-container">
-                                        <span class="answer-tit">(정답)</span>
-                                        <div class="answer-img" style="height:25px; background:lightgray"><img
-                                                src="/images/common/answer-img.png" alt=""></div>
-                                    </div>
-
-                                    <div class="explain-answer">
-                                        <span class="explain-tit">(해설)</span>
-                                        <div class="explain-img"><img src="/images/common/sampling-question2.png"
-                                                                      alt=""></div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-            <!--<div class="pop-footer">
-                <div class="page-num">
-                    <span>1 / 2</span>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>
