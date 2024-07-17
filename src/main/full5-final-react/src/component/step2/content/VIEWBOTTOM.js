@@ -87,35 +87,38 @@ function VIEWBOTTOM({itemList}){
         });
     };
 
+    groupedItems = groupByPassageId(changeList);
+
     /** 삭제하기에서 추가 눌렀을 때 */
     const addToDelList = (itemReDelItem) => {
-        /*changeList.forEach(item => {
-            const passId = item.passageId;
-            const result = itemReDelItem.passageId;
-            if (passId === result) {
-                console.log('일치합니다.')
-            } else {
-                console.log('일치하지 않습니다.')
+        const result = itemReDelItem.passageId;
+
+        let shouldAddToChangeList = true;
+        for (let key in groupedItems) {
+            if (Number(key) === result) {
+                let keyLen = groupedItems[result].length;
+                console.log(keyLen, "key값 길이");
+                setChangeList((prevList) => {
+                    const index = prevList.findIndex(
+                        (item) => item.passageId === Number(key)
+                    );
+                    console.log(index, "index 값");
+                    return [
+                        ...prevList.slice(0, index + keyLen),
+                        itemReDelItem,
+                        ...prevList.slice(index + keyLen),
+                    ];
+                });
+                shouldAddToChangeList = false;
+                break;
             }
+        }
 
-            /!*setChangeList(prevList => {
-                const index = prevList.findIndex(item => item.passageId === passId);
-                return [
-                    ...prevList.slice(0, index + 1),
-                    itemReDelItem,
-                    ...prevList.slice(index + 1)
-                ];
-            })*!/
-        });*/
-        // list에 이미 passageId가 있을 경우 => 문항 가장 끝에 등록
-        // passageId가 있는데 list에 없을 경우 => 최하단에 지문과 함께 등록,
-        // passageId가 없을 경우 => 최하단에 등록
-        setChangeList(prevList => {
-            return [...prevList, itemReDelItem];
-        })
-    }
+        if (shouldAddToChangeList) {
+            setChangeList((prevList) => [...prevList, itemReDelItem]);
+        }
+    };
 
-    groupedItems = groupByPassageId(changeList);
 
     /** 교체하기 => 구현 안 함 삭제 예정 */
     const ChangeList =(itemToAdd)=> {

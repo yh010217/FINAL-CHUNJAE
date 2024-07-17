@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
+import MODAL from "./MODAL";
 
 function SIMLARLIST(props) {
-    const [modal, setModal] = useState();
-
-    const errorPage =()=> {
-    }
+    const [modal, setModal] = useState(false);
 
     /** 선택하면 remove에 저장 */
     const removeList =(itemId)=> {
@@ -67,8 +65,11 @@ function SIMLARLIST(props) {
                 </div>
             </div>
             <div className="btn-wrap">
-                <button className="btn-error" onClick={errorPage}></button>
+                <button className="btn-error" onClick={() => setModal(true)}></button>
+                {modal === true && <MODAL />}
             </div>
+
+
         </div>
         <div className="view-que">
             <div>
