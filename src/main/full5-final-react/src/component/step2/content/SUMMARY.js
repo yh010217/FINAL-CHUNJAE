@@ -172,6 +172,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                                                     <SummaryList
                                                                                         itemId={item.itemId}
                                                                                         itemNo={item.itemNo}
+                                                                                        index={itemIndex}
                                                                                         difficultyName={item.difficultyName}
                                                                                         questionFormName={item.questionFormName}
                                                                                         largeChapterName={item.largeChapterName}

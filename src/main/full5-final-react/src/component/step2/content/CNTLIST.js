@@ -12,6 +12,7 @@ function CNTLIST({changeList, onChangeList, setSimilar, setTab, setNo, viewType,
 
     const groupedItems = groupByPassageId(changeList);
     // console.log(groupedItems, "데이터 확인하기")
+    console.log('changeList...',changeList)
 
     const similarData = (itemIdList, no) => {
         // console.log(tab);
@@ -24,7 +25,7 @@ function CNTLIST({changeList, onChangeList, setSimilar, setTab, setNo, viewType,
         <div className="view-que-list scroll-inner">
 
             {changeList.map((item, index) => {
-                const passageId = item.passageId && (groupedItems[item.passageId] || []).length > 0 ? item.passageId : 'individual';
+                const passageId = item.passageId !== undefined ? item.passageId : 'individual';
                 const isFirstItemInGroup = passageId !== 'individual' && groupedItems[passageId]?.[0]?.itemId === item.itemId;
 
                 return (
