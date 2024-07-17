@@ -7,11 +7,15 @@ import org.springframework.data.domain.Pageable;
 public interface UserService {
     boolean findEmailCheck(String email);
 
-    int joinUser(UserDTO dto);
+    Long joinUser(UserDTO dto);
 
-    int findUidByEmail(String sessionId);
+    long findUidByEmail(String sessionId);
 
     Page<UserDTO> findUser(Pageable pageable, String search, String search_txt);
+
+    UserDTO getUserDetail(Long uid);
+
+    Long deleteUser(Long uid);
 
 //    User snsUser(UserDTO dto);
 }

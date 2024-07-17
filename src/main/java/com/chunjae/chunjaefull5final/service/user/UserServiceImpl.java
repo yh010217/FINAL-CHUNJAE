@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
     /** 회원가입*/
     @Override
-    public int joinUser(UserDTO dto) {
+    public Long joinUser(UserDTO dto) {
         String pwd=encoder.encode(dto.getPwd());
         UserRole userRole=UserRole.valueOf(dto.getRole());
 
@@ -58,9 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findUidByEmail(String sessionId) {
+    public long findUidByEmail(String sessionId) {
         User user=userRepository.findByEmail(sessionId);
-        int result=0;
+        long result=0;
         if (user!=null)
             result=user.getUid();
         return result;
@@ -93,6 +93,18 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<>(userDTOList, pageable, totalPage);
     }
 
+    @Override
+    public UserDTO getUserDetail(Long uid) {
+        User user=userRepository.findUserDetail(uid);
+        UserDTO dto= modelMapper.map(user, UserDTO.class);
+        return dto;
+    }
+
+    @Override
+    public Long deleteUser(Long uid) {
+        userRepository.deleteUser(uid);
+        return uid;
+    }
 
 
 }

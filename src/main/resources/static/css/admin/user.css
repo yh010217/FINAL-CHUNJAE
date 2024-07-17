@@ -1,7 +1,9 @@
-#content_container{
-    padding: 45px 0;
+#user_list ul {
+    list-style-type: none;
+    padding: 0;
 }
-#content_container h2{
+
+#admin_user h2{
     text-align: center;
 }
 #user_form{
@@ -91,20 +93,20 @@ li span {
     color: #444040;
 }
 
-/*.User{*/
-/*    background-color: #f3ebfa;*/
-/*    color: #9b96c1;*/
-/*}*/
-/*.Teacher{*/
-/*    background-color: #ebf4f1;*/
-/*    color: #b3d6ca;*/
-/*}*/
-/*.Stop{*/
-/*    background-color: #f8b3b0;*/
-/*    color: #f87b8c;*/
-/*}*/
+.User{
+    background-color: #f3ebfa;
+    color: #9b96c1;
+}
+.Teacher{
+    background-color: #ebf4f1;
+    color: #b3d6ca;
+}
+.Stop{
+    background-color: #f8b3b0;
+    color: #f87b8c;
+}
 
-user-status {
+.user-status {
     color: green;
 }
 

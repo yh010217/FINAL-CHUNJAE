@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>문제은행| 관리자 </title>
+    <title>title</title>
     <link rel="stylesheet" th:href="@{/css/admin/template.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/user.css}">
     <script th:src="@{/js/admin/user_color.js}"></script>
 </head>
 <body>
-<div id="container">
-    <aside id="side_bar">
+<!--<aside th:replace="side_bar :: side_template"></aside>-->
+<div id="wrap">
+    <div id="side_bar">
         <div id="side_bar_header">
             <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
-            <a th:href="@{/admin/userpage}" class="header_title">문제은행</a>
+            <a th:href="@{/admin/user}" class="header_title">문제은행</a>
         </div>
         <div id="side_bar_menus">
-            <a th:href="@{/admin/userpage}"class="side_bar_menu">
+            <a th:href="@{/admin/user}" class="side_bar_menu">
                 <img class="side_bar_menu_image" src="/images/admin/icons8-유저관리-100.png" alt="유저 관리">
                 <span class="side_bar_menu_name">회원 관리</span>
             </a>
@@ -31,19 +32,19 @@
                 홈페이지
             </a>
         </div>
-    </aside>
-
-    <div id="content_container">
+    </div>
+    <div id="content">
+    <div id="admin_user">
         <h2>회원 관리</h2>
-            <!-- 회원 검색창 -->
-            <form th:method="get" th:action="@{/admin/userpage}" th:id="user_form">
-                <select th:name="search" th:id="search_user">
-                    <option th:value="email">이메일</option>
-                    <option th:value="name">이름</option>
-                </select>
-                <input type="text" th:name="search_txt" th:id="search_txt_user">
-                <button type="submit" id="search_user_btn">검색</button>
-            </form>
+        <!-- 회원 검색창 -->
+        <form th:method="get" th:action="@{/admin/user}" th:id="user_form">
+            <select th:name="search" th:id="search_user">
+                <option th:value="email">이메일</option>
+                <option th:value="name">이름</option>
+            </select>
+            <input type="text" th:name="search_txt" th:id="search_txt_user">
+            <button type="submit" id="search_user_btn">검색</button>
+        </form>
 
         <div id="user_list">
             <ul>
@@ -55,7 +56,7 @@
                     <span>학교정보</span>
                 </li>
                 <li th:if="${!userList.isEmpty()}" th:each="item:${userList}" th:class="userList">
-                    <a th:href="@{'/userdetail/'+${item.uid}}">
+                    <a th:href="@{'/admin/userdetail/'+${item.uid}}">
                         <span th:text="${item.uid}"></span>
                         <span th:text="${item.email}"></span>
                         <span th:text="${item.name}"></span>
@@ -67,34 +68,34 @@
                     회원이 존재하지 않습니다.
                 </li>
             </ul>
-        <!-- 페이지 -->
-        <div id="page">
-            <th:block th:if="${startPage>1}">
-                <a th:href="@{/useradmin(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
-                    <span>이전</span>
-                </a>
-            </th:block>
+            <!-- 페이지 -->
+            <div id="page">
+                <th:block th:if="${startPage>1}">
+                    <a th:href="@{/useradmin(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
+                        <span>이전</span>
+                    </a>
+                </th:block>
 
-            <th:block th:if="${userList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}" th:class="page">
-                <span th:if="${index==userList.pageable.getPageNumber()+1}" th:text="${index}"></span>
-                <span th:if="${index!=userList.pageable.getPageNumber()+1}">
+                <th:block th:if="${userList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
+                          th:class="page">
+                    <span th:if="${index==userList.pageable.getPageNumber()+1}" th:text="${index}"></span>
+                    <span th:if="${index!=userList.pageable.getPageNumber()+1}">
 				<a th:href="@{/useradmin(page=${index}, search=${search}, search_txt=${search_txt})}"
                    th:text="${index}"></a>
 			</span>
-            </th:block>
+                </th:block>
 
-            <th:block th:if="${endPage<userList.getTotalPages()}">
-                <a th:href="@{/useradmin(page=${endPage+1}, search=${search}, search_txt=${search_txt})}">
-                    <span>다음</span>
-                </a>
-            </th:block>
+                <th:block th:if="${endPage<userList.getTotalPages()}">
+                    <a th:href="@{/useradmin(page=${endPage+1}, search=${search}, search_txt=${search_txt})}">
+                        <span>다음</span>
+                    </a>
+                </th:block>
+            </div>
         </div>
-       </div>
-    </div><!--content_container-->
+    </div>
 
-
-</div><!--container-->
-
-
+</div>
+</div>
+</div>
 </body>
 </html>

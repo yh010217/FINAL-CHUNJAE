@@ -41,7 +41,7 @@ public class UserController {
             model.addAttribute("dto", dto); // 유효성 검사 오류 시에도 dto를 모델에 추가하여 폼에 다시 표시
             return "user/join";
         }
-        int uid = userService.joinUser(dto);
+        Long uid = userService.joinUser(dto);
         return "redirect:/login";
     }
 
@@ -62,7 +62,7 @@ public class UserController {
         }
         return "user/login";
     }
-    @GetMapping("/admin/userpage")
+    @GetMapping("/admin/user")
     public String adminUser(@PageableDefault(size = 10, page = 0) Pageable pageable
             , @RequestParam(required = false, defaultValue = "") String search
             , @RequestParam(required = false, defaultValue = "")String search_txt
@@ -89,8 +89,20 @@ public class UserController {
         model.addAttribute("search", search);
         model.addAttribute("search_txt", search_txt);
 
-        return "admin/admin_user";
+        return "admin/user";
     }
+    @GetMapping("/admin/userdetail/{uid}")
+    public String userAdminDetail(@PathVariable Long uid, Model model){
+        UserDTO userDTO = userService.getUserDetail(uid);
+        model.addAttribute("userDTO", userDTO);
+        return "admin/user_detail";
+    }
+    @GetMapping("/userdelete/{uid}")
+    public String deleteUser(@PathVariable Long uid){
+        Long id = userService.deleteUser(uid);
+        return "redirect:/admin/user";
+    }
+
 
 
 

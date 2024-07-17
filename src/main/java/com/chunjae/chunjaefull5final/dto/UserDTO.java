@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserDTO {
-    private int uid;
+    private Long uid;
     @NotEmpty(message = "이메일을 입력하세요")
     private String email;
     @NotEmpty(message = "비밀번호는 필수 항목입니다.")
