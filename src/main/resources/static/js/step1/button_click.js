@@ -5,16 +5,16 @@ let set_subject = function (num) {
     subject = Number(num);
 }
 
-let level_cnt = [0,0,0,0,0];
+let level_cnt = ['0', '0', '0', '0', '0'];
 
 let que_num = 30;
 
-let set_que_num = function(num){
+let set_que_num = function (num) {
     que_num = num;
     document.querySelector('.que-num').innerHTML = num;
 }
 
-let count_value_change = function (){
+let count_value_change = function () {
 
     let count_input = document.querySelector('.count-input');
     let count_input_value = Number(count_input.value);
@@ -67,7 +67,7 @@ let count_change = function (num) {
     change_que_count();
 }
 
-let change_que_count = function(){
+let change_que_count = function () {
 
     let step_wrap = document.querySelector('.step-wrap');
 
@@ -75,26 +75,36 @@ let change_que_count = function(){
     let active_buttons_num = step_wrap_buttons.length;
 
     let que_range_pop_divs = document.querySelectorAll('.change_level_div');
-    for(let i = 0 ; i < que_range_pop_divs.length ; i++){
-        if(!que_range_pop_divs[i].classList.contains('not_contain_level')){
+    for (let i = 0; i < que_range_pop_divs.length; i++) {
+        if (!que_range_pop_divs[i].classList.contains('not_contain_level')) {
             que_range_pop_divs[i].classList.add('not_contain_level');
         }
     }
 
-    let low_high_count = Math.floor(que_num / active_buttons_num);
-    let mid_count = Math.floor(que_num / active_buttons_num) + (que_num % active_buttons_num);
+    let low_count = Math.floor(que_num / active_buttons_num);
+    let mid_count = Math.floor(que_num / active_buttons_num);
+    let high_count = Math.floor(que_num / active_buttons_num);
+
+    let mod_count = que_num % active_buttons_num;
+
     for (let i = 0; i < active_buttons_num; i++) {
-        if(step_wrap_buttons[i].getAttribute('data-step') === 'stap2'){
-            document.getElementById('range-low-count').innerHTML = low_high_count + '';
-            level_cnt[1] = low_high_count;
+        if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
+            low_count = low_count + mod_count;
+            mod_count = 0;
+            document.getElementById('range-low-count').innerHTML = low_count + '';
+            level_cnt[1] = low_count+'';
             document.getElementById('level_range_low').classList.remove('not_contain_level');
-        }else if(step_wrap_buttons[i].getAttribute('data-step') === 'stap3'){
+        } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
+            mid_count = mid_count + mod_count;
+            mod_count = 0;
             document.getElementById('range-mid-count').innerHTML = mid_count + '';
-            level_cnt[2] = mid_count;
+            level_cnt[2] = mid_count+'';
             document.getElementById('level_range_mid').classList.remove('not_contain_level');
-        }else if(step_wrap_buttons[i].getAttribute('data-step') === 'stap4'){
-            document.getElementById('range-high-count').innerHTML = low_high_count + '';
-            level_cnt[3] = low_high_count;
+        } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
+            high_count = high_count + mod_count;
+            mod_count = 0;
+            document.getElementById('range-high-count').innerHTML = high_count + '';
+            level_cnt[3] = high_count+'';
             document.getElementById('level_range_high').classList.remove('not_contain_level');
         }
     }
@@ -121,7 +131,7 @@ let change_level = function () {
 
 }
 
-document.getElementById('level_count_save').onclick=function (){
+document.getElementById('level_count_save').onclick = function () {
 
 
     let value_low = document.getElementById('level_low').value;
@@ -132,9 +142,9 @@ document.getElementById('level_count_save').onclick=function (){
     let mid_num = Number(value_mid);
     let high_num = Number(value_high);
 
-    if(low_num + mid_num + high_num !== que_num){
+    if (low_num + mid_num + high_num !== que_num) {
         alert('문제 수를 맞춰주세요');
-    }else{
+    } else {
 
         let step_wrap = document.querySelector('.step-wrap');
 
@@ -142,15 +152,15 @@ document.getElementById('level_count_save').onclick=function (){
         let active_buttons_num = step_wrap_buttons.length;
 
         for (let i = 0; i < active_buttons_num; i++) {
-            if(step_wrap_buttons[i].getAttribute('data-step') === 'stap2'){
+            if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
                 document.getElementById('range-low-count').innerHTML = value_low + '';
-                level_cnt[1] = low_num;
-            }else if(step_wrap_buttons[i].getAttribute('data-step') === 'stap3'){
+                level_cnt[1] = low_num+'';
+            } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
                 document.getElementById('range-mid-count').innerHTML = value_mid + '';
-                level_cnt[2] = mid_num;
-            }else if(step_wrap_buttons[i].getAttribute('data-step') === 'stap4'){
+                level_cnt[2] = mid_num+'';
+            } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
                 document.getElementById('range-high-count').innerHTML = value_high + '';
-                level_cnt[3] = high_num;
+                level_cnt[3] = high_num+'';
             }
         }
 
@@ -162,7 +172,7 @@ document.getElementById('level_count_save').onclick=function (){
 }
 
 
-let make_minorClassification = function(){
+let make_minorClassification = function () {
 
     let minorClassification = [];
 
@@ -278,28 +288,33 @@ let make_minorClassification = function(){
 }
 
 let make_question_form = function () {
-    let question_form = [];
+    let question_form = '';
 
     let question_forms = document.querySelectorAll('.question_form');
-    for(let i = 0 ; i < question_forms.length ; i++){
-        if(question_forms[i].classList.contains('active')){
+    let count = 0;
+    for (let i = 0; i < question_forms.length; i++) {
+        if (question_forms[i].classList.contains('active')) {
+            if(count !== 0) question_form = question_form.concat(',');
             let form_id_str = question_forms[i].id.substring(5);
-            question_form.push(form_id_str);
+            question_form = question_form.concat(form_id_str);
+            count++;
         }
     }
     return question_form;
 }
 
-let make_activityCategory = function(){
+let make_activityCategory = function () {
     let activityCategory = [];
 
     let activityList = document.getElementById('activityList');
 
     let evals = activityList.querySelectorAll('.btn-line');
 
-    for(let i = 0 ; i < evals.length ; i ++){
-        let evalNum = Number(evals[i].id.substring(4));
-        activityCategory.push(evalNum);
+    for (let i = 0; i < evals.length; i++) {
+        if (evals[i].classList.contains('active')) {
+            let evalNum = Number(evals[i].id.substring(4));
+            activityCategory.push(evalNum);
+        }
     }
 
     return activityCategory;
@@ -316,20 +331,34 @@ document.getElementById('go-step2').onclick = function () {
     // 나중에 수향누님이 이거 컨트롤 할듯
     let canSend = true;
 
-    if(canSend){
+    if (canSend) {
 
         sendData(minorClassification, questionForm, activityCategoryList);
 
-    }else{
+    } else {
         /* 문항 조건 충족 안했을 때 팝업 */
         let range_type02 = document.querySelector('.range-type02');
-        range_type02.style='display : block';
+        range_type02.style = 'display : block';
         let dim_div = document.querySelector('.dim');
         dim_div.style = 'display : block';
     }
 }
 
-let sendData = function(minorClassification, questionForm, activityCategoryList){
+let sendData = function (minorClassification, questionForm, activityCategoryList) {
+    let send_body = {
+        minorClassification: minorClassification
+        , levelCnt: level_cnt
+        , questionForm: questionForm
+        , activityCategoryList: activityCategoryList
+    }
+
+    fetch('/step1/make_exam/'+subject, {
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(send_body)
+    })
 
 
 }
