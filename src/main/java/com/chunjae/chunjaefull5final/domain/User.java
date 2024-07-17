@@ -1,34 +1,35 @@
 package com.chunjae.chunjaefull5final.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "user")
-@Setter
 @Getter
 @NoArgsConstructor
+@Setter
+@Builder
+@AllArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
-
-    @Column
+    @Column(nullable = false)
     private String email;
-    @Column
+    //   @Column(nullable = false)
     private String pwd;
-    @Column
+    @Column(nullable = false)
     private String name;
-    @Column
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+    @Enumerated(EnumType.STRING)
     @Column(name = "school_type")
-    private String schoolType;
+    private SchoolType schoolType;
     @Column(name = "sns_type")
     private String snsType;
     @Column(name = "sns_id")
     private String snsId;
+
 
 }

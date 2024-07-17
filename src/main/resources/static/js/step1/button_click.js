@@ -352,7 +352,7 @@ let sendData = function (minorClassification, questionForm, activityCategoryList
         , activityCategoryList: activityCategoryList
     }
 
-    fetch('/step1/make_exam', {
+    fetch('/step1/make_exam/'+subject, {
         method: 'post',
         headers: {
             'Content-type': 'application/json'
