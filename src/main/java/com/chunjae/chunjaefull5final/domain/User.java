@@ -8,12 +8,10 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @Setter
-@Builder
-@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid;
+    private Long uid;
     @Column(nullable = false)
     private String email;
  //   @Column(nullable = false)
@@ -30,6 +28,16 @@ public class User {
     private String snsType;
     @Column(name = "sns_id")
     private String snsId;
-
+    @Builder
+    public User(Long uid, String email, String name,String pwd, UserRole role, SchoolType schoolType, String snsType, String snsId){
+        this.uid=uid;
+        this.email=email;
+        this.name=name;
+        this.pwd=pwd;
+        this.role=role;
+        this.schoolType=schoolType;
+        this.snsType=snsType;
+        this.snsId=snsId;
+    }
 
 }

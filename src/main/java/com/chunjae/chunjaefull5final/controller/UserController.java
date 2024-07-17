@@ -1,5 +1,6 @@
 package com.chunjae.chunjaefull5final.controller;
 
+import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 
 import com.chunjae.chunjaefull5final.service.user.UserService;
@@ -9,10 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -41,7 +45,7 @@ public class UserController {
             model.addAttribute("dto", dto); // 유효성 검사 오류 시에도 dto를 모델에 추가하여 폼에 다시 표시
             return "user/join";
         }
-        int uid = userService.joinUser(dto);
+        Long uid = userService.joinUser(dto);
         return "redirect:/login";
     }
 
@@ -62,7 +66,7 @@ public class UserController {
         }
         return "user/login";
     }
-    @GetMapping("/admin/userpage")
+    @GetMapping("/admin/user")
     public String adminUser(@PageableDefault(size = 10, page = 0) Pageable pageable
             , @RequestParam(required = false, defaultValue = "") String search
             , @RequestParam(required = false, defaultValue = "")String search_txt
@@ -89,8 +93,26 @@ public class UserController {
         model.addAttribute("search", search);
         model.addAttribute("search_txt", search_txt);
 
-        return "admin/admin_user";
+        return "admin/user";
     }
+    @GetMapping("/admin/userdetail/{uid}")
+    public String userAdminDetail(@PathVariable Long uid, Model model){
+        UserDTO userDTO = userService.getUserDetail(uid);
+        model.addAttribute("userDTO", userDTO);
+        return "admin/user_detail";
+    }
+    @GetMapping("/userdelete/{uid}")
+    public String deleteUser(@PathVariable Long uid){
+        Long id = userService.deleteUser(uid);
+        return "redirect:/admin/user";
+    }
+    @GetMapping("/userdetail/{uid}")
+    @ResponseBody
+    public UserDTO userAdminDetail(@PathVariable Long uid){
+        UserDTO userDTO = userService.getUserDetail(uid);
+        return userDTO;
+    }
+
 
 
 

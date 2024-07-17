@@ -32,7 +32,8 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/images/**")
                 .requestMatchers("/full5-final-react/css/**")
                 .requestMatchers("/full5-final-react/src/**")
-                .requestMatchers("/full5-final-react/component/**");
+                .requestMatchers("/full5-final-react/component/**")
+                .requestMatchers("/**");
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)

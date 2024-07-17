@@ -1,7 +1,9 @@
-#content_container{
-    padding: 45px 0;
+#user_list ul {
+    list-style-type: none;
+    padding: 0;
 }
-#content_container h2{
+
+#admin_user h2{
     text-align: center;
 }
 #user_form{
@@ -57,11 +59,11 @@ li span {
     display: inline-block;
 }
 #user_list li span:nth-child(1){
-    width: 12%;
+    width: 10%;
     text-align: center;
 }
 #user_list li span:nth-child(2){
-    width: 25%;
+    width: 20%;
     text-align: center;
 }
 #user_list li span:nth-child(3){
@@ -69,12 +71,19 @@ li span {
     text-align: center;
 }
 #user_list li span:nth-child(4) {
-    width: 20%;
+    width: 10%;
     text-align: center;
 }
 #user_list li span:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+#user_list li span:nth-child(6) {
     width: 20%;
     text-align: center;
+}
+#del{
+
 }
 
 #search_user{
@@ -91,20 +100,20 @@ li span {
     color: #444040;
 }
 
-/*.User{*/
-/*    background-color: #f3ebfa;*/
-/*    color: #9b96c1;*/
-/*}*/
-/*.Teacher{*/
-/*    background-color: #ebf4f1;*/
-/*    color: #b3d6ca;*/
-/*}*/
-/*.Stop{*/
-/*    background-color: #f8b3b0;*/
-/*    color: #f87b8c;*/
-/*}*/
+.User{
+    background-color: #f3ebfa;
+    color: #9b96c1;
+}
+.Teacher{
+    background-color: #ebf4f1;
+    color: #b3d6ca;
+}
+.Stop{
+    background-color: #f8b3b0;
+    color: #f87b8c;
+}
 
-user-status {
+.user-status {
     color: green;
 }
 
