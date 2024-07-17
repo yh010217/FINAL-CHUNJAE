@@ -94,17 +94,32 @@ function CNTLIST({changeList, onChangeList, setSimilar, setTab, setNo, viewType,
                                                         <img src={item.answerUrl} alt="정답"></img>
                                                     </div>
                                                 </div>
+                                                <button
+                                                    className="btn-similar-que btn-default"
+                                                    onClick={() => similarData(item.itemId, index)}
+                                                >
+                                                    <i className="similar"></i>
+                                                    유사문제
+                                                </button>
                                             </div>
                                         )}
                                     </div>
                                 )}
-                                <button
-                                    className="btn-similar-que btn-default"
-                                    onClick={() => similarData(item.itemId, index)}
-                                >
-                                    <i className="similar"></i>
-                                    유사문제
-                                </button>
+                                {viewType === '문제만 보기' &&(
+                                    <div className="que-bottom">
+
+                                            <div className="data-area type01">
+
+                                                <button
+                                                    className="btn-similar-que btn-default"
+                                                    onClick={() => similarData(item.itemId, index)}
+                                                >
+                                                    <i className="similar"></i>
+                                                    유사문제
+                                                </button>
+                                            </div>
+                                    </div>
+                                )}
                             </div>
                             <div className="que-info-last">
                                 <p className="chapter">

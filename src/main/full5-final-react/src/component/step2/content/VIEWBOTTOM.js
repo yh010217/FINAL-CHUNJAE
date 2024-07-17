@@ -18,7 +18,6 @@ function VIEWBOTTOM({itemList}){
     /** SUMMARY -> CNTRIGHT 에서 받아온 리스트 **/
     const handleChangeList = (newChangeList) => {
         // console.log('VIEWBOTTOM changeList:', newChangeList);
-        // console.log(typeof(newChangeList));
         setChangeList(newChangeList);
     };
 
