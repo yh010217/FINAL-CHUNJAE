@@ -10,7 +10,6 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
     const [subjectiveCount, setSubjective] = useState(0);
 
     useEffect(() => {
-        // passageId가 있으면 그룹화, 없으면 item.itemId로 그룹화
         const grouped = changeList.reduce((acc, item) => {
             const groupKey = item.passageId || item.itemId;
             const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
@@ -27,7 +26,6 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
         setGroupedData(grouped);
 
-        // 문제 형태 카운트
         const multipleCount = changeList.filter(item => item.questionFormName === '5지 선택').length;
         const subjectiveCount = changeList.filter(item => item.questionFormName === '단답 유순형').length;
         const m_fc = changeList.filter(item => item.questionFormName === '자유 선지형').length;
@@ -47,26 +45,48 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
     };
 
     const handleDragEnd = (result) => {
-        if (!result.destination) return;
+        const { source, destination, type } = result;
 
-        const newGroupedData = Array.from(groupedData);
-        const [movedGroup] = newGroupedData.splice(result.source.index, 1);
-        newGroupedData.splice(result.destination.index, 0, movedGroup);
+        if (!destination) return;
 
-        const newChangeList = newGroupedData.flatMap(group => group.items);
-        setChangeList(newChangeList);
-        handleChangeList(newChangeList);
+        if (type === 'GROUP') {
+            if (source.index === destination.index) return;
 
-        setGroupedData(newGroupedData);
+            const newGroupedData = Array.from(groupedData);
+            const [movedGroup] = newGroupedData.splice(source.index, 1);
+            newGroupedData.splice(destination.index, 0, movedGroup);
+
+            const newChangeList = newGroupedData.flatMap(group => group.items);
+            setChangeList(newChangeList);
+            handleChangeList(newChangeList);
+
+            setGroupedData(newGroupedData);
+        } else if (type === 'ITEM') {
+            const sourceGroupIndex = parseInt(source.droppableId, 10);
+            const destinationGroupIndex = parseInt(destination.droppableId, 10);
+
+            if (sourceGroupIndex === destinationGroupIndex && source.index === destination.index) return;
+
+            const newGroupedData = Array.from(groupedData);
+            const sourceGroup = newGroupedData[sourceGroupIndex];
+            const destinationGroup = newGroupedData[destinationGroupIndex];
+
+            const [movedItem] = sourceGroup.items.splice(source.index, 1);
+            destinationGroup.items.splice(destination.index, 0, movedItem);
+
+            const newChangeList = newGroupedData.flatMap(group => group.items);
+            setChangeList(newChangeList);
+            handleChangeList(newChangeList);
+
+            setGroupedData(newGroupedData);
+        }
     };
-
-    console.log(groupedData)
 
     return (
         <div className="contents on">
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="droppable" type="GROUP">
-                    {provided => (
+                    {(provided) => (
                         <div
                             className="table half-type"
                             ref={provided.innerRef}
@@ -83,11 +103,11 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                             <div className="tbody">
                                 <div className="scroll-inner">
                                     <div className="test ui-sortable" id="table-1">
-                                        {groupedData.map((group, index) => (
+                                        {groupedData.map((group, groupIndex) => (
                                             <Draggable
                                                 key={group.groupKey.toString()}
                                                 draggableId={group.groupKey.toString()}
-                                                index={index}
+                                                index={groupIndex}
                                             >
                                                 {(provided) => (
                                                     <div
@@ -95,28 +115,48 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                         {...provided.draggableProps}
                                                         className="depth-01 ui-sortable"
                                                     >
-                                                        {group.groupKey !== null && (
-                                                            <div className="drag-type02 dragHandle"
-                                                                 {...provided.dragHandleProps}
-                                                            >
-                                                                <img src={outerDragHandleIcon} alt="outer drag handler img" />
-                                                            </div>
-                                                        )}
-                                                        <div className="col-group">
-                                                            {group.items.map((item) => (
-                                                                <SummaryList
-                                                                    key={item.itemId}
-                                                                    itemId={item.itemId}
-                                                                    itemNo={item.itemNo}
-                                                                    difficultyName={item.difficultyName}
-                                                                    questionFormName={item.questionFormName}
-                                                                    largeChapterName={item.largeChapterName}
-                                                                    mediumChapterName={item.mediumChapterName}
-                                                                    smallChapterName={item.smallChapterName}
-                                                                    topicChapterName={item.topicChapterName}
-                                                                />
-                                                            ))}
+                                                        <div className="drag-type02 dragHandle"
+                                                             {...provided.dragHandleProps}
+                                                        >
+                                                            <img src={outerDragHandleIcon} alt="outer drag handler img" />
                                                         </div>
+                                                        <Droppable droppableId={groupIndex.toString()} type="ITEM">
+                                                            {(provided, snapshot) => (
+                                                                <div
+                                                                    className={`col-group ${snapshot.isDraggingOver ? 'draggingOver' : ''}`}
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.droppableProps}
+                                                                >
+                                                                    {group.items.map((item, itemIndex) => (
+                                                                        <Draggable
+                                                                            key={item.itemId}
+                                                                            draggableId={item.itemId.toString()}
+                                                                            index={itemIndex}
+                                                                        >
+                                                                            {(provided) => (
+                                                                                <div
+                                                                                    ref={provided.innerRef}
+                                                                                    {...provided.draggableProps}
+                                                                                    {...provided.dragHandleProps}
+                                                                                >
+                                                                                    <SummaryList
+                                                                                        itemId={item.itemId}
+                                                                                        itemNo={item.itemNo}
+                                                                                        difficultyName={item.difficultyName}
+                                                                                        questionFormName={item.questionFormName}
+                                                                                        largeChapterName={item.largeChapterName}
+                                                                                        mediumChapterName={item.mediumChapterName}
+                                                                                        smallChapterName={item.smallChapterName}
+                                                                                        topicChapterName={item.topicChapterName}
+                                                                                    />
+                                                                                </div>
+                                                                            )}
+                                                                        </Draggable>
+                                                                    ))}
+                                                                    {provided.placeholder}
+                                                                </div>
+                                                            )}
+                                                        </Droppable>
                                                     </div>
                                                 )}
                                             </Draggable>
