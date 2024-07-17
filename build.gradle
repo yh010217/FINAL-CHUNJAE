@@ -40,9 +40,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.googlecode.json-simple:json-simple:1.1'
 
-
     implementation 'org.modelmapper:modelmapper:3.1.0'
-    // QueryDSL lib
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
