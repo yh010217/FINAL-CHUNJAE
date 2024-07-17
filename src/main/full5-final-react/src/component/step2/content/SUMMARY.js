@@ -10,6 +10,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
     const [subjectiveCount, setSubjective] = useState(0);
 
     useEffect(() => {
+        // 그룹화된 데이터 생성
         const grouped = changeList.reduce((acc, item) => {
             const groupKey = item.passageId || item.itemId;
             const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
@@ -26,6 +27,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
         setGroupedData(grouped);
 
+        // 개수 집계
         const multipleCount = changeList.filter(item => item.questionFormName === '5지 선택').length;
         const subjectiveCount = changeList.filter(item => item.questionFormName === '단답 유순형').length;
         const m_fc = changeList.filter(item => item.questionFormName === '자유 선지형').length;
@@ -47,38 +49,64 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
     const handleDragEnd = (result) => {
         const { source, destination, type } = result;
 
-        if (!destination) return;
+        // 드래그 작업이 완료되지 않았을 경우 처리하지 않음
+        if (!destination) {
+            return;
+        }
 
+        // 그룹의 순서 변경
         if (type === 'GROUP') {
-            if (source.index === destination.index) return;
+            console.log("source:", source);
+            console.log("destination:", destination);
+            console.log("type:", type);
+
+
+            if (source.index === destination.index) {
+                return;
+            }
 
             const newGroupedData = Array.from(groupedData);
             const [movedGroup] = newGroupedData.splice(source.index, 1);
             newGroupedData.splice(destination.index, 0, movedGroup);
 
+            // 새로운 changeList 생성
             const newChangeList = newGroupedData.flatMap(group => group.items);
+
+            // 상태 업데이트
+            setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
-
-            setGroupedData(newGroupedData);
-        } else if (type === 'ITEM') {
+        }
+        // 아이템의 순서 변경
+        else if (type === 'ITEM') {
             const sourceGroupIndex = parseInt(source.droppableId, 10);
             const destinationGroupIndex = parseInt(destination.droppableId, 10);
 
-            if (sourceGroupIndex === destinationGroupIndex && source.index === destination.index) return;
+            // 동일한 그룹에서의 이동인지 확인
+            if (sourceGroupIndex === destinationGroupIndex && source.index === destination.index) {
+                return;
+            }
 
             const newGroupedData = Array.from(groupedData);
             const sourceGroup = newGroupedData[sourceGroupIndex];
             const destinationGroup = newGroupedData[destinationGroupIndex];
 
+            // `groupKey`가 다른 그룹으로 이동하는 것을 방지
+            if (sourceGroup.groupKey !== destinationGroup.groupKey) {
+                return;
+            }
+
+            // 아이템을 그룹 내에서만 이동하도록 제한
             const [movedItem] = sourceGroup.items.splice(source.index, 1);
             destinationGroup.items.splice(destination.index, 0, movedItem);
 
+            // 새로운 changeList 생성
             const newChangeList = newGroupedData.flatMap(group => group.items);
+
+            // 상태 업데이트
+            setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
-
-            setGroupedData(newGroupedData);
         }
     };
 
@@ -115,22 +143,24 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                         {...provided.draggableProps}
                                                         className="depth-01 ui-sortable"
                                                     >
-                                                        <div className="drag-type02 dragHandle"
-                                                             {...provided.dragHandleProps}
-                                                        >
-                                                            <img src={outerDragHandleIcon} alt="outer drag handler img" />
-                                                        </div>
+                                                        {group.groupKey !== null && (
+                                                            <div className="drag-type02 dragHandle"
+                                                                 {...provided.dragHandleProps}
+                                                            >
+                                                                <img src={outerDragHandleIcon} alt="outer drag handler img" />
+                                                            </div>
+                                                        )}
                                                         <Droppable droppableId={groupIndex.toString()} type="ITEM">
-                                                            {(provided, snapshot) => (
+                                                            {(provided) => (
                                                                 <div
-                                                                    className={`col-group ${snapshot.isDraggingOver ? 'draggingOver' : ''}`}
+                                                                    className="col-group"
                                                                     ref={provided.innerRef}
                                                                     {...provided.droppableProps}
                                                                 >
                                                                     {group.items.map((item, itemIndex) => (
                                                                         <Draggable
                                                                             key={item.itemId}
-                                                                            draggableId={item.itemId.toString()}
+                                                                            draggableId={'i'+item.itemId.toString()}
                                                                             index={itemIndex}
                                                                         >
                                                                             {(provided) => (
