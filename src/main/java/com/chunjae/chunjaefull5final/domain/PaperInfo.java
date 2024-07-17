@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,8 +20,9 @@ public class PaperInfo {
     @Column(name = "paper_id")
     private Long paperId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "paper_gubun")
-    private String paperGubun;
+    private PaperGubun paperGubun;
 
     @Column
     private String title;
@@ -66,4 +68,24 @@ public class PaperInfo {
 
     @OneToMany(mappedBy = "paperInfo", orphanRemoval = true)
     private List<PaperQuestion> paperQuestions;
+
+
+    @Builder
+    public PaperInfo(Long paperId, PaperGubun paperGubun, String title, Integer itemCount, String grade, String term, LocalDateTime createdAt, LocalDateTime updatedAt, Character delete_yn, String saveName, String saveQuestionPath, String saveAnswerPath, String saveAllPath, Subject subject, User user) {
+        this.paperId = paperId;
+        this.paperGubun = paperGubun;
+        this.title = title;
+        this.itemCount = itemCount;
+        this.grade = grade;
+        this.term = term;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.delete_yn = delete_yn;
+        this.saveName = saveName;
+        this.saveQuestionPath = saveQuestionPath;
+        this.saveAnswerPath = saveAnswerPath;
+        this.saveAllPath = saveAllPath;
+        this.subject = subject;
+        this.user = user;
+    }
 }
