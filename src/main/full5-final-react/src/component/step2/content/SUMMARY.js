@@ -1,113 +1,134 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import outerDragHandleIcon from '../../../images/common/ico_move_type01.png';
 import SummaryList from "./SummaryList";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function SUMMARY({ initialChangeList = [], onChangeList }) {
     const [changeList, setChangeList] = useState(initialChangeList);
-    const [draggedItem, setDraggedItem] = useState(null);
+    const [groupedData, setGroupedData] = useState([]);
     const [multipleCount, setMultiple] = useState(0);
     const [subjectiveCount, setSubjective] = useState(0);
 
     useEffect(() => {
+        // passageId가 있으면 그룹화, 없으면 item.itemId로 그룹화
+        const grouped = changeList.reduce((acc, item) => {
+            const groupKey = item.passageId || item.itemId;
+            const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
+            if (existingGroupIndex === -1) {
+                acc.push({
+                    groupKey,
+                    items: [item]
+                });
+            } else {
+                acc[existingGroupIndex].items.push(item);
+            }
+            return acc;
+        }, []);
+
+        setGroupedData(grouped);
+
+        // 문제 형태 카운트
         const multipleCount = changeList.filter(item => item.questionFormName === '5지 선택').length;
         const subjectiveCount = changeList.filter(item => item.questionFormName === '단답 유순형').length;
-        setMultiple(multipleCount);
+        const m_fc = changeList.filter(item => item.questionFormName === '자유 선지형').length;
+        const m_s = changeList.filter(item => item.questionFormName === '단답 무순형').length;
+
+        setMultiple(multipleCount + m_fc + m_s);
         setSubjective(subjectiveCount);
     }, [changeList]);
 
-    // 초기 리스트 변경 시 상태 업데이트
     useEffect(() => {
         setChangeList(initialChangeList);
     }, [initialChangeList]);
 
-    // 드래그 시작 시 상태 업데이트
-    const handleDragStart = (e, item) => {
-        setDraggedItem(item);
-    };
-
-    // 드래그 오버 시 기본 동작 막기
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
-
-    // 드롭 시 아이템 이동 처리
-    const handleDrop = (e, passageId) => {
-        e.preventDefault();
-        const updatedItems = [...changeList];
-        const draggedIndex = updatedItems.indexOf(draggedItem);
-        updatedItems.splice(draggedIndex, 1);
-
-        const targetIndex = updatedItems.findIndex(
-            (item) => item.passageId === passageId
-        );
-        updatedItems.splice(targetIndex + 1, 0, draggedItem);
-
-        setChangeList(updatedItems);
-        onChangeList(updatedItems);
-        setDraggedItem(null);
-    };
-
-    /** SummaryList 에서 받아온 리스트 **/
     const handleChangeList = (newChangeList) => {
-        // console.log('SUMMARY changeList:', newChangeList);
         setChangeList(newChangeList);
         onChangeList(newChangeList);
     };
 
+    const handleDragEnd = (result) => {
+        if (!result.destination) return;
 
-    // passageId로 그룹화
-    const groupByPassageId = (list) => {
-        return list.reduce((grouped, item, index) => {
-            const key = item.passageId || `individual_${index}`;
-            (grouped[key] = grouped[key] || []).push(item);
-            return grouped;
-        }, {});
+        const newGroupedData = Array.from(groupedData);
+        const [movedGroup] = newGroupedData.splice(result.source.index, 1);
+        newGroupedData.splice(result.destination.index, 0, movedGroup);
+
+        const newChangeList = newGroupedData.flatMap(group => group.items);
+        setChangeList(newChangeList);
+        handleChangeList(newChangeList);
+
+        setGroupedData(newGroupedData);
     };
-    const groupedItems = useMemo(() => groupByPassageId(changeList), [changeList]);
-    // console.log(groupedItems);
+
+    console.log(groupedData)
 
     return (
         <div className="contents on">
-            <div className="table half-type ">
-                <div className="fix-head">
-                    <span>이동</span>
-                    <span>번호</span>
-                    <span>단원명</span>
-                    <span>문제 형태</span>
-                    <span>난이도</span>
-                </div>
+            <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="droppable" type="GROUP">
+                    {provided => (
+                        <div
+                            className="table half-type"
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
+                            <div className="fix-head">
+                                <span>이동</span>
+                                <span>번호</span>
+                                <span>단원명</span>
+                                <span>문제 형태</span>
+                                <span>난이도</span>
+                            </div>
 
-                <div className="tbody">
-                    <div className="scroll-inner">
-                        <div className="test ui-sortable" id="table-1">
-                            {Object.keys(groupedItems).map((passageId, index) => (
-                                <React.Fragment key={passageId}>
-                                    <div className="depth-01 ui-sortable">
-                                        <div
-                                            className="dragHandle drag-type02"
-                                            draggable="true"
-                                            onDragStart={(e) => handleDragStart(e, groupedItems[passageId])}
-                                            onDragOver={(e) => handleDragOver(e)}
-                                            onDrop={(e) => handleDrop(e, passageId)}
-                                        >
-                                            <img src={outerDragHandleIcon} alt="outer drag handler img" />
-                                        </div>
-                                        <div className="col-group">
-                                            <SummaryList
-                                                key={`${passageId}-${index}`}
-                                                initialChangeList={initialChangeList}
-                                                onChangeList={handleChangeList}
-                                                groupedItems={groupedItems}
-                                                passageId={passageId}
-                                            />
-                                        </div>
+                            <div className="tbody">
+                                <div className="scroll-inner">
+                                    <div className="test ui-sortable" id="table-1">
+                                        {groupedData.map((group, index) => (
+                                            <Draggable
+                                                key={group.groupKey.toString()}
+                                                draggableId={group.groupKey.toString()}
+                                                index={index}
+                                            >
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        className="depth-01 ui-sortable"
+                                                    >
+                                                        {group.groupKey !== null && (
+                                                            <div className="drag-type02 dragHandle"
+                                                                 {...provided.dragHandleProps}
+                                                            >
+                                                                <img src={outerDragHandleIcon} alt="outer drag handler img" />
+                                                            </div>
+                                                        )}
+                                                        <div className="col-group">
+                                                            {group.items.map((item) => (
+                                                                <SummaryList
+                                                                    key={item.itemId}
+                                                                    itemId={item.itemId}
+                                                                    itemNo={item.itemNo}
+                                                                    difficultyName={item.difficultyName}
+                                                                    questionFormName={item.questionFormName}
+                                                                    largeChapterName={item.largeChapterName}
+                                                                    mediumChapterName={item.mediumChapterName}
+                                                                    smallChapterName={item.smallChapterName}
+                                                                    topicChapterName={item.topicChapterName}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
                                     </div>
-                                </React.Fragment>
-                            ))}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
 
             <div className="bottom-box">
                 <div className="que-badge-group">
