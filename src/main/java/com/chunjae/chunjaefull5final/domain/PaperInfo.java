@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "paper_info")
@@ -62,4 +63,7 @@ public class PaperInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
     private User user;
+
+    @OneToMany(mappedBy = "paperInfo", orphanRemoval = true)
+    private List<PaperQuestion> paperQuestions;
 }
