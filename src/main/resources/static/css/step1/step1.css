@@ -1,0 +1,20 @@
+
+
+
+.disable-button{
+    height: 36px;
+    color: #333333;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: #d3d3d3;
+
+    flex-grow: 1;
+}
+
+.not_contain_level{
+    display: none;
+}
+
+

@@ -8,4 +8,5 @@ function S2header(){
         <button type="button" className="del-btn"></button>
     </>
 }
+
 export default S2header;
