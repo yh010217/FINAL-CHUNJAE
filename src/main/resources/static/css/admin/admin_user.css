@@ -1,12 +1,18 @@
 /* ===== Google Font Import - Poppins ===== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
-
+@font-face {
+    font-family: 'GoyangIlsan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', 'GoyangIlsan',sans-serif;
 }
 
 
@@ -396,7 +402,6 @@ nav.close ~ .dashboard .top{
 
 .activity-table thead th {
     background-color: var(--box1-color);
-    /*color: #ffffff;*/
     color: var(--text-color);
     text-align: left;
     font-weight: bold;
