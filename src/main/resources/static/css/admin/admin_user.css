@@ -1,11 +1,14 @@
 /* ===== Google Font Import - Poppins ===== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+
 
 :root{
     /* ===== Colors ===== */
@@ -252,20 +255,54 @@ nav.close ~ .dashboard .top{
     padding: 0 25px 0 50px;
     border-radius: 5px;
     height: 100%;
-    width: 100%;
+    width: 89%;
     color: var(--text-color);
     font-size: 15px;
     font-weight: 400;
     outline: none;
 }
+#search_user select{
+    border: 1px solid var(--border-color);
+    background-color: var(--panel-color);
+    color: var(--text-color);
+    outline: none;
+}
+#search_user option{
+    background-color: var(--panel-color);
+    color: var(--text-color);
+}
+
 .top .search-box i{
     position: absolute;
-    left: 15px;
+    right: -14px;
     font-size: 22px;
     z-index: 10;
     top: 50%;
     transform: translateY(-50%);
     color: var(--black-light-color);
+}
+#search_user_btn{
+    border:none;
+}
+#search_user_btn:focus{
+    border: 1px solid var(--primary-color);
+    box-sizing: border-box;
+    outline: 3px solid #F8E4FF;
+    border-radius: 5px;
+}
+#search_user{
+    width: 91px;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 12px 13px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    background-color: var(--panel-color);
+    color: var(--text-color);
+    outline: none;
 }
 .top img{
     width: 40px;
@@ -398,6 +435,16 @@ nav.close ~ .dashboard .top{
     background-color: #F8F8F8;
 }
 
+#page{
+    text-align: center;
+    font-size: 1.2rem;
+
+}
+#page span{
+    padding-right: 2px;
+    color: var(--text-color);
+
+}
 @media (max-width: 1000px) {
     nav{
         width: 73px;
