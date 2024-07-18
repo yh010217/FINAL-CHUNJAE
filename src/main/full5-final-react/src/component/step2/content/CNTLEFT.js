@@ -9,6 +9,8 @@ function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setC
 
     const [viewType, setViewType] = useState('문제만 보기');
     const [userSort, setUserSort] = useState('사용자 정렬');
+    const [sortedList, setSortedList] = useState(groupedData);
+    const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
 
     const toggleList1 = () => {
         setSortList1(!sortList1);
@@ -23,7 +25,10 @@ function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setC
     const handleUserSort = (type) => {
         setUserSort(type);
         setSortList2(false);
+
     }
+
+
 
     return <div className="cnt-box">
 

@@ -14,7 +14,6 @@ function SummaryList({
                          multipleChoiceForms,
                      }) {
 
-
     return (
         <div key={itemId} className="col depth-02">
             <a>

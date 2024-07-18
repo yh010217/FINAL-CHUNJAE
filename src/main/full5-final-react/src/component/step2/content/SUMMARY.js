@@ -111,6 +111,9 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
         }
     };
 
+    // console.log('changeList...', changeList)
+    // console.log('groupedData...', groupedData)
+
     return (
         <div className="contents on">
             <DragDropContext onDragEnd={handleDragEnd}>
