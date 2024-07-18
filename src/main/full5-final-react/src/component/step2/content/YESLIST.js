@@ -3,10 +3,11 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import React from "react";
 
-function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) {
+function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
     let [option, setOption] = useState(false);
     const [activeOption, setActiveOption] = useState('');
     const options = ['상', '중', '하'];
+    const [view, setView] = useState('');
 
     const toggleMenu = () => {
         setOption(!option);
@@ -29,6 +30,8 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
         }
         setActiveOption(option);
         setOption(false);
+
+        setView(difficultyCode);
     };
 
     const removeList =(itemId)=> {
@@ -36,7 +39,7 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
     }
 
     /** 유사 문제 API 불러오기 */
-    const [response, setResponse] = useState([]);
+    const [response, setResponse] = useState([])
     const [insert, setInsert] = useState('')
 
     const fetchData = async () => {
@@ -79,8 +82,6 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
         acc[item.passageId].items.push(item);
         return acc;
     }, {});
-    
-    console.log(groupedData, "데이터 확인하기")
 
     return <>
         <div className="contents on">
@@ -105,27 +106,29 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
             </div>
 
             {/** 리스트 */}
-            <div>
+            <>
                 {insert ? (
-                    <div className="view-que-list no-data" dangerouslySetInnerHTML={{ __html: insert }} />
+                    <div key="no-data" className="view-que-list no-data" dangerouslySetInnerHTML={{ __html: insert }} />
                 ) : (
                     <div className="view-que-list scroll-inner">
                         {Object.values(groupedData).map((group, index) => (
-                            <>
-                                <div key={group.passageId} className="view-que-box">
-                                    <div className="que-top">
-                                        <div className="title">
-                                            {group.items.length > 1 ? (
-                                                <span className="num">{group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                            ) : (
-                                                <span className="num">{group.items[0].itemNo}</span>
-                                            )}
+                            <React.Fragment key={index}>
+                                {group.passageUrl && (
+                                    <div className="view-que-box">
+                                        <div className="que-top">
+                                            <div className="title">
+                                                {group.items.length > 1 ? (
+                                                    <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
+                                                ) : (
+                                                    <span className="num">지문 {group.items[0].itemNo}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="view-que">
+                                            <img src={group.passageUrl} alt="지문입니다..." />
                                         </div>
                                     </div>
-                                    <div className="view-que">
-                                        <img src={group.passageUrl} alt="지문입니다..." />
-                                    </div>
-                                </div>
+                                )}
                                 {group.items.map((item, itemIndex) => (
                                     <SIMLARLIST
                                         key={item.itemId}
@@ -144,14 +147,14 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
                                         passageId={item.passageId}
                                         list={removeList}
                                         addToChangeList={addToChangeList}
-                                        ChangeList={ChangeList}
+                                        view={view}
                                     />
                                 ))}
-                            </>
+                            </React.Fragment>
                         ))}
                     </div>
                 )}
-            </div>
+            </>
         </div>
     </>
 }
