@@ -2,6 +2,7 @@ import SIMLARLIST from "./SIMLARLIST";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import React from "react";
+import Test from "./Test";
 
 function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
     let [option, setOption] = useState(false);
@@ -34,9 +35,10 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
         setView(difficultyCode);
     };
 
-    const removeList =(itemId)=> {
-        setRemove([...remove, itemId]); // spread 연산자를 사용하여 배열에 추가
+    const simRemove = async (itemId) => {
+        await setRemove(prevRemove => [...prevRemove, itemId]); // 두 개 이상 넣을 때 안 됨 => 함수형 업데이트 사용하기
     }
+
 
     /** 유사 문제 API 불러오기 */
     const [response, setResponse] = useState([])
@@ -111,47 +113,12 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
                     <div key="no-data" className="view-que-list no-data" dangerouslySetInnerHTML={{ __html: insert }} />
                 ) : (
                     <div className="view-que-list scroll-inner">
-                        {Object.values(groupedData).map((group, index) => (
-                            <React.Fragment key={index}>
-                                {group.passageUrl && (
-                                    <div className="view-que-box">
-                                        <div className="que-top">
-                                            <div className="title">
-                                                {group.items.length > 1 ? (
-                                                    <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                                ) : (
-                                                    <span className="num">지문 {group.items[0].itemNo}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="view-que">
-                                            <img src={group.passageUrl} alt="지문입니다..." />
-                                        </div>
-                                    </div>
-                                )}
-                                {group.items.map((item, itemIndex) => (
-                                    <SIMLARLIST
-                                        key={item.itemId}
-                                        itemId={item.itemId}
-                                        itemNo={item.itemNo}
-                                        difficultyName={item.difficultyName}
-                                        questionFormName={item.questionFormName}
-                                        questionUrl={item.questionUrl}
-                                        explainUrl={item.explainUrl}
-                                        answerUrl={item.answerUrl}
-                                        largeChapterName={item.largeChapterName}
-                                        mediumChapterName={item.mediumChapterName}
-                                        smallChapterName={item.smallChapterName}
-                                        topicChapterName={item.topicChapterName}
-                                        passageUrl={item.passageUrl}
-                                        passageId={item.passageId}
-                                        list={removeList}
-                                        addToChangeList={addToChangeList}
-                                        view={view}
-                                    />
-                                ))}
-                            </React.Fragment>
-                        ))}
+                        <SIMLARLIST
+                            groupedData={groupedData}
+                            list={simRemove}
+                            addToChangeList={addToChangeList}
+                            view={view}
+                        />
                     </div>
                 )}
             </>

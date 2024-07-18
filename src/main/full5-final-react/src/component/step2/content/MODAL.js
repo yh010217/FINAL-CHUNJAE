@@ -18,10 +18,6 @@ function MODAL() {
                     </div>
                     <div className="pop-content">
                         <table>
-                            <colgroup>
-                                <col width="30%"/>
-                                <col width="*"/>
-                            </colgroup>
                             <tbody>
                             <tr>
                                 <th>오류유형</th>

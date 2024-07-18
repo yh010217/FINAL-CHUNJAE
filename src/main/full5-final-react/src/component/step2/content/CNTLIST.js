@@ -114,7 +114,11 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
                                                 </div>
                                                 <button
                                                     className="btn-similar-que btn-default"
-                                                    onClick={() => similarData(item.itemId, index)}
+                                                    onClick={() => similarData(
+                                                        item.itemId,
+                                                        index,
+                                                        item.passageId,
+                                                        groupedItems[passageId].length-(groupedItems[passageId].length-1))}
                                                 >
                                                     <i className="similar"></i>
                                                     유사문제
@@ -131,7 +135,11 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
 
                                                 <button
                                                     className="btn-similar-que btn-default"
-                                                    onClick={() => similarData(item.itemId, index)}
+                                                    onClick={() => similarData(
+                                                        item.itemId,
+                                                        index,
+                                                        item.passageId,
+                                                        groupedItems[passageId].length-(groupedItems[passageId].length-1))}
                                                 >
                                                     <i className="similar"></i>
                                                     유사문제
