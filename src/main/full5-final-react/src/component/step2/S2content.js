@@ -19,7 +19,7 @@ function S2content() {
                     // 영어, 수학
                     // examIdList: ["1416", "1534"]
                     // 국어
-                    examIdList: ["503"]
+                     examIdList: ["503"]
                     // examIdList: ["1534"]
                 };
 

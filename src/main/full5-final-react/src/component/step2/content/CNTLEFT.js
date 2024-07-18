@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import CNTLIST from "./CNTLIST";
 import CNTBOTTOM from "./CNTBOTTOM";
 
-function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo}) {
+function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList}) {
 
     const [sortList1, setSortList1] = useState(false);
     const [sortList2, setSortList2] = useState(false);
@@ -55,6 +55,11 @@ function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo}) {
                  setTab={setTab}
                  setNo={setNo}
                  viewType={viewType}
+                 setChangeId={setChangeId}
+                 setNo2={setNo2}
+                 groupedItems={groupedItems}
+                 groupedData={groupedData}
+                 removeList={removeList}
         />
         <CNTBOTTOM changeList={changeList}/>
     </div>

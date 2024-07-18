@@ -1,31 +1,45 @@
-import React from 'react';
 
-function CNTLIST({changeList, onChangeList, setSimilar, setTab, setNo, viewType, tab}) {
+import React, {useEffect} from 'react';
 
-    const groupByPassageId = (list) => {
-        return list.reduce((grouped, item) => {
-            const key = item.passageId || 'individual';
-            (grouped[key] = grouped[key] || []).push(item);
-            return grouped;
-        }, {});
+function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChangeId, setNo2, groupedItems, removeList}) {
+
+
+    const similarData = (itemIdList, no, passageId, no2) => {
+        setSimilar(itemIdList); // itemId 얻어오기
+        setTab(1); // 탭 1로 이동
+        setNo(no); // no 뽑아오기 => 유사문제에서 출력
+        setChangeId(passageId) // 해당하는 passageId
+        setNo2(no2) // 뽑아오기
     };
 
-    const groupedItems = groupByPassageId(changeList);
-    // console.log(groupedItems, "데이터 확인하기")
-    console.log('changeList...',changeList)
+    /** 삭제하기 버튼 누르기 */
+    const deletePage = (item) => {
+        setTab(2); // 삭제하기 탭으로 이동
 
-    const similarData = (itemIdList, no) => {
-        // console.log(tab);
-        setSimilar(itemIdList);
-        setTab(1);
-        setNo(no);
-    };
+        /*const itemDelItem = { // 옮길 애들...
+            itemId: item.itemId,
+            itemNo: item.itemNo,
+            difficultyName: item.difficultyName,
+            questionFormName: item.questionFormName,
+            questionUrl: item.questionUrl,
+            explainUrl: item.explainUrl,
+            answerUrl: item.answerUrl,
+            mediumChapterName: item.mediumChapterName,
+            smallChapterName: item.smallChapterName,
+            topicChapterName: item.topicChapterName,
+            passageId: item.passageId,
+            passageUrl: item.passageUrl
+        }*/
+
+        removeList(item);
+    }
 
     return (
         <div className="view-que-list scroll-inner">
 
             {changeList.map((item, index) => {
-                const passageId = item.passageId !== undefined ? item.passageId : 'individual';
+                const passageId = item.passageId && (groupedItems[item.passageId] || []).length > 0 ? item.passageId : 'individual';
+                // const passageId = item.passageId !== undefined ? item.passageId : 'individual';
                 const isFirstItemInGroup = passageId !== 'individual' && groupedItems[passageId]?.[0]?.itemId === item.itemId;
 
                 return (
@@ -63,8 +77,11 @@ function CNTLIST({changeList, onChangeList, setSimilar, setTab, setNo, viewType,
                                 </div>
 
                                 <div className="btn-wrap">
-                                    <button className="btn-error"></button>
-                                    <button className="btn-delete"></button>
+                                    <button className="btn-error">
+                                    </button>
+                                    <button className="btn-delete"
+                                        onClick={() => deletePage(item)}
+                                    ></button>
                                 </div>
                             </div>
                             <div className="view-que">
@@ -106,6 +123,7 @@ function CNTLIST({changeList, onChangeList, setSimilar, setTab, setNo, viewType,
                                         )}
                                     </div>
                                 )}
+
                                 {viewType === '문제만 보기' &&(
                                     <div className="que-bottom">
 
