@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/admin/template.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/user_detail.css}">
+</head>
+<body>
+<div id="wrap">
+    <div id="side_bar">
+        <div id="side_bar_header">
+            <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
+            <a th:href="@{/admin/user}" class="header_title">문제은행</a>
+        </div>
+        <div id="side_bar_menus">
+            <a th:href="@{/admin/user}" class="side_bar_menu">
+                <img class="side_bar_menu_image" src="/images/admin/icons8-유저관리-100.png" alt="유저 관리">
+                <span class="side_bar_menu_name">회원 관리</span>
+            </a>
+            <a th:href="@{/admin/testpage}" class="side_bar_menu">
+                <img class="side_bar_menu_image" src="/images/admin/icons8-문제관리-100.png" alt="문제 관리">
+                <span class="side_bar_menu_name">문제관리</span>
+            </a>
+            <a th:href="@{/admin/errorpage}" class="side_bar_menu">
+                <img class="side_bar_menu_image" src="/images/admin/icons8-문제오류-100.png" alt="문제 오류 관리">
+                <span class="side_bar_menu_name">문제오류관리</span>
+            </a>
+            <a href="/main" class="go_index">
+                홈페이지
+            </a>
+        </div>
+    </div>
+    <div id="content">
+    <div id="user_detail">
+        <div class="dttop">
+            <span>회원상세정보</span>
+        </div>
+        <div id="detail">
+            <ul id="detail_ul">
+                <li class="list">
+                    <span>회원번호</span>
+                    <span th:text="${userDTO.uid}"></span>
+                </li>
+                <li class="list">
+                    <span>이메일</span>
+                    <span th:text="${userDTO.email}"></span>
+                </li>
+                <li class="list">
+                    <span>이름</span>
+                    <span th:text="${userDTO.name}"></span>
+                </li>
+                <li class="list">
+                    <span>회원유형</span>
+                    <span th:text="${userDTO.role}"></span>
+                </li>
+                <li class="list">
+                    <span>학교정보</span>
+                    <span th:text="${userDTO.schoolType}"></span>
+                </li>
+                <li class="list">
+                    <span>Sns유형</span>
+                    <span th:text="${userDTO.snsType}"></span>
+                </li>
+                <li class="list">
+                    <span>Sns아이디</span>
+                    <span th:text="${userDTO.snsId}"></span>
+                </li>
+            </ul>
+
+        </div>
+        <div class="a_list">
+            <a id="a_user"th:href="@{/admin/user}">목록으로</a>
+            <a id="del" th:href="@{|/userdelete/${userDTO.uid}|}">탈퇴</a>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

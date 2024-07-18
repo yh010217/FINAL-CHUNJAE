@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/user/login.css}">
+</head>
+<body>
+<div th:id="wrap">
+    <div id="login_box">
+        <h1>Login</h1>
+        <form th:method="post" th:action="@{/login}" id="login_form">
+            <ul>
+                <li>
+                    <input type="email" th:name="email" th:id="email" th:placeholder="이메일">
+                </li>
+                <li>
+                    <input type="password" th:name="pwd" th:id="pwd" th:placeholder="비밀번호">
+                </li>
+                <li>
+                    <button type="submit" id="submit">로그인</button>
+                </li>
+                <li th:if="${loginError}">
+                    <span id="fail_msg">이메일 또는 비밀번호를 다시 확인해 주세요.</span>
+                </li>
+            </ul>
+        </form>
+        <div class="join-line"></div>
+        <div class="google">
+            <a href="/oauth2/authorization/google" class="google_btn" role="button">
+                <img src="/images/user/web_light_rd_ctn@1x.png">
+            </a>
+        </div>
+        <a class="join_a" th:href="@{/join}">회원가입</a>
+        <form th:method="post" th:action="@{/logout}">
+            <button type="submit" th:class="logout">로그아웃</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

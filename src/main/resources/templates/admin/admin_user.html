@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Bootstrap JS와 Popper.js 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/admin/user_detail.js}"></script>
+    <title>Admin</title>
+</head>
+<body>
+<nav>
+    <div class="logo-name">
+        <div class="logo-image">
+            <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
+            <a th:href="@{/admin/user}" class="header_title"></a>
+        </div>
+
+        <span class="logo_name">문제은행</span>
+    </div>
+
+    <div class="menu-items">
+        <ul class="nav-links">
+            <li>
+                <a th:href="@{/admin/user}">
+<!--                <img class="uil uil-estate" src="/images/admin/icons8-유저관리-100.png">-->
+                <i class="uil uil-comments"></i>
+                <span class="link-name">유저관리</span>
+            </a></li>
+            <li><a th:href="@{/admin/testpage}" class="side_bar_menu">
+                <i class="uil uil-files-landscapes"></i>
+                <span class="link-name">문제관리</span>
+            </a></li>
+            <li>   <a th:href="@{/admin/errorpage}" class="side_bar_menu">
+                <i class="uil uil-chart"></i>
+                <span class="link-name">문제오류관리</span>
+            </a></li>
+            <li><a href="#">
+                <i class="uil uil-comments"></i>
+                <span class="link-name">Comment</span>
+            </a></li>
+        </ul>
+
+        <ul class="logout-mode">
+            <li><a th:href="@{/logout}">
+                <i class="uil uil-signout"></i>
+                <span class="link-name">Logout</span>
+            </a></li>
+
+            <li class="mode">
+                <a href="#">
+                    <i class="uil uil-moon"></i>
+                    <span class="link-name">Dark Mode</span>
+                </a>
+
+                <div class="mode-toggle">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+
+        <div class="search-box">
+            <i class="uil uil-search"></i>
+            <form th:method="get" th:action="@{/admin/user}" th:id="user_form">
+                <select th:name="search" th:id="search_user">
+                    <option th:value="email">이메일</option>
+                    <option th:value="name">이름</option>
+                </select>
+                <input type="text" th:name="search_txt" th:id="search_txt_user">
+                <button type="submit" id="search_user_btn">검색</button>
+            </form>
+            <input type="text" placeholder="Search here...">
+        </div>
+
+        <!--<img src="images/profile.jpg" alt="">-->
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                <span class="text">회원정보</span>
+            </div>
+            <table class="activity-table">
+                <thead>
+                <tr>
+                    <th>회원번호</th>
+                    <th>이메일</th>
+                    <th>이름</th>
+                    <th>회원유형</th>
+                    <th>학교정보</th>
+                    <th>controller</th>
+                </tr>
+                </thead>
+                <tbody th:if="${!userList.isEmpty()}" th:each="item : ${userList}">
+                <tr>
+                    <td th:text="${item.uid}"></td>
+                    <td th:text="${item.email}"></td>
+                    <td th:text="${item.name}"></td>
+                    <td th:text="${item.role}"></td>
+                    <td th:text="${item.schoolType}"></td>
+                    <td> <span>
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#memberModal"
+                                  th:onclick="'loadMemberDetails(' + ${item.uid} + ')'">
+                        <img src="/images/admin/icons8-popup-64.png" alt="아이콘" style="width: 20px; height: 20px;">
+                    </button>
+                        <div class="btn btn-primary btn-primary2">
+                        <a id="del" th:href="@{|/userdelete/${item.uid}|}">
+                            <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘"></a>
+                    </div>
+                    </span></td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="page">
+                <th:block th:if="${startPage>1}">
+                    <a th:href="@{/useradmin(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
+                        <span>이전</span>
+                    </a>
+                </th:block>
+
+                <th:block th:if="${userList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
+                          th:class="page">
+                    <span th:if="${index==userList.pageable.getPageNumber()+1}" th:text="${index}"></span>
+                    <span th:if="${index!=userList.pageable.getPageNumber()+1}">
+				<a th:href="@{/useradmin(page=${index}, search=${search}, search_txt=${search_txt})}"
+                   th:text="${index}"></a>
+			</span>
+                </th:block>
+
+                <th:block th:if="${endPage<userList.getTotalPages()}">
+                    <a th:href="@{/useradmin(page=${endPage+1}, search=${search}, search_txt=${search_txt})}">
+                        <span>다음</span>
+                    </a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">회원 상세정보</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="memberDetails">회원 정보를 불러오는 중...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script th:src="@{/js/admin/admin_user.js}"></script>
+</body>
+</html>

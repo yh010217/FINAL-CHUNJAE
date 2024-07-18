@@ -1,0 +1,129 @@
+#user_list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#admin_user h2{
+    text-align: center;
+}
+#user_form{
+    display: flex;
+    justify-content: center;
+    margin: 20px auto 0;
+}
+#search_user{
+    border-radius: 5px;
+    border: 1px solid #c2c2c2;
+    font-size: 1rem;
+}
+
+#user_form input{
+    width: 15vw;
+    padding: 3px;
+    margin: 0 7px;
+    font-size: 1rem;
+    border: 1px solid #c2c2c2;
+    border-radius: 5px;
+}
+
+#user_form input:focus{
+    outline: 1px solid #6b6b6b;
+}
+#user_form button{
+    padding: 2px 10px;
+    background-color: #5670DC;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+}
+
+#user_list{
+    width: 60vw;
+    margin: 30px auto 10px;
+    padding: 3px 10px;
+    border-top: 5px solid #d7d7d7;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px
+    , rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+#user_list ul li{
+    list-style: none;
+    padding: 1vw;
+}
+#user_list li, #user_list li:not(:last-child){
+    border-bottom: 1px solid  rgba(153, 153, 153, 0.5);
+}
+li span {
+    display: inline-block;
+}
+#user_list li span:nth-child(1){
+    width: 10%;
+    text-align: center;
+}
+#user_list li span:nth-child(2){
+    width: 20%;
+    text-align: center;
+}
+#user_list li span:nth-child(3){
+    width: 20%;
+    text-align: center;
+}
+#user_list li span:nth-child(4) {
+    width: 10%;
+    text-align: center;
+}
+#user_list li span:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+#user_list li span:nth-child(6) {
+    width: 20%;
+    text-align: center;
+}
+#del{
+
+}
+
+#search_user{
+    font-weight: bolder;
+}
+#page{
+    text-align: center;
+    padding: 2%;
+}
+#page a, #page span{
+    display: inline-block;
+    padding: 2px;
+    text-decoration: none;
+    color: #444040;
+}
+.btn-primary2{
+    background-color: #f87b8c;
+}
+
+.User{
+    background-color: #f3ebfa;
+    color: #9b96c1;
+}
+.Teacher{
+    background-color: #ebf4f1;
+    color: #b3d6ca;
+}
+.Stop{
+    background-color: #f8b3b0;
+    color: #f87b8c;
+}
+
+.user-status {
+    color: green;
+}
+
+.teacher-status {
+    color: blue;
+}
+
+.stop-status {
+    color: red;
+}
