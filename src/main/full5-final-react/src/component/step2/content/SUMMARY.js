@@ -124,7 +124,6 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                             <div className="fix-head">
                                 <span>이동</span>
                                 <span>순서</span>
-                                {/*<span>번호</span>*/}
                                 <span>단원명</span>
                                 <span>문제 형태</span>
                                 <span>난이도</span>
@@ -172,7 +171,6 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                                                 >
                                                                                     <SummaryList
                                                                                         itemId={item.itemId}
-                                                                                        itemNo={item.itemNo}
                                                                                         index={itemIndex}
                                                                                         difficultyName={item.difficultyName}
                                                                                         questionFormName={item.questionFormName}
@@ -197,6 +195,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                             </Draggable>
                                         ))}
                                         {provided.placeholder}
+
                                     </div>
                                 </div>
                             </div>

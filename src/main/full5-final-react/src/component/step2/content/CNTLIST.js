@@ -53,7 +53,7 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, userSort, tab
     // 난이도순 정렬
     const sortByDifficulty=(list)=>{
         return list.sort((a,b)=>{
-            return a.difficultyName.localeCompare(b.difficultyName);
+            return b.difficultyName.localeCompare(a.difficultyName);
         });
     };
     // 문제 형태순 정렬
@@ -128,7 +128,8 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, userSort, tab
                         <div className="view-que-box">
                             <div className="que-top">
                                 <div className="title">
-                                    <span className="num">{item.itemNo}</span>
+                                    {/*<span className="num">{item.itemNo}</span>*/}
+                                    <span className="num">{index+1}</span>
                                     <div className="que-badge-group">
                                         <span className="que-badge">{item.difficultyName}</span>
                                         <span className="que-badge gray">
