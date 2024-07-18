@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Coding By CodingNepal - codingnepalweb.com -->
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,29 +36,32 @@
         <ul class="nav-links">
             <li>
                 <a th:href="@{/admin/user}">
-<!--                <img class="uil uil-estate" src="/images/admin/icons8-유저관리-100.png">-->
-                <i class="uil uil-comments"></i>
+                    <i class="uil uil-user"></i>
                 <span class="link-name">유저관리</span>
             </a></li>
             <li><a th:href="@{/admin/testpage}" class="side_bar_menu">
                 <i class="uil uil-files-landscapes"></i>
                 <span class="link-name">문제관리</span>
             </a></li>
-            <li>   <a th:href="@{/admin/errorpage}" class="side_bar_menu">
-                <i class="uil uil-chart"></i>
+            <li><a th:href="@{/admin/errorpage}" class="side_bar_menu">
+                <i class="uil uil-file-question-alt"></i>
                 <span class="link-name">문제오류관리</span>
-            </a></li>
-            <li><a href="#">
-                <i class="uil uil-comments"></i>
-                <span class="link-name">Comment</span>
             </a></li>
         </ul>
 
         <ul class="logout-mode">
-            <li><a th:href="@{/logout}">
-                <i class="uil uil-signout"></i>
-                <span class="link-name">Logout</span>
-            </a></li>
+            <li>
+<!--                <form th:method="post" th:action="@{/logout}">-->
+<!--                    <button type="submit" th:class="link-name">-->
+<!--                        <i class="uil uil-signout"></i>Logout</button>-->
+<!--                </form>-->
+                <a th:href="@{/main}">
+                    <i class="uil uil-home"></i>
+<!--                <i class="uil uil-signout"></i>-->
+                <span class="link-name">Main Page</span>
+            </a>
+
+            </li>
 
             <li class="mode">
                 <a href="#">
@@ -79,16 +82,16 @@
         <i class="uil uil-bars sidebar-toggle"></i>
 
         <div class="search-box">
-            <i class="uil uil-search"></i>
             <form th:method="get" th:action="@{/admin/user}" th:id="user_form">
                 <select th:name="search" th:id="search_user">
                     <option th:value="email">이메일</option>
                     <option th:value="name">이름</option>
                 </select>
-                <input type="text" th:name="search_txt" th:id="search_txt_user">
-                <button type="submit" id="search_user_btn">검색</button>
+                <input type="text" th:name="search_txt" th:id="search_txt_user" placeholder="Search here...">
+                <button type="submit" id="search_user_btn">
+                    <i class="uil uil-search"></i></button>
             </form>
-            <input type="text" placeholder="Search here...">
+<!--            <input type="text" placeholder="Search here...">-->
         </div>
 
         <!--<img src="images/profile.jpg" alt="">-->
@@ -133,8 +136,8 @@
             </table>
             <div id="page">
                 <th:block th:if="${startPage>1}">
-                    <a th:href="@{/useradmin(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
-                        <span>이전</span>
+                    <a th:href="@{/admin/user(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
+                        <span class="arrow left"> 이전</span>
                     </a>
                 </th:block>
 
@@ -142,17 +145,20 @@
                           th:class="page">
                     <span th:if="${index==userList.pageable.getPageNumber()+1}" th:text="${index}"></span>
                     <span th:if="${index!=userList.pageable.getPageNumber()+1}">
-				<a th:href="@{/useradmin(page=${index}, search=${search}, search_txt=${search_txt})}"
-                   th:text="${index}"></a>
+				<a th:href="@{/admin/user(page=${index}, search=${search}, search_txt=${search_txt})}"
+                   th:text="${index}" class="page_num"></a>
 			</span>
                 </th:block>
 
                 <th:block th:if="${endPage<userList.getTotalPages()}">
-                    <a th:href="@{/useradmin(page=${endPage+1}, search=${search}, search_txt=${search_txt})}">
-                        <span>다음</span>
+                    <a th:href="@{/admin/user(page=${endPage+1}, search=${search}, search_txt=${search_txt})}">
+                        <span class="arrow right">다음</span>
                     </a>
                 </th:block>
+
             </div>
+
+
         </div>
     </div>
     <!-- Modal -->
