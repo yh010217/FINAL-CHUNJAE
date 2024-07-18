@@ -310,3 +310,48 @@ function changePreview(type) {
 function updateMathContent(s) {
     MathJax.typesetPromise();
 }
+
+
+
+
+document.querySelectorAll('.tbody').forEach(tbody => {
+    tbody.addEventListener('click', event => {
+        const button = event.target.closest('.pop-btn.btn-icon2');
+        if (button) {
+            const examId = button.previousElementSibling.value; // 시험지 ID
+
+            // 미리보기 URL 가져오기
+            fetch('/api/preview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ examId: examId, differentiation: 'A' })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch preview URL');
+                    }
+                    return response.text();
+                })
+                .then(previewUrl => {
+                    // HTML 콘텐츠 가져오기
+                    return fetch(previewUrl);
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch HTML content');
+                    }
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    // HTML 콘텐츠 표시
+                    document.getElementById('previewContent').innerHTML = htmlContent;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to load preview content.');
+                });
+        }
+    });
+});

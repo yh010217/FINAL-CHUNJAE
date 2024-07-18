@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.controller;
 
 
 import com.chunjae.chunjaefull5final.dto.ExamIdDTO;
+import com.nimbusds.oauth2.sdk.ResponseType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -97,8 +98,6 @@ public class Step0Controller {
                 // 중복 아닐 때 추가
                 if (!isDulicate) {
                     Map<String, Object> itemMap = new HashMap<>();
-
-                    itemMap.put("curriculumCode", curriculumCode);
                     itemMap.put("curriculumName", curriculumName);
                     itemMap.put("subjectId", subjectId);
                     itemMap.put("subjectName", subjectName);
@@ -202,13 +201,18 @@ public class Step0Controller {
 
     /** 셋팅지 미리보기 - 문항+정답+해설 */
     @PostMapping("/preview/all")
-    public String previewAll(@RequestBody ExamIdDTO request){
+    public ResponseType previewAll(@RequestBody ExamIdDTO request){
         String url = "https://tsherpa.item-factory.com/exam/preview";   // api url
+        RestTemplate restTemplate = new RestTemplate();
 
         // API 호출
-        RestTemplate restTemplate = new RestTemplate();
-        String previewUrl = restTemplate.patchForObject(url, request, String.class);
+        try {
+            ResponseType response = restTemplate.patchForObject(url, request, ResponseType.class);
+            return response;
+        }catch (Exception e){
+            log.error("Failed to fetch preview from URL: " + url + " with request: " + request, e);
+            throw new RuntimeException("Failed to fetch preview", e);
+        }
 
-        return previewUrl;
     }
 }

@@ -85,25 +85,50 @@ document.addEventListener('DOMContentLoaded', function () {
     // 셋팅지 미리보기
     document.querySelectorAll('.tbody').forEach(tbody => {  // tbody에 이벤트 리스너 추가
         tbody.addEventListener('click', function (event) {
-            if (event.target.closest('.pop-btn.btn-icon2')) {
+            /*if (event.target.closest('.pop-btn.btn-icon2')) {
                 const button = event.target.closest('.pop-btn.btn-icon2');
-                const examId = button.previousElementSibling.value; // 시험지 ID
+                const examId = button.previousElementSibling.value; // 시험지 ID*/
                 //console.log('미리보기 클릭..examId..', examId;
 
-                // 셋팅지 미리보기 api 호출
+            let button = event.target.closest('.pop-btn.btn-icon2');
+            if (button) {
+                const examId = button.previousElementSibling.value;   // 시험지ID
+
+            // 셋팅지 미리보기 api 호출
+
                 // 문항+정답+해설
                 fetch('/preview/all', {
                     method: 'POST'
                     , headers: {
-                        'Accept': 'application/json'
-                        , 'Content-Type': 'application/json'
+                         'Content-Type': 'application/json'
                     }
-                    , body: JSON.stringify({examId: examId, differentiation: 'A'})
+                    , body: JSON.stringify({'examId': examId, 'differentiation': 'A'})
+                }).then(response => {
+                    if (!response.ok){
+                        throw new Error('preview URL fetch 실패..'+ response.statusText);
+                    }
+                    return response.text();
                 })
-                    .then(response => response.text())
                     .then(data => {
-                        console.log('api 호출 되나', data);
+                        // html 가져오기
+                        console.log('html 가져오기')
+                        return fetch(data);
                     })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('HTML fetch 실패..'+ response.statusText);
+                        }
+                        return response.text();
+                    })
+                    .then(htmlContent => {
+                        // html content
+                        document.getElementById('previewContent').innerHTML = htmlContent;
+                    })
+                    .catch(error => {
+                        console.error('error..',error);
+                        alert('html 미리보기 실패 : '+ error.message);
+                    });
+
 
 
                 // 문제
