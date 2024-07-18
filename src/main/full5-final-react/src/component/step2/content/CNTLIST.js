@@ -39,6 +39,7 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
 
             {changeList.map((item, index) => {
                 const passageId = item.passageId && (groupedItems[item.passageId] || []).length > 0 ? item.passageId : 'individual';
+                // const passageId = item.passageId !== undefined ? item.passageId : 'individual';
                 const isFirstItemInGroup = passageId !== 'individual' && groupedItems[passageId]?.[0]?.itemId === item.itemId;
 
                 return (
@@ -48,12 +49,19 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
                                 <div className="que-top">
                                     <div className="title">
                                         <span className="num">
-                                            {groupedItems[passageId][0].itemNo} ~ {groupedItems[passageId][groupedItems[passageId].length - 1].itemNo}
+                                            {groupedItems[passageId].length-(groupedItems[passageId].length-1)} ~ {groupedItems[passageId].length}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="que-content">
-                                    <img src={groupedItems[passageId][0].passageUrl} alt="지문"></img>
+                                <div className="view-que">
+                                    <div className="que-content">
+                                        <p className="txt">※</p>
+                                    </div>
+                                    <div className="que-bottom">
+                                        <div className="passage-area">
+                                            <img src={groupedItems[passageId][0].passageUrl} alt="지문"></img>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -63,7 +71,8 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
                                     <span className="num">{item.itemNo}</span>
                                     <div className="que-badge-group">
                                         <span className="que-badge">{item.difficultyName}</span>
-                                        <span className="que-badge gray">{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
+                                        <span
+                                            className="que-badge gray">{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
                                     </div>
                                 </div>
 
@@ -103,17 +112,33 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
                                                         <img src={item.answerUrl} alt="정답"></img>
                                                     </div>
                                                 </div>
+                                                <button
+                                                    className="btn-similar-que btn-default"
+                                                    onClick={() => similarData(item.itemId, index)}
+                                                >
+                                                    <i className="similar"></i>
+                                                    유사문제
+                                                </button>
                                             </div>
                                         )}
                                     </div>
                                 )}
-                                <button
-                                    className="btn-similar-que btn-default"
-                                    onClick={() => similarData(item.itemId, index, item.passageId, groupedItems[passageId][groupedItems[passageId].length - 1].itemNo)}
-                                >
-                                    <i className="similar"></i>
-                                    유사문제
-                                </button>
+
+                                {viewType === '문제만 보기' &&(
+                                    <div className="que-bottom">
+
+                                            <div className="data-area type01">
+
+                                                <button
+                                                    className="btn-similar-que btn-default"
+                                                    onClick={() => similarData(item.itemId, index)}
+                                                >
+                                                    <i className="similar"></i>
+                                                    유사문제
+                                                </button>
+                                            </div>
+                                    </div>
+                                )}
                             </div>
                             <div className="que-info-last">
                                 <p className="chapter">

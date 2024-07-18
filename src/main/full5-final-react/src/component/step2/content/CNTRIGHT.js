@@ -22,8 +22,8 @@ function CNTRIGHT({initialChangeList, onChangeList, tab, setTab, similar, no, ad
     };
 
     useEffect(()=>{
-
-    },[changeList]);
+        setChangeList(initialChangeList);
+    },[initialChangeList]);
 
     const renderContent = () => {
         switch (tab) {
