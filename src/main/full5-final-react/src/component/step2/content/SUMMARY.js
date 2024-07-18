@@ -6,8 +6,11 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 function SUMMARY({ initialChangeList = [], onChangeList }) {
     const [changeList, setChangeList] = useState(initialChangeList);
     const [groupedData, setGroupedData] = useState([]);
-    const [multipleCount, setMultiple] = useState(0);
-    const [subjectiveCount, setSubjective] = useState(0);
+    const [multipleCount, setMultipleCount] = useState(0);
+    const [subjectiveCount, setSubjectiveCount] = useState(0);
+
+    const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
+    const subjectiveForms = ['단답 유순형', '서술형'];
 
     useEffect(() => {
         // 그룹화된 데이터 생성
@@ -27,14 +30,13 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
         setGroupedData(grouped);
 
-        // 개수 집계
-        const multipleCount = changeList.filter(item => item.questionFormName === '5지 선택').length;
-        const subjectiveCount = changeList.filter(item => item.questionFormName === '단답 유순형').length;
-        const m_fc = changeList.filter(item => item.questionFormName === '자유 선지형').length;
-        const m_s = changeList.filter(item => item.questionFormName === '단답 무순형').length;
+        const multipleCount = changeList.filter(item => multipleChoiceForms.includes(item.questionFormName)).length;
+        const subjectiveCount = changeList.filter(item => subjectiveForms.includes(item.questionFormName)).length;
+        // const question = changeList.filter(item=>item.questionFormName);
+        // console.log(question.map(item=>item.questionFormName));
 
-        setMultiple(multipleCount + m_fc + m_s);
-        setSubjective(subjectiveCount);
+        setMultipleCount(multipleCount);
+        setSubjectiveCount(subjectiveCount);
     }, [changeList]);
 
     useEffect(() => {
@@ -59,7 +61,6 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             // console.log("source:", source);
             // console.log("destination:", destination);
             // console.log("type:", type);
-
 
             if (source.index === destination.index) {
                 return;
@@ -91,7 +92,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             const sourceGroup = newGroupedData[sourceGroupIndex];
             const destinationGroup = newGroupedData[destinationGroupIndex];
 
-            // `groupKey`가 다른 그룹으로 이동하는 것을 방지
+            // groupKey 다른 그룹으로 이동하는 것을 방지
             if (sourceGroup.groupKey !== destinationGroup.groupKey) {
                 return;
             }
@@ -122,7 +123,8 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                         >
                             <div className="fix-head">
                                 <span>이동</span>
-                                <span>번호</span>
+                                <span>순서</span>
+                                {/*<span>번호</span>*/}
                                 <span>단원명</span>
                                 <span>문제 형태</span>
                                 <span>난이도</span>
@@ -167,7 +169,6 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                                                 <div
                                                                                     ref={provided.innerRef}
                                                                                     {...provided.draggableProps}
-                                                                                    {...provided.dragHandleProps}
                                                                                 >
                                                                                     <SummaryList
                                                                                         itemId={item.itemId}
@@ -179,6 +180,9 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                                                         mediumChapterName={item.mediumChapterName}
                                                                                         smallChapterName={item.smallChapterName}
                                                                                         topicChapterName={item.topicChapterName}
+                                                                                        dragHandleProps={provided.dragHandleProps}
+                                                                                        multipleChoiceForms={multipleChoiceForms}
+                                                                                        subjectiveForms={subjectiveForms}
                                                                                     />
                                                                                 </div>
                                                                             )}

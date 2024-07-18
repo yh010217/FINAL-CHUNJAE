@@ -10,12 +10,17 @@ function SummaryList({
                          largeChapterName,
                          mediumChapterName,
                          smallChapterName,
-                         topicChapterName
+                         topicChapterName,
+                         dragHandleProps,
+                         multipleChoiceForms,
                      }) {
+
     return (
         <div key={itemId} className="col depth-02">
-            <a>
-                <span className="dragHandle drag-type01 ui-sortable-handle">
+            {/*<a>*/}
+                <span
+                    {...dragHandleProps}
+                    className="dragHandle drag-type01 ui-sortable-handle" >
                     <img src={innerDragHandleIcon} alt="inner drag handle"/>
                 </span>
                 {/*<span>{index+1}</span>*/}
@@ -31,9 +36,9 @@ function SummaryList({
                         <button className="btn-tip"></button>
                     </div>
                 </span>
-                <span>{questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
+                <span>{multipleChoiceForms.includes(questionFormName) ? '객관식' : '주관식'}</span>
                 <span>{difficultyName}</span>
-            </a>
+            {/*</a>*/}
         </div>
     );
 }

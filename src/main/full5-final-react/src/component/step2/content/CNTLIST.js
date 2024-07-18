@@ -1,8 +1,7 @@
 
 import React, {useEffect} from 'react';
 
-function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChangeId, setNo2, groupedItems, removeList}) {
-
+function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, userSort, tab, setChangeId, setNo2, groupedItems, removeList}) {
 
     const similarData = (itemIdList, no, passageId, no2) => {
         setSimilar(itemIdList); // itemId 얻어오기
@@ -34,13 +33,74 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
         removeList(item);
     }
 
+    // 객관식, 주관식 구분
+    const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
+
+    // 단원순 정렬
+    const sortByChapter=(list)=>{
+        return list.sort((a,b)=>{
+            if(a.largeChapterName !== b.largeChapterName){
+                return a.largeChapterName.localeCompare(b.largeChapterName);
+            }else if(a.mediumChapterName !== b.mediumChapterName){
+                return a.mediumChapterName.localeCompare(b.mediumChapterName);
+            }else if(a.smallChapterName !== b.smallChapterName){
+                return a.smallChapterName.localeCompare(b.smallChapterName);
+            }else {
+                return a.topicChapterName.localeCompare(b.topicChapterName)
+            }
+        });
+    };
+    // 난이도순 정렬
+    const sortByDifficulty=(list)=>{
+        return list.sort((a,b)=>{
+            return a.difficultyName.localeCompare(b.difficultyName);
+        });
+    };
+    // 문제 형태순 정렬
+    const sortByQuestionForm=(list)=>{
+        return list.sort((a,b)=>{
+            if (multipleChoiceForms.includes(a.questionFormName)
+                && !multipleChoiceForms.includes(b.questionFormName)){
+                return -1;
+            }else if(!multipleChoiceForms.includes(a.questionFormName)
+                && multipleChoiceForms.includes(b.questionFormName)){
+                return 1;
+            }else{
+                return 0;
+            }
+        });
+    };
+    // 정렬된 리스트
+    const getSortedList=()=>{
+        let sortedList = [...changeList];
+
+        switch (userSort){
+            case '단원순':
+                sortedList = sortByChapter(sortedList);
+                break;
+            case '난이도순' :
+                sortedList = sortByDifficulty(sortedList);
+                break;
+            case '문제 형태순' :
+                sortedList = sortByQuestionForm(sortedList);
+                break;
+            default:
+                sortedList = changeList;
+                break;
+        }
+        // setChangeList
+        return sortedList;
+    }
+
+    const sortedList = getSortedList();
+
     return (
         <div className="view-que-list scroll-inner">
 
-            {changeList.map((item, index) => {
+            {sortedList.map((item, index) => {
                 const passageId = item.passageId && (groupedItems[item.passageId] || []).length > 0 ? item.passageId : 'individual';
-                // const passageId = item.passageId !== undefined ? item.passageId : 'individual';
                 const isFirstItemInGroup = passageId !== 'individual' && groupedItems[passageId]?.[0]?.itemId === item.itemId;
+                // console.log(passageId);
 
                 return (
                     <React.Fragment key={item.itemId}>
@@ -71,8 +131,9 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
                                     <span className="num">{item.itemNo}</span>
                                     <div className="que-badge-group">
                                         <span className="que-badge">{item.difficultyName}</span>
-                                        <span
-                                            className="que-badge gray">{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
+                                        <span className="que-badge gray">
+                                            {multipleChoiceForms.includes(item.questionFormName) ? '객관식' : '주관식'}
+                                        </span>
                                     </div>
                                 </div>
 
