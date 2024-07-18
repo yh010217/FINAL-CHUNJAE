@@ -56,9 +56,9 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
         // 그룹의 순서 변경
         if (type === 'GROUP') {
-            console.log("source:", source);
-            console.log("destination:", destination);
-            console.log("type:", type);
+            // console.log("source:", source);
+            // console.log("destination:", destination);
+            // console.log("type:", type);
 
 
             if (source.index === destination.index) {
