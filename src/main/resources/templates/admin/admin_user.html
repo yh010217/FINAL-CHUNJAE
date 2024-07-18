@@ -37,13 +37,13 @@
             <li>
                 <a th:href="@{/admin/user}">
                     <i class="uil uil-user"></i>
-                <span class="link-name">유저관리</span>
+                <span class="link-name">회원관리</span>
             </a></li>
-            <li><a th:href="@{/admin/testpage}" class="side_bar_menu">
+            <li><a th:href="@{/admin/paper}" class="side_bar_menu">
                 <i class="uil uil-files-landscapes"></i>
-                <span class="link-name">문제관리</span>
+                <span class="link-name">시험지관리</span>
             </a></li>
-            <li><a th:href="@{/admin/errorpage}" class="side_bar_menu">
+            <li><a th:href="@{/admin/error}" class="side_bar_menu">
                 <i class="uil uil-file-question-alt"></i>
                 <span class="link-name">문제오류관리</span>
             </a></li>
@@ -51,13 +51,8 @@
 
         <ul class="logout-mode">
             <li>
-<!--                <form th:method="post" th:action="@{/logout}">-->
-<!--                    <button type="submit" th:class="link-name">-->
-<!--                        <i class="uil uil-signout"></i>Logout</button>-->
-<!--                </form>-->
                 <a th:href="@{/main}">
                     <i class="uil uil-home"></i>
-<!--                <i class="uil uil-signout"></i>-->
                 <span class="link-name">Main Page</span>
             </a>
 

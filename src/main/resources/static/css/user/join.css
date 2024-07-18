@@ -30,12 +30,12 @@
     font-size: 1.2rem;
     display: flex;
 }
-#sign_up_form ul li:nth-child(-n+5)
+#sign_up_form ul li:nth-child(-n+6)
 , #sign_up_form ul li:last-child{
     flex-direction: column;
     justify-content: space-between;
 }
-#sign_up_form ul li:nth-child(7){
+#sign_up_form ul li:nth-child(8){
     justify-content: right;
     position: relative;
     top: -1vw;
