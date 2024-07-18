@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Coding By CodingNepal - codingnepalweb.com -->
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,10 +50,18 @@
         </ul>
 
         <ul class="logout-mode">
-            <li><a th:href="@{/logout}">
-                <i class="uil uil-signout"></i>
-                <span class="link-name">Logout</span>
-            </a></li>
+            <li>
+<!--                <form th:method="post" th:action="@{/logout}">-->
+<!--                    <button type="submit" th:class="link-name">-->
+<!--                        <i class="uil uil-signout"></i>Logout</button>-->
+<!--                </form>-->
+                <a th:href="@{/main}">
+                    <i class="uil uil-home"></i>
+<!--                <i class="uil uil-signout"></i>-->
+                <span class="link-name">Main Page</span>
+            </a>
+
+            </li>
 
             <li class="mode">
                 <a href="#">

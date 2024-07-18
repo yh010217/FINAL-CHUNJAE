@@ -167,6 +167,16 @@ body.dark .nav-links li a:hover .link-name{
     padding-top: 10px;
     border-top: 1px solid var(--border-color);
 }
+
+.logout-mode button{
+    border: none;
+}
+.menu-items .logout{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
 .menu-items .mode{
     display: flex;
     align-items: center;
@@ -371,32 +381,6 @@ nav.close ~ .dashboard .top{
 .boxes .box.box3{
     background-color: var(--box3-color);
 }
-/*.dash-content .activity .activity-data{*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    width: 100%;*/
-/*}*/
-/*.activity .activity-data{*/
-/*    display: flex;*/
-/*}*/
-/*.activity-data .data{*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    margin: 0 15px;*/
-/*}*/
-/*.activity-data .data-title{*/
-/*    font-size: 20px;*/
-/*    font-weight: 500;*/
-/*    color: var(--text-color);*/
-/*}*/
-/*.activity-data .data .data-list{*/
-/*    font-size: 18px;*/
-/*    font-weight: 400;*/
-/*    margin-top: 20px;*/
-/*    white-space: nowrap;*/
-/*    color: var(--text-color);*/
-/*}*/
 .activity-table {
     width: 100%;
     border-collapse: collapse;
