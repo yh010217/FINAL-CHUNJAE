@@ -3,10 +3,11 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import React from "react";
 
-function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) {
+function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
     let [option, setOption] = useState(false);
     const [activeOption, setActiveOption] = useState('');
     const options = ['상', '중', '하'];
+    const [view, setView] = useState('');
 
     const toggleMenu = () => {
         setOption(!option);
@@ -29,6 +30,8 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
         }
         setActiveOption(option);
         setOption(false);
+
+        setView(difficultyCode);
     };
 
     const removeList =(itemId)=> {
@@ -144,7 +147,7 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, ChangeList}) 
                                         passageId={item.passageId}
                                         list={removeList}
                                         addToChangeList={addToChangeList}
-                                        ChangeList={ChangeList}
+                                        view={view}
                                     />
                                 ))}
                             </React.Fragment>

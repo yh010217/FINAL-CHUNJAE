@@ -120,22 +120,6 @@ function VIEWBOTTOM({itemList}){
     };
 
 
-    /** 교체하기 => 구현 안 함 삭제 예정 */
-    const ChangeList =(itemToAdd)=> {
-        setChangeList(prevList => {
-            const index = prevList.findIndex(item => item.itemId === similar);
-            if (index === -1) {
-                return [...prevList, itemToAdd];
-            } else {
-                return [
-                    ...prevList.slice(0, index),
-                    itemToAdd,
-                    ...prevList.slice(index + 1)
-                ];
-            }
-        });
-    };
-
     return <div className="view-bottom type01">
             {/** 문제 목록 **/}
             <CNTLEFT changeList={changeList}
@@ -158,7 +142,6 @@ function VIEWBOTTOM({itemList}){
                       addToChangeList={addToChangeList}
                       remove={remove}
                       setRemove={setRemove}
-                      ChangeList={ChangeList}
                       delList={delList}
                       setDelList={setDelList}
                       addToDelList={addToDelList}

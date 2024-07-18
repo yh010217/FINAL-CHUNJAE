@@ -34,27 +34,6 @@ function SIMLARLIST(props) {
         removeList(props.itemId);
     }
 
-    /** 교체하기 */
-    const ChangeList =()=> {
-        const itemToAdd = {
-            itemId: props.itemId,
-            itemNo: props.itemNo,
-            difficultyName: props.difficultyName,
-            questionFormName: props.questionFormName,
-            questionUrl: props.questionUrl,
-            explainUrl: props.explainUrl,
-            answerUrl: props.answerUrl,
-            mediumChapterName: props.mediumChapterName,
-            smallChapterName: props.smallChapterName,
-            topicChapterName: props.topicChapterName,
-            passageId: props.passageId,
-            passageUrl: props.passageUrl
-        };
-
-        props.ChangeList(itemToAdd);
-        removeList(props.itemId);
-    }
-
     return <div className="view-que-box" key={props.itemId}>
         <div className="que-top">
             <div className="title">
@@ -99,10 +78,6 @@ function SIMLARLIST(props) {
                         <button className="btn-default" onClick={() => addToChangeList()}>
                             <i className="add-type02"></i>
                             추가
-                        </button>
-                        <button className="btn-default" onClick={() => ChangeList()}>
-                            <i className="replace"></i>
-                            교체
                         </button>
                     </div>
                 </div>
