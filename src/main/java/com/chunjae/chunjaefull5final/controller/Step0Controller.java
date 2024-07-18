@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.controller;
 
 
+import com.chunjae.chunjaefull5final.dto.ExamIdDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class Step0Controller {
 
     private final RestTemplate restTemplate;
-    private List<String> seletedExamIds;
+    private List<String> seletedExamIds;    // 세션으로 ExamId 목록 받게 수정하기
 
     @GetMapping("/step0/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, Model model) {
@@ -109,7 +110,7 @@ public class Step0Controller {
             }
 
         } catch (Exception e) {
-           log.info("파싱 실패.....{}", e);
+            log.info("파싱 실패.....{}", e);
 
         }
         return parsedChapter;
@@ -152,7 +153,7 @@ public class Step0Controller {
             }
 
         } catch (Exception e) {
-            log.info("파싱 실패....{}",e);
+            log.info("파싱 실패....{}", e);
         }
         return groupedExams;
     }
@@ -177,26 +178,37 @@ public class Step0Controller {
      * 선택한 시험지 JSON 형식으로 받기
      */
     @PostMapping("/step0/examid")
-    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request){
+    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request) {
 
         seletedExamIds = request.get("examIdList");
 
-        for (String item : seletedExamIds){
+        for (String item : seletedExamIds) {
             log.info("examid.....{}", item);
         }
 
         return ResponseEntity.ok("ExamId 받기 성공");
     }
 
-    /** 선택한 시험지들 STEP2(react)로 보내기 */
+    /**
+     * 선택한 시험지들 STEP2(react)로 보내기
+     */
     @GetMapping("/step0/examid")
     public ResponseEntity<Map<String, List<String>>> sendExamIds() {
-        Map<String,List<String>> response = new HashMap<>();
+        Map<String, List<String>> response = new HashMap<>();
         response.put("examIdList", seletedExamIds);
 
         return ResponseEntity.ok(response);
     }
 
+    /** 셋팅지 미리보기 - 문항+정답+해설 */
+    @PostMapping("/preview/all")
+    public String previewAll(@RequestBody ExamIdDTO request){
+        String url = "https://tsherpa.item-factory.com/exam/preview";   // api url
 
+        // API 호출
+        RestTemplate restTemplate = new RestTemplate();
+        String previewUrl = restTemplate.patchForObject(url, request, String.class);
 
+        return previewUrl;
+    }
 }

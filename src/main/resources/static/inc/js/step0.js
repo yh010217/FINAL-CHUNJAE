@@ -81,4 +81,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 초기 선택된 문항 수 업데이트
     updateSelectedCount();
+
+    // 셋팅지 미리보기
+    document.querySelectorAll('.tbody').forEach(tbody => {  // tbody에 이벤트 리스너 추가
+        tbody.addEventListener('click', function (event) {
+            if (event.target.closest('.pop-btn.btn-icon2')) {
+                const button = event.target.closest('.pop-btn.btn-icon2');
+                const examId = button.previousElementSibling.value; // 시험지 ID
+                //console.log('미리보기 클릭..examId..', examId;
+
+                // 셋팅지 미리보기 api 호출
+                // 문항+정답+해설
+                fetch('/preview/all', {
+                    method: 'POST'
+                    , headers: {
+                        'Accept': 'application/json'
+                        , 'Content-Type': 'application/json'
+                    }
+                    , body: JSON.stringify({examId: examId, differentiation: 'A'})
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log('api 호출 되나', data);
+                    })
+
+
+                // 문제
+
+
+                // 정답+해설
+
+
+                // 문항 정보표
+
+            }
+        });
+    });
+
 });
