@@ -3,9 +3,9 @@ import outerDragHandleIcon from '../../../images/common/ico_move_type01.png';
 import SummaryList from "./SummaryList";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-function SUMMARY({ initialChangeList = [], onChangeList }) {
+function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
     const [changeList, setChangeList] = useState(initialChangeList);
-    const [groupedData, setGroupedData] = useState([]);
+    // const [groupedData, setGroupedData] = useState([]);
     const [multipleCount, setMultipleCount] = useState(0);
     const [subjectiveCount, setSubjectiveCount] = useState(0);
 
@@ -14,21 +14,21 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
     useEffect(() => {
         // 그룹화된 데이터 생성
-        const grouped = changeList.reduce((acc, item) => {
-            const groupKey = item.passageId || item.itemId;
-            const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
-            if (existingGroupIndex === -1) {
-                acc.push({
-                    groupKey,
-                    items: [item]
-                });
-            } else {
-                acc[existingGroupIndex].items.push(item);
-            }
-            return acc;
-        }, []);
-
-        setGroupedData(grouped);
+        // const grouped = changeList.reduce((acc, item) => {
+        //     const groupKey = item.passageId || item.itemId;
+        //     const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
+        //     if (existingGroupIndex === -1) {
+        //         acc.push({
+        //             groupKey,
+        //             items: [item]
+        //         });
+        //     } else {
+        //         acc[existingGroupIndex].items.push(item);
+        //     }
+        //     return acc;
+        // }, []);
+        //
+        // setGroupedData(grouped);
 
         const multipleCount = changeList.filter(item => multipleChoiceForms.includes(item.questionFormName)).length;
         const subjectiveCount = changeList.filter(item => subjectiveForms.includes(item.questionFormName)).length;
@@ -37,7 +37,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
         setMultipleCount(multipleCount);
         setSubjectiveCount(subjectiveCount);
-    }, [changeList]);
+    }, [changeList, groupData]);
 
     useEffect(() => {
         setChangeList(initialChangeList);
@@ -66,7 +66,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                 return;
             }
 
-            const newGroupedData = Array.from(groupedData);
+            const newGroupedData = Array.from(groupData);
             const [movedGroup] = newGroupedData.splice(source.index, 1);
             newGroupedData.splice(destination.index, 0, movedGroup);
 
@@ -74,7 +74,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             const newChangeList = newGroupedData.flatMap(group => group.items);
 
             // 상태 업데이트
-            setGroupedData(newGroupedData);
+            // setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
         }
@@ -88,7 +88,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                 return;
             }
 
-            const newGroupedData = Array.from(groupedData);
+            const newGroupedData = Array.from(groupData);
             const sourceGroup = newGroupedData[sourceGroupIndex];
             const destinationGroup = newGroupedData[destinationGroupIndex];
 
@@ -105,7 +105,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             const newChangeList = newGroupedData.flatMap(group => group.items);
 
             // 상태 업데이트
-            setGroupedData(newGroupedData);
+            // setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
         }
@@ -113,6 +113,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
 
     // console.log('changeList...', changeList)
     // console.log('groupedData...', groupedData)
+    // console.log('groupedData...', groupData)
 
     return (
         <div className="contents on">
@@ -135,7 +136,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                             <div className="tbody">
                                 <div className="scroll-inner">
                                     <div className="test ui-sortable" id="table-1">
-                                        {groupedData.map((group, groupIndex) => (
+                                        {groupData.map((group, groupIndex) => (
                                             <Draggable
                                                 key={group.groupKey.toString()}
                                                 draggableId={group.groupKey.toString()}
@@ -174,8 +175,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                                                 >
                                                                                     <SummaryList
                                                                                         itemId={item.itemId}
-                                                                                        itemNo={item.itemNo}
-                                                                                        index={itemIndex}
+                                                                                        orderNo={item.orderNo}
                                                                                         difficultyName={item.difficultyName}
                                                                                         questionFormName={item.questionFormName}
                                                                                         largeChapterName={item.largeChapterName}

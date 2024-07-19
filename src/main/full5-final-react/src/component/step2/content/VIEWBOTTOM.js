@@ -44,6 +44,12 @@ function VIEWBOTTOM({itemList}) {
         setChangeList(newChangeList);
     };
 
+    /** CNTLIST 에서 정렬된 group **/
+    const handleGroupData = (newGroupData) => {
+        // console.log('VIEWBOTTOM newGroupData:', newGroupData);
+        setGroupedData(newGroupData);
+    };
+
     let groupedItems = null;
 
     /** 클릭한 문제 아래 유사 문제 추가하기 */
@@ -126,12 +132,12 @@ function VIEWBOTTOM({itemList}) {
         }
     };
 
-
     return <div className="view-bottom type01">
         {/** 문제 목록 **/}
         <CNTLEFT changeList={changeList}
                  onChangeList={handleChangeList}
                  groupedData={groupedData}
+                 onChangeGroup={handleGroupData}
                  setSimilar={setSimilar}
                  setTab={setTab}
                  setNo={setNo}
@@ -143,6 +149,7 @@ function VIEWBOTTOM({itemList}) {
         {/** 문제지 요약, 유사문제, 문제삭제 **/}
         <CNTRIGHT initialChangeList={changeList}
                   onChangeList={handleChangeList}
+                  groupedData={groupedData}
                   similar={similar}
                   tab={tab}
                   setTab={setTab}

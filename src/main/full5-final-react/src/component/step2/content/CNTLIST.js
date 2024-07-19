@@ -1,26 +1,36 @@
 import React, {useEffect, useState} from 'react';
 
 function CNTLIST({
-                     changeList,
-                     onChangeList,
+                     initialChangeList,
+                     initialGroupData,
+                     onChangeGroup,
                      setSimilar,
                      setTab,
                      setNo,
                      viewType,
                      userSort,
-                     tab,
                      setChangeId,
                      setNo2,
-                     groupedData,
-                     removeList
+                     removeList,
+                     groupedItems
                  }) {
 
+    const [groupedData, setGroupedData] = useState(initialGroupData);
     const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
 
+    useEffect(() => {
+        setGroupedData(initialGroupData);
+    }, [initialGroupData]);
+
+    useEffect(() => {
+        const sortedList = getSortedList();
+        onChangeGroup(sortedList);
+    }, [userSort]);
+
     // 단원순 정렬
-    const sortByChapter = (list) => {
-        return [...list].sort((a, b) => {
-            a.items = a.items.sort((item1, item2) => {
+    const sortByChapter = () => {
+        groupedData.forEach(group => {
+            group.items.sort((item1, item2) => {
                 if (item1.largeChapterName !== item2.largeChapterName) {
                     return item1.largeChapterName.localeCompare(item2.largeChapterName);
                 } else if (item1.mediumChapterName !== item2.mediumChapterName) {
@@ -30,28 +40,23 @@ function CNTLIST({
                 } else {
                     return item1.topicChapterName.localeCompare(item2.topicChapterName)
                 }
-            })
+            });
         });
     };
 
     // 난이도순 정렬
-    const sortByDifficulty = (list) => {
-        return [...list].sort((a, b) => {
-            a.items = [...a.items].sort((item1, item2) => {
+    const sortByDifficulty = () => {
+        groupedData.forEach(group => {
+            group.items.sort((item1, item2) => {
                 return item2.difficultyName.localeCompare(item1.difficultyName);
             });
-            b.items = [...b.items].sort((item1, item2) => {
-                return item2.difficultyName.localeCompare(item1.difficultyName);
-            });
-            return 0;
         });
     };
 
     // 문제 형태순 정렬
-    const sortByQuestionForm = (list) => {
-        return list.map(item => ({
-            ...item,
-            items: [...item.items].sort((item1, item2) => {
+    const sortByQuestionForm = () => {
+        groupedData.forEach(group => {
+            group.items.sort((item1, item2) => {
                 if (multipleChoiceForms.includes(item1.questionFormName)
                     && !multipleChoiceForms.includes(item2.questionFormName)) {
                     return -1;
@@ -61,32 +66,28 @@ function CNTLIST({
                 } else {
                     return 0;
                 }
-            })
-        }));
+            });
+        });
     };
 
     const getSortedList = () => {
 
-        let sortedList = [...Object.values(groupedData)];
-
         switch (userSort) {
             case '단원순':
-                sortedList = sortByChapter(sortedList);
+                sortByChapter();
                 break;
             case '난이도순':
-                sortedList = sortByDifficulty(sortedList);
+                sortByDifficulty();
                 break;
             case '문제 형태순':
-                sortedList = sortByQuestionForm(sortedList);
+                sortByQuestionForm();
                 break;
             default:
-                sortedList = Object.values(groupedData);
+                // Object.values(groupedData);
                 break;
         }
-        return sortedList;
+        return groupedData;
     }
-
-    const sortedList = getSortedList();
 
     const similarData = (itemIdList, no, passageId, no2) => {
         setSimilar(itemIdList); // itemId 얻어오기
@@ -121,7 +122,35 @@ function CNTLIST({
     // console.log('groupedData...', groupedData);
     // console.log('groupedData...', groupedData.map(group => group.items));
 
-    console.log(changeList)
+    // 순서 올림차순으로 나오게
+    // const [sortedList, setSortedList] = useState(initialGroupData);
+    // useEffect(() => {
+    //     let sorted = getSortedList();
+    //
+    //     let i = 1;
+    //     let orderList = sorted.map((item) => {
+    //         item.orderNo = i;
+    //         i++;
+    //         return item;
+    //     })
+    //
+    //     setSortedList(orderList)
+    // }, [initialGroupData, userSort]);
+    const sortedList = getSortedList();
+    // const [orderList ,setOrderList] = useState(sortedList);
+    //
+    // useEffect(() => {
+    //     let sorted = getSortedList();
+    //
+    //     let i = 1;
+    //     let indexList = sorted.map((item)=>{
+    //         item.index=i;
+    //         i++;
+    //         return item;
+    //     })
+    //
+    //     setOrderList(indexList)
+    // }, [sortedList, userSort]);
 
     return (
         <div className="view-que-list scroll-inner">
@@ -134,7 +163,7 @@ function CNTLIST({
                                     <div className="que-top">
                                         <div className="title">
                                             <span className="num">
-                                                지문번호
+                                                {/*{item.index} ~ {item.index + groupedItems[item.passageId].length - 1}*/}
                                             </span>
                                         </div>
                                     </div>

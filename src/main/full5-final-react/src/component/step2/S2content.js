@@ -32,6 +32,16 @@ function S2content() {
 
             const response = await axios.post(url, data);
             // console.log(response.data.itemList);
+            // let i = 1;
+            // let countList = response.data.itemList.map(item=>{
+            //
+            //     item.index = i;
+            //     i++;
+            //
+            //     return item;
+            // })
+            // setItemList(countList)
+
             setItemList(response.data.itemList);
 
         } catch (error) {
