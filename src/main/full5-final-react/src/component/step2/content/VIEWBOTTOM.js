@@ -21,16 +21,16 @@ function VIEWBOTTOM({itemList}) {
 
     useEffect(() => {
         // 그룹화된 데이터 생성
-        const grouped = changeList.reduce((acc, item) => {
+        const grouped = changeList.reduce((acc, item, index) => {
             const groupKey = item.passageId || item.itemId;
             const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
             if (existingGroupIndex === -1) {
                 acc.push({
                     groupKey,
-                    items: [item]
+                    items: [{...item, index: index+1}]
                 });
             } else {
-                acc[existingGroupIndex].items.push(item);
+                acc[existingGroupIndex].items.push({...item, index: index + 1});
             }
             return acc;
         }, []);

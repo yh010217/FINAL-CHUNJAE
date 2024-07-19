@@ -27,7 +27,7 @@ function CNTLIST({
         onChangeGroup(sortedList);
     }, [userSort]);
 
-    // 단원순 정렬
+    // 단원순 (오름차순) 정렬
     const sortByChapter = () => {
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
@@ -44,7 +44,7 @@ function CNTLIST({
         });
     };
 
-    // 난이도순 정렬
+    // 난이도순 (하/중/상) 정렬
     const sortByDifficulty = () => {
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
@@ -53,7 +53,7 @@ function CNTLIST({
         });
     };
 
-    // 문제 형태순 정렬
+    // 문제 형태순 (객관식/주관식) 정렬
     const sortByQuestionForm = () => {
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
@@ -120,21 +120,6 @@ function CNTLIST({
     }
 
     const sortedList = getSortedList();
-    // 순서 올림차순으로 나오게
-    // const [orderList ,setOrderList] = useState(sortedList);
-    //
-    // useEffect(() => {
-    //     let sorted = getSortedList();
-    //
-    //     let i = 1;
-    //     let indexList = sorted.map((item)=>{
-    //         item.index=i;
-    //         i++;
-    //         return item;
-    //     })
-    //
-    //     setOrderList(indexList)
-    // }, [sortedList, userSort]);
 
     return (
         <div className="view-que-list scroll-inner">
@@ -147,8 +132,7 @@ function CNTLIST({
                                     <div className="que-top">
                                         <div className="title">
                                             <span className="num">
-                                                지문 범위
-                                                {/*{item.index} ~ {item.index + groupedItems[item.passageId].length - 1}*/}
+                                                {item.index} ~ {(group.items.length+item.index)-1}
                                             </span>
                                         </div>
                                     </div>
@@ -168,7 +152,7 @@ function CNTLIST({
                                 <div className="que-top">
                                     <div className="title">
                                         {/*<span className="num">{itemIndex + 1}</span>*/}
-                                        <span className="num">{item.itemNo}</span>
+                                        <span className="num">{item.index}</span>
                                         <div className="que-badge-group">
                                             <span className="que-badge">{item.difficultyName}</span>
                                             <span className="que-badge gray">

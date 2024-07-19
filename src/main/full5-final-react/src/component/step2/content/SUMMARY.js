@@ -5,7 +5,6 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
     const [changeList, setChangeList] = useState(initialChangeList);
-    // const [groupedData, setGroupedData] = useState([]);
     const [multipleCount, setMultipleCount] = useState(0);
     const [subjectiveCount, setSubjectiveCount] = useState(0);
 
@@ -13,35 +12,17 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
     const subjectiveForms = ['단답 유순형', '서술형'];
 
     useEffect(() => {
-        // 그룹화된 데이터 생성
-        // const grouped = changeList.reduce((acc, item) => {
-        //     const groupKey = item.passageId || item.itemId;
-        //     const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
-        //     if (existingGroupIndex === -1) {
-        //         acc.push({
-        //             groupKey,
-        //             items: [item]
-        //         });
-        //     } else {
-        //         acc[existingGroupIndex].items.push(item);
-        //     }
-        //     return acc;
-        // }, []);
-        //
-        // setGroupedData(grouped);
 
         const multipleCount = changeList.filter(item => multipleChoiceForms.includes(item.questionFormName)).length;
         const subjectiveCount = changeList.filter(item => subjectiveForms.includes(item.questionFormName)).length;
-        // const question = changeList.filter(item=>item.questionFormName);
-        // console.log(question.map(item=>item.questionFormName));
 
         setMultipleCount(multipleCount);
         setSubjectiveCount(subjectiveCount);
-    }, [changeList, groupData]);
+    }, [changeList]);
 
     useEffect(() => {
         setChangeList(initialChangeList);
-    }, [initialChangeList]);
+    }, [initialChangeList, groupData]);
 
     const handleChangeList = (newChangeList) => {
         setChangeList(newChangeList);
@@ -175,7 +156,7 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
                                                                                 >
                                                                                     <SummaryList
                                                                                         itemId={item.itemId}
-                                                                                        orderNo={item.orderNo}
+                                                                                        index={item.index}
                                                                                         difficultyName={item.difficultyName}
                                                                                         questionFormName={item.questionFormName}
                                                                                         largeChapterName={item.largeChapterName}
