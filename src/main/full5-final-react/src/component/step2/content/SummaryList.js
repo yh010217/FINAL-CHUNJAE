@@ -3,6 +3,7 @@ import innerDragHandleIcon from "../../../images/common/ico_move_type02.png";
 
 function SummaryList({
                          itemId,
+                         itemNo,
                          index,
                          difficultyName,
                          questionFormName,
@@ -22,8 +23,9 @@ function SummaryList({
                 className="dragHandle drag-type01 ui-sortable-handle">
                     <img src={innerDragHandleIcon} alt="inner drag handle"/>
             </span>
-            <span>{index+1}</span>
-            <span className="tit">
+                {/*<span>{index + 1}</span>*/}
+                <span>{itemNo}</span>
+                <span className="tit">
                 <div className="txt">
                     {largeChapterName}
                     {mediumChapterName}
@@ -34,8 +36,8 @@ function SummaryList({
                     <button className="btn-tip"></button>
                 </div>
             </span>
-            <span>{multipleChoiceForms.includes(questionFormName) ? '객관식' : '주관식'}</span>
-            <span>{difficultyName}</span>
+                <span>{multipleChoiceForms.includes(questionFormName) ? '객관식' : '주관식'}</span>
+                <span>{difficultyName}</span>
             </a>
         </div>
     );
