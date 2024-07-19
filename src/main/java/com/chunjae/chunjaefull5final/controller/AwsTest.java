@@ -92,7 +92,7 @@ public class AwsTest {
     @GetMapping("/s3test/download-page/{keyName}")
     public String s3Test(@PathVariable String keyName , Model model){
         model.addAttribute("key",keyName);
-        return "step1/s3test";
+        return "s3test/s3test";
     }
 
     @GetMapping("/download-file/{keyName}")
