@@ -40,8 +40,8 @@ public class PaperServiceImpl implements PaperService{
                         .saveName(item.getSaveName())
                         .saveAnswerPath(item.getSaveAnswerPath())
                         .saveAllPath(item.getSaveAllPath())
+                        .subjectId(item.getSubject().getSubjectId())
                         .build()).collect(Collectors.toList());
-
         return new PageImpl<>(paperInfoDTOList, pageable, paperInfoPage.getTotalElements());
     }
 

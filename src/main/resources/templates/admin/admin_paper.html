@@ -69,58 +69,61 @@
 
 <section class="dashboard">
     <div class="top">
-        <i class="uil uil-bars sidebar-toggle"></i>
-        <!--<img src="images/profile.jpg" alt="">-->
+<!--        <i class="uil uil-user"></i>-->
     </div>
 
     <div class="dash-content">
         <div class="activity">
             <div class="title">
-                <i class="uil uil-clock-three"></i>
+                <i class="uil uil-files-landscapes"></i>
                 <span class="text">시험지관리</span>
             </div>
-         <div class="activity-data">
-            <div class="data-tr">
-                <span class="data-title">paperId</span>
-                <span class="data-title">title</span>
-                <span class="data-title">문제개수</span>
-                <span class="data-title">학년</span>
-                <span class="data-title">업데이트날짜</span>
-            </div>
-            <div class="data-td" th:if="${!pageList.isEmpty()}" th:each="item: ${pageList}">
-                <div class="data-row">
-                    <span class="data-list" th:text="${item.paperId}"></span>
-                    <span class="data-list" th:text="${item.title}"></span>
-                    <span class="data-list" th:text="${item.itemCount}"></span>
-                    <span class="data-list" th:text="${item.grade}"></span>
-                    <span class="data-list" th:text="${item.updateAt}"></span>
-                </div>
-            </div>
+         <div id="paper">
+             <ul>
+                 <li class="paper_list_top">
+                     <span>시험지번호</span>
+                     <span>제목</span>
+                     <span>문제개수</span>
+                     <span>학년</span>
+                     <span>과목번호</span>
+                 </li>
+                 <li th:if="${!pageList.isEmpty()}" th:each="item:${pageList}" th:class="paperList">
+                     <a th:href="@{'/admin/paperdetail/'+${item.paperId}}">
+                         <span th:text="${item.paperId}"></span>
+                         <span th:text="${item.title}"></span>
+                         <span th:text="${item.itemCount}"></span>
+                         <span th:text="${item.grade}"></span>
+                         <span th:text="${item.subjectId}"></span>
+                     </a>
+                 </li>
+                 <li th:if="${pageList.isEmpty()}">
+                     시험지 정보가 존재하지 않습니다.
+                 </li>
+             </ul>
          </div>
-            <div id="page">
-                <th:block th:if="${startPage>1}">
-                    <a th:href="@{/admin/paper(page=${startPage}-1)}">
-                        <span class="arrow left"> 이전</span>
-                    </a>
-                </th:block>
 
-                <th:block th:if="${pageList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
-                          th:class="page">
-                    <span th:if="${index==pageList.pageable.getPageNumber()+1}" th:text="${index}"></span>
-                    <span th:if="${index!=pageList.pageable.getPageNumber()+1}">
+        </div>
+        <div id="page">
+            <th:block th:if="${startPage>1}">
+                <a th:href="@{/admin/paper(page=${startPage}-1)}">
+                    <span class="arrow left"> 이전</span>
+                </a>
+            </th:block>
+
+            <th:block th:if="${pageList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
+                      th:class="page">
+                <span th:if="${index==pageList.pageable.getPageNumber()+1}" th:text="${index}"></span>
+                <span th:if="${index!=pageList.pageable.getPageNumber()+1}">
 				<a th:href="@{/admin/paper(page=${index})}"
                    th:text="${index}" class="page_num"></a>
 			</span>
-                </th:block>
+            </th:block>
 
-                <th:block th:if="${endPage<pageList.getTotalPages()}">
-                    <a th:href="@{/admin/paper(page=${endPage+1})}">
-                        <span class="arrow right">다음</span>
-                    </a>
-                </th:block>
-
-            </div>
-
+            <th:block th:if="${endPage<pageList.getTotalPages()}">
+                <a th:href="@{/admin/paper(page=${endPage+1})}">
+                    <span class="arrow right">다음</span>
+                </a>
+            </th:block>
 
         </div>
     </div>
