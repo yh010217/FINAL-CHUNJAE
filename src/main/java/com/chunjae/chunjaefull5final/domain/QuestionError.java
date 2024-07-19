@@ -37,4 +37,7 @@ public class QuestionError {
 
     @Column(name = "item_id")
     private Integer itemId;
+
+    @Column(name = "attachment_file_error")
+    private String AttachmentFileError;
 }
