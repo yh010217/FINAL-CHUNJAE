@@ -1,7 +1,7 @@
 import YESLIST from "./YESLIST";
 import NOLIST from "./NOLIST";
 
-function SIMILAR({ similar, no, addToChangeList, setRemove, remove}) {
+function SIMILAR({ similar, no, addToChangeList, setRemove, remove, setModal}) {
     return (
 
         /** 값이 있으면 YesList, 없으면 NoList 호출하기*/
@@ -11,7 +11,8 @@ function SIMILAR({ similar, no, addToChangeList, setRemove, remove}) {
                          similar={similar}
                          addToChangeList={addToChangeList}
                          setRemove={setRemove}
-                         remove={remove}/>
+                         remove={remove}
+                         setModal={setModal}/>
             ) : (
                 <NOLIST />
             )}

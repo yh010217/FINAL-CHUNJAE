@@ -1,8 +1,9 @@
 import CNTLEFT from "./CNTLEFT";
 import CNTRIGHT from "./CNTRIGHT";
 import {useEffect, useState} from "react";
+import React from "react";
 
-function VIEWBOTTOM({itemList}){
+function VIEWBOTTOM({itemList, setModal}){
     /** 바뀌는 리스트 만들기 **/
     const [changeList, setChangeList] = useState([]);
     const [similar, setSimilar] = useState(null); // similar itemIdList 뽑아오는 애
@@ -121,7 +122,9 @@ function VIEWBOTTOM({itemList}){
         }
     };
 
+
     return <div className="view-bottom type01">
+
             {/** 문제 목록 **/}
             <CNTLEFT changeList={changeList}
                      onChangeList={handleChangeList}
@@ -146,6 +149,7 @@ function VIEWBOTTOM({itemList}){
                       delList={delList}
                       setDelList={setDelList}
                       addToDelList={addToDelList}
+                      setModal={setModal}
             />
         </div>
 }

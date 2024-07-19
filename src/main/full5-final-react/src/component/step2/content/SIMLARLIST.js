@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import MODAL from "./MODAL";
+
 
 function SIMLARLIST(props) {
-    const [modal, setModal] = useState(false);
+
 
     const simRemoveList = (itemId) => {
         props.list(itemId);
@@ -62,105 +62,116 @@ function SIMLARLIST(props) {
         <>
             {Object.values(props.groupedData).map((group, index) => (
                 <React.Fragment key={index}>
-                    {group.passageUrl && (
-                        <div className="view-que-box">
-                            <div className="que-top">
-                                <div className="title">
-                                    {group.items.length > 1 ? (
-                                        <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                    ) : (
-                                        <span className="num">지문 {group.items[0].itemNo}</span>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="view-que">
-                                <img src={group.passageUrl} alt="지문입니다..." />
-                                <div className="que-bottom">
-                                    <div className="data-area">
-                                        <button className="btn-default" onClick={() => allSimList(group)}>
-                                            <i className="add-type02"></i>
-                                            전체 추가
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {(() => {
+                        let filteredItems = group.items;
+                        switch (props.view) {
+                            case '01':
+                                filteredItems = group.items.filter(item => item.difficultyName === '상');
+                                break;
+                            case '02':
+                                filteredItems = group.items.filter(item => item.difficultyName === '중');
+                                break;
+                            case '03':
+                                filteredItems = group.items.filter(item => item.difficultyName === '하');
+                                break;
+                        }
 
-                    {group.items.map((item, itemIndex) => (
-                        <div className="view-que-box" key={item.itemId}>
-                            {(() => {
-                                switch (props.view) {
-                                    case '01':
-                                        return item.difficultyName === '상';
-                                    case '02':
-                                        return item.difficultyName === '중';
-                                    case '03':
-                                        return item.difficultyName === '하';
-                                    default:
-                                        return true; // 기본적으로는 모두 렌더링
-                                }
-                            })() && (
-                                <>
+                        return filteredItems.length > 0 && (
+                            <>
+                                <div className="view-que-box">
                                     <div className="que-top">
                                         <div className="title">
-                                            <span className="num">{item.itemNo}</span>
-                                            <div className="que-badge-group">
-                                                <span className="que-badge">{item.difficultyName}</span>
-                                                <span className="que-badge">{item.questionFormName}</span>
-                                            </div>
-                                        </div>
-                                        <div className="btn-wrap">
-                                            <button className="btn-error" onClick={() => setModal(true)}></button>
-                                            {modal === true && <MODAL />}
+                                            {group.items.length > 1 ? (
+                                                <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
+                                            ) : (
+                                                <span className="num">지문 {group.items[0].itemNo}</span>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="view-que">
-                                        <div>
-                                            <img src={item.questionUrl} alt="문제" />
-                                        </div>
+                                        <img src={group.passageUrl} alt="지문입니다..." />
                                         <div className="que-bottom">
                                             <div className="data-area">
-                                                <div className="que-info">
-                                                    <p className="answer">
-                                                        <span className="label">해설</span>
-                                                    </p>
-                                                    <div className="data-answer-area">
-                                                        <img src={item.explainUrl} alt="해설" />
-                                                    </div>
-                                                </div>
+                                                <button className="btn-default" onClick={() => allSimList(group)}>
+                                                    <i className="add-type02"></i>
+                                                    전체 추가
+                                                </button>
                                             </div>
-                                            <div className="data-area type01">
-                                                <div className="que-info">
-                                                    <p className="answer">
-                                                        <span className="label type01">정답</span>
-                                                    </p>
-                                                    <div className="data-answer-area">
-                                                        <img src={item.answerUrl} alt="정답" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {filteredItems.map((item, itemIndex) => (
+                                    <div className="view-que-box" key={item.itemId}>
+                                        <>
+                                            <div className="que-top">
+                                                <div className="title">
+                                                    <span className="num">{item.itemNo}</span>
+                                                    <div className="que-badge-group">
+                                                        {/*<span className="que-badge">{item.difficultyName}</span>*/}
+                                                        <span
+                                                            className={`que-badge ${
+                                                                item.difficultyName === '상' ? 'yellow' : 
+                                                                    item.difficultyName === '중' ? 'green' :
+                                                                        'purple'
+                                                            }`}
+                                                        >
+                                                              {item.difficultyName}
+                                                        </span>
+                                                        <span className="que-badge gray">{item.questionFormName === '단답 유순형' ? '주관식' : '객관식'}</span>
                                                     </div>
                                                 </div>
                                                 <div className="btn-wrap">
-                                                    <button className="btn-default" onClick={() => addToChangeList(item)}>
-                                                        <i className="add-type02"></i>
-                                                        추가
-                                                    </button>
+                                                    <button className="btn-error" onClick={() => props.setModal(true)}></button>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div className="view-que">
+                                                <div>
+                                                    <img src={item.questionUrl} alt="문제" />
+                                                </div>
+                                                <div className="que-bottom">
+                                                    <div className="data-area">
+                                                        <div className="que-info">
+                                                            <p className="answer">
+                                                                <span className="label">해설</span>
+                                                            </p>
+                                                            <div className="data-answer-area">
+                                                                <img src={item.explainUrl} alt="해설" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="data-area type01">
+                                                        <div className="que-info">
+                                                            <p className="answer">
+                                                                <span className="label type01">정답</span>
+                                                            </p>
+                                                            <div className="data-answer-area">
+                                                                <img src={item.answerUrl} alt="정답" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="btn-wrap">
+                                                            <button className="btn-default" onClick={() => addToChangeList(item)}>
+                                                                <i className="add-type02"></i>
+                                                                추가
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="que-info-last">
+                                                <p className="chapter">
+                                                    {item.mediumChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
+                                                </p>
+                                            </div>
+                                        </>
                                     </div>
-                                    <div className="que-info-last">
-                                        <p className="chapter">
-                                            {item.mediumChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
-                                        </p>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    ))}
+                                ))}
+                            </>
+                        );
+                    })()}
                 </React.Fragment>
             ))}
-        </>
-    );
+            </>
+            );
 
 }
 
