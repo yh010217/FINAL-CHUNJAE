@@ -118,25 +118,9 @@ function CNTLIST({
 
         removeList(item);
     }
-    // console.log('sortedList...', sortedList);
-    // console.log('groupedData...', groupedData);
-    // console.log('groupedData...', groupedData.map(group => group.items));
 
-    // 순서 올림차순으로 나오게
-    // const [sortedList, setSortedList] = useState(initialGroupData);
-    // useEffect(() => {
-    //     let sorted = getSortedList();
-    //
-    //     let i = 1;
-    //     let orderList = sorted.map((item) => {
-    //         item.orderNo = i;
-    //         i++;
-    //         return item;
-    //     })
-    //
-    //     setSortedList(orderList)
-    // }, [initialGroupData, userSort]);
     const sortedList = getSortedList();
+    // 순서 올림차순으로 나오게
     // const [orderList ,setOrderList] = useState(sortedList);
     //
     // useEffect(() => {
@@ -163,6 +147,7 @@ function CNTLIST({
                                     <div className="que-top">
                                         <div className="title">
                                             <span className="num">
+                                                지문 범위
                                                 {/*{item.index} ~ {item.index + groupedItems[item.passageId].length - 1}*/}
                                             </span>
                                         </div>
