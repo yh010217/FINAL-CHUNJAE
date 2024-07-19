@@ -387,53 +387,71 @@ nav.close ~ .dashboard .top{
 .boxes .box.box3{
     background-color: var(--box3-color);
 }
-.activity-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 18px;
-    text-align: left;
+#user{
+    width: 60vw;
+    margin: 30px auto 10px;
+    padding: 3px 10px;
+    border-top: 5px solid #d7d7d7;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px
+    , rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
-
-.activity-table th, .activity-table td {
-    padding: 12px 15px;
+#user ul li{
+    list-style: none;
+    padding: 1vw;
+    color: #000;
+}
+#user a{
+    color: #000;
+}
+.userList{
     color: var(--text-color);
 }
-
-.activity-table thead th {
-    background-color: var(--box1-color);
-    color: var(--text-color);
-    text-align: left;
-    font-weight: bold;
+#user list, #user li:not(:last-child){
+    border-bottom: 1px rgba(153,153,153, 0.5);
 }
-
-.activity-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-    color: var(--text-color);
+#user li span{
+    display: inline-block;
 }
-
-.activity-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+#user li span:nth-child(1){
+    width: 10%;
+    text-align: center;
 }
-
-.activity-table tbody tr:last-of-type {
-    border-bottom: 2px solid var(--box1-color);
+#user li span:nth-child(2){
+    width: 20%;
+    text-align: center;
 }
-
-.activity-table tbody tr:hover {
-    background-color: #F8F8F8;
+#user li span:nth-child(3){
+    width: 20%;
+    text-align: center;
 }
-
+#user li span:nth-child(4){
+    width: 10%;
+    text-align: center;
+}
+#user li span:nth-child(5){
+    width: 10%;
+    text-align: center;
+}
+#user li span:nth-child(6) {
+    width: 20%;
+    text-align: center;
+}
 #page{
     text-align: center;
     font-size: 1.2rem;
-
+    text-decoration: none;
 }
 #page span{
     padding-right: 2px;
-    color: var(--text-color);
-
+    /*color: var(--text-color);*/
 }
+#page a{
+    text-decoration: none;
+    color:  var(--text-color);
+}
+
 @media (max-width: 1000px) {
     nav{
         width: 73px;

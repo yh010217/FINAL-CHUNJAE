@@ -23,6 +23,7 @@ public class PaperInfoDTO {
     private String saveName;
     private String saveAnswerPath;
     private String saveAllPath;
-
+    private Integer subjectId;
+    private Long uid;
 
 }

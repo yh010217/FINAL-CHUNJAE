@@ -95,28 +95,26 @@
     <div class="dash-content">
         <div class="activity">
             <div class="title">
-                <i class="uil uil-clock-three"></i>
+                <i class="uil uil-user"></i>
                 <span class="text">회원정보</span>
             </div>
-            <table class="activity-table">
-                <thead>
-                <tr>
-                    <th>회원번호</th>
-                    <th>이메일</th>
-                    <th>이름</th>
-                    <th>회원유형</th>
-                    <th>학교정보</th>
-                    <th>controller</th>
-                </tr>
-                </thead>
-                <tbody th:if="${!userList.isEmpty()}" th:each="item : ${userList}">
-                <tr>
-                    <td th:text="${item.uid}"></td>
-                    <td th:text="${item.email}"></td>
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${item.role}"></td>
-                    <td th:text="${item.schoolType}"></td>
-                    <td> <span>
+            <div id="user">
+                <ul>
+                    <li class="user_list_top">
+                        <span>회원번호</span>
+                        <span>이메일</span>
+                        <span>이름</span>
+                        <span>회원유형</span>
+                        <span>학교정보</span>
+                        <span>Controller</span>
+                    </li>
+                    <li th:if="${!userList.isEmpty()}" th:each="item:${userList}" th:class="userList">
+                        <span th:text="${item.uid}"></span>
+                        <span th:text="${item.email}"></span>
+                        <span th:text="${item.name}"></span>
+                        <span th:text="${item.role}"></span>
+                        <span th:text="${item.schoolType}"></span>
+                        <span>
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#memberModal"
                                   th:onclick="'loadMemberDetails(' + ${item.uid} + ')'">
                         <img src="/images/admin/icons8-popup-64.png" alt="아이콘" style="width: 20px; height: 20px;">
@@ -125,10 +123,13 @@
                         <a id="del" th:href="@{|/userdelete/${item.uid}|}">
                             <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘"></a>
                     </div>
-                    </span></td>
-                </tr>
-                </tbody>
-            </table>
+                    </span>
+                    </li>
+                    <li th:if="${userList.isEmpty()}">
+                        회원이 존재하지 않습니다.
+                    </li>
+                </ul>
+            </div>
             <div id="page">
                 <th:block th:if="${startPage>1}">
                     <a th:href="@{/admin/user(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
