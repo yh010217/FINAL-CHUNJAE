@@ -330,7 +330,8 @@ nav.close ~ .dashboard .top{
 .dash-content .title{
     display: flex;
     align-items: center;
-    margin: 60px 0 30px 0;
+    margin: 34px 12px 29px 241px;
+    /*margin: 60px 0 30px 0;*/
 }
 .dash-content .title i{
     position: relative;
@@ -445,6 +446,7 @@ nav.close ~ .dashboard .top{
 }
 #page span{
     padding-right: 2px;
+    color: #000000;
     /*color: var(--text-color);*/
 }
 #page a{
