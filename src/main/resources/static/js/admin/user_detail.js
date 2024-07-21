@@ -11,7 +11,7 @@ function loadMemberDetails(uid) {
                         <strong>학교 정보: </strong>   ${data.schoolType}<br>
                         <strong>sns 정보: </strong> ${data.snsType}<br>
                         <strong>sns아이디: </strong> ${data.snsId}<br>
-                        
+
                     `;
             $('#memberDetails').html(memberDetails);
         },

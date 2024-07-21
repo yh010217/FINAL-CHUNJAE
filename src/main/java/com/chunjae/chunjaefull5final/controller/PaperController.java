@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.PaperInfoDTO;
+import com.chunjae.chunjaefull5final.dto.UserDTO;
 import com.chunjae.chunjaefull5final.service.paperinfo.PaperService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -19,7 +22,7 @@ public class PaperController {
 
     private final PaperService paperService;
 
-
+/** 시험지정보*/
 @GetMapping("/admin/paper")
 public String adminPaper(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model) {
     log.info("adminPaper 메서드 호출됨");
@@ -29,6 +32,8 @@ public String adminPaper(@PageableDefault(size = 10, page = 0) Pageable pageable
     int pageBlock = 5;
     int startPage = (pageable.getPageNumber() / pageBlock) * pageBlock + 1;
     int endPage = startPage + pageBlock - 1;
+
+    Map<Integer,String> subjectNames=paperService.subjectNames();
 
     if (endPage >= paperList.getTotalPages()) {
         endPage = paperList.getTotalPages();
@@ -44,8 +49,17 @@ public String adminPaper(@PageableDefault(size = 10, page = 0) Pageable pageable
     model.addAttribute("pageList", paperList);
     model.addAttribute("startPage", startPage);
     model.addAttribute("endPage", endPage);
+    model.addAttribute("subjectNames",subjectNames);
     return "admin/admin_paper";
 }
+    @GetMapping("/admin/paperdetail/{paperId}")
+    public String paperAdminDetail(@PathVariable Long paperId, Model model){
+        PaperInfoDTO paperInfoDTO = paperService.getPaperDetail(paperId);
+        Map<Integer,String> subjectNames=paperService.subjectNames();
+        model.addAttribute("paperInfoDTO", paperInfoDTO);
+        model.addAttribute("subjectNames",subjectNames);
+        return "admin/paper_detail";
+    }
 
 
 
