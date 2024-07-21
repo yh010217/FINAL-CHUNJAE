@@ -1,0 +1,37 @@
+#paper_detail{
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    /*box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px*/
+    /*, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;*/
+    margin: 4vh 30vw 0px 12.5vw;
+    padding: 7px;
+}
+#detail_ul li{
+    padding: 5px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    margin: auto;
+    border-bottom: 1px solid silver
+}
+/*#detail_ul{*/
+/*    border-bottom: 2px solid #F0F6FF;*/
+/*}*/
+.list{
+    padding: 5px;
+}
+#paper_detail li:last-child{
+    border-bottom: none;
+}
+.a_list {
+    text-align: center;
+    padding: 5%;
+}
+.a_list>#a_paper{
+    color: #3d3d3d;
+    background-color: #cccccc;
+    padding: 0.5vw 1vw;
+    border-radius: 10px;
+    text-decoration: none;
+}

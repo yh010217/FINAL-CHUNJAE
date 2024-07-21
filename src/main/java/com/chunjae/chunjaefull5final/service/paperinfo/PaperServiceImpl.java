@@ -10,9 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +36,9 @@ public class PaperServiceImpl implements PaperService{
                         .paperId(item.getPaperId())
                         .paperGubun(item.getPaperGubun())
                         .title(item.getTitle())
+                        .itemCount(item.getItemCount())
+                        .term(item.getTerm())
+                        .uid(item.getUser().getUid())
                         .grade(item.getGrade())
                         .createdAt(item.getCreatedAt())
                         .updateAt(item.getUpdatedAt())
@@ -45,6 +51,24 @@ public class PaperServiceImpl implements PaperService{
         return new PageImpl<>(paperInfoDTOList, pageable, paperInfoPage.getTotalElements());
     }
 
+    @Override
+    public Map<Integer, String> subjectNames() {
+        List<Object[]> results=paperInfoRepository.subjectName();
+        Map<Integer,String> subjMap=new HashMap<>();
+        for (Object[] result: results){
+            Integer subjectId=(Integer) result[0];
+            String subjectname=(String) result[1];
+            subjMap.put(subjectId,subjectname);
+        }
+        return subjMap;
+    }
+
+    @Override
+    public PaperInfoDTO getPaperDetail(Long paperId) {
+        PaperInfo paperInfo=paperInfoRepository.findPaperDetail(paperId);
+        PaperInfoDTO dto=modelMapper.map(paperInfo,PaperInfoDTO.class);
+        return dto;
+    }
 
 
 }
