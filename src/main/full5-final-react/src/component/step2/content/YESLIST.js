@@ -4,7 +4,7 @@ import axios from "axios";
 import React from "react";
 import Test from "./Test";
 
-function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal}) {
+function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, setItemId}) {
     let [option, setOption] = useState(false);
     const [activeOption, setActiveOption] = useState('');
     const options = ['상', '중', '하'];
@@ -119,6 +119,7 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal}) {
                             addToChangeList={addToChangeList}
                             view={view}
                             setModal={setModal}
+                            setItemId={setItemId}
                         />
                     </div>
                 )}

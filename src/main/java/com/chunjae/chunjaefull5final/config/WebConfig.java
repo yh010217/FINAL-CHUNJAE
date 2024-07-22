@@ -20,6 +20,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("POST")
                 .allowedHeaders("*");
-    }
 
-}
+        registry.addMapping("/test/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("POST")
+                .allowedHeaders("*");
+    }
+    }

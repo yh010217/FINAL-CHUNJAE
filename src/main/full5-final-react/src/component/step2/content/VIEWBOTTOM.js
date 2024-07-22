@@ -3,7 +3,7 @@ import CNTRIGHT from "./CNTRIGHT";
 import {useEffect, useState} from "react";
 import React from "react";
 
-function VIEWBOTTOM({itemList, setModal}){
+function VIEWBOTTOM({itemList, setModal, setItemId}){
     /** 바뀌는 리스트 만들기 **/
     const [changeList, setChangeList] = useState([]);
     const [similar, setSimilar] = useState(null); // similar itemIdList 뽑아오는 애
@@ -150,6 +150,7 @@ function VIEWBOTTOM({itemList, setModal}){
                       setDelList={setDelList}
                       addToDelList={addToDelList}
                       setModal={setModal}
+                      setItemId={setItemId}
             />
         </div>
 }

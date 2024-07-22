@@ -121,7 +121,10 @@ function SIMLARLIST(props) {
                                                     </div>
                                                 </div>
                                                 <div className="btn-wrap">
-                                                    <button className="btn-error" onClick={() => props.setModal(true)}></button>
+                                                    <button className="btn-error" onClick={() => {
+                                                        props.setModal(true);
+                                                        props.setItemId(item.itemId);
+                                                    }}></button>
                                                 </div>
                                             </div>
                                             <div className="view-que">

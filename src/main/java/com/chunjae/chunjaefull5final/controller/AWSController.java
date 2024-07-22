@@ -16,14 +16,6 @@ import java.util.List;
 public class AWSController {
     private final AWSService S3Service;
 
-    /* @PostMapping("/uploadImageFile/{folderName}")
-    public ResponseEntity<List<String>> uploadFile(
-            List<MultipartFile> multipartFiles
-            , @PathVariable String folderName
-    ){
-        return ResponseEntity.ok(S3Service.uploadFile(multipartFiles, folderName));
-    }*/
-
     @PostMapping("/uploadImageFile/{folderName}")
     public ResponseEntity<List<String>> uploadFile(
             List<MultipartFile> multipartFiles,

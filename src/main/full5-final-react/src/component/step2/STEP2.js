@@ -7,6 +7,7 @@ import {useState} from "react";
 
 function STEP2() {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
+    const [itemId, setItemId] = useState('');
 
     /** 모달 관련 이벤트 */
     let block = {}; // display : block 로 만들기 위한 노력...
@@ -16,11 +17,10 @@ function STEP2() {
         };
     }
 
-
     return <div id="wrap" className="full-pop-que">
         {/** 신고 페이지 */}
         <div className="dim" style={block}></div>
-        {modal && <MODAL setModal={setModal}/>}
+        {modal && <MODAL setModal={setModal} itemId={itemId}/>}
 
         <div className="full-pop-wrap">
 
@@ -30,6 +30,7 @@ function STEP2() {
             <div className="pop-content">
                 <S2content
                     setModal={setModal}
+                    setItemId={setItemId}
                 />
             </div>
             <div className="step-btn-wrap">
