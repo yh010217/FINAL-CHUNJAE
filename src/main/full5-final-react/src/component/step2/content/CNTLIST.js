@@ -287,5 +287,5 @@ function CNTLIST({
     );
 
 }
-
+// 통합테스트 2
 export default CNTLIST;
