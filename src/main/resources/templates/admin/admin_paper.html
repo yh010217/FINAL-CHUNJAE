@@ -12,8 +12,6 @@
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-
-
     <title>Admin</title>
 </head>
 <body>
@@ -87,7 +85,7 @@
                      <span>학년</span>
                      <span>과목번호</span>
                  </li>
-                 <li th:if="${!pageList.isEmpty()}" th:each="item:${pageList}" th:class="paperList">
+                 <li th:if="${!paperList.isEmpty()}" th:each="item:${paperList}" th:class="paperList">
                      <a th:href="@{'/admin/paperdetail/'+${item.paperId}}">
                          <span th:text="${item.paperId}"></span>
                          <span th:text="${item.title}"></span>
@@ -96,7 +94,7 @@
                          <span th:text="${subjectNames[item.subjectId]}"></span>
                      </a>
                  </li>
-                 <li th:if="${pageList.isEmpty()}">
+                 <li th:if="${paperList.isEmpty()}">
                      시험지 정보가 존재하지 않습니다.
                  </li>
                  <li th:if="${subjectNames.isEmpty()}">
@@ -113,16 +111,16 @@
                 </a>
             </th:block>
 
-            <th:block th:if="${pageList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
+            <th:block th:if="${paperList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
                       th:class="page">
-                <span th:if="${index==pageList.pageable.getPageNumber()+1}" th:text="${index}"></span>
-                <span th:if="${index!=pageList.pageable.getPageNumber()+1}">
+                <span th:if="${index==paperList.pageable.getPageNumber()+1}" th:text="${index}"></span>
+                <span th:if="${index!=paperList.pageable.getPageNumber()+1}">
 				<a th:href="@{/admin/paper(page=${index})}"
                    th:text="${index}" class="page_num"></a>
 			</span>
             </th:block>
 
-            <th:block th:if="${endPage<pageList.getTotalPages()}">
+            <th:block th:if="${endPage<paperList.getTotalPages()}">
                 <a th:href="@{/admin/paper(page=${endPage+1})}">
                     <span class="arrow right">다음</span>
                 </a>

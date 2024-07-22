@@ -25,6 +25,8 @@ public class QuestionError {
     @Column(name = "attachment_file_path")
     private String attachmentFilePath;
 
+    @Column(name = "attachment_file_error")
+    private String attachmentFileError;
     @Column
     private String content;
 

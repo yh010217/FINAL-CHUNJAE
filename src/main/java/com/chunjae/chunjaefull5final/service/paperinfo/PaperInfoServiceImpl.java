@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,13 +19,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PaperServiceImpl implements PaperService{
+public class PaperInfoServiceImpl implements PaperInfoService {
 
     private final PaperInfoRepository paperInfoRepository;
 
     private final ModelMapper modelMapper;
 
-    private static final Logger log= LoggerFactory.getLogger(PaperService.class);
+    private static final Logger log= LoggerFactory.getLogger(PaperInfoService.class);
 
     @Override
     public Page<PaperInfoDTO> findPaper(Pageable pageable) {
@@ -67,6 +66,9 @@ public class PaperServiceImpl implements PaperService{
     public PaperInfoDTO getPaperDetail(Long paperId) {
         PaperInfo paperInfo=paperInfoRepository.findPaperDetail(paperId);
         PaperInfoDTO dto=modelMapper.map(paperInfo,PaperInfoDTO.class);
+        if (paperInfo.getUser()!=null){
+            dto.setUid(paperInfo.getUser().getUid());
+        }
         return dto;
     }
 

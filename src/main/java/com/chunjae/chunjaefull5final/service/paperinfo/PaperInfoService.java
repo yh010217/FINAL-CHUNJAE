@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
 
-public interface PaperService {
+public interface PaperInfoService {
     Page<PaperInfoDTO> findPaper(Pageable pageable);
 
     Map<Integer, String> subjectNames();
