@@ -22,7 +22,7 @@ function S2content() {
                 // 수학
                 // examIdList: ["1534"]
                 // ?
-                // examIdList: ["463"]
+                // examIdList: ["356"]
                 // 세계사
                 // examIdList: ["545"]
             };

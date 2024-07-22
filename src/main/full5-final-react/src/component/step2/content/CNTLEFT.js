@@ -31,7 +31,7 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, setSimilar, tab, setT
             <span className="title">문제 목록</span>
             <div className="right-area">
                 <div className="select-wrap">
-                    <button className="select-btn" onClick={toggleList1}>{viewType}</button>
+                    <button type="button" className="select-btn" onClick={toggleList1}>{viewType}</button>
                     {sortList1 && (
                         <ul className="select-list">
                             <li><a onClick={()=>handleViewType('문제만 보기')}>문제만 보기</a></li>
@@ -41,7 +41,7 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, setSimilar, tab, setT
                     )}
                 </div>
                 <div className="select-wrap">
-                    <button className="select-btn" onClick={toggleList2}>{userSort}</button>
+                    <button type="button" className="select-btn" onClick={toggleList2}>{userSort}</button>
                     {sortList2 && (
                         <ul className="select-list">
                             <li><a onClick={()=>handleUserSort('단원순')}>단원순</a></li>

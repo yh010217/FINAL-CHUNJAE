@@ -22,11 +22,6 @@ function CNTLIST({
         setGroupedData(initialGroupData);
     }, [initialGroupData]);
 
-    useEffect(() => {
-        const sortedList = getSortedList();
-        onChangeGroup(sortedList);
-    }, [userSort]);
-
     // 단원순 (오름차순) 정렬
     const sortByChapter = () => {
         groupedData.forEach(group => {
@@ -42,19 +37,43 @@ function CNTLIST({
                 }
             });
         });
+
+        groupedData.sort((group1, group2)=>{
+            const firstItem1 = group1.items[0];
+            const firstItem2 = group2.items[0];
+
+            if (firstItem1.largeChapterName !== firstItem2.largeChapterName) {
+                return firstItem1.largeChapterName.localeCompare(firstItem2.largeChapterName);
+            } else if (firstItem1.mediumChapterName !== firstItem2.mediumChapterName) {
+                return firstItem1.mediumChapterName.localeCompare(firstItem2.mediumChapterName);
+            } else if (firstItem1.smallChapterName !== firstItem2.smallChapterName) {
+                return firstItem1.smallChapterName.localeCompare(firstItem2.smallChapterName);
+            } else {
+                return firstItem1.topicChapterName.localeCompare(firstItem2.topicChapterName)
+            }
+        })
     };
 
     // 난이도순 (하/중/상) 정렬
     const sortByDifficulty = () => {
-        groupedData.forEach(group => {
-            group.items.sort((item1, item2) => {
+        groupedData.sort((group1, group2) => {
+            group1.items.sort((item1, item2) => {
                 return item2.difficultyName.localeCompare(item1.difficultyName);
             });
+            group2.items.sort((item1, item2) => {
+                return item2.difficultyName.localeCompare(item1.difficultyName);
+            });
+
+            const firstItem1 = group1.items[0];
+            const firstItem2 = group2.items[0];
+            return firstItem2.difficultyName.localeCompare(firstItem1.difficultyName);
         });
     };
 
+
     // 문제 형태순 (객관식/주관식) 정렬
     const sortByQuestionForm = () => {
+
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
                 if (multipleChoiceForms.includes(item1.questionFormName)
@@ -67,6 +86,19 @@ function CNTLIST({
                     return 0;
                 }
             });
+        });
+
+        groupedData.sort((group1, group2) => {
+            const form1 = group1.items.length > 0 ? group1.items[0].questionFormName : '';
+            const form2 = group2.items.length > 0 ? group2.items[0].questionFormName : '';
+
+            if (form1 < form2) {
+                return -1;
+            } else if (form1 > form2) {
+                return 1;
+            } else {
+                return 0;
+            }
         });
     };
 
@@ -121,6 +153,11 @@ function CNTLIST({
 
     const sortedList = getSortedList();
 
+    useEffect(() => {
+        const sortedList = getSortedList();
+        onChangeGroup(sortedList);
+    }, [userSort]);
+
     return (
         <div className="view-que-list scroll-inner">
             {sortedList.map((group, groupIndex) => (
@@ -148,10 +185,9 @@ function CNTLIST({
                                     </div>
                                 </div>
                             )}
-                            <div key={item.itemId} className="view-que-box">
+                            <div key={item.itemId} className="view-que-box" id={item.index}>
                                 <div className="que-top">
                                     <div className="title">
-                                        {/*<span className="num">{itemIndex + 1}</span>*/}
                                         <span className="num">{item.index}</span>
                                         <div className="que-badge-group">
                                             <span className="que-badge">{item.difficultyName}</span>

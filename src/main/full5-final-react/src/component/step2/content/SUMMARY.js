@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import outerDragHandleIcon from '../../../images/common/ico_move_type01.png';
 import SummaryList from "./SummaryList";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -8,21 +8,21 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
     const [multipleCount, setMultipleCount] = useState(0);
     const [subjectiveCount, setSubjectiveCount] = useState(0);
 
-    const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
-    const subjectiveForms = ['단답 유순형', '서술형'];
+    const multipleChoiceForms = useMemo(() => ['5지 선택', '단답 무순형', '자유 선지형'], []);
+    const subjectiveForms = useMemo(() => ['단답 유순형', '서술형'], []);
 
     useEffect(() => {
-
         const multipleCount = changeList.filter(item => multipleChoiceForms.includes(item.questionFormName)).length;
         const subjectiveCount = changeList.filter(item => subjectiveForms.includes(item.questionFormName)).length;
 
         setMultipleCount(multipleCount);
         setSubjectiveCount(subjectiveCount);
-    }, [changeList]);
+    }, [changeList, multipleChoiceForms, subjectiveForms]);
+
 
     useEffect(() => {
         setChangeList(initialChangeList);
-    }, [initialChangeList, groupData]);
+    }, [initialChangeList]);
 
     const handleChangeList = (newChangeList) => {
         setChangeList(newChangeList);
@@ -127,7 +127,7 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
                                                     <div
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
-                                                        className="depth-01 ui-sortable"
+                                                        className={`depth-01 ui-sortable ${group.items.length === 1 ? 'single-item' : ''}`}
                                                     >
                                                         {group.groupKey !== null && (
                                                             <div className="drag-type02 dragHandle"
@@ -166,6 +166,7 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
                                                                                         dragHandleProps={provided.dragHandleProps}
                                                                                         multipleChoiceForms={multipleChoiceForms}
                                                                                         subjectiveForms={subjectiveForms}
+                                                                                        isSingleItem={group.items.length === 1}
                                                                                     />
                                                                                 </div>
                                                                             )}
