@@ -14,8 +14,16 @@ function DELLIST({item, addToDelList, delList, setDelList}) {
             <div className="title">
                 <span className="num">{item.itemNo}</span>
                 <div className="que-badge-group">
-                    <span className="que-badge">{item.difficultyName}</span>
-                    <span className="que-badge">{item.questionFormName}</span>
+                    <span
+                        className={`que-badge ${
+                            item.difficultyName === '상' ? 'yellow' :
+                                item.difficultyName === '중' ? 'green' :
+                                    'purple'
+                        }`}
+                    >
+                        {item.difficultyName}
+                    </span>
+                    <span className="que-badge gray">{item.questionFormName === '단답 유순형' ? '주관식' : '객관식'}</span>
                 </div>
             </div>
             <div className="btn-wrap">

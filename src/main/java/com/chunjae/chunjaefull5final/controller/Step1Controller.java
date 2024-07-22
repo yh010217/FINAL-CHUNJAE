@@ -1,3 +1,4 @@
+/*
 package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
@@ -124,7 +125,9 @@ public class Step1Controller {
         return subjectList;
     }
 
-    /** 리퀘스트바디 가져와서 post로 보내고 Response 받아오는 행위 */
+    */
+/** 리퀘스트바디 가져와서 post로 보내고 Response 받아오는 행위 *//*
+
     public ResponseEntity<String> postRequest(String url, Map<String, Object> requestBody){
 
         HttpHeaders headers = new HttpHeaders();
@@ -139,3 +142,4 @@ public class Step1Controller {
     }
 
 }
+*/

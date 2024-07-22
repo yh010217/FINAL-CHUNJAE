@@ -1,8 +1,11 @@
 import CNTLEFT from "./CNTLEFT";
 import CNTRIGHT from "./CNTRIGHT";
 import {useEffect, useState} from "react";
+import React from "react";
 
-function VIEWBOTTOM({itemList}) {
+
+function VIEWBOTTOM({itemList, setModal, setItemId}){
+
     /** 바뀌는 리스트 만들기 **/
     const [changeList, setChangeList] = useState([]);
     const [groupedData, setGroupedData] = useState([]);
@@ -50,7 +53,7 @@ function VIEWBOTTOM({itemList}) {
         setGroupedData(newGroupData);
     };
 
-    let groupedItems = null;
+    let groupedItems = groupByPassageId(changeList);
 
     /** 클릭한 문제 아래 유사 문제 추가하기 */
     const addToChangeList = (itemToAdd) => {
@@ -58,6 +61,7 @@ function VIEWBOTTOM({itemList}) {
         if (itemToAdd.passageId === null || itemToAdd.passageId === '') {
             setChangeList(prevList => {
                 const index = prevList.findIndex(item => item.itemId === similar);
+                console.log(index, "index 값 찾기 1")
                 if (index === -1) { // 값이 못 찾으면 가장 아래로 보내기
                     return [...prevList, itemToAdd];
                 } else {
@@ -68,26 +72,30 @@ function VIEWBOTTOM({itemList}) {
                     ];
                 }
             });
-            // passageId가 있는 경우
+        // passageId가 있는 경우
         } else if (itemToAdd.passageId !== '') {
-            if (changeId === itemToAdd.passageId) {
+            for(let key in groupedItems) {
+                if(Number(key) === changeId) {
+                    let keyLen = groupedItems[changeId].length;
+                    setChangeList((prevList) => {
+                        const index = prevList.findIndex(
+                            (item) => item.passageId === Number(key)
+                        );
+                        return [
+                            ...prevList.slice(0, index + keyLen),
+                            itemToAdd,
+                            ...prevList.slice(index + keyLen),
+                        ];
+                    });
+                }
+            }
+            /*if (changeId === itemToAdd.passageId) {
                 // 마지막 지문 바로 아래에 추가되어야 함.
                 console.log('추후 추가 예정~~^^');
             } else {
                 // changeId가 itemToAdd의 passageId와 일치하지 않을 때
-                setChangeList(prevList => {
-                    const index = prevList.findIndex(item => item.itemNo === no2);
-                    if (index === -1) { // 값이 못 찾으면 가장 아래로 보내기
-                        return [...prevList, itemToAdd];
-                    } else {
-                        return [
-                            ...prevList.slice(0, index + 1),
-                            itemToAdd,
-                            ...prevList.slice(index + 1)
-                        ];
-                    }
-                });
-            }
+
+            }*/
         }
     };
 
@@ -133,35 +141,39 @@ function VIEWBOTTOM({itemList}) {
     };
 
     return <div className="view-bottom type01">
-        {/** 문제 목록 **/}
-        <CNTLEFT changeList={changeList}
-                 onChangeList={handleChangeList}
-                 groupedData={groupedData}
-                 onChangeGroup={handleGroupData}
-                 setSimilar={setSimilar}
-                 setTab={setTab}
-                 setNo={setNo}
-                 setChangeId={setChangeId}
-                 setNo2={setNo2}
-                 groupedItems={groupedItems}
-                 removeList={removeList}/>
 
-        {/** 문제지 요약, 유사문제, 문제삭제 **/}
-        <CNTRIGHT initialChangeList={changeList}
-                  onChangeList={handleChangeList}
-                  groupedData={groupedData}
-                  similar={similar}
-                  tab={tab}
-                  setTab={setTab}
-                  no={no}
-                  addToChangeList={addToChangeList}
-                  remove={remove}
-                  setRemove={setRemove}
-                  delList={delList}
-                  setDelList={setDelList}
-                  addToDelList={addToDelList}
-        />
-    </div>
+            {/** 문제 목록 **/}
+            <CNTLEFT changeList={changeList}
+                     onChangeList={handleChangeList}
+                     groupedData={groupedData}
+                     onChangeGroup={handleGroupData}
+                     setSimilar={setSimilar}
+                     setTab={setTab}
+                     setNo={setNo}
+                     setChangeId={setChangeId}
+                     setNo2={setNo2}
+                     groupedItems={groupedItems}
+                     removeList={removeList}/>
+
+            {/** 문제지 요약, 유사문제, 문제삭제 **/}
+            <CNTRIGHT initialChangeList={changeList}
+                      onChangeList={handleChangeList}
+                      groupedData={groupedData}
+                      similar={similar}
+                      tab={tab}
+                      setTab={setTab}
+                      no={no}
+                      addToChangeList={addToChangeList}
+                      remove={remove}
+                      setRemove={setRemove}
+                      delList={delList}
+                      setDelList={setDelList}
+                      addToDelList={addToDelList}
+                      setModal={setModal}
+                      setItemId={setItemId}
+            />
+        </div>
+
 }
 
 export default VIEWBOTTOM;

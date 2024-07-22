@@ -235,14 +235,37 @@ function CNTLIST({
                                                         유사문제
                                                     </button>
                                                 </div>
-                                            )}
-                                        </div>
-                                    )}
-                                    {viewType === '문제만 보기' && (
-                                        <div className="que-bottom">
+
+                                                <button
+                                                    className="btn-similar-que btn-default"
+                                                    onClick={() => similarData(
+                                                        item.itemId,
+                                                        index,
+                                                        item.passageId,
+                                                        groupedItems[passageId].length-(groupedItems[passageId].length-1))}
+                                                >
+                                                    <i className="similar"></i>
+                                                    유사문제
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {viewType === '문제만 보기' &&(
+                                    <div className="que-bottom">
+
                                             <div className="data-area type01">
-                                                <button className="btn-similar-que btn-default"
-                                                        onClick={() => similarData(item.itemId, groupIndex)}>
+
+                                                <button
+                                                    className="btn-similar-que btn-default"
+                                                    onClick={() => similarData(
+                                                        item.itemId,
+                                                        index,
+                                                        item.passageId,
+                                                        groupedItems[passageId].length-(groupedItems[passageId].length-1))}
+                                                >
+
                                                     <i className="similar"></i>
                                                     유사문제
                                                 </button>
