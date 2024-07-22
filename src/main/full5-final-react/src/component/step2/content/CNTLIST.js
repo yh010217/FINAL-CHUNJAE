@@ -235,14 +235,16 @@ function CNTLIST({
                                                         유사문제
                                                     </button>
                                                 </div>
+                                                )}
 
                                                 <button
                                                     className="btn-similar-que btn-default"
                                                     onClick={() => similarData(
                                                         item.itemId,
-                                                        index,
+                                                        item.index,
                                                         item.passageId,
-                                                        groupedItems[passageId].length-(groupedItems[passageId].length-1))}
+                                                        (group.items.length+item.index)-1
+                                                    )}
                                                 >
                                                     <i className="similar"></i>
                                                     유사문제
@@ -261,9 +263,10 @@ function CNTLIST({
                                                     className="btn-similar-que btn-default"
                                                     onClick={() => similarData(
                                                         item.itemId,
-                                                        index,
+                                                        item.index,
                                                         item.passageId,
-                                                        groupedItems[passageId].length-(groupedItems[passageId].length-1))}
+                                                        (group.items.length+item.index)-1
+                                                    )}
                                                 >
 
                                                     <i className="similar"></i>
@@ -278,7 +281,6 @@ function CNTLIST({
                                         {item.largeChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
                                     </p>
                                 </div>
-                            </div>
                         </React.Fragment>
                     ))}
                 </React.Fragment>

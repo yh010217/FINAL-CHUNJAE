@@ -2,7 +2,7 @@
 import ListModal from "./ListModal";
 import {useState} from "react";
 
-function VIEWTOP({itemList, onReSearch}){
+function VIEWTOP({itemList, onReSearch}) {
 
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -16,8 +16,6 @@ function VIEWTOP({itemList, onReSearch}){
         document.body.style.overflow = "unset";
     };
 
-function VIEWTOP({itemList, onReSearch}){
-
     return <>
         <div className="view-top">
             <div className="paper-info">
@@ -30,9 +28,10 @@ function VIEWTOP({itemList, onReSearch}){
                 <i className="research"></i>재검색
             </button>
             <button onClick={openModal} className="btn-default pop-btn">출제범위</button>
-            <ListModal data={itemList} open={modalOpen} onClose={closeModal} />
+            <ListModal data={itemList} open={modalOpen} onClose={closeModal}/>
 
         </div>
     </>
+}
 
 export default VIEWTOP;
