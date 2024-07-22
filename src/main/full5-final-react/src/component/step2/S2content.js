@@ -3,7 +3,7 @@ import axios from "axios";
 import VIEWTOP from "./content/VIEWTOP";
 import VIEWBOTTOM from "./content/VIEWBOTTOM";
 
-function S2content({setModal}) {
+function S2content({setModal, setItemId }) {
     const [itemList, setItemList] = useState([]);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ function S2content({setModal}) {
             {/** 시험지 정보 / 과목 명칭(선생님 이름) / 재검색 / 출제범위 **/}
             <VIEWTOP itemList={itemList}/>
             {/** 문제 목록, 문제 요약, 유사, 삭제 **/}
-            <VIEWBOTTOM itemList={itemList} setModal={setModal}/>
+            <VIEWBOTTOM itemList={itemList} setModal={setModal} setItemId={setItemId }/>
         </div>
     );
 }

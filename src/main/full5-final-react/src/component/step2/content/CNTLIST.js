@@ -229,36 +229,25 @@ function CNTLIST({
                                                             <img src={item.answerUrl} alt="정답"/>
                                                         </div>
                                                     </div>
-                                                    <button className="btn-similar-que btn-default"
-                                                            onClick={() => similarData(item.itemId, groupIndex)}>
+                                                    <button
+                                                        className="btn-similar-que btn-default"
+                                                        onClick={() => similarData(
+                                                            item.itemId,
+                                                            item.index,
+                                                            item.passageId,
+                                                            (group.items.length+item.index)-1
+                                                        )}
+                                                    >
                                                         <i className="similar"></i>
                                                         유사문제
                                                     </button>
                                                 </div>
-                                                )}
-
-                                                <button
-                                                    className="btn-similar-que btn-default"
-                                                    onClick={() => similarData(
-                                                        item.itemId,
-                                                        item.index,
-                                                        item.passageId,
-                                                        (group.items.length+item.index)-1
-                                                    )}
-                                                >
-                                                    <i className="similar"></i>
-                                                    유사문제
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-
-                                {viewType === '문제만 보기' &&(
-                                    <div className="que-bottom">
-
+                                            )}
+                                        </div>
+                                    )}
+                                    {viewType === '문제만 보기' && (
+                                        <div className="que-bottom">
                                             <div className="data-area type01">
-
                                                 <button
                                                     className="btn-similar-que btn-default"
                                                     onClick={() => similarData(
@@ -268,7 +257,6 @@ function CNTLIST({
                                                         (group.items.length+item.index)-1
                                                     )}
                                                 >
-
                                                     <i className="similar"></i>
                                                     유사문제
                                                 </button>
@@ -281,6 +269,7 @@ function CNTLIST({
                                         {item.largeChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
                                     </p>
                                 </div>
+                            </div>
                         </React.Fragment>
                     ))}
                 </React.Fragment>
@@ -289,5 +278,5 @@ function CNTLIST({
     );
 
 }
-// 통합테스트 2
+
 export default CNTLIST;

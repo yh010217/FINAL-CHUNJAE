@@ -53,6 +53,18 @@ function VIEWBOTTOM({itemList, setModal, setItemId}){
         setGroupedData(newGroupData);
     };
 
+    const groupByPassageId = (list) => {
+        return list.reduce((grouped, item) => {
+            const key = item.passageId;
+            if (key) {
+                (grouped[key] = grouped[key] || []).push(item);
+            } else {
+                (grouped['individual'] = grouped['individual'] || []).push(item);
+            }
+            return grouped;
+        }, {});
+    };
+
     let groupedItems = groupByPassageId(changeList);
 
     /** 클릭한 문제 아래 유사 문제 추가하기 */

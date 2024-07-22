@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 function SIMLARLIST(props) {
 
-
     const simRemoveList = (itemId) => {
         props.list(itemId);
     };

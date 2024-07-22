@@ -26,4 +26,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("POST")
                 .allowedHeaders("*");
     }
-    }
+}
