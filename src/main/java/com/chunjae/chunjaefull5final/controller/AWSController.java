@@ -68,18 +68,28 @@ public class AWSController {
         S3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
+    @GetMapping("/csv_download/{fileName}")
+    public ResponseEntity<byte[]> download(@PathVariable String fileName) throws IOException {
+        return S3Service.getObject(fileName);
+    }
 
     @GetMapping("/download/{filePath}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String filePath) {
         try {
+            // URL 디코딩을 통해 파일 경로를 정상적으로 처리
             String decodedFilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8.toString());
-            logger.info("Attempting to download file: {}", decodedFilePath);
+            logger.info("Decoded FilePath: {}", decodedFilePath);
+
+            // S3에서 파일 다운로드
             S3Object s3Object = S3Service.downloadFile(decodedFilePath);
             InputStreamResource resource = new InputStreamResource(s3Object.getObjectContent());
 
+            // 파일명 추출 및 헤더 설정
+            String fileName = decodedFilePath.substring(decodedFilePath.lastIndexOf("/") + 1);
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + decodedFilePath.substring(decodedFilePath.lastIndexOf("/") + 1) + "\"");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
 
+            // ResponseEntity 생성
             return ResponseEntity.ok()
                     .headers(headers)
                     .contentLength(s3Object.getObjectMetadata().getContentLength())

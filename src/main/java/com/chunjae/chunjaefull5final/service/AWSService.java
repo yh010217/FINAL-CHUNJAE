@@ -1,6 +1,8 @@
 package com.chunjae.chunjaefull5final.service;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
@@ -80,32 +82,39 @@ public class AWSService {
 
     }
 
-    public byte[] getObject(String filepath) throws IOException {
-        S3Object s3Object = amazonS3.getObject(bucket, filepath);
-        try (S3ObjectInputStream s3is = s3Object.getObjectContent()) {
-            return s3is.readAllBytes();
-        }
-    }
+//    public byte[] getObject(String filepath) throws IOException {
+//        S3Object s3Object = amazonS3.getObject(bucket, filepath);
+//        try (S3ObjectInputStream s3is = s3Object.getObjectContent()) {
+//            return s3is.readAllBytes();
+//        }
+//    }
 
     public S3Object downloadFile(String filePath) {
         GetObjectRequest getObjectRequest = new GetObjectRequest(bucket, filePath);
         return amazonS3.getObject(getObjectRequest);
     }
+//    public S3Object downloadFile(String filePath) throws AmazonServiceException {
+//        AmazonS3 s3Client = AmazonS3ClientBuilder.standard().build();
+//        return s3Client.getObject(new GetObjectRequest(bucket, filePath));
+//    }
 
-//public ResponseEntity<byte[]> getObject(String storedFileName) throws IOException {
-//    S3Object s3Object = amazonS3.getObject(new GetObjectRequest(bucket, storedFileName));
-//    S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
-//    byte[] bytes = IOUtils.toByteArray(objectInputStream);
-//    objectInputStream.close();
-//
-//    String fileName = URLEncoder.encode(storedFileName, "UTF-8").replaceAll("\\+", "%20");
-//    HttpHeaders httpHeaders = new HttpHeaders();
-//    httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//    httpHeaders.setContentLength(bytes.length);
-//    httpHeaders.setContentDispositionFormData("attachment", fileName);
-//
-//    return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-//}
+
+
+    public ResponseEntity<byte[]> getObject(String storedFileName) throws IOException {
+    S3Object s3Object = amazonS3.getObject(new GetObjectRequest(bucket, storedFileName));
+    S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
+    byte[] bytes = IOUtils.toByteArray(objectInputStream);
+    objectInputStream.close();
+
+    String fileName = URLEncoder.encode(storedFileName, "UTF-8").replaceAll("\\+", "%20");
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+    httpHeaders.setContentLength(bytes.length);
+    httpHeaders.setContentDispositionFormData("attachment", fileName);
+
+    return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+}
+
 
 
 
