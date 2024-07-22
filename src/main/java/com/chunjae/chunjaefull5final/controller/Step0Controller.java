@@ -1,23 +1,24 @@
 package com.chunjae.chunjaefull5final.controller;
 
 
-import com.chunjae.chunjaefull5final.dto.ExamIdDTO;
-import com.nimbusds.oauth2.sdk.ResponseType;
+import com.chunjae.chunjaefull5final.dto.PreviewItemDTO;
+import com.chunjae.chunjaefull5final.dto.PreviewResponseDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.Map;
 public class Step0Controller {
 
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
     private List<String> seletedExamIds;    // 세션으로 ExamId 목록 받게 수정하기
 
     @GetMapping("/step0/{subjectId}")
@@ -174,7 +176,7 @@ public class Step0Controller {
     }
 
     /**
-     * 선택한 시험지 JSON 형식으로 받기
+     * 선택한 시험지 json 형식으로 받고 보내기
      */
     @PostMapping("/step0/examid")
     public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request) {
@@ -199,20 +201,135 @@ public class Step0Controller {
         return ResponseEntity.ok(response);
     }
 
-    /** 셋팅지 미리보기 - 문항+정답+해설 */
-    @PostMapping("/preview/all")
-    public ResponseType previewAll(@RequestBody ExamIdDTO request){
-        String url = "https://tsherpa.item-factory.com/exam/preview";   // api url
-        RestTemplate restTemplate = new RestTemplate();
+    @PostMapping("/preview/first")
+    public ResponseEntity<PreviewResponseDTO> getPreview(@RequestBody PreviewResponseDTO request) {
+        String url = "https://tsherpa.item-factory.com/item-img/exam/item-list";
 
-        // API 호출
         try {
-            ResponseType response = restTemplate.patchForObject(url, request, ResponseType.class);
-            return response;
-        }catch (Exception e){
-            log.error("Failed to fetch preview from URL: " + url + " with request: " + request, e);
-            throw new RuntimeException("Failed to fetch preview", e);
+            RestTemplate restTemplate = new RestTemplate();
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("examId", request.getExamId());
+            ResponseEntity<PreviewResponseDTO> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    new HttpEntity<>(requestBody),
+                    PreviewResponseDTO.class
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                PreviewResponseDTO previewResponse = response.getBody();
+                String successYn = previewResponse.getSuccessYn();
+                List<PreviewItemDTO> itemList = previewResponse.getItemList();
+
+                request.setSuccessYn(successYn);
+                request.setItemList(new ArrayList<>(itemList));
+            } else {
+                request.setSuccessYn("N");
+                request.setItemList(null);
+            }
+
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            request.setSuccessYn("N");
+            request.setItemList(null);
+        } catch (HttpServerErrorException e) {
+            e.printStackTrace();
+            request.setSuccessYn("N");
+            request.setItemList(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setSuccessYn("N");
+            request.setItemList(null);
         }
 
+        return ResponseEntity.ok(request);
     }
+
+
+
+ /*   @PostMapping("/preview/all")
+    public ResponseEntity<String> previewAll(@RequestBody ExamIdDTO request) {
+        String postUrl = "https://tsherpa.item-factory.com/exam/preview"; // 첫 번째 API URL
+
+        try {
+            // 첫 번째 API 호출
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<ExamIdDTO> requestEntity = new HttpEntity<>(request, headers);
+
+            ResponseEntity<String> postResponse = restTemplate.exchange(postUrl, HttpMethod.POST, requestEntity, String.class);
+
+            if (!postResponse.getStatusCode().is2xxSuccessful() || postResponse.getBody() == null) {
+                throw new RuntimeException("preview URL fetch 실패 ..");
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+            ResponseType responseType = objectMapper.readValue(postResponse.getBody(), ResponseType.class);
+
+            // successYn 확인
+            if (!"Y".equals(responseType.getSuccessYn())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Operation was not successful: " + responseType.getSuccessYn());
+            }
+
+            // previewUrl 확인
+            String previewUrl = responseType.getPreviewUrl();
+            if (previewUrl == null) {
+                throw new RuntimeException("previewUrl is null ..");
+            }
+
+            System.out.println("preview URL: " + previewUrl); // URL 로그 출력
+*//*
+
+            // GET 요청으로 HTML 가져오기
+            ResponseEntity<String> getResponse = restTemplate.getForEntity(previewUrl, String.class);
+
+            if (!getResponse.getStatusCode().is2xxSuccessful() || getResponse.getBody() == null) {
+                throw new RuntimeException("HTML content fetch 실패..");
+            }
+
+            // HTML 콘텐츠 반환
+            return ResponseEntity.ok(getResponse.getBody());
+*//*
+
+
+            // GET 요청으로 HTML 가져오기
+            ResponseEntity<byte[]> getResponse = restTemplate.getForEntity(previewUrl, byte[].class);
+
+            if (!getResponse.getStatusCode().is2xxSuccessful() || getResponse.getBody() == null) {
+                throw new RuntimeException("HTML content fetch 실패..");
+            }
+
+            // 바이트 배열을 UTF-8로 디코딩
+            String htmlContent = new String(getResponse.getBody(), StandardCharsets.UTF_8);
+
+            // HTML 콘텐츠 반환, 인코딩을 UTF-8로 설정
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.setContentType(MediaType.TEXT_HTML); // 텍스트 HTML 타입으로 설정
+            responseHeaders.setContentType(new MediaType("text", "html", StandardCharsets.UTF_8)); // UTF-8 설정
+
+            return new ResponseEntity<>(htmlContent, responseHeaders, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("미리보기 fetch 실패 ..");
+        }
+    }*/
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

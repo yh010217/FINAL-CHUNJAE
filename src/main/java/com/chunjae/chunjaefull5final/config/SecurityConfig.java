@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/css/**")
                 .requestMatchers("/full5-final-react/src/**")
                 .requestMatchers("/full5-final-react/component/**")
-                .requestMatchers("/preview/all");
+                .requestMatchers("/preview/all")
+                .requestMatchers("/preview/first");
 //                .requestMatchers("/**");
     }
     @Bean
