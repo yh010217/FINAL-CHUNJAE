@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // '신규 시험지 만들기' 버튼 클릭시
     newButton.addEventListener('click', function () {
         // console.log('subjectId..',subjectId);
-        window.location.href = '/step1/select-chapter/'+subjectId;
+        window.location.href = '/step1/select-chapter/' + subjectId;
     })
 
     let selectedItemCount = 0;  // 선택된 문항 수를 추적 변수
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedCountElement.textContent = selectedItemCount;
     };
 
-
+    // !!!!!!!!선택 후 값 보내고 뒤로가기 했을 때 체크박스 해제 시키기
     checkboxes.forEach(checkbox => { // 각 체크박스에 이벤트 리스너를 추가
         checkbox.addEventListener('change', function () {
 
@@ -70,40 +70,33 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('응답!!!!', data);
                     // 서버로 부터 데이터 성공적으로 받으면 step2로 이동
                     /* !!!!!! 경로 변경시 수정 !!!!!*/
-                    window.location.href ='http://localhost:3000/step2';
+                    window.location.href = 'http://localhost:3000/step2';
                 }).catch(error => {
                 console.log('에러 발생', error);
                 alert('에러 발생..')
             });
-
         }
     });
 
     // 초기 선택된 문항 수 업데이트
     updateSelectedCount();
 
-    // 셋팅지 미리보기
+    // 미리보기
     document.querySelectorAll('.tbody').forEach(tbody => {  // tbody에 이벤트 리스너 추가
         tbody.addEventListener('click', function (event) {
             let button = event.target.closest('.pop-btn.btn-icon2');
             if (button) {
-                //let examId = button.previousElementSibling.value;   // 시험지ID
-              //  const col = this.closest(".col");
-              //  const paperId = col.querySelector(".examId").value;
-           //     let paperTitle = document.getElementById('paperName').value;
-              //let itemCnt = document.getElementById('itemCount').value;
                 let col = button.closest('.col'); // 버튼의 부모 요소인 .col을 찾음
                 let examId = col.querySelector('input[id="examId"]').value; // examId 가져오기
                 let paperTitle = col.querySelector('input[id="paperName"]').value; // paperName 가져오기
                 let itemCnt = col.querySelector('input[id="itemCount"]').value; // itemCount 가져오기
 
+                // console.log('examId...', examId);
+                // console.log('paperTitle..',paperTitle);
+                // console.log('itemCnt..',itemCnt);
 
-                console.log('examId...', examId);
-                console.log('paperTitle..',paperTitle);
-                console.log('itemCnt..',itemCnt);
-
-            // 셋팅지 미리보기 api 호출
-                // 문항 - 문제정답해설 미리보기
+                // 셋팅지 미리보기 api 호출
+                // 문항 불러오기
                 fetch('/preview/first', {
                     method: 'POST',
                     headers: {
@@ -126,22 +119,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         document.getElementById("preview-tit").innerHTML = '[시험지명]&ensp;' + paperTitle;
                         document.getElementById("preview-cnt").innerHTML = '&emsp;[문항수]&ensp;' + itemCnt + '문항';
-                       // document.getElementById("preview_paperId").value = examId;
+                        // document.getElementById("preview_paperId").value = examId;
 
                         let html = '';
                         let tmpPassageId = '';
-                        console.log('data...',data);
+                        // console.log('data...', data);
                         let half = Math.ceil(data.itemList.length / 2);
                         let passageNum = 0; // 지문 구분 Number
-
+                        let tmpNum=0;
                         for (let part = 0; part < 2; part++) {
                             let limit_num = part === 0 ? half : data.itemList.length;
                             let start_num = part === 0 ? 0 : half;
+
+                            // console.log('limit_num...', limit_num);
+                            // console.log('start_num...', start_num);
 
                             html += '<div class="view-data">';
                             for (let s = start_num; s < limit_num; s++) {
                                 let obj = data.itemList[s];
 
+                                // console.log('obj...', obj);
+                                html += '<div class="example-area"><div class="example-box">';
                                 // 지문 문항
                                 if (obj.passageId !== null && obj.passageId !== '') {
                                     if (obj.passageId !== tmpPassageId) {
@@ -152,9 +150,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                         html += '</div>';
                                         tmpPassageId = obj.passageId;
                                     }
+                                    tmpNum=passageNum;
                                 }
 
-                                html += '<div class="item-question">';
+
+
+                                html += '<div class="item-question passage-area">';
                                 html += '   <span class="numbering question-num" data-passageNum="' + passageNum + '">' + (s < 9 ? "0" + (s + 1) : (s + 1)) + '.</span>';
                                 html += '   <img class="item-img" src="' + obj.questionUrl + '" alt="' + obj.itemId + '">';
                                 html += '</div>';
@@ -162,16 +163,18 @@ document.addEventListener('DOMContentLoaded', function () {
                                 html += '   <div class="answer-tit">(정답)</div>';
                                 html += '   <div class="answer-img"><img src="' + obj.answerUrl + '" alt="' + obj.itemId + '"></div>';
                                 html += '</div>';
-                                html += '<div class="explain-answer">';
+                                html += '<div class="explain-answer ">';
                                 html += '   <div class="explain-tit">(해설)</div>';
                                 html += '   <div class="explain-img"><img src="' + obj.explainUrl + '" alt="' + obj.itemId + '"></div>';
                                 html += '</div>';
-                                html += '</div>'; // item-question 끝
+                                html += '</div></div>';
+                                tmpNum = 0 ;
                             }
                             html += '</div>'; // view-data 끝
                         }
                         document.getElementById('preview-question-data').innerHTML = html;
 
+                        /* @@@@@@@@@@*/
                         // 미리보기 지문 넘버링
                         document.querySelectorAll(".passage-num").forEach(passageNumElement => {
                             let passageNumTmp = passageNumElement.getAttribute("data-passageNum");
@@ -184,51 +187,102 @@ document.addEventListener('DOMContentLoaded', function () {
                                             if (lastChild && lastChild.textContent) {
                                                 tmpText += '~' + lastChild.textContent.replace('.', '');
                                             } else {
-                                                console.warn('No last element child or its text content for:', element);
+                                                console.log('no element', element);
                                             }
                                         }
                                         passageNumElement.textContent = tmpText;
                                     }
                                 });
                             } else {
-                                console.warn('Data passage number is not defined for:', passageNumElement);
+                                console.warn('passage number 값 없음', passageNumElement);
                             }
                         });
-/*
-                        // 미리보기 지문 넘버링
-                        document.querySelectorAll(".passage-num").forEach(passageNumElement => {
-                            let passageNumTmp = passageNumElement.getAttribute("data-passageNum");
-                            document.querySelectorAll("[data-passageNum='" + passageNumTmp + "']").forEach((element, index) => {
-                                if (!element.classList.contains("passage-num")) {
-                                    let tmpText = element.textContent.replace('.', '');
-                                    if (index > 0) {
-                                        tmpText += '~' + element.lastElementChild.textContent.replace('.', '');
-                                    }
-                                    passageNumElement.textContent = tmpText;
-                                }
-                            });
-                        });*/
                     })
                     .catch(error => {
                         alert("미리보기를 불러오지 못했습니다. 관리자에게 문의해 주시기 바랍니다.");
                         console.error("Fetch error: ", error);
                     })
                     .finally(() => {
-                       // document.querySelector(".loading-cnt").style.display = 'none'; // 로딩 표시 제거
+                        // document.querySelector(".loading-cnt").style.display = 'none'; // 로딩 표시 제거
                     });
 
+                // 문항 정보표 데이터 불러오기
 
 
-                // 문제
+                // 미리보기 tab 이동
+                document.querySelectorAll('#preview-tab a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        // 현재 클릭된 링크의 부모 li 요소를 선택
+                        let parentLi = this.parentElement;
+
+                        // 모든 형제 li 요소에서 active 클래스 제거
+                        let siblings = parentLi.parentElement.children;
+                        for (let i = 0; i < siblings.length; i++) {
+                            if (siblings[i] !== parentLi) {
+                                siblings[i].classList.remove('active');
+                            }
+                        }
+
+                        parentLi.classList.add('active');     // 현재 li 요소에 active 클래스 추가
+
+                        clickPreview(this.getAttribute('data-type'));    // data-type 속성의 값을 가져와서 changePreview 호출
+
+                    });
+                });
+
+                // 미리보기 tab 별 style 변경
+                function setStyle(selector, displayStyle) {
+                    let elemnets = document.querySelectorAll(selector);
+                    elemnets.forEach(element => {
+                        element.style.display = displayStyle;
+                    })
+                };
+
+                function clickPreview(type) {
+                    document.querySelector(".preview-download").setAttribute("data-type", type);    // .preview-download 요소의 data-type 속성 설정
+                    document.querySelector(".preview-data .scroll-inner").scrollTop = 0;          // 스크롤 위치를 맨 위로
+                    //document.querySelector('.preview-data .view-box').classList.add('type-line');  // .view-box에 type-line 클래스 추가
+
+                    // style 기본 값
+                  // setStyle(".preview-data .passage-area", "none");
+
+                    // 각 타입에 따른 화면 전환
+                    if (type === 'A') { // 문제+해설+정답
+                        console.log('A 클릭');
+                   //    setStyle(".preview-data .passage-area", "block");
+                        setStyle(".preview-data .item-img", "block");
+                        setStyle(".preview-data .answer-container", "block");
+                        setStyle(".preview-data .explain-answer", "block");
+                        setStyle(".passage-area .passage-num", "block");
+                        setStyle(".passage-area img", "block");
+                    } else if (type === 'Q') { // 문제
+                        console.log('Q 클릭');
+                      // setStyle(".preview-data .passage-area", "block");
+                        setStyle(".preview-data .item-img", "block");
+                        setStyle(".passage-area img", "block");
+                        setStyle(".preview-data .answer-container", "none");
+                        setStyle(".preview-data .explain-answer", "none");
+                        setStyle(".passage-area .passage-num", "block");
+                    } else if (type === 'E') { // 정답+해설
+                        console.log('E 클릭');
+                        setStyle(".passage-area img", "none");
+                        setStyle(".passage-area .passage-num", "none");
+                      //  setStyle(".passage-area .question-num", "block");
+                        setStyle(".preview-data .answer-container", "block");
+                        setStyle(".preview-data .explain-answer", "block");
+
+                    } else if (type === 'C') { // 문항정보표
+                        console.log('C 클릭');
+                        // 추가 처리 필요 시 여기에 작성
+                    }
 
 
-                // 정답+해설
-
-
-                // 문항 정보표
-
+                }
             }
         });
     });
 
 });
+
+
+
