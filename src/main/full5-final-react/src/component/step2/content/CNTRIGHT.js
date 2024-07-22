@@ -14,7 +14,7 @@ function CNTRIGHT({initialChangeList, onChangeList, groupedData, tab, setTab, si
 
     useEffect(() => {
         setChangeList(initialChangeList);
-    }, [initialChangeList]);
+    }, [initialChangeList, groupedData]);
 
     /** SUMMARY 에서 받아온 리스트 **/
     const handleChangeList = (newChangeList) => {
@@ -22,10 +22,6 @@ function CNTRIGHT({initialChangeList, onChangeList, groupedData, tab, setTab, si
         setChangeList(newChangeList);
         onChangeList(newChangeList);
     };
-
-    useEffect(()=>{
-        setChangeList(initialChangeList);
-    },[initialChangeList]);
 
     const renderContent = () => {
         switch (tab) {

@@ -73,7 +73,7 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
             const sourceGroup = newGroupedData[sourceGroupIndex];
             const destinationGroup = newGroupedData[destinationGroupIndex];
 
-            // groupKey 다른 그룹으로 이동하는 것을 방지
+            // 다른 그룹으로 이동하는 것을 방지
             if (sourceGroup.groupKey !== destinationGroup.groupKey) {
                 return;
             }
@@ -86,7 +86,6 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
             const newChangeList = newGroupedData.flatMap(group => group.items);
 
             // 상태 업데이트
-            // setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
         }

@@ -2,13 +2,12 @@ import React, {useEffect, useState} from 'react';
 import CNTLIST from "./CNTLIST";
 import CNTBOTTOM from "./CNTBOTTOM";
 
-function CNTLEFT({changeList, onChangeList, onChangeGroup, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList}) {
+function CNTLEFT({changeList, onChangeList, onChangeGroup, userSort, setUserSort, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList}) {
 
     const [sortList1, setSortList1] = useState(false);
     const [sortList2, setSortList2] = useState(false);
 
     const [viewType, setViewType] = useState('문제만 보기');
-    const [userSort, setUserSort] = useState('사용자 정렬');
 
     const toggleList1 = () => {
         setSortList1(!sortList1);
@@ -55,6 +54,8 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, setSimilar, tab, setT
 
         <CNTLIST initialChangeList={changeList}
                  onChangeList={onChangeList}
+                 initialGroupData={groupedData}
+                 onChangeGroup={onChangeGroup}
                  setSimilar={setSimilar}
                  tab={tab}
                  setTab={setTab}
@@ -64,8 +65,6 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, setSimilar, tab, setT
                  setChangeId={setChangeId}
                  setNo2={setNo2}
                  groupedItems={groupedItems}
-                 initialGroupData={groupedData}
-                 onChangeGroup={onChangeGroup}
                  removeList={removeList}
         />
         <CNTBOTTOM changeList={changeList}/>

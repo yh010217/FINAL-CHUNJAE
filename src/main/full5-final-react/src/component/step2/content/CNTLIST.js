@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 function CNTLIST({
                      initialChangeList,
+                     onChangeList,
                      initialGroupData,
                      onChangeGroup,
                      setSimilar,
@@ -38,7 +39,7 @@ function CNTLIST({
             });
         });
 
-        groupedData.sort((group1, group2)=>{
+        groupedData.sort((group1, group2) => {
             const firstItem1 = group1.items[0];
             const firstItem2 = group2.items[0];
 
@@ -156,6 +157,7 @@ function CNTLIST({
     useEffect(() => {
         const sortedList = getSortedList();
         onChangeGroup(sortedList);
+
     }, [userSort]);
 
     return (
@@ -169,7 +171,7 @@ function CNTLIST({
                                     <div className="que-top">
                                         <div className="title">
                                             <span className="num">
-                                                {item.index} ~ {(group.items.length+item.index)-1}
+                                                {item.index} ~ {(group.items.length + item.index) - 1}
                                             </span>
                                         </div>
                                     </div>
@@ -190,7 +192,11 @@ function CNTLIST({
                                     <div className="title">
                                         <span className="num">{item.index}</span>
                                         <div className="que-badge-group">
-                                            <span className="que-badge">{item.difficultyName}</span>
+                                            <span className={`que-badge ${
+                                                item.difficultyName === '상' ? 'yellow' :
+                                                    item.difficultyName === '중' ? 'green' :
+                                                        'purple'
+                                            }`}>{item.difficultyName}</span>
                                             <span className="que-badge gray">
                                         {multipleChoiceForms.includes(item.questionFormName) ? '객관식' : '주관식'}
                                     </span>
@@ -235,7 +241,7 @@ function CNTLIST({
                                                             item.itemId,
                                                             item.index,
                                                             item.passageId,
-                                                            (group.items.length+item.index)-1
+                                                            (group.items.length + item.index) - 1
                                                         )}
                                                     >
                                                         <i className="similar"></i>
@@ -254,7 +260,7 @@ function CNTLIST({
                                                         item.itemId,
                                                         item.index,
                                                         item.passageId,
-                                                        (group.items.length+item.index)-1
+                                                        (group.items.length + item.index) - 1
                                                     )}
                                                 >
                                                     <i className="similar"></i>

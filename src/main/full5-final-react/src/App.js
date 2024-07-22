@@ -14,11 +14,16 @@ function App() {
     /** STEP 2 만든 시험지 저장하는 곳 **/
     let [paper, setPaper] = useState([]);
 
+    const handlePaper = (newPaper) => {
+        // console.log(newPaper);
+        setPaper(newPaper);
+    }
+
     return <>
         <BrowserRouter>
             <Routes>
                 {/** STEP 2 **/}
-                <Route path={'/step2'} element={<STEP2/>}></Route>
+                <Route path={'/step2'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'} element={<STEP3 paper={paper}/>}></Route>
             </Routes>
