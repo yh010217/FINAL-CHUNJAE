@@ -1,8 +1,125 @@
+import React, {useEffect, useState} from 'react';
 
-import React, {useEffect} from 'react';
+function CNTLIST({
+                     initialChangeList,
+                     initialGroupData,
+                     onChangeGroup,
+                     setSimilar,
+                     setTab,
+                     setNo,
+                     viewType,
+                     userSort,
+                     setChangeId,
+                     setNo2,
+                     removeList,
+                     groupedItems
+                 }) {
 
-function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChangeId, setNo2, groupedItems, removeList}) {
+    const [groupedData, setGroupedData] = useState(initialGroupData);
+    const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
 
+    useEffect(() => {
+        setGroupedData(initialGroupData);
+    }, [initialGroupData]);
+
+    // 단원순 (오름차순) 정렬
+    const sortByChapter = () => {
+        groupedData.forEach(group => {
+            group.items.sort((item1, item2) => {
+                if (item1.largeChapterName !== item2.largeChapterName) {
+                    return item1.largeChapterName.localeCompare(item2.largeChapterName);
+                } else if (item1.mediumChapterName !== item2.mediumChapterName) {
+                    return item1.mediumChapterName.localeCompare(item2.mediumChapterName);
+                } else if (item1.smallChapterName !== item2.smallChapterName) {
+                    return item1.smallChapterName.localeCompare(item2.smallChapterName);
+                } else {
+                    return item1.topicChapterName.localeCompare(item2.topicChapterName)
+                }
+            });
+        });
+
+        groupedData.sort((group1, group2)=>{
+            const firstItem1 = group1.items[0];
+            const firstItem2 = group2.items[0];
+
+            if (firstItem1.largeChapterName !== firstItem2.largeChapterName) {
+                return firstItem1.largeChapterName.localeCompare(firstItem2.largeChapterName);
+            } else if (firstItem1.mediumChapterName !== firstItem2.mediumChapterName) {
+                return firstItem1.mediumChapterName.localeCompare(firstItem2.mediumChapterName);
+            } else if (firstItem1.smallChapterName !== firstItem2.smallChapterName) {
+                return firstItem1.smallChapterName.localeCompare(firstItem2.smallChapterName);
+            } else {
+                return firstItem1.topicChapterName.localeCompare(firstItem2.topicChapterName)
+            }
+        })
+    };
+
+    // 난이도순 (하/중/상) 정렬
+    const sortByDifficulty = () => {
+        groupedData.sort((group1, group2) => {
+            group1.items.sort((item1, item2) => {
+                return item2.difficultyName.localeCompare(item1.difficultyName);
+            });
+            group2.items.sort((item1, item2) => {
+                return item2.difficultyName.localeCompare(item1.difficultyName);
+            });
+
+            const firstItem1 = group1.items[0];
+            const firstItem2 = group2.items[0];
+            return firstItem2.difficultyName.localeCompare(firstItem1.difficultyName);
+        });
+    };
+
+
+    // 문제 형태순 (객관식/주관식) 정렬
+    const sortByQuestionForm = () => {
+
+        groupedData.forEach(group => {
+            group.items.sort((item1, item2) => {
+                if (multipleChoiceForms.includes(item1.questionFormName)
+                    && !multipleChoiceForms.includes(item2.questionFormName)) {
+                    return -1;
+                } else if (!multipleChoiceForms.includes(item1.questionFormName)
+                    && multipleChoiceForms.includes(item2.questionFormName)) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        });
+
+        groupedData.sort((group1, group2) => {
+            const form1 = group1.items.length > 0 ? group1.items[0].questionFormName : '';
+            const form2 = group2.items.length > 0 ? group2.items[0].questionFormName : '';
+
+            if (form1 < form2) {
+                return -1;
+            } else if (form1 > form2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+    };
+
+    const getSortedList = () => {
+
+        switch (userSort) {
+            case '단원순':
+                sortByChapter();
+                break;
+            case '난이도순':
+                sortByDifficulty();
+                break;
+            case '문제 형태순':
+                sortByQuestionForm();
+                break;
+            default:
+                // Object.values(groupedData);
+                break;
+        }
+        return groupedData;
+    }
 
     const similarData = (itemIdList, no, passageId, no2) => {
         setSimilar(itemIdList); // itemId 얻어오기
@@ -34,84 +151,91 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
         removeList(item);
     }
 
+    const sortedList = getSortedList();
+
+    useEffect(() => {
+        const sortedList = getSortedList();
+        onChangeGroup(sortedList);
+    }, [userSort]);
+
     return (
         <div className="view-que-list scroll-inner">
-
-            {changeList.map((item, index) => {
-                const passageId = item.passageId && (groupedItems[item.passageId] || []).length > 0 ? item.passageId : 'individual';
-                // const passageId = item.passageId !== undefined ? item.passageId : 'individual';
-                const isFirstItemInGroup = passageId !== 'individual' && groupedItems[passageId]?.[0]?.itemId === item.itemId;
-
-                return (
-                    <React.Fragment key={item.itemId}>
-                        {isFirstItemInGroup && (
-                            <div className="view-que-box">
-                                <div className="que-top">
-                                    <div className="title">
-                                        <span className="num">
-                                            {groupedItems[passageId].length-(groupedItems[passageId].length-1)} ~ {groupedItems[passageId].length}
-                                        </span>
+            {sortedList.map((group, groupIndex) => (
+                <React.Fragment key={group.groupKey}>
+                    {group.items.map((item, itemIndex) => (
+                        <React.Fragment key={item.itemId}>
+                            {itemIndex === 0 && (
+                                <div className="view-que-box">
+                                    <div className="que-top">
+                                        <div className="title">
+                                            <span className="num">
+                                                {item.index} ~ {(group.items.length+item.index)-1}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="view-que">
-                                    <div className="que-content">
-                                        <p className="txt">※</p>
-                                    </div>
-                                    <div className="que-bottom">
-                                        <div className="passage-area">
-                                            <img src={groupedItems[passageId][0].passageUrl} alt="지문"></img>
+                                    <div className="view-que">
+                                        <div className="que-content">
+                                            <p className="txt">※ 지문을 읽고 물음에 답하시오.</p>
+                                        </div>
+                                        <div className="que-bottom">
+                                            <div className="passage-area">
+                                                <img src={item.passageUrl} alt="지문"></img>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                        <div className="view-que-box">
-                            <div className="que-top">
-                                <div className="title">
-                                    <span className="num">{item.itemNo}</span>
-                                    <div className="que-badge-group">
-                                        <span className="que-badge">{item.difficultyName}</span>
-                                        <span
-                                            className="que-badge gray">{item.questionFormName === '5지 선택' ? '객관식' : '주관식'}</span>
+                            )}
+                            <div key={item.itemId} className="view-que-box" id={item.index}>
+                                <div className="que-top">
+                                    <div className="title">
+                                        <span className="num">{item.index}</span>
+                                        <div className="que-badge-group">
+                                            <span className="que-badge">{item.difficultyName}</span>
+                                            <span className="que-badge gray">
+                                        {multipleChoiceForms.includes(item.questionFormName) ? '객관식' : '주관식'}
+                                    </span>
+                                        </div>
+                                    </div>
+                                    <div className="btn-wrap">
+                                        <button className="btn-error"></button>
+                                        <button className="btn-delete" onClick={() => deletePage(item)}></button>
                                     </div>
                                 </div>
+                                <div className="view-que">
+                                    <div>
+                                        <img src={item.questionUrl} alt="문제"/>
+                                    </div>
+                                    {viewType !== '문제만 보기' && (
+                                        <div className="que-bottom">
+                                            {viewType === '문제+해설+정답 보기' && (
+                                                <div className="data-area">
+                                                    <div className="que-info">
+                                                        <p className="answer">
+                                                            <span className="label">해설</span>
+                                                        </p>
+                                                        <div className="data-answer-area">
+                                                            <img src={item.explainUrl} alt="해설"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {(viewType === '문제+해설+정답 보기' || viewType === '문제+정답 보기') && (
+                                                <div className="data-area type01">
+                                                    <div className="que-info">
+                                                        <p className="answer">
+                                                            <span className="label type01">정답</span>
+                                                        </p>
+                                                        <div className="data-answer-area">
+                                                            <img src={item.answerUrl} alt="정답"/>
+                                                        </div>
+                                                    </div>
+                                                    <button className="btn-similar-que btn-default"
+                                                            onClick={() => similarData(item.itemId, groupIndex)}>
+                                                        <i className="similar"></i>
+                                                        유사문제
+                                                    </button>
+                                                </div>
 
-                                <div className="btn-wrap">
-                                    <button className="btn-error">
-                                    </button>
-                                    <button className="btn-delete"
-                                        onClick={() => deletePage(item)}
-                                    ></button>
-                                </div>
-                            </div>
-                            <div className="view-que">
-                                <div>
-                                    <img src={item.questionUrl} alt="문제"></img>
-                                </div>
-                                {viewType !== '문제만 보기' && (
-                                    <div className="que-bottom">
-                                        {viewType === '문제+해설+정답 보기' && (
-                                            <div className="data-area">
-                                                <div className="que-info">
-                                                    <p className="answer">
-                                                        <span className="label">해설</span>
-                                                    </p>
-                                                    <div className="data-answer-area">
-                                                        <img src={item.explainUrl} alt="해설"></img>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {(viewType === '문제+해설+정답 보기' || viewType === '문제+정답 보기') && (
-                                            <div className="data-area type01">
-                                                <div className="que-info">
-                                                    <p className="answer">
-                                                        <span className="label type01">정답</span>
-                                                    </p>
-                                                    <div className="data-answer-area">
-                                                        <img src={item.answerUrl} alt="정답"></img>
-                                                    </div>
-                                                </div>
                                                 <button
                                                     className="btn-similar-que btn-default"
                                                     onClick={() => similarData(
@@ -141,24 +265,27 @@ function CNTLIST({changeList, setSimilar, setTab, setNo, viewType, tab, setChang
                                                         item.passageId,
                                                         groupedItems[passageId].length-(groupedItems[passageId].length-1))}
                                                 >
+
                                                     <i className="similar"></i>
                                                     유사문제
                                                 </button>
                                             </div>
-                                    </div>
-                                )}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="que-info-last">
+                                    <p className="chapter">
+                                        {item.largeChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="que-info-last">
-                                <p className="chapter">
-                                    {item.largeChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
-                                </p>
-                            </div>
-                        </div>
-                    </React.Fragment>
-                );
-            })}
+                        </React.Fragment>
+                    ))}
+                </React.Fragment>
+            ))}
         </div>
     );
+
 }
 
 export default CNTLIST;

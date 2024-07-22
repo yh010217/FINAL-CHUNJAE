@@ -3,9 +3,12 @@ import CNTRIGHT from "./CNTRIGHT";
 import {useEffect, useState} from "react";
 import React from "react";
 
+
 function VIEWBOTTOM({itemList, setModal, setItemId}){
+
     /** 바뀌는 리스트 만들기 **/
     const [changeList, setChangeList] = useState([]);
+    const [groupedData, setGroupedData] = useState([]);
     const [similar, setSimilar] = useState(null); // similar itemIdList 뽑아오는 애
     const [tab, setTab] = useState(0); // 문제지 요약, 유사문제, 문제 삭제 관련 State
     const [no, setNo] = useState(0) // 해당하는 문제 번호 저장하기 (유사 번호)
@@ -19,22 +22,35 @@ function VIEWBOTTOM({itemList, setModal, setItemId}){
         setRemove(itemList.map(item => item.itemId)); // 왼쪽에 있는 문제 유사 문제에 뜨면 안 됨
     }, [itemList]);
 
+    useEffect(() => {
+        // 그룹화된 데이터 생성
+        const grouped = changeList.reduce((acc, item, index) => {
+            const groupKey = item.passageId || item.itemId;
+            const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
+            if (existingGroupIndex === -1) {
+                acc.push({
+                    groupKey,
+                    items: [{...item, index: index+1}]
+                });
+            } else {
+                acc[existingGroupIndex].items.push({...item, index: index + 1});
+            }
+            return acc;
+        }, []);
+        setGroupedData(grouped);
+    }, [changeList]);
+
+
     /** SUMMARY -> CNTRIGHT 에서 받아온 리스트 **/
     const handleChangeList = (newChangeList) => {
         // console.log('VIEWBOTTOM changeList:', newChangeList);
         setChangeList(newChangeList);
     };
 
-    const groupByPassageId = (list) => {
-        return list.reduce((grouped, item) => {
-            const key = item.passageId;
-            if (key) {
-                (grouped[key] = grouped[key] || []).push(item);
-            } else {
-                (grouped['individual'] = grouped['individual'] || []).push(item);
-            }
-            return grouped;
-        }, {});
+    /** CNTLIST 에서 정렬된 group **/
+    const handleGroupData = (newGroupData) => {
+        // console.log('VIEWBOTTOM newGroupData:', newGroupData);
+        setGroupedData(newGroupData);
     };
 
     let groupedItems = groupByPassageId(changeList);
@@ -92,6 +108,8 @@ function VIEWBOTTOM({itemList, setModal, setItemId}){
         });
     };
 
+    // groupedItems = groupByPassageId(changeList);
+
     /** 삭제하기에서 추가 눌렀을 때 */
     const addToDelList = (itemReDelItem) => {
         const result = itemReDelItem.passageId;
@@ -122,12 +140,13 @@ function VIEWBOTTOM({itemList, setModal, setItemId}){
         }
     };
 
-
     return <div className="view-bottom type01">
 
             {/** 문제 목록 **/}
             <CNTLEFT changeList={changeList}
                      onChangeList={handleChangeList}
+                     groupedData={groupedData}
+                     onChangeGroup={handleGroupData}
                      setSimilar={setSimilar}
                      setTab={setTab}
                      setNo={setNo}
@@ -139,6 +158,7 @@ function VIEWBOTTOM({itemList, setModal, setItemId}){
             {/** 문제지 요약, 유사문제, 문제삭제 **/}
             <CNTRIGHT initialChangeList={changeList}
                       onChangeList={handleChangeList}
+                      groupedData={groupedData}
                       similar={similar}
                       tab={tab}
                       setTab={setTab}
@@ -153,5 +173,7 @@ function VIEWBOTTOM({itemList, setModal, setItemId}){
                       setItemId={setItemId}
             />
         </div>
+
 }
+
 export default VIEWBOTTOM;
