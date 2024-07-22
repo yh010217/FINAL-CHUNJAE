@@ -25,7 +25,7 @@ public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
     @Override
     @Transactional
     @Modifying
-    public void saveQuestions(JSONArray itemInfoList, Long paperId) {
+    public void saveQuestions(JSONArray itemList, Long paperId) {
 
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO paper_question (paper_id,item_id, item_no, passage_id" +
@@ -34,14 +34,14 @@ public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
                 ", small_chapter_id, small_chapter_name, topic_chapter_id, topic_chapter_name" +
                 ", passage_url, question_url, answer_url, explain_url) VALUES ");
 
-        for(int i = 0 ; i < itemInfoList.size() ; i ++){
-            JSONObject item = (JSONObject) itemInfoList.get(i);
+        for(int i = 0 ; i < itemList.size() ; i ++){
+            JSONObject item = (JSONObject) itemList.get(i);
 
             int itemId = ((Long)item.get("itemId")).intValue();
 
             Long tempPassageId = (Long)item.get("passageId");
             Integer passageId = tempPassageId == null ? null : tempPassageId.intValue();
-            String questionFormCode = (String)item.get("questionForm");
+            String questionFormCode = (String)item.get("questionFormName");
             String questionLevel = (String)item.get("difficultyName");
             Long largeChapterId = (Long)item.get("largeChapterId");
             String largeChapterName = (String)item.get("largeChapterName");

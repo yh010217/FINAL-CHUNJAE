@@ -270,41 +270,33 @@
         <div class="pop-inner">
             <div class="pop-header">
                 <span>문항 구성 자동 변경</span>
-                <button type="button" class="pop-close"></button>
+                <button type="button" class="pop-close" onclick="removePrev()"></button>
             </div>
             <div class="pop-content">
                 <span class="txt">사용자가 원하는 문항 구성을 할 수 없어<br>문항 구성이 자동으로 변경되었습니다.</span>
                 <div class="range-wrap">
                     <div class="range">
-                        <span class="color01">최하</span>
-                        <span class="num">2</span>
-                    </div>
-                    <div class="range">
                         <span class="color02">하</span>
-                        <span class="num">5</span>
+                        <span class="num" id="type02-low"></span>
                     </div>
                     <div class="range">
                         <span class="color03">중</span>
-                        <span class="num">6</span>
+                        <span class="num" id="type02-mid"></span>
                     </div>
                     <div class="range">
                         <span class="color04">상</span>
-                        <span class="num">5</span>
-                    </div>
-                    <div class="range">
-                        <span class="color05">최상</span>
-                        <span class="num">2</span>
+                        <span class="num" id="type02-high"></span>
                     </div>
                     <div class="range total">
                         <span>합계</span>
-                        <span class="num">20</span>
+                        <span class="num" id="type02-tot"></span>
                     </div>
                 </div>
                 <span class="txt">해당 문제 구성으로 출제하시겠습니까?</span>
             </div>
             <div class="pop-footer">
-                <button>취소</button>
-                <button class="pop-close">확인</button>
+                <button class="pop-close" onclick="removePrev()">취소</button>
+                <button class="type-02-accept">확인</button>
             </div>
         </div>
     </div>

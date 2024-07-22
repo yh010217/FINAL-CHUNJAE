@@ -19,10 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +34,12 @@ public class Step1ServiceImpl implements Step1Service {
     private final PaperQuestionRepository paperQuestionRepo;
 
     @Override
-    public String saveExam(String examBody, int subject) throws ParseException {
+    public JSONObject saveExam(String examBody, int subject, List<String> levelCnt)
+            throws ParseException {
+
+
+        JSONObject result;
+
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(examBody);
         JSONObject examJson = (JSONObject) obj;
@@ -49,15 +51,23 @@ public class Step1ServiceImpl implements Step1Service {
 
             PaperInfo temp = tempPaperInfo(subject, itemList.size(), 2L, "save_name");
             PaperInfo saved = paperInfoRepo.save(temp);
-            if (saved == null) return "N";
+            if (saved == null) {
+                result = new JSONObject();
+                result.put("enable","NS");
+                return result;
+            }
 
-            saveQuestions(itemList, saved.getPaperId());
+            result = saveQuestions(itemList, saved.getPaperId(), levelCnt);
+            result.put("enable","Y");
 
 
-            return "Y";
         } else {
-            return "N";
+            result = new JSONObject();
+            result.put("enable","N");
         }
+
+        return result;
+
     }
 
     @Override
@@ -85,7 +95,9 @@ public class Step1ServiceImpl implements Step1Service {
         return result;
     }
 
-    public void saveQuestions(JSONArray itemList, Long paperId) {
+    public JSONObject saveQuestions(JSONArray itemList, Long paperId, List<String> levelCnt) {
+
+        JSONObject result = null;
 
         List<Long> itemIdList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
@@ -106,14 +118,166 @@ public class Step1ServiceImpl implements Step1Service {
             JSONObject itemListJson = (JSONObject) parsedBody;
 
             JSONArray itemInfoList = (JSONArray) itemListJson.get("itemList");
-            paperQuestionRepo.saveQuestions(itemInfoList,paperId);
+
+            result = toSaveItems(itemInfoList, levelCnt);
+            result.put("paperId",paperId);
+
+            //paperQuestionRepo.saveQuestions(itemInfoList, paperId);
 
 
         } catch (Exception e) {
             System.out.println(e);
         }
 
+        return result;
+    }
 
+    private JSONObject toSaveItems(JSONArray itemInfoList, List<String> levelCnt) {
+
+        JSONObject result = new JSONObject();
+        JSONArray fitArray = new JSONArray();
+        /* passageId 로 묶은 문제들 */
+        Map<Long, List<JSONObject>> groupedItems = new HashMap<>();
+        List<JSONObject> nonGroupedItems = new ArrayList<>();
+
+        /* 그룹화 */
+
+        for (int i = 0; i < itemInfoList.size(); i++) {
+
+            JSONObject item = (JSONObject) itemInfoList.get(i);
+            if (item.get("passageId") == null) {
+                nonGroupedItems.add(item);
+            } else {
+                Long passageId = (Long) item.get("passageId");
+                if (groupedItems.containsKey(passageId)) {
+                    groupedItems.get(passageId).add(item);
+                } else {
+                    List<JSONObject> itemList = new ArrayList<>();
+                    itemList.add(item);
+                    groupedItems.put(passageId, itemList);
+                }
+            }
+        }
+
+        result.put("fit", false);
+
+        /* 그룹화 끝 */
+
+        int lowMax = Integer.parseInt(levelCnt.get(1));
+        int midMax = Integer.parseInt(levelCnt.get(2));
+        int highMax = Integer.parseInt(levelCnt.get(3));
+
+        int initialLowMax = lowMax, initialMidMax = midMax, initialHighMax = highMax;
+
+
+        int totalMax = lowMax + midMax + highMax;
+
+        int lowCount = 0, midCount = 0, highCount = 0;
+
+        boolean breakPoint = false;
+
+        /* 두번째 돌았다는건 여기서 더 못찾는다는거 */
+        boolean lowSecond = false, midSecond = false, highSecond = false;
+        for (; ; ) {
+
+            /* 그룹 안된거 먼저 확인 */
+            for (int i = 0; i < nonGroupedItems.size(); i++) {
+                JSONObject item = nonGroupedItems.get(i);
+                String questionLevel = (String) item.get("difficultyName");
+                if ("하".equals(questionLevel)) {
+                    if (lowCount != lowMax) {
+                        fitArray.add(item);
+                        lowCount++;
+                    }
+                } else if ("중".equals(questionLevel)) {
+                    if (midCount != midMax) {
+                        fitArray.add(item);
+                        midCount++;
+                    }
+                } else if ("상".equals(questionLevel)) {
+                    if (highCount != highMax) {
+                        fitArray.add(item);
+                        highCount++;
+                    }
+                }
+                if (lowCount + midCount + highCount == totalMax) breakPoint = true;
+            }
+            if (breakPoint) {
+                if (initialLowMax == lowCount && initialMidMax == midCount && initialHighMax == highCount) {
+                    result.put("fit", true);
+                }
+                break;
+            }
+            /* 그룹 안된거 확인 완료 */
+            //////////////////////////////////////////////
+            /* 그룹 된거 확인 */
+            Iterator<Long> mapIta = groupedItems.keySet().iterator();
+            boolean mapBreak = false;
+            while (mapIta.hasNext()) {
+                List<JSONObject> itemList = groupedItems.get(mapIta.next());
+
+                for (int i = 0; i < itemList.size(); i++) {
+                    JSONObject item = itemList.get(i);
+                    String questionLevel = (String) item.get("difficultyName");
+                    if ("하".equals(questionLevel)) {
+                        if (lowCount != lowMax) {
+                            fitArray.add(item);
+                            lowCount++;
+                        }
+                    } else if ("중".equals(questionLevel)) {
+                        if (midCount != midMax) {
+                            fitArray.add(item);
+                            midCount++;
+                        }
+                    } else if ("상".equals(questionLevel)) {
+                        if (highCount != highMax) {
+                            fitArray.add(item);
+                            highCount++;
+                        }
+                    }
+                    if (lowCount + midCount + highCount == totalMax) {
+                        mapBreak = true;
+                        breakPoint = true;
+                        break;
+                    }
+                }
+                if (mapBreak) break;
+            }
+            /* 그룹 된거 확인 완료 */
+
+            if (breakPoint) {
+                if (initialLowMax == lowCount && initialMidMax == midCount && initialHighMax == highCount) {
+                    result.put("fit", true);
+                }
+                break;
+            }
+            /* 두번째 돌았다는건 여기서 더 못찾는다는거 */
+            else {
+                int leftCount = totalMax - lowCount - midCount - highCount;
+                if (lowCount == lowMax && !lowSecond) {
+                    lowMax += leftCount;
+                    lowSecond = true;
+                } else if (midCount == midMax && !midSecond) {
+                    midMax += leftCount;
+                    midSecond = true;
+                } else if (highCount == highMax && !highSecond) {
+                    highMax += leftCount;
+                    highSecond = true;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        List<Integer> fitCount = new ArrayList<>();
+        fitCount.add(lowCount);
+        fitCount.add(midCount);
+        fitCount.add(highCount);
+
+        result.put("fitArray", fitArray);
+        result.put("fitCount", fitCount);
+
+        return result;
     }
 
     public List<EvaluationDTO> getEvalList(String evalBody) {

@@ -67,8 +67,8 @@ public class Step1Controller {
 
     @PostMapping("step1/make_exam/{subject}")
     @ResponseBody
-    public String makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
-        String result;
+    public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
+        JSONObject result;
 
         List<String> levelCnt = (List<String>) body.get("levelCnt");
         for(String level : levelCnt){
@@ -80,10 +80,11 @@ public class Step1Controller {
         String examBody = examApi.getBody();
 
         try {
-            result = step1Service.saveExam(examBody,subject);
+            result = step1Service.saveExam(examBody,subject,levelCnt);
         }catch (ParseException e){
             System.out.println(e);
-            result = "N";
+            result = new JSONObject();
+            result.put("enable","N");
         }
 
         return result;
