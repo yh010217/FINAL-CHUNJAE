@@ -17,10 +17,11 @@ public interface Step1Service {
 
     PaperInfo tempPaperInfo(int subject, int itemCount, long user, String saveName);
 
-    JSONObject saveQuestions(JSONArray itemList, Long paperId, List<String> levelCnt);
+    JSONObject makeQuestionsForm(JSONArray itemList, Long paperId, List<String> levelCnt);
 
     List<EvaluationDTO> getEvalList(String evalBody);
     IdNameListDTO chapterGrouping(String chapterBody);
     ResponseEntity<String> postRequest(String url, Map<String, Object> requestBody);
 
+    void saveQuestions(JSONObject body) throws RuntimeException;
 }

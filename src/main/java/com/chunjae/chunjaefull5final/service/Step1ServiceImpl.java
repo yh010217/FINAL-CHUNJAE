@@ -57,7 +57,7 @@ public class Step1ServiceImpl implements Step1Service {
                 return result;
             }
 
-            result = saveQuestions(itemList, saved.getPaperId(), levelCnt);
+            result = makeQuestionsForm(itemList, saved.getPaperId(), levelCnt);
             result.put("enable","Y");
 
 
@@ -95,7 +95,7 @@ public class Step1ServiceImpl implements Step1Service {
         return result;
     }
 
-    public JSONObject saveQuestions(JSONArray itemList, Long paperId, List<String> levelCnt) {
+    public JSONObject makeQuestionsForm(JSONArray itemList, Long paperId, List<String> levelCnt) {
 
         JSONObject result = null;
 
@@ -121,8 +121,6 @@ public class Step1ServiceImpl implements Step1Service {
 
             result = toSaveItems(itemInfoList, levelCnt);
             result.put("paperId",paperId);
-
-            //paperQuestionRepo.saveQuestions(itemInfoList, paperId);
 
 
         } catch (Exception e) {
@@ -279,6 +277,13 @@ public class Step1ServiceImpl implements Step1Service {
 
         return result;
     }
+    @Override
+    public void saveQuestions(JSONObject body) throws RuntimeException {
+        Long paperId = ((Integer)body.get("paperId")).longValue();
+        ArrayList<Map<String,Object>> itemList = (ArrayList<Map<String,Object>>) body.get("fitArray");
+        paperQuestionRepo.saveQuestions(itemList,paperId);
+    }
+
 
     public List<EvaluationDTO> getEvalList(String evalBody) {
         List<EvaluationDTO> evaluationList = new ArrayList<>();
@@ -471,6 +476,7 @@ public class Step1ServiceImpl implements Step1Service {
         }
         return response;
     }
+
 
 
 }

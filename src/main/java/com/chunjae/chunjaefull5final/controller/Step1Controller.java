@@ -70,6 +70,12 @@ public class Step1Controller {
     public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
         JSONObject result;
 
+        if(body == null){
+            result = new JSONObject();
+            result.put("enable","N");
+            return result;
+        }
+
         List<String> levelCnt = (List<String>) body.get("levelCnt");
         for(String level : levelCnt){
             System.out.println(level);
@@ -77,6 +83,12 @@ public class Step1Controller {
 
         String url = "https://tsherpa.item-factory.com/item-img/chapters/item-list";
         ResponseEntity<String> examApi = step1Service.postRequest(url,body);
+        if(examApi == null){
+            result = new JSONObject();
+            result.put("enable","N");
+            return result;
+        }
+
         String examBody = examApi.getBody();
 
         try {
@@ -88,6 +100,30 @@ public class Step1Controller {
         }
 
         return result;
+    }
+
+    @PostMapping("/step1/save_questions")
+    @ResponseBody
+    public Map<String,Object> saveQuestions(@RequestBody JSONObject body){
+
+        Map<String,Object> result = new HashMap<>();
+        if(body == null){
+            result = new JSONObject();
+            result.put("enable","N");
+            return result;
+        }
+
+        step1Service.saveQuestions(body);
+
+
+
+        result.put("success","Y");
+        return result;
+    }
+
+    @GetMapping("/step1/step2gogo")
+    public String step2GoGo(){
+        return "step1/step2gogo";
     }
 
 }

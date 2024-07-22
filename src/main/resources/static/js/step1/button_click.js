@@ -381,6 +381,27 @@ let canSendCheck = async function (minorClassification, questionForm, activityCa
 
             if (data.fit) {
                 // 바로 저장 메서드
+                fetch('/step1/save_questions',{
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response =>{
+                    if(!response.ok){
+                        throw new Error('save questions 에러')
+                    }
+                    return response.json();
+                }).then(item=>{
+                    if(item.success === 'Y'){
+                        location.href = "/step1/step2gogo";
+                    }else{
+                        alert('저장에 실패했습니다');
+                    }
+                }).catch(error => {
+                    console.log('enable 은 y 였는데, 안되네...');
+                })
+
             } else {
                 /* 문항 조건 충족 안했을 때 팝업 */
                 let range_type02 = document.querySelector('.range-type02');
