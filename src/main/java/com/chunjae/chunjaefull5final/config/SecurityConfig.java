@@ -32,7 +32,9 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/images/**")
                 .requestMatchers("/full5-final-react/css/**")
                 .requestMatchers("/full5-final-react/src/**")
-                .requestMatchers("/full5-final-react/component/**");
+                .requestMatchers("/full5-final-react/component/**")
+                .requestMatchers("/file/**")
+                .requestMatchers("/csv_download/**");
 //                .requestMatchers("/**");
     }
     @Bean
@@ -41,6 +43,7 @@ public class SecurityConfig {
 
         http.csrf(csrf->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+
 
 //     http.csrf(csrf-> csrf.disable());
 
