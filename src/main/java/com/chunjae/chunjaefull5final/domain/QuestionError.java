@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "question_error")
@@ -29,6 +30,7 @@ public class QuestionError {
     private String content;
 
     @Column
+    @ColumnDefault("no")
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
