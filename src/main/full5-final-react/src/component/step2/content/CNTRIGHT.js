@@ -5,7 +5,7 @@ import SIMILAR from "./SIMILAR";
 import DELETE from "./DELETE";
 import "../../../css/mycss.css"
 
-function CNTRIGHT({initialChangeList, onChangeList, tab, setTab, similar, no, addToChangeList, setRemove, remove, delList, setDelList, addToDelList}) {
+function CNTRIGHT({initialChangeList, onChangeList, groupedData, tab, setTab, similar, no, addToChangeList, setRemove, remove, delList, setDelList, addToDelList}) {
 
     // const [tab, setTab] = useState(0);
     const [changeList, setChangeList] = useState(initialChangeList);
@@ -28,7 +28,7 @@ function CNTRIGHT({initialChangeList, onChangeList, tab, setTab, similar, no, ad
     const renderContent = () => {
         switch (tab) {
             case 0:
-                return <SUMMARY initialChangeList={changeList} onChangeList={handleChangeList}/>;
+                return <SUMMARY initialChangeList={changeList} onChangeList={handleChangeList} groupData={groupedData}/>;
             case 1:
                 return <SIMILAR changeList={changeList}
                                 similar={similar}
