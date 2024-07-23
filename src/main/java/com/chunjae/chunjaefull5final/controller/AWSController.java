@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.controller;
 
 import com.amazonaws.services.s3.model.S3Object;
 import com.chunjae.chunjaefull5final.service.AWSService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,48 +69,23 @@ public class AWSController {
         S3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
+    /** 오류사진 다운*/
+    @GetMapping("/download")
+    public void downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) {
+        String filePath = "error" + "/" + fileName; // 폴더명과 파일명을 합쳐서 경로 생성
+        try {
+            S3Service.downloadFile(filePath, response);
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+        }
+    }
+    /** test용 */
     @GetMapping("/csv_download/{fileName}")
     public ResponseEntity<byte[]> download(@PathVariable String fileName) throws IOException {
         return S3Service.getObject(fileName);
     }
 
-    @GetMapping("/download/{filePath}")
-    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String filePath) {
-        try {
-            // URL 디코딩을 통해 파일 경로를 정상적으로 처리
-            String decodedFilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8.toString());
-            logger.info("Decoded FilePath: {}", decodedFilePath);
-
-            // S3에서 파일 다운로드
-            S3Object s3Object = S3Service.downloadFile(decodedFilePath);
-            InputStreamResource resource = new InputStreamResource(s3Object.getObjectContent());
-
-            // 파일명 추출 및 헤더 설정
-            String fileName = decodedFilePath.substring(decodedFilePath.lastIndexOf("/") + 1);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
-
-            // ResponseEntity 생성
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .contentLength(s3Object.getObjectMetadata().getContentLength())
-                    .contentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()))
-                    .body(resource);
-        } catch (Exception e) {
-            logger.error("Error downloading file: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<Object> deletePdfFile(
-//            @RequestParam(value = "uploadFilePath") String uploadFilePath,
-//            @RequestParam(value = "uuidFileName") String uuidFileName) {
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(S3Service.deletePdfFile(uploadFilePath, uuidFileName));
-//    }
 
 
 

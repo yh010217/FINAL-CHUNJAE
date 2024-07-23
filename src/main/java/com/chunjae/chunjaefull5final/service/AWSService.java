@@ -1,10 +1,10 @@
 package com.chunjae.chunjaefull5final.service;
 
-import com.amazonaws.AmazonServiceException;
+
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,24 +84,6 @@ public class AWSService {
 
     }
 
-//    public byte[] getObject(String filepath) throws IOException {
-//        S3Object s3Object = amazonS3.getObject(bucket, filepath);
-//        try (S3ObjectInputStream s3is = s3Object.getObjectContent()) {
-//            return s3is.readAllBytes();
-//        }
-//    }
-
-    public S3Object downloadFile(String filePath) {
-        GetObjectRequest getObjectRequest = new GetObjectRequest(bucket, filePath);
-        return amazonS3.getObject(getObjectRequest);
-    }
-//    public S3Object downloadFile(String filePath) throws AmazonServiceException {
-//        AmazonS3 s3Client = AmazonS3ClientBuilder.standard().build();
-//        return s3Client.getObject(new GetObjectRequest(bucket, filePath));
-//    }
-
-
-
     public ResponseEntity<byte[]> getObject(String storedFileName) throws IOException {
     S3Object s3Object = amazonS3.getObject(new GetObjectRequest(bucket, storedFileName));
     S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
@@ -116,8 +100,19 @@ public class AWSService {
 }
 
 
+    public void downloadFile(String key, HttpServletResponse response) throws IOException {
+        S3Object s3Object = amazonS3.getObject(bucket, key);
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + key.substring(key.lastIndexOf("/") + 1) + "\"");
 
-
+        try (InputStream inputStream = s3Object.getObjectContent()) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                response.getOutputStream().write(buffer, 0, bytesRead);
+            }
+        }
+    }
 
 
 }

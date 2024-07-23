@@ -114,10 +114,9 @@
                 </ul>
                 <div class="a_list">
                     <a id="a_error" th:href="@{/admin/error}">목록으로</a>
-                    <a id="a_down" th:href="@{/file/csv_download/abc.jpg}">다운로듬</a>
-                    <a id="a_down2" th:href="@{/file/download/abc.jpg}">다운로듬2</a>
+<!--                    <a id="a_down" th:href="@{/file/csv_download/abc.jpg}">폴더x</a>-->
+<!--                    <a id="a_down2" th:href="@{/file/download/abc.jpg}">폴더지정0</a>-->
                     <button type="button" id="down" th:data-attachment-file-name="${questionErrorDTO.attachmentFilePath}">다운로드</button>
-<!--                    <button type="button" id="down">다운로드</button>-->
                     <button type="button" id="status" th:onclick="|errorstatus(${questionErrorDTO.errorId})|">처리하기</button>
                 </div>
             </div>
