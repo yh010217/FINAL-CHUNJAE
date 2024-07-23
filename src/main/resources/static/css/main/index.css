@@ -180,3 +180,85 @@ ul li {
 .index-top, .container {
     margin-right: 15px; /* 스크롤바가 있을 때의 여백 */
 }
+
+#modalContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#modal {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 787px;
+    background-color: white;
+    border-radius: 0.3rem;
+}
+
+#modalContainer.block {
+    display: none;
+}
+
+.modal-top {
+    display: flex;
+    justify-content: center;
+    background-color: #5670dc;
+    position: relative;
+    width: 100%;
+    border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.modal-top p {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-x {
+    position: absolute;
+    right: 20px;
+    top: 14px;
+    border: none;
+    background-color: #5670dc;
+    cursor: pointer;
+    color: white;
+    font-size: 29px;
+    font-weight: bolder;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-content .modal-textbox {
+    border: 1px solid silver;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+
+.modal-content .modal-textbox p span {
+    padding: 3px 8px;
+    background-color: #5670DC;
+    border-radius: 3px;
+    color: white;
+}
+
+.modal-content .modal-textbox p {
+    font-size: 14px;
+}
+
+.modal-bottom {
+    border: 1px solid silver;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #f0f3f7;
+    font-size: 15px;
+    border-radius: 10px;
+}
