@@ -63,6 +63,7 @@ function SIMLARLIST(props) {
         <>
             {Object.values(props.groupedData).map((group, index) => {
                 let filteredItems = group.items;
+
                 switch (props.view) {
                     case '01':
                         filteredItems = group.items.filter(item => item.difficultyName === '상');
@@ -80,28 +81,30 @@ function SIMLARLIST(props) {
                     return (
                         <React.Fragment key={index}>
                             <>
-                                <div className="view-que-box">
-                                    <div className="que-top">
-                                        <div className="title">
-                                            {group.items.length > 1 ? (
-                                                <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                            ) : (
-                                                <span className="num">지문 {group.items[0].itemNo}</span>
-                                            )}
+                                {group.passageUrl && (
+                                    <div className="view-que-box">
+                                        <div className="que-top">
+                                            <div className="title">
+                                                {group.items.length > 1 ? (
+                                                    <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
+                                                ) : (
+                                                    <span className="num">지문 {group.items[0].itemNo}</span>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="view-que">
-                                        <img src={group.passageUrl} alt="지문입니다..." />
-                                        <div className="que-bottom">
-                                            <div className="data-area">
-                                                <button className="btn-default" onClick={() => allSimList(group)}>
-                                                    <i className="add-type02"></i>
-                                                    전체 추가
-                                                </button>
+                                        <div className="view-que">
+                                            <img src={group.passageUrl} alt="지문입니다..." />
+                                            <div className="que-bottom">
+                                                <div className="data-area">
+                                                    <button className="btn-default" onClick={() => allSimList(group)}>
+                                                        <i className="add-type02"></i>
+                                                        전체 추가
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                )}
                                 {filteredItems.map((item, itemIndex) => (
                                     <div className="view-que-box" key={item.itemId}>
                                         <>
