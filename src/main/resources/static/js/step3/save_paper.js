@@ -1,4 +1,4 @@
-/* 이미지 배열 생성 */
+/*/!* 이미지 배열 생성 *!/
 let imgList = [];
 for(let i=0; i<40; i++){
     const img = document.createElement('img');
@@ -27,7 +27,7 @@ for(let i=0; i<40; i++){
     img.alt = '이미지'+(i+1);
     img.className = 'item2';
     imgList2[i] = img;
-}
+}*/
 
 
 let index = 0; //이미지 번호
