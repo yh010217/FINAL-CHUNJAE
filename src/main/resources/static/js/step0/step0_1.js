@@ -1,13 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    function updateMathContent(element) {
-        MathJax.typesetPromise([element]).then(() => {
-            console.log("수식이 업데이트되었습니다.");
-        }).catch((err) => {
-            console.error("수식 업데이트 중 오류 발생:", err);
-        });
-    }
-
     let checkboxes = document.querySelectorAll('.chk_paperId'); // 모든 체크박스 요소를 선택
     let selectedCountElement = document.getElementById('chk_item_cnt'); // 선택된 문항 수
     let editButton = document.getElementById('edit-selected'); // 선택한 시험지 편집하기 버튼
@@ -116,19 +108,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 let paperTitle = col.querySelector('input[id="paperName"]').value; // paperName 가져오기
                 let itemCnt = col.querySelector('input[id="itemCount"]').value; // itemCount 가져오기
                 itemInfoShow = false;
-                // console.log('examId...', examId);
-                // console.log('paperTitle..',paperTitle);
-                // console.log('itemCnt..',itemCnt);
 
-
-                // 탭 업데이트
+                // 미리보기 진입시 첫번째 탭으로
                 const previewTabItems = document.querySelectorAll('#preview-tab li');
                 previewTabItems.forEach(item => item.classList.remove("active"));
                 if (previewTabItems.length > 0) {
                     previewTabItems[0].classList.add('active');
                 }
                 clickPreview('A');
-
 
                 // 셋팅지 미리보기 api 호출
                 // 문항 불러오기
@@ -160,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         let tmpPassageId = '';
                         // console.log('data...', data);
                         let half = Math.ceil(data.itemList.length / 2);
-                        let passageNum = 0; // 지문 구분 Number
-                        let tmpNum=0;
+                        let passageNum = 0; // 지문 구분
+                        let tmpNum = 0;
                         for (let part = 0; part < 2; part++) {
                             let limit_num = part === 0 ? half : data.itemList.length;
                             let start_num = part === 0 ? 0 : half;
@@ -185,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         html += '</div>';
                                         tmpPassageId = obj.passageId;
                                     }
-                                    tmpNum=passageNum;
+                                    tmpNum = passageNum;
                                 }
 
                                 html += '<div class="item-question passage-area">';
@@ -201,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 html += '   <div class="explain-img"><img src="' + obj.explainUrl + '" alt="' + obj.itemId + '"></div>';
                                 html += '</div>';
                                 html += '</div></div>';
-                                tmpNum = 0 ;
+                                tmpNum = 0;
                             }
                             html += '</div>'; // view-data 끝
                         }
@@ -225,7 +212,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                 });
 
                                 if (firstQuestionNum !== null && lastQuestionNum !== null) {
-                                    passageNumElement.textContent = firstQuestionNum + '~' + lastQuestionNum;
+                                    if (firstQuestionNum < lastQuestionNum) {
+                                        passageNumElement.textContent = '[' + firstQuestionNum + '~' + lastQuestionNum + ']';
+                                    } else if (firstQuestionNum === lastQuestionNum) {
+                                        passageNumElement.textContent = '[' + lastQuestionNum + ']';
+                                    }
                                 } else {
                                     console.warn('지문 번호가 올바르지 않습니다:', passageNumElement);
                                 }
@@ -244,8 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     .finally(() => {
                         // document.querySelector(".loading-cnt").style.display = 'none'; // 로딩 표시 제거
                     });
-
-
 
 
                 // 문항 정보표 데이터 불러오기
@@ -268,9 +257,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             let html = '';
                             for (let s = 0; s < data.itemList.length; s++) {
                                 let item = data.itemList[s];
+
                                 html += `<tr>
                             <td>${item.itemNo || ''}</td>
-                            <td><span class="latex_equation">${item.answer || ''}</span></td>
+                            <td><span class="latex_equation">${item.answer}</span></td>
                             <td class="tit">${item.largeChapterName || ''}</td>
                             <td class="tit">${item.topicChapterName || ''}</td>
                             <td>${item.achievementCode || ''}</td>
@@ -281,38 +271,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         </tr>`;
                             }
                             document.getElementById('preview-itemInfo-data').innerHTML = html;
-                         //   updateMathContent(document.getElementById("preview-itemInfo-data"));
+                            updateMathContent(document.getElementById("preview-itemInfo-data"));
                             itemInfoShow = true;
                         } else {
                             itemInfoShow = false;
                         }
-/*
-                        // 탭 업데이트
-                        const previewTabItems = document.querySelectorAll('#preview-tab li');
-                        previewTabItems.forEach(item => item.classList.remove("active"));
-                        if (previewTabItems.length > 0) {
-                            previewTabItems[0].classList.add('active');
-                        }
-                        clickPreview('A');
 
-                        // 팝업 띄우기
-                        document.documentElement.style.overflow = 'hidden';
-                        document.querySelector('.dim').style.display = 'block';
-                        document.querySelector(".pop-wrap[data-pop='prev-pop']").style.display = 'block';
-                       // document.querySelector("#preview-data .scroll-inner").scrollTop = 0;
-
- */
                     })
                     .catch(error => {
                         alert("미리보기를 불러오지 못했습니다. 관리자에게 문의해 주시기 바랍니다.");
                         console.error("Fetch error: ", error);
                     })
                     .finally(() => {
-                       // loadingIndicator.style.display = 'none';
+                        // loadingIndicator.style.display = 'none';
                     });
 
-
-                /*@@@@ 닫기하고 다른 미리보기 열 때 첫번째 버튼으로 가도록 변경 @@@@@*/
                 // 미리보기 tab 이동
                 document.querySelectorAll('#preview-tab a').forEach(function (link) {
                     link.addEventListener('click', function () {
@@ -342,42 +315,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     })
                 };
 
-                function setVisibility(selector, visibilityStyle) {
-                    let elemnets = document.querySelectorAll(selector);
-                    elemnets.forEach(element => {
-                        element.style.visibility = visibilityStyle;
-                    })
-                };
-
                 function clickPreview(type) {
                     document.querySelector(".preview-download").setAttribute("data-type", type);    // .preview-download 요소의 data-type 속성 설정
                     document.querySelector(".preview-data .scroll-inner").scrollTop = 0;          // 스크롤 위치를 맨 위로
                     document.querySelector('.preview-data .view-box').classList.add('type-line');  // .view-box에 type-line 클래스 추가
 
-                    // style 기본 값
-                    // setStyle(".preview-data .passage-area", "none");
-                    /*@@@@@@@@@ 수정 @@@@@@@@@@@@*/
+
                     // 각 타입에 따른 화면 전환
                     if (type === 'A') { // 문제+해설+정답
-                        //setStyle("#preview-question-data", "block");
-                        //    setStyle(".preview-data .passage-area", "block");
-
                         setStyle("#preview-itemInfo-table", "none");
                         setStyle(".preview-data .item-img", "block");
                         setStyle(".preview-data .answer-container", "block");
                         setStyle(".preview-data .explain-answer", "block");
                         setStyle(".passage-area .passage-num", "block");
                         setStyle(".passage-area img", "block");
+                        setStyle(".example-area", "block");
                     } else if (type === 'Q') { // 문제
-                        // setStyle(".preview-data .passage-area", "block");
-                      //  setStyle("#preview-question-data", "block");
                         setStyle("#preview-itemInfo-table", "none");
                         setStyle(".preview-data .item-img", "block");
                         setStyle(".passage-area img", "block");
                         setStyle(".preview-data .answer-container", "none");
                         setStyle(".preview-data .explain-answer", "none");
                         setStyle(".passage-area .passage-num", "block");
-
+                        setStyle(".example-area", "block");
                     } else if (type === 'E') { // 정답+해설
                         setStyle("#preview-itemInfo-table", "none");
                         setStyle(".passage-area img", "none");
@@ -385,25 +345,33 @@ document.addEventListener('DOMContentLoaded', function () {
                         //  setStyle(".passage-area .question-num", "block");
                         setStyle(".preview-data .answer-container", "block");
                         setStyle(".preview-data .explain-answer", "block");
-                      //  setStyle("#preview-question-data", "block");
-
+                        // setStyle("#preview-question-data", "block");
+                        setStyle(".example-area", "block");
                     } else if (type === 'C') { // 문항 정보표
-                        if(itemInfoShow === false){
+                        if (itemInfoShow === false) {
                             alert("문항정보표가 존재하지 않습니다.");
                             return false;
-                        }else{
-                           // $('#preview-data .view-box').removeClass('type-line');
+                        } else {
+                            // $('#preview-data .view-box').removeClass('type-line');
                             setStyle("#preview-itemInfo-table", "block");
-                            setStyle("#preview-question-data", "none");
+                            setStyle(".example-area", "none");
+                            setStyle(".preview-data .item-img", "none");
+                            setStyle(".preview-data .answer-container", "none");
+                            setStyle(".preview-data .explain-answer", "none");
+                            setStyle(".passage-area .passage-num", "none");
+                            setStyle(".passage-area img", "none");
                         }
                     }
-
-
                 }
-
-
             }
         });
     });
 
+    function updateMathContent(s) {
+        MathJax.typesetPromise().then(() => {
+            console.log("MathJax 렌더링 완료..");
+        }).catch((err) => {
+            console.error("MathJax error: ", err);
+        });
+    }
 });

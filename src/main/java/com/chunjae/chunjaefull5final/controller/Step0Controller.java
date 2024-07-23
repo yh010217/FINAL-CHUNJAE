@@ -173,7 +173,7 @@ public class Step0Controller {
     }
 
     /**
-     * 선택한 시험지 json 형식으로 받고 보내기 - 변경 해야함 @@@@@@@
+     * @@@@@@@@@ 선택한 시험지 json 형식으로 받고 보내기
      */
     @PostMapping("/step0/examId")
     public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request) {
@@ -269,27 +269,28 @@ public class Step0Controller {
             } else {
                 // 응답이 실패한 경우 기본값 설정
                 request.setSuccessYn("N");
-                request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+                request.setItemList(new ArrayList<>()); // 초기화
             }
 
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
             request.setSuccessYn("N");
-            request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+            request.setItemList(new ArrayList<>()); // 초기화
         } catch (HttpServerErrorException e) {
             e.printStackTrace();
             request.setSuccessYn("N");
-            request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+            request.setItemList(new ArrayList<>()); // 초기화
         } catch (Exception e) {
             e.printStackTrace();
             request.setSuccessYn("N");
-            request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+            request.setItemList(new ArrayList<>()); // 초기화
         }
 
         return ResponseEntity.ok(request);
     }
 
- /*   @PostMapping("/preview/all")
+ /*  // 셋팅지 미리보기 html ..
+    @PostMapping("/preview/all")
     public ResponseEntity<String> previewAll(@RequestBody ExamIdDTO request) {
         String postUrl = "https://tsherpa.item-factory.com/exam/preview"; // 첫 번째 API URL
 
