@@ -3,7 +3,7 @@ import axios from "axios";
 import VIEWTOP from "./content/VIEWTOP";
 import VIEWBOTTOM from "./content/VIEWBOTTOM";
 
-function S2content() {
+function S2content({setModal, setItemId }) {
     const [itemList, setItemList] = useState([]);
 
     useEffect(() => {
@@ -19,8 +19,8 @@ function S2content() {
                     // 영어, 수학
                     // examIdList: ["1416", "1534"]
                     // 국어
-                     examIdList: ["503"]
-                    // examIdList: ["1534"]
+                    examIdList: ["503"]
+                    // examIdList: ["606"] 사회
                 };
 
                 /** 신규 시험지 만들기 **/
@@ -42,7 +42,7 @@ function S2content() {
             {/** 시험지 정보 / 과목 명칭(선생님 이름) / 재검색 / 출제범위 **/}
             <VIEWTOP itemList={itemList}/>
             {/** 문제 목록, 문제 요약, 유사, 삭제 **/}
-            <VIEWBOTTOM itemList={itemList}/>
+            <VIEWBOTTOM itemList={itemList} setModal={setModal} setItemId={setItemId }/>
         </div>
     );
 }

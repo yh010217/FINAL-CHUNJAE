@@ -866,12 +866,20 @@ input[type=checkbox]:checked + label::before {
   z-index: 1;
   transform: skew(-0.1deg);
 }
-.select-wrap .select-list a {
+.select-wrap .select-list button {
   display: block;
   padding: 9px 12px;
   line-height: 20px;
   box-sizing: border-box;
 }
+
+.select-wrap .select-list li {
+  display: block;
+  padding: 9px 12px;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+
 .select-wrap .select-list a:hover {
   color: #fff;
   background-color: #5670dc;

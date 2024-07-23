@@ -1,4 +1,4 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
+  const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function (app) {
     app.use('/back', createProxyMiddleware({
@@ -11,6 +11,15 @@ module.exports = function (app) {
         '/api',
         createProxyMiddleware({
             target: 'https://tsherpa.item-factory.com',
+            changeOrigin: true,
+            logLevel: 'debug'
+        })
+    );
+
+    app.use(
+        '/file',
+        createProxyMiddleware({
+            target: 'http://localhost:8080',
             changeOrigin: true,
             logLevel: 'debug'
         })

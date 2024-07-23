@@ -55,3 +55,4 @@ public class IdNameListDTO {
         this.itemNo = itemNo;
     }
 }
+

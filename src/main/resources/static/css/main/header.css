@@ -1,0 +1,20 @@
+header {
+    display: flex;
+    align-items: center;
+}
+
+ul li {
+    display: inline-block;
+}
+
+.header-1, .header-2, .header-3 {
+    flex: 1
+}
+
+.header-2 {
+    text-align: center;
+}
+
+.header-3 {
+    text-align: right;
+}

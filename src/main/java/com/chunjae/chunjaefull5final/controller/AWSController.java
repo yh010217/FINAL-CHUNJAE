@@ -1,5 +1,13 @@
 package com.chunjae.chunjaefull5final.controller;
 
+/*
+import com.chunjae.chunjaefull5final.service.AWSService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+*/
+
 import com.amazonaws.services.s3.model.S3Object;
 import com.chunjae.chunjaefull5final.service.AWSService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +46,7 @@ import java.util.List;
 @RequestMapping("/file")
 public class AWSController {
     private final AWSService S3Service;
+
     private static final Logger logger = LoggerFactory.getLogger(AWSController.class);
 
     /* @PostMapping("/uploadImageFile/{folderName}")
@@ -46,6 +56,7 @@ public class AWSController {
     ){
         return ResponseEntity.ok(S3Service.uploadFile(multipartFiles, folderName));
     }*/
+
 
     @PostMapping("/uploadImageFile/{folderName}")
     public ResponseEntity<List<String>> uploadFile(
@@ -70,7 +81,6 @@ public class AWSController {
         S3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
-
 
     /** 오류사진 다운*/
     private final String folderName = "error"; // 폴더명 하드코딩
@@ -102,8 +112,5 @@ public class AWSController {
         return S3Service.getObject(fileName);
     }
 
-
-
-
-
 }
+

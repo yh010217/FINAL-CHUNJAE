@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import CNTLIST from "./CNTLIST";
 import CNTBOTTOM from "./CNTBOTTOM";
 
-function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList}) {
+function CNTLEFT({changeList, onChangeList, onChangeGroup, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList}) {
 
     const [sortList1, setSortList1] = useState(false);
     const [sortList2, setSortList2] = useState(false);
+
     const [viewType, setViewType] = useState('문제만 보기');
+    const [userSort, setUserSort] = useState('사용자 정렬');
 
     const toggleList1 = () => {
         setSortList1(!sortList1);
@@ -18,7 +20,10 @@ function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setC
         setViewType(type);
         setSortList1(false);
     };
-
+    const handleUserSort = (type) => {
+        setUserSort(type);
+        setSortList2(false);
+    }
 
     return <div className="cnt-box">
 
@@ -26,7 +31,7 @@ function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setC
             <span className="title">문제 목록</span>
             <div className="right-area">
                 <div className="select-wrap">
-                    <button className="select-btn" onClick={toggleList1}>{viewType}</button>
+                    <button type="button" className="select-btn" onClick={toggleList1}>{viewType}</button>
                     {sortList1 && (
                         <ul className="select-list">
                             <li><a onClick={()=>handleViewType('문제만 보기')}>문제만 보기</a></li>
@@ -36,29 +41,31 @@ function CNTLEFT({changeList, onChangeList, setSimilar, tab, setTab, setNo, setC
                     )}
                 </div>
                 <div className="select-wrap">
-                    <button className="select-btn" onClick={toggleList2}>사용자 정렬</button>
+                    <button type="button" className="select-btn" onClick={toggleList2}>{userSort}</button>
                     {sortList2 && (
                         <ul className="select-list">
-                            <li><a>단원순</a></li>
-                            <li><a>난이도순</a></li>
-                            <li><a>문제 형태순</a></li>
+                            <li><a onClick={()=>handleUserSort('단원순')}>단원순</a></li>
+                            <li><a onClick={()=>handleUserSort('난이도순')}>난이도순</a></li>
+                            <li><a onClick={()=>handleUserSort('문제 형태순')}>문제 형태순</a></li>
                         </ul>
                     )}
                 </div>
             </div>
         </div>
 
-        <CNTLIST changeList={changeList}
+        <CNTLIST initialChangeList={changeList}
                  onChangeList={onChangeList}
                  setSimilar={setSimilar}
                  tab={tab}
                  setTab={setTab}
                  setNo={setNo}
                  viewType={viewType}
+                 userSort={userSort}
                  setChangeId={setChangeId}
                  setNo2={setNo2}
                  groupedItems={groupedItems}
-                 groupedData={groupedData}
+                 initialGroupData={groupedData}
+                 onChangeGroup={onChangeGroup}
                  removeList={removeList}
         />
         <CNTBOTTOM changeList={changeList}/>

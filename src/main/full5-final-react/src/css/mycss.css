@@ -1,3 +1,17 @@
 .change_margin {
     margin-top: 20px;
 }
+
+div.table.half-type .depth-01.ui-sortable.single-item{
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+div.table.half-type .depth-01.ui-sortable.single-item .drag-type02{
+    background-color: #fff;
+}
+
+div.table.half-type .depth-01.ui-sortable.single-item .col{
+    background-color: #fff;
+    border-bottom: none;
+}
