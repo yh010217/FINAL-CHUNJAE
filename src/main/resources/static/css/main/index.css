@@ -1,7 +1,21 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
 body {
-    width: 85%;
+    width: 1300px;
     margin: 0 auto;
     padding: 0;
+    font-family: 'Pretendard-Regular';
+    overflow-y: scroll;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
 }
 
 * {
@@ -33,6 +47,7 @@ ul.tabs li{
     cursor: pointer;
 }
 
+/* 중학 / 시험지 보관 */
 ul.tabs li.current{
     background: #fff;
     border-radius: 22px;
@@ -48,6 +63,48 @@ ul.tabs li.current{
 }
 
 .tab-content.current{
+    display: inherit;
+}
+
+/* 과목별 탭 */
+ul.tab li.now{
+    color: #6a4cbe;
+}
+
+ul.tab {
+    width: 640px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+ul.tab li.tab-link {
+    font-size: 1.1rem;
+    margin: 0 15px;
+    cursor: Pointer;
+}
+
+/*
+ul.tab .tab-link:after {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 12px;
+    background: #e0e0e0;
+    content: '';
+}
+*/
+
+.tab-book{
+    display: none;
+}
+
+.tab-book.now{
     display: inherit;
 }
 
@@ -72,7 +129,7 @@ ul li {
 .book-list {
     margin: 15px 0;
     display: flex;
-    justify-content: space-between;
+    gap: 42px;
 }
 .book-detail {
     display: flex;
@@ -118,3 +175,8 @@ ul li {
     flex: 3;
 }
 
+/* 스크롤바 너비 고려하기 */
+/* Chrome, Safari, Opera */
+.index-top, .container {
+    margin-right: 15px; /* 스크롤바가 있을 때의 여백 */
+}
