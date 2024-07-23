@@ -76,6 +76,7 @@
             <div class="title">
                 <i class="uil uil-files-landscapes"></i>
                 <span class="text">문제오류상세페이지</span>
+
             </div>
             <div id="error_detail">
                 <ul id="detail_ul">
@@ -110,13 +111,11 @@
                     <li>
                         <span>첨부파일이름</span>
                         <span th:text="${questionErrorDTO.attachmentFileName}"></span>
+                        <button type="button" id="down" th:data-attachment-file-name="${questionErrorDTO.attachmentFilePath}">첨부파일다운</button>
                     </li>
                 </ul>
                 <div class="a_list">
                     <a id="a_error" th:href="@{/admin/error}">목록으로</a>
-<!--                    <a id="a_down" th:href="@{/file/csv_download/abc.jpg}">폴더x</a>-->
-<!--                    <a id="a_down2" th:href="@{/file/download/abc.jpg}">폴더지정0</a>-->
-                    <button type="button" id="down" th:data-attachment-file-name="${questionErrorDTO.attachmentFilePath}">다운로드</button>
                     <button type="button" id="status" th:onclick="|errorstatus(${questionErrorDTO.errorId})|">처리하기</button>
                 </div>
             </div>

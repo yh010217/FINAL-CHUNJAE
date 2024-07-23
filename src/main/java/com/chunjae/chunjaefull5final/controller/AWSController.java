@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -69,17 +70,32 @@ public class AWSController {
         S3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
+
+
     /** 오류사진 다운*/
+    private final String folderName = "error"; // 폴더명 하드코딩
     @GetMapping("/download")
     public void downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) {
-        String filePath = "error" + "/" + fileName; // 폴더명과 파일명을 합쳐서 경로 생성
+        String filePath = folderName + "/" + fileName; // 폴더명과 파일명을 합쳐서 경로 생성
         try {
+            String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
+            String contentType = "application/octet-stream";
+            if (fileName.endsWith(".png")) {
+                contentType = "image/png";
+            } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+                contentType = "image/jpeg";
+            } else if (fileName.endsWith(".hwp")) {
+                contentType = "application/hwp";
+            }
+            response.setContentType(contentType);
             S3Service.downloadFile(filePath, response);
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
         }
     }
+
     /** test용 */
     @GetMapping("/csv_download/{fileName}")
     public ResponseEntity<byte[]> download(@PathVariable String fileName) throws IOException {
