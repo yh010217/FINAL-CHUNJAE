@@ -32,7 +32,7 @@
             </a>
         </div>
         <a class="join_a" th:href="@{/join}">회원가입</a>
-        <th:block sec:authorize="hasAnyRole('User','Teacher','Stop')">
+        <th:block sec:authorize="hasAnyRole('User','Teacher','Stop','Admin')">
             <li>
                 <form th:method="post" th:action="@{/logout}">
                     <button type="submit" th:class="logout">로그아웃</button>

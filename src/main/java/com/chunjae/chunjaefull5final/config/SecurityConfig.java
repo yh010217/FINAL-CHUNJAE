@@ -33,8 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/css/**")
                 .requestMatchers("/full5-final-react/src/**")
                 .requestMatchers("/full5-final-react/component/**")
-                .requestMatchers("/file/**")
-                .requestMatchers("/csv_download/**");
+                .requestMatchers("/file/**");
 //                .requestMatchers("/**");
     }
     @Bean
@@ -51,7 +50,12 @@ public class SecurityConfig {
                 authorize
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail","/**").permitAll()
+                                ,"/checkEmail").permitAll()
+                         //관리자
+                        .requestMatchers("/admin/**").hasRole("Admin")
+                        //정지회원제외
+                        .requestMatchers("/step1/**", "/step2/**","/**").hasAnyRole("Admin","Teacher","User")
+
 
                         .anyRequest().authenticated()
         );

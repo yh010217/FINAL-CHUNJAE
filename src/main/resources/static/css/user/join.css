@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+@font-face {
+    font-family: 'GoyangIlsan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
+
 #wrap{
     padding: 70px 0;
+    font-family: 'Poppins', 'GoyangIlsan',sans-serif;
 }
 #sign_up{
     background: #ffffff;
@@ -8,12 +18,14 @@
     border-radius: 20px;
     width: 45vw;
     margin: 0 auto;
+
 }
 #sign_up h1{
     color: #5670DC;
     text-align: center;
     border-radius: 35px 0;
     padding: 15px;
+    font-family: 'GoyangIlsan';
 }
 #sign_up_form{
     display: flex;
@@ -78,6 +90,7 @@
     font-size: 1rem;
     border: 1px solid #d5d5d5;
     border-radius: 5px;
+    font-family: 'GoyangIlsan';
 }
 .sign_up_input:focus,#role:focus,#schoolType:focus{
     outline: 1px solid #5670DC;
@@ -90,6 +103,7 @@
     border: 1px solid #d5d5d5;
     padding: 10px;
     resize: none;
+    font-family: 'GoyangIlsan';
 }
 #submit{
     font-size: 1.3rem;
@@ -99,6 +113,7 @@
     background-color: #5670DC;
     color: white;
     cursor: pointer;
+    font-family: 'GoyangIlsan';
 }
 #fail_msg{
     display: flex;

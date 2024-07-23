@@ -99,12 +99,8 @@ public class AWSService {
     return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
 }
 
-
     public void downloadFile(String key, HttpServletResponse response) throws IOException {
         S3Object s3Object = amazonS3.getObject(bucket, key);
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + key.substring(key.lastIndexOf("/") + 1) + "\"");
-
         try (InputStream inputStream = s3Object.getObjectContent()) {
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -113,6 +109,21 @@ public class AWSService {
             }
         }
     }
+
+
+//    public void downloadFile(String key, HttpServletResponse response) throws IOException {
+//        S3Object s3Object = amazonS3.getObject(bucket, key);
+//        response.setContentType("application/octet-stream");
+//        response.setHeader("Content-Disposition", "attachment; filename=\"" + key.substring(key.lastIndexOf("/") + 1) + "\"");
+//
+//        try (InputStream inputStream = s3Object.getObjectContent()) {
+//            byte[] buffer = new byte[1024];
+//            int bytesRead;
+//            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                response.getOutputStream().write(buffer, 0, bytesRead);
+//            }
+//        }
+//    }
 
 
 }
