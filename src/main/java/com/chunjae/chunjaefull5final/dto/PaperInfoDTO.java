@@ -21,6 +21,7 @@ public class PaperInfoDTO {
     private LocalDateTime updateAt;
     private Character delete_yn;
     private String saveName;
+    private String saveQuestionPath;
     private String saveAnswerPath;
     private String saveAllPath;
     private Integer subjectId;

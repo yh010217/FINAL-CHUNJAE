@@ -105,6 +105,33 @@ public class AWSController {
             e.printStackTrace();
         }
     }
+    /** 시험지 다운로드 파일명 임시! 고쳐야함!!*/
+    private final String paperFolderName = "pdf_테스트폴더"; // 폴더명 하드코딩
+    @GetMapping("/paperDownload")
+    public void paperDownloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) {
+        String filePath = paperFolderName + "/" + fileName; // 폴더명과 파일명을 합쳐서 경로 생성
+        try {
+            String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
+            String contentType = "application/octet-stream";
+            if (fileName.endsWith(".png")) {
+                contentType = "image/png";
+            } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+                contentType = "image/jpeg";
+            } else if (fileName.endsWith(".hwp")) {
+                contentType = "application/hwp";
+            } else if (fileName.endsWith(".pdf")) {
+                contentType = "application/pdf";
+            }
+            response.setContentType(contentType);
+            S3Service.downloadFile(filePath, response);
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+        }
+    }
+
+
 
     /** test용 */
     @GetMapping("/csv_download/{fileName}")
