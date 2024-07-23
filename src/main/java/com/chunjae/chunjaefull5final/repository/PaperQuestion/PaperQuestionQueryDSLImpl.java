@@ -1,6 +1,11 @@
 package com.chunjae.chunjaefull5final.repository.PaperQuestion;
 
 
+import com.chunjae.chunjaefull5final.domain.PaperQuestion;
+import static com.chunjae.chunjaefull5final.domain.QPaperQuestion.*;
+import static com.chunjae.chunjaefull5final.domain.QPaperInfo.*;
+import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -74,5 +79,17 @@ public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
         Query query = entityManager.createNativeQuery(sql.toString());
 
         query.executeUpdate();
+    }
+
+    @Override
+    public List<PaperQuestion> getQuestions(Long paperId) {
+
+        List<PaperQuestion> list = queryFactory.select(paperQuestion)
+                .from(paperQuestion)
+                .where(paperQuestion.paperInfo.paperId.eq(paperId))
+                .fetch();
+
+
+        return list;
     }
 }

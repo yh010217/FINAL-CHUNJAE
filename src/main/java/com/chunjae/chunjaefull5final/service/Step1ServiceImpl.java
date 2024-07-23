@@ -3,6 +3,7 @@ package com.chunjae.chunjaefull5final.service;
 import com.chunjae.chunjaefull5final.domain.*;
 import com.chunjae.chunjaefull5final.dto.EvaluationDTO;
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
+import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
 import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
 import com.chunjae.chunjaefull5final.repository.PaperQuestion.PaperQuestionRepository;
 import com.chunjae.chunjaefull5final.repository.Subject.SubjectRepository;
@@ -12,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +33,8 @@ public class Step1ServiceImpl implements Step1Service {
     private final PaperInfoRepository paperInfoRepo;
     private final SubjectRepository subjectRepo;
     private final UserRepository userRepo;
-
     private final PaperQuestionRepository paperQuestionRepo;
+    private final ModelMapper modelMapper;
 
     @Override
     public JSONObject saveExam(String examBody, int subject, List<String> levelCnt)
@@ -282,6 +285,20 @@ public class Step1ServiceImpl implements Step1Service {
         Long paperId = ((Integer)body.get("paperId")).longValue();
         ArrayList<Map<String,Object>> itemList = (ArrayList<Map<String,Object>>) body.get("fitArray");
         paperQuestionRepo.saveQuestions(itemList,paperId);
+    }
+
+    @Override
+    public List<QuestionsDTO> getQuestions(Long paperId) {
+        List<PaperQuestion> questionList = paperQuestionRepo.getQuestions(paperId);
+        List<QuestionsDTO> result = questionList.stream().map(item->{
+            QuestionsDTO dto = modelMapper.map(item,QuestionsDTO.class);
+            dto.setPaperId(paperId);
+            dto.setQuestionFormName(item.getQuestionFormCode());
+            dto.setDifficultyName(item.getQuestionLevel());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return result;
     }
 
 

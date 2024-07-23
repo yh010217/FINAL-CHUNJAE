@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.EvaluationDTO;
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
+import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
 import com.chunjae.chunjaefull5final.service.Step1Service;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -121,9 +122,17 @@ public class Step1Controller {
         return result;
     }
 
-    @GetMapping("/step1/step2gogo")
-    public String step2GoGo(){
-        return "step1/step2gogo";
+    @GetMapping("/step1/step2-go/{paperId}")
+    public String step2Go(@PathVariable Long paperId){
+        return "redirect:http://localhost:3000/step2/new/"+paperId;
+    }
+    @PostMapping("/step1/step2-data/{paperId}")
+    @ResponseBody
+    public Map<String,Object> step2Data(@PathVariable Long paperId){
+        Map<String,Object> result = new HashMap<>();
+        List<QuestionsDTO> itemList = step1Service.getQuestions(paperId);
+        result.put("itemList",itemList);
+        return result;
     }
 
 }

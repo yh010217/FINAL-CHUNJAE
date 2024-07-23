@@ -3,6 +3,7 @@ package com.chunjae.chunjaefull5final.service;
 import com.chunjae.chunjaefull5final.domain.PaperInfo;
 import com.chunjae.chunjaefull5final.dto.EvaluationDTO;
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
+import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -24,4 +25,6 @@ public interface Step1Service {
     ResponseEntity<String> postRequest(String url, Map<String, Object> requestBody);
 
     void saveQuestions(JSONObject body) throws RuntimeException;
+
+    List<QuestionsDTO> getQuestions(Long paperId);
 }

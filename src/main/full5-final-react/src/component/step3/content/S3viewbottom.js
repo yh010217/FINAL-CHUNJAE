@@ -2,18 +2,18 @@ import S3topform from "./S3topform";
 import S3typeform from "./S3typeform";
 import S3tab from "./S3tab";
 
-function S3viewbottom() {
+function S3viewbottom({paper}) {
     return <>
         <div className="top-form">
             <S3topform/>
         </div>
 
         <div className="type-form">
-            <S3typeform/>
+            <S3typeform paper={paper}/>
         </div>
 
         <div className="tab-list-type01">
-            <S3tab/>
+            <S3tab paper={paper}/>
         </div>
     </>
 }

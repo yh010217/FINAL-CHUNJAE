@@ -446,7 +446,7 @@ let saveQuestions = function(data){
         return response.json();
     }).then(item=>{
         if(item.success === 'Y'){
-            location.href = "/step1/step2gogo";
+            location.href = "/step1/step2-go/"+data.paperId;
         }else{
             alert('저장에 실패했습니다');
         }
