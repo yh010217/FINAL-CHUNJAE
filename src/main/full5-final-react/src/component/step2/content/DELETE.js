@@ -28,7 +28,7 @@ function DELETE({delList, setDelList, addToDelList}) {
     
     return (
         <div className="view-que-list scroll-inner">
-            {Object.values(groupedData).map((group) => (
+            {Object.values(groupedData).map((group, index) => (
                 <React.Fragment key={group.passageId}>
                     {group.passageUrl && (
                         <div className="view-que-box">
@@ -54,8 +54,9 @@ function DELETE({delList, setDelList, addToDelList}) {
                             </div>
                         </div>
                     )}
-                    {group.items.map(item => (
+                    {group.items.map((item, itemIndex) => (
                         <DELLIST
+                            itemIndex={itemIndex}
                             item={item}
                             addToDelList={addToDelList}
                             setDelList={setDelList}

@@ -50,18 +50,21 @@ function MODAL({ setModal, itemId }) {
                 data: formData,
             });
 
-            console.log('파일 업로드 성공:', response.data);
-            let imageUrl = response.data; // S3에서 업로드된 파일의 URL
+            let responseData = response.data;
+            const imageUrl = responseData[0].substring(responseData[0].lastIndexOf('/') + 1);
+
+            console.log(imageUrl); // 마지막 요소 출력
 
             // DB에 저장할 데이터 구성
-            const dbData = {
+            let dbData = {
                 attachmentFileName: fileName,
-                attachmentFilePath: imageUrl[0],
+                attachmentFilePath: imageUrl,
                 errorType: errorType,
                 content: errorContent,
                 itemId: itemId
             };
-            console.log(dbData, "db로 넘어갈 데이터 확인하기")
+
+            console.log(dbData, "db로 넘어갈 데이터 확인하기");
 
             // DB로 값 넘기기
             await axios({
@@ -76,8 +79,31 @@ function MODAL({ setModal, itemId }) {
 
             alert('신고가 완료되었습니다.');
         } catch (err) {
-            console.log(err);
-            alert('신고에 실패하였습니다.');
+            console.log(err); // 에러 로그 출력
+
+            // 이미지 업로드 실패 시에도 DB 저장 시도
+            let dbData = {
+                errorType: errorType,
+                content: errorContent,
+                itemId: itemId
+            };
+
+            try {
+                await axios({
+                    method: 'POST',
+                    url: "http://localhost:8080/test/error", // 실제 API URL로 변경
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8',
+                        'Accept': 'application/json'
+                    },
+                    data: dbData
+                });
+
+                alert('신고가 완료되었습니다.');
+            } catch (dbErr) {
+                console.log(dbErr);
+                alert('DB에 저장하는 데 실패하였습니다.');
+            }
         } finally {
             closePopup();
         }
@@ -147,6 +173,7 @@ function MODAL({ setModal, itemId }) {
                                             <textarea
                                                 value={errorContent}
                                                 onChange={(e) => setErrorContent(e.target.value)}
+                                                maxLength="50"
                                                 cols="30"
                                                 rows="4"
                                                 placeholder="오류내용을 간단히 적어주세요. (최대 50자)"

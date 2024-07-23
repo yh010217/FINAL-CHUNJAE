@@ -57,48 +57,54 @@ function SIMLARLIST(props) {
         simRemoveList(item.itemId);
     }
 
+    let hasFilteredItems = false;
+
     return (
         <>
-            {Object.values(props.groupedData).map((group, index) => (
-                <React.Fragment key={index}>
-                    {(() => {
-                        let filteredItems = group.items;
-                        switch (props.view) {
-                            case '01':
-                                filteredItems = group.items.filter(item => item.difficultyName === '상');
-                                break;
-                            case '02':
-                                filteredItems = group.items.filter(item => item.difficultyName === '중');
-                                break;
-                            case '03':
-                                filteredItems = group.items.filter(item => item.difficultyName === '하');
-                                break;
-                        }
+            {Object.values(props.groupedData).map((group, index) => {
+                let filteredItems = group.items;
 
-                        return filteredItems.length > 0 && (
+                switch (props.view) {
+                    case '01':
+                        filteredItems = group.items.filter(item => item.difficultyName === '상');
+                        break;
+                    case '02':
+                        filteredItems = group.items.filter(item => item.difficultyName === '중');
+                        break;
+                    case '03':
+                        filteredItems = group.items.filter(item => item.difficultyName === '하');
+                        break;
+                }
+
+                if (filteredItems.length > 0) {
+                    hasFilteredItems = true;
+                    return (
+                        <React.Fragment key={index}>
                             <>
-                                <div className="view-que-box">
-                                    <div className="que-top">
-                                        <div className="title">
-                                            {group.items.length > 1 ? (
-                                                <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                            ) : (
-                                                <span className="num">지문 {group.items[0].itemNo}</span>
-                                            )}
+                                {group.passageUrl && (
+                                    <div className="view-que-box">
+                                        <div className="que-top">
+                                            <div className="title">
+                                                {group.items.length > 1 ? (
+                                                    <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
+                                                ) : (
+                                                    <span className="num">지문 {group.items[0].itemNo}</span>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="view-que">
-                                        <img src={group.passageUrl} alt="지문입니다..." />
-                                        <div className="que-bottom">
-                                            <div className="data-area">
-                                                <button className="btn-default" onClick={() => allSimList(group)}>
-                                                    <i className="add-type02"></i>
-                                                    전체 추가
-                                                </button>
+                                        <div className="view-que">
+                                            <img src={group.passageUrl} alt="지문입니다..." />
+                                            <div className="que-bottom">
+                                                <div className="data-area">
+                                                    <button className="btn-default" onClick={() => allSimList(group)}>
+                                                        <i className="add-type02"></i>
+                                                        전체 추가
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                )}
                                 {filteredItems.map((item, itemIndex) => (
                                     <div className="view-que-box" key={item.itemId}>
                                         <>
@@ -109,7 +115,7 @@ function SIMLARLIST(props) {
                                                         {/*<span className="que-badge">{item.difficultyName}</span>*/}
                                                         <span
                                                             className={`que-badge ${
-                                                                item.difficultyName === '상' ? 'yellow' : 
+                                                                item.difficultyName === '상' ? 'yellow' :
                                                                     item.difficultyName === '중' ? 'green' :
                                                                         'purple'
                                                             }`}
@@ -168,12 +174,26 @@ function SIMLARLIST(props) {
                                     </div>
                                 ))}
                             </>
-                        );
-                    })()}
-                </React.Fragment>
-            ))}
-            </>
-            );
+                        </React.Fragment>
+                    );
+                } else {
+                    return null;
+                }
+            })}
+
+            {!hasFilteredItems && <>
+                <div className="contents on">
+                    <div className="view-que-list no-data">
+                        <p>
+                            해당 난이도의 유사 문제는 존재하지 않습니다.
+                        </p>
+                    </div>
+                </div>
+            </>}
+        </>
+    );
+
+
 
 }
 
