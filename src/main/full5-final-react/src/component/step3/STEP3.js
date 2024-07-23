@@ -26,4 +26,5 @@ function STEP3({paper}){
         </div>
     </div>
 }
+
 export default STEP3;
