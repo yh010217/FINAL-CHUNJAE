@@ -9,5 +9,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function csv_download(attachmentFilePath) {
     const encodedFilePath = encodeURIComponent(attachmentFilePath);
-    window.location.href = '/file/download/' + encodedFilePath;
+    window.location.href = '/file/download?fileName=' + encodedFilePath;
 }
