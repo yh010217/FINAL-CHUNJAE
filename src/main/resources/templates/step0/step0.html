@@ -18,6 +18,8 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="/inc/js/common.js"></script>
+   <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -147,12 +149,45 @@
                             </button>
                         </div>
 
-                        <div class="view-box type-line">
+                        <div class="view-box">
                             <div class="scroll-inner">
                                 <div class="layout-wrap" id="preview-question-data"></div>
-                                </div>
+
                                 <!-- 문항 정보표 테이블 -->
-                                <div></div>
+                                <div class="table-wrap" id="preview-itemInfo-table">
+                                    <div class="tbl-view">
+                                        <table>
+                                            <colgroup>
+                                                <col width="5%">
+                                                <col width="12%">
+                                                <col width="15%">
+                                                <col width="*">
+                                                <col width="9.5%">
+                                                <col width="9.5%">
+                                                <col width="9.5%">
+                                                <col width="9.5%">
+                                                <col width="5%">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2">번호</th>
+                                                    <th rowspan="2">정답</th>
+                                                    <th colspan="2">단원</th>
+                                                    <th rowspan="2">성취기준</th>
+                                                    <th rowspan="2">내용 영역</th>
+                                                    <th rowspan="2">평가 영역</th>
+                                                    <th rowspan="2">교과 역량</th>
+                                                    <th rowspan="2">난이도</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>대단원</th>
+                                                    <th>평가내용</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="preview-itemInfo-data"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

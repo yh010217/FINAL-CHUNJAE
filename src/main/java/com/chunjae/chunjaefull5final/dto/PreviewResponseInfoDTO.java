@@ -2,10 +2,9 @@ package com.chunjae.chunjaefull5final.dto;
 
 import java.util.List;
 
-public class PreviewResponseDTO {
+public class PreviewResponseInfoDTO {
     private String successYn;
-    private List<PreviewItemDTO> itemList; // itemList 추가
-  //  private List<PreviewItemInfoDTO> list; // List 추가
+    private List<PreviewItemInfoDTO> itemList; // List 추가
     private Long examId;
 
     public Long getExamId() {
@@ -24,12 +23,11 @@ public class PreviewResponseDTO {
         this.successYn = successYn;
     }
 
-    public List<PreviewItemDTO> getItemList() {
+    public List<PreviewItemInfoDTO> getItemList() {
         return itemList;
     }
 
-    public void setItemList(List<PreviewItemDTO> itemList) {
+    public void setItemList(List<PreviewItemInfoDTO> itemList) {
         this.itemList = itemList;
     }
-
 }

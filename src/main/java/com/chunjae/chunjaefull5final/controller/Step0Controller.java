@@ -2,21 +2,19 @@ package com.chunjae.chunjaefull5final.controller;
 
 
 import com.chunjae.chunjaefull5final.dto.PreviewItemDTO;
+import com.chunjae.chunjaefull5final.dto.PreviewItemInfoDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseDTO;
+import com.chunjae.chunjaefull5final.dto.PreviewResponseInfoDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -33,7 +31,7 @@ public class Step0Controller {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private List<String> seletedExamIds;    // 세션으로 ExamId 목록 받게 수정하기
+    private List<String> selectedExamIds; // 세션으로 받는 걸로 변경 예정
 
     @GetMapping("/step0/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, Model model) {
@@ -81,7 +79,6 @@ public class Step0Controller {
 
                 JSONObject item = (JSONObject) chapterList.get(i);
 
-                String curriculumCode = (String) item.get("curriculumCode");
                 String curriculumName = (String) item.get("curriculumName");
                 Long subjectId = (Long) item.get("subjectId");
                 String subjectName = (String) item.get("subjectName");
@@ -176,37 +173,34 @@ public class Step0Controller {
     }
 
     /**
-     * 선택한 시험지 json 형식으로 받고 보내기
+     * 선택한 시험지 json 형식으로 받고 보내기 - 변경 해야함 @@@@@@@
      */
-    @PostMapping("/step0/examid")
+    @PostMapping("/step0/examId")
     public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request) {
 
-        seletedExamIds = request.get("examIdList");
+        selectedExamIds = request.get("examIdList");
 
-        for (String item : seletedExamIds) {
+        for (String item : selectedExamIds) {
             log.info("examid.....{}", item);
         }
 
         return ResponseEntity.ok("ExamId 받기 성공");
     }
 
-    /**
-     * 선택한 시험지들 STEP2(react)로 보내기
-     */
-    @GetMapping("/step0/examid")
+    @GetMapping("/step0/examId")
     public ResponseEntity<Map<String, List<String>>> sendExamIds() {
         Map<String, List<String>> response = new HashMap<>();
-        response.put("examIdList", seletedExamIds);
+        response.put("examIdList", selectedExamIds);
 
         return ResponseEntity.ok(response);
     }
 
+    /** 셋팅지 미리보기 */
     @PostMapping("/preview/first")
     public ResponseEntity<PreviewResponseDTO> getPreview(@RequestBody PreviewResponseDTO request) {
         String url = "https://tsherpa.item-factory.com/item-img/exam/item-list";
 
         try {
-            RestTemplate restTemplate = new RestTemplate();
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("examId", request.getExamId());
             ResponseEntity<PreviewResponseDTO> response = restTemplate.exchange(
@@ -246,6 +240,54 @@ public class Step0Controller {
     }
 
 
+    /** 셋팅지 미리보기 - 문항 정보표 */
+    @PostMapping("/preview/info")
+    public ResponseEntity<PreviewResponseInfoDTO> getPreviewInfo(@RequestBody PreviewResponseInfoDTO request) {
+
+        String url = "https://tsherpa.item-factory.com/exam/preview/classify";
+
+        try {
+
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("examId", request.getExamId());
+
+            ResponseEntity<PreviewResponseInfoDTO> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    new HttpEntity<>(requestBody),
+                    PreviewResponseInfoDTO.class
+            );
+
+            // 응답이 OK이고 바디가 null이 아닌지 확인
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                PreviewResponseInfoDTO previewResponse = response.getBody();
+                String successYn = previewResponse.getSuccessYn();
+                List<PreviewItemInfoDTO> itemList = previewResponse.getItemList();
+
+                request.setSuccessYn(successYn);   // successYn
+                request.setItemList(itemList != null ? new ArrayList<>(itemList) : new ArrayList<>()); // 리스트가 null인 경우 리스트 초기화
+            } else {
+                // 응답이 실패한 경우 기본값 설정
+                request.setSuccessYn("N");
+                request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+            }
+
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            request.setSuccessYn("N");
+            request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+        } catch (HttpServerErrorException e) {
+            e.printStackTrace();
+            request.setSuccessYn("N");
+            request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setSuccessYn("N");
+            request.setItemList(new ArrayList<>()); // 빈 리스트로 초기화
+        }
+
+        return ResponseEntity.ok(request);
+    }
 
  /*   @PostMapping("/preview/all")
     public ResponseEntity<String> previewAll(@RequestBody ExamIdDTO request) {
@@ -281,17 +323,7 @@ public class Step0Controller {
 
             System.out.println("preview URL: " + previewUrl); // URL 로그 출력
 *//*
-
-            // GET 요청으로 HTML 가져오기
-            ResponseEntity<String> getResponse = restTemplate.getForEntity(previewUrl, String.class);
-
-            if (!getResponse.getStatusCode().is2xxSuccessful() || getResponse.getBody() == null) {
-                throw new RuntimeException("HTML content fetch 실패..");
-            }
-
-            // HTML 콘텐츠 반환
-            return ResponseEntity.ok(getResponse.getBody());
-*//*
+     *//*
 
 
             // GET 요청으로 HTML 가져오기
