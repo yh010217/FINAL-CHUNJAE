@@ -16,9 +16,9 @@ function S2content({setModal, setItemId, handlePaper }) {
             /** STEP 0 에서 넘겨주는 examIdList  **/
             const data = {
                 // 영어
-                // examIdList: ["1416"]
+                examIdList: ["1416"]
                 // 국어
-                examIdList: ["500"]
+                // examIdList: ["500"]
                 // 수학
                 // examIdList: ["1534"]
                 // ?

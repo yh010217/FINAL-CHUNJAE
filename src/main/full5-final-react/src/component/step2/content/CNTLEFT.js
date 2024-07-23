@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import CNTLIST from "./CNTLIST";
 import CNTBOTTOM from "./CNTBOTTOM";
 
@@ -30,7 +30,7 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, userSort, setUserSort
             <span className="title">문제 목록</span>
             <div className="right-area">
                 <div className="select-wrap">
-                    <button type="button" className="select-btn" onClick={toggleList1}>{viewType}</button>
+                    <button type="button" className={`select-btn ${sortList1 ? 'active' : ''}`} onClick={toggleList1}>{viewType}</button>
                     {sortList1 && (
                         <ul className="select-list">
                             <li><a onClick={()=>handleViewType('문제만 보기')}>문제만 보기</a></li>
@@ -40,9 +40,10 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, userSort, setUserSort
                     )}
                 </div>
                 <div className="select-wrap">
-                    <button type="button" className="select-btn" onClick={toggleList2}>{userSort}</button>
+                    <button type="button" className={`select-btn ${sortList2 ? 'active' : ''}`} onClick={toggleList2}>{userSort}</button>
                     {sortList2 && (
                         <ul className="select-list">
+                            <li><a onClick={()=>handleUserSort('사용자 정렬')}>사용자 정렬</a></li>
                             <li><a onClick={()=>handleUserSort('단원순')}>단원순</a></li>
                             <li><a onClick={()=>handleUserSort('난이도순')}>난이도순</a></li>
                             <li><a onClick={()=>handleUserSort('문제 형태순')}>문제 형태순</a></li>

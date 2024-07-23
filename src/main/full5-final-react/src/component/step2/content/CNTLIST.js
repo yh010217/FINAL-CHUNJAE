@@ -115,6 +115,9 @@ function CNTLIST({
             case '문제 형태순':
                 sortByQuestionForm();
                 break;
+            case '사용자 정렬':
+                Object.values(groupedData);
+                break;
             default:
                 // Object.values(groupedData);
                 break;
@@ -157,7 +160,6 @@ function CNTLIST({
     useEffect(() => {
         const sortedList = getSortedList();
         onChangeGroup(sortedList);
-
     }, [userSort]);
 
     return (
@@ -166,7 +168,7 @@ function CNTLIST({
                 <React.Fragment key={group.groupKey}>
                     {group.items.map((item, itemIndex) => (
                         <React.Fragment key={item.itemId}>
-                            {itemIndex === 0 && (
+                            {item.passageUrl  && (
                                 <div className="view-que-box">
                                     <div className="que-top">
                                         <div className="title">

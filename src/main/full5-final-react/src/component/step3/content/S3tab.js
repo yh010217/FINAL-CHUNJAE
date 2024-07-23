@@ -1,8 +1,7 @@
 import React from 'react';
 
 function S3tab({paper}) {
-
-    console.log(paper);
+    // console.log(paper);
     const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
 
     return <>

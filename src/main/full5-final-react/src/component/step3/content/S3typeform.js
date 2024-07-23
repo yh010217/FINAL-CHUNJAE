@@ -25,7 +25,7 @@ function S3typeform({paper}){
         setUpperCount(upperCount);
         setMiddleCount(middleCount);
         setLowerCount(lowerCount);
-    }, [paper]);
+    }, [paper, multipleChoiceForms, subjectiveForms]);
 
     return <>
         <div className="left-wrap">
