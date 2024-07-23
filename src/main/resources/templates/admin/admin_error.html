@@ -8,7 +8,8 @@
 
     <!----======== CSS ======== -->
     <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/user_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_error.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/admin/admin_paper.css}">-->
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
@@ -73,49 +74,56 @@
     <div class="dash-content">
         <div class="activity">
             <div class="title">
-                <i class="uil uil-files-landscapes"></i>
-                <span class="text">회원상세페이지</span>
+                <i class="uil uil-file-question-alt"></i>
+                <span class="text">문제오류관리</span>
             </div>
-            <div id="user_detail">
-                <ul id="detail_ul">
-                    <li class="list">
-                        <span>회원번호</span>
-                        <span th:text="${userDTO.uid}"></span>
+            <div id="error">
+                <ul>
+                    <li class="error_list_top">
+                        <span>오류번호</span>
+                        <span>문제오류타입</span>
+                        <span>문제번호</span>
+                        <span>처리상태</span>
                     </li>
-                    <li class="list">
-                        <span>회원번호</span>
-                        <span th:text="${userDTO.name}"></span>
+                    <li th:if="${!questionList.isEmpty()}" th:each="item:${questionList}" th:class="questionList">
+                        <a th:href="@{'/admin/errordetail/'+${item.errorId}}">
+                            <span th:text="${item.errorId}"></span>
+                            <span th:text="${item.errorType}"></span>
+                            <span th:text="${item.itemId}"></span>
+                            <span th:text="${item.status}"></span>
+                        </a>
                     </li>
-                    <li class="list">
-                        <span>이메일</span>
-                        <span th:text="${userDTO.email}"></span>
+                    <li th:if="${questionList.isEmpty()}">
+                        시험지 정보가 존재하지 않습니다.
                     </li>
-                    <li class="list">
-                        <span>회원유형</span>
-                        <span th:text="${userDTO.role}"></span>
-                    </li>
-                    <li class="list">
-                        <span>학교정보</span>
-                        <span th:text="${userDTO.schoolType}"></span>
-                    </li>
-                    <li class="list">
-                        <span>가입된 sns</span>
-                        <span th:text="${userDTO.snsType}"></span>
-                    </li>
-                    <li class="list">
-                        <span>SnsId</span>
-                        <span th:text="${userDTO.snsId}"></span>
-                    </li>
+
                 </ul>
-                <div class="a_list">
-                    <a id="a_user" th:href="@{/admin/user}">목록으로</a>
-                    <a id="del" th:href="@{|/userdelete/${userDTO.uid}|}">
-                        <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘">탈퇴하기</a>
-                </div>
             </div>
 
         </div>
+        <div id="page">
+            <th:block th:if="${startPage>1}">
+                <a th:href="@{/admin/error(page=${startPage}-1)}">
+                    <span class="arrow left"> 이전</span>
+                </a>
+            </th:block>
 
+            <th:block th:if="${questionList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
+                      th:class="page">
+                <span th:if="${index==questionList.pageable.getPageNumber()+1}" th:text="${index}"></span>
+                <span th:if="${index!=questionList.pageable.getPageNumber()+1}">
+				<a th:href="@{/admin/error(page=${index})}"
+                   th:text="${index}" class="page_num"></a>
+			</span>
+            </th:block>
+
+            <th:block th:if="${endPage<questionList.getTotalPages()}">
+                <a th:href="@{/admin/error(page=${endPage+1})}">
+                    <span class="arrow right">다음</span>
+                </a>
+            </th:block>
+
+        </div>
     </div>
 
 

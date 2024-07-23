@@ -8,10 +8,10 @@
 
     <!----======== CSS ======== -->
     <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/user_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/paper_detail.css}">
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
+    <script th:src="@{/js/admin/deltest.js}"></script>
     <title>Admin</title>
 </head>
 <body>
@@ -74,43 +74,51 @@
         <div class="activity">
             <div class="title">
                 <i class="uil uil-files-landscapes"></i>
-                <span class="text">회원상세페이지</span>
+                <span class="text">시험지상세페이지</span>
             </div>
-            <div id="user_detail">
+            <div id="paper_detail">
                 <ul id="detail_ul">
                     <li class="list">
-                        <span>회원번호</span>
-                        <span th:text="${userDTO.uid}"></span>
+                        <span>시험지번호</span>
+                        <span th:text="${paperInfoDTO.paperId}"></span>
                     </li>
                     <li class="list">
-                        <span>회원번호</span>
-                        <span th:text="${userDTO.name}"></span>
+                        <span>제목</span>
+                        <span th:text="${paperInfoDTO.title}"></span>
                     </li>
                     <li class="list">
-                        <span>이메일</span>
-                        <span th:text="${userDTO.email}"></span>
+                        <span>과목코드</span>
+                        <span th:text="${paperInfoDTO.subjectId}"></span>
                     </li>
                     <li class="list">
-                        <span>회원유형</span>
-                        <span th:text="${userDTO.role}"></span>
+                        <span>과목이름</span>
+                        <span th:text="${subjectNames[paperInfoDTO.subjectId]}"></span>
                     </li>
                     <li class="list">
-                        <span>학교정보</span>
-                        <span th:text="${userDTO.schoolType}"></span>
+                        <span>시험문제개수</span>
+                        <span th:text="${paperInfoDTO.itemCount}"></span>
                     </li>
                     <li class="list">
-                        <span>가입된 sns</span>
-                        <span th:text="${userDTO.snsType}"></span>
+                        <span>학년</span>
+                        <span th:text="${paperInfoDTO.grade}"></span>
                     </li>
                     <li class="list">
-                        <span>SnsId</span>
-                        <span th:text="${userDTO.snsId}"></span>
+                        <span>학기</span>
+                        <span th:text="${paperInfoDTO.term}"></span>
+                    </li>
+                    <li class="list">
+                        <span>만든날짜</span>
+                        <span th:text="${paperInfoDTO.createdAt}"></span>
+                    </li>
+                    <li class="list">
+                        <span>만든회원정보</span>
+                        <span th:text="${paperInfoDTO.uid}"></span>
                     </li>
                 </ul>
                 <div class="a_list">
-                    <a id="a_user" th:href="@{/admin/user}">목록으로</a>
-                    <a id="del" th:href="@{|/userdelete/${userDTO.uid}|}">
-                        <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘">탈퇴하기</a>
+                    <a id="a_paper"th:href="@{/admin/paper}">목록으로</a>
+                    <a id="a_down" th:href="@{/file/csv_download/Download_Sample.pdf}">다운로드</a>
+                    <a id="a_del" th:href="@{/file/deleteImageFile(fileName='deltest.pdf')}" onclick="deleteFile(event)">삭제</a>
                 </div>
             </div>
 

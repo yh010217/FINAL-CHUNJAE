@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/css/**")
                 .requestMatchers("/full5-final-react/src/**")
                 .requestMatchers("/full5-final-react/component/**")
-                .requestMatchers("/**");
+                .requestMatchers("/file/**");
+//                .requestMatchers("/**");
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)
@@ -42,13 +43,19 @@ public class SecurityConfig {
         http.csrf(csrf->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
+
 //     http.csrf(csrf-> csrf.disable());
 
         http.authorizeHttpRequests(authorize ->
                 authorize
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail","/**").permitAll()
+                                ,"/checkEmail").permitAll()
+                         //관리자
+                        .requestMatchers("/admin/**").hasRole("Admin")
+                        //정지회원제외
+                        .requestMatchers("/step1/**", "/step2/**","/**").hasAnyRole("Admin","Teacher","User")
+
 
                         .anyRequest().authenticated()
         );

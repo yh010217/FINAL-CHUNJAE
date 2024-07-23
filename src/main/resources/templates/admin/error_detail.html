@@ -8,10 +8,11 @@
 
     <!----======== CSS ======== -->
     <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/user_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/error_detail.css}">
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
+    <script th:src="@{/js/admin/error_status.js}"></script>
+    <script th:src="@{/js/admin/error_down.js}"></script>
     <title>Admin</title>
 </head>
 <body>
@@ -74,43 +75,48 @@
         <div class="activity">
             <div class="title">
                 <i class="uil uil-files-landscapes"></i>
-                <span class="text">회원상세페이지</span>
+                <span class="text">문제오류상세페이지</span>
+
             </div>
-            <div id="user_detail">
+            <div id="error_detail">
                 <ul id="detail_ul">
                     <li class="list">
-                        <span>회원번호</span>
-                        <span th:text="${userDTO.uid}"></span>
+                        <span>errorId</span>
+                        <span th:text="${questionErrorDTO.errorId}"></span>
+                    </li>
+                    <li class="list">
+                        <span>문제오류타입</span>
+                        <span th:text="${questionErrorDTO.errorType}"></span>
+                    </li>
+                    <li class="list">
+                        <span>문제번호</span>
+                        <span th:text="${questionErrorDTO.itemId}"></span>
+                    </li>
+                    <li class="list">
+                        <span>오류신고이유</span>
+                        <span th:text="${questionErrorDTO.content}"></span>
+                    </li>
+                    <li class="list">
+                        <span>처리상태</span>
+                        <span th:text="${questionErrorDTO.status}"></span>
                     </li>
                     <li class="list">
                         <span>회원번호</span>
-                        <span th:text="${userDTO.name}"></span>
+                        <span th:text="${questionErrorDTO.uid}"></span>
                     </li>
                     <li class="list">
-                        <span>이메일</span>
-                        <span th:text="${userDTO.email}"></span>
+                        <span>첨부파일 오류 이유</span>
+                        <span th:text="${questionErrorDTO.attachmentFileError}"></span>
                     </li>
-                    <li class="list">
-                        <span>회원유형</span>
-                        <span th:text="${userDTO.role}"></span>
-                    </li>
-                    <li class="list">
-                        <span>학교정보</span>
-                        <span th:text="${userDTO.schoolType}"></span>
-                    </li>
-                    <li class="list">
-                        <span>가입된 sns</span>
-                        <span th:text="${userDTO.snsType}"></span>
-                    </li>
-                    <li class="list">
-                        <span>SnsId</span>
-                        <span th:text="${userDTO.snsId}"></span>
+                    <li>
+                        <span>첨부파일이름</span>
+                        <span th:text="${questionErrorDTO.attachmentFileName}"></span>
+                        <button type="button" id="down" th:data-attachment-file-name="${questionErrorDTO.attachmentFilePath}">첨부파일다운</button>
                     </li>
                 </ul>
                 <div class="a_list">
-                    <a id="a_user" th:href="@{/admin/user}">목록으로</a>
-                    <a id="del" th:href="@{|/userdelete/${userDTO.uid}|}">
-                        <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘">탈퇴하기</a>
+                    <a id="a_error" th:href="@{/admin/error}">목록으로</a>
+                    <button type="button" id="status" th:onclick="|errorstatus(${questionErrorDTO.errorId})|">처리하기</button>
                 </div>
             </div>
 
