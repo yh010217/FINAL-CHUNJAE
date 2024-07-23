@@ -21,12 +21,15 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri('https://repository.aspose.com/repo/')
+    }
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,9 +39,52 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.googlecode.json-simple:json-simple:1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    //GSON
+    implementation 'com.google.code.gson:gson:2.10.1'
+    // model mapper lib
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+    // QueryDSL lib
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    // aspose html to pdf
+    implementation 'com.aspose:aspose-pdf:24.6'
+    implementation group: 'com.aspose', name: 'aspose-pdf', version: '24.6'
+    implementation group: 'com.aspose', name: 'aspose-html', version: '20.9.1', classifier: 'jdk16'
+    implementation group: 'com.aspose', name: 'aspose-words', version: '24.4', classifier: 'jdk17'
+    // itextpdf
+//    implementation 'com.itextpdf:itextpdf:5.5.13.3'
+//    implementation 'com.itextpdf.tool:xmlworker:5.5.13.3'
+//    implementation 'com.itextpdf:pdfa:7.2.3'
+
+    implementation 'com.itextpdf:forms:7.1.14'
+    implementation 'com.itextpdf:hyph:7.1.14'
+    implementation 'com.itextpdf:io:7.1.14'
+    implementation 'com.itextpdf:styled-xml-parser:7.1.14'
+    implementation 'com.itextpdf:svg:7.1.14'
+    implementation 'com.itextpdf:html2pdf:3.0.3'
+    implementation 'com.itextpdf:kernel:7.1.14'
+    implementation 'com.itextpdf:layout:7.1.14'
+    implementation 'com.itextpdf:pdfa:7.1.14'
+    implementation 'com.itextpdf:sign:7.1.14'
+    implementation 'com.itextpdf:barcodes:7.1.14'
+    implementation 'com.itextpdf:font-asian:7.1.14'
+
+    // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+    implementation 'com.itextpdf:itextpdf:5.5.13.3'
+    // https://mvnrepository.com/artifact/com.itextpdf/svg
+    implementation 'com.itextpdf:svg:8.0.1'
+
+    implementation 'org.apache.xmlgraphics:batik-transcoder:1.14'
+    implementation 'org.apache.xmlgraphics:batik-codec:1.14'
+
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {

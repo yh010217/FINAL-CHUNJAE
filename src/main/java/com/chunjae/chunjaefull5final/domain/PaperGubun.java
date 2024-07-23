@@ -1,4 +1,5 @@
 package com.chunjae.chunjaefull5final.domain;
 
-public class EntityBase {
+public enum PaperGubun {
+    New,Edit
 }
