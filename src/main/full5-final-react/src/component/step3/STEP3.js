@@ -21,7 +21,7 @@ function STEP3({paper}){
                 <S3content paper={paper} onChangeTitle={handlePaperTitle}/>
             </div>
             <div className="step-btn-wrap">
-                <S3stepbtn paperTitle={paperTitle}/>
+                <S3stepbtn paperTitle={paperTitle} paper={paper}/>
             </div>
         </div>
     </div>

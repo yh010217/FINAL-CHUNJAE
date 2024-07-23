@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
+import axios from "axios";
 
-function S3stepbtn({ paperTitle }) {
+function S3stepbtn({ paperTitle, paper }) {
+
+    const [response, setResponse] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
@@ -24,7 +27,24 @@ function S3stepbtn({ paperTitle }) {
 
     const handleSaveConfirm = () => {
         setShowConfirm(false);
+        // title + paper 합쳐서 back 으로 post 로딩 페이지
+        axios.post()
     };
+
+    // const handleSave = async () => {
+    //     try {
+    //         const url = '/api/';
+    //         const data = {
+    //
+    //         };
+    //
+    //         const response = await axios.post(url, data);
+    //         setResponse(response.data);
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    //
+    // };
 
     return (
         <>
