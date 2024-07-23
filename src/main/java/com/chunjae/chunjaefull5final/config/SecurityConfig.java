@@ -50,11 +50,11 @@ public class SecurityConfig {
                 authorize
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail", "/index", "/oauth2/authorization/google").permitAll()
-                         //관리자
+                                ,"/checkEmail","/oauth2/authorization/google","/index").permitAll()
+                        //관리자
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
-                        .requestMatchers("/step1/**", "/step2/**","/**").hasAnyRole("Admin","Teacher","User")
+                        .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin","Teacher","User")
 
 
                         .anyRequest().authenticated()
@@ -66,19 +66,19 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
-                .defaultSuccessUrl("/main")
+                .defaultSuccessUrl("/index")
                 .permitAll()
         );
 
         // 로그아웃
         http.logout(logout -> logout.logoutUrl("/logout")
-                .logoutSuccessUrl("/main")
+                .logoutSuccessUrl("/index")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
         );
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                 httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
-                        .defaultSuccessUrl("/main")
+                        .defaultSuccessUrl("/index")
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
 
