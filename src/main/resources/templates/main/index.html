@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <meta charset="UTF-8">
     <title>메인페이지</title>
@@ -19,7 +19,14 @@
                     <li>메뉴4</li>
                 </ul>
             </nav>
-            <a class="header-3">로그인</a>
+            <!--<a class="header-3" th:src="@{/login}">로그인</a>-->
+            <th:block sec:authorize="hasAnyRole('User','Teacher','Stop','Admin')">
+                <li>
+                    <form th:method="post" th:action="@{/logout}">
+                        <button type="submit" th:class="logout">로그아웃</button>
+                    </form>
+                </li>
+            </th:block>
 
         </header>
 

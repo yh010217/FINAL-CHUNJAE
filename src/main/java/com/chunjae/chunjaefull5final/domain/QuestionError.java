@@ -28,7 +28,6 @@ public class QuestionError {
     @Column(name = "attachment_file_path")
     private String attachmentFilePath;
 
-
     @Column(name = "attachment_file_error")
     private String attachmentFileError;
 
@@ -45,9 +44,5 @@ public class QuestionError {
 
     @Column(name = "item_id")
     private Integer itemId;
-
-    
-    @Column(name = "attachment_file_error")
-    private String AttachmentFileError;
 
 }

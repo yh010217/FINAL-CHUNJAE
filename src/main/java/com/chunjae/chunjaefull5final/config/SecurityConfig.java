@@ -50,7 +50,7 @@ public class SecurityConfig {
                 authorize
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail").permitAll()
+                                ,"/checkEmail", "/index", "/oauth2/authorization/google").permitAll()
                          //관리자
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
