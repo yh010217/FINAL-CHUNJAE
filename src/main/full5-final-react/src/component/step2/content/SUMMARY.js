@@ -30,6 +30,7 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
     };
 
     const handleDragEnd = (result) => {
+        // console.log("Drag result:", result);
         const { source, destination, type } = result;
 
         // 드래그 작업이 완료되지 않았을 경우 처리하지 않음

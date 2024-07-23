@@ -4,7 +4,6 @@ import axios from "axios";
 
 function S3stepbtn({ paperTitle, paper }) {
 
-    const [response, setResponse] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
@@ -27,24 +26,24 @@ function S3stepbtn({ paperTitle, paper }) {
 
     const handleSaveConfirm = () => {
         setShowConfirm(false);
-        // title + paper 합쳐서 back 으로 post 로딩 페이지
-        axios.post()
+        // 저장 로딩 화면 구현해야됨
+        handleSave();
+        // window.href='/';
     };
 
-    // const handleSave = async () => {
-    //     try {
-    //         const url = '/api/';
-    //         const data = {
-    //
-    //         };
-    //
-    //         const response = await axios.post(url, data);
-    //         setResponse(response.data);
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //     }
-    //
-    // };
+    const handleSave = async () => {
+        try {
+            const url = '/back/back/savedpaper';
+            const data = {
+                paper: [paperTitle, paper]
+            };
+
+            await axios.post(url, data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+    };
 
     return (
         <>

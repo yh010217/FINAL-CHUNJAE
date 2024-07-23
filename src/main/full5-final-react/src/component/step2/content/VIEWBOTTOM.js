@@ -52,8 +52,7 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
         setChangeList(newChangeList);
     };
 
-    /** CNTLIST 에서 정렬된 group
-     * 의 리스트만 changeList에 담음 **/
+    /** CNTLIST 에서 정렬된 group 의 리스트만 changeList에 담음 **/
     const handleGroupData = (newGroupData) => {
         setGroupedData(newGroupData);
         const updatedChangeList = newGroupData.reduce((acc, group) => {
