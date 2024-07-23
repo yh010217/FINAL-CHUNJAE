@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+@font-face {
+    font-family: 'GoyangIlsan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
+
+#wrap{
+    padding: 70px 0;
+    font-family: 'Poppins', 'GoyangIlsan',sans-serif;
+}
+#sign_up{
+    background: #ffffff;
+    border: 1px solid #F0F6FF;
+    box-shadow: 7px 7px 39px rgb(86, 112, 220);
+    border-radius: 20px;
+    width: 45vw;
+    margin: 0 auto;
+
+}
+#sign_up h1{
+    color: #5670DC;
+    text-align: center;
+    border-radius: 35px 0;
+    padding: 15px;
+    font-family: 'GoyangIlsan';
+}
+#sign_up_form{
+    display: flex;
+    justify-content: center;
+    color: #797979;
+}
+#sign_up_form ul{
+    width: 80%;
+    margin: 2vw 0;
+}
+#sign_up_form ul li{
+    list-style: none;
+    margin: 2vw;
+    font-size: 1.2rem;
+    display: flex;
+}
+#sign_up_form ul li:nth-child(-n+6)
+, #sign_up_form ul li:last-child{
+    flex-direction: column;
+    justify-content: space-between;
+}
+#sign_up_form ul li:nth-child(8){
+    justify-content: right;
+    position: relative;
+    top: -1vw;
+}
+.agree{
+    color: #797979;
+}
+#check{
+    margin-left: 5px;
+}
+.sign_up_form_span{
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
+}
+.sign_up_form_span>:first-child{
+    width: 20%;
+}
+.sign_up_form_span>:last-child{
+    font-size: 1.1rem;
+    color: #777777;
+    position: relative;
+    top: -0.5vw;
+}
+.sign_up_form_span>input{
+    width: 55%;
+    padding: 0.5vw 0.9vw;
+    border-radius: 25px;
+    border: 1px solid #d5d5d5;
+}
+.sign_up_input{
+    width: 15vw;
+    padding: 1.5vh 0.9vw;
+    border-radius: 25px;
+    border: 1px solid #d5d5d5;
+    font-size: 1rem;
+}
+#schoolType, #role{
+    padding: 5px 10px 5px 3px;
+    font-size: 1rem;
+    border: 1px solid #d5d5d5;
+    border-radius: 5px;
+    font-family: 'GoyangIlsan';
+}
+.sign_up_input:focus,#role:focus,#schoolType:focus{
+    outline: 1px solid #5670DC;
+}
+.agree{
+    height: 10vw;
+    width: 100%;
+    text-align: start;
+    overflow-y: scroll;
+    border: 1px solid #d5d5d5;
+    padding: 10px;
+    resize: none;
+    font-family: 'GoyangIlsan';
+}
+#submit{
+    font-size: 1.3rem;
+    padding: 0.8vw 6vw;
+    border-radius: 25px;
+    border: 1px solid #d5d5d5;
+    background-color: #5670DC;
+    color: white;
+    cursor: pointer;
+    font-family: 'GoyangIlsan';
+}
+#fail_msg{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 0.7vw;
+}
+#emsg,#email_valid{
+    margin: 5px 0;
+    display: flex;
+    justify-content: right;
+    font-size: 1rem;
+}
+.msg_error,#email_valid {
+    color: #f62c2c;
+}
+.msg_ok{
+    color: #1d3ed7;
+}
+#fail_msg{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 0.7vw;
+}

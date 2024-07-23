@@ -180,7 +180,7 @@ body {
 }
 @media (max-width: 1280px) {
   .loading-cnt,
-.error-cnt {
+  .error-cnt {
     width: 100%;
   }
 }
