@@ -7,18 +7,24 @@ body{
     height: 297mm;
     border: 1px solid silver;
     margin: auto;
+    page-break-before: always;
 }
 
 .pageInner, .pageInner2{
     width: 90%;
-    margin: auto;
+    margin: 30px auto 0;
+}
+
+.page:not(:first-of-type)
+.page2:not(:first-of-type){
+    margin: 70px auto 0;
 }
 
 .leftRightWrap, .leftRightWrap2{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
-    border: 1px solid silver;
+    /*border: 1px solid silver;*/
     height: 980px;
 }
 

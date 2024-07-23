@@ -35,6 +35,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("POST", "GET")
                 .allowedHeaders("*");
 
+        registry.addMapping("/convertImage/**")
+                .allowedOrigins("http://localhost:8080")
+                .allowedMethods("POST")
+                .allowedHeaders("*");
+
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*");
