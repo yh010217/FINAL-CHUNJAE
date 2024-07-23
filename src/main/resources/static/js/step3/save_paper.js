@@ -74,7 +74,7 @@ window.onload = function (){
                     // console.log(item.substring(item.length-3));
                     if(item.substring(item.length-3)==="png"){
                         const img = document.createElement('img');
-                        img.src = "images/svgToPng/"+item;
+                        img.src = "images/svgToPgitng/"+item;
                         img.alt = '이미지'+(i+1);
                         img.className = 'item svg';
                         let imgWidth;
