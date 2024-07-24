@@ -1,7 +1,7 @@
 import React from "react";
 import DELLIST from "./DELLIST";
 
-function DELETE({delList, setDelList, addToDelList}) {
+function DELETE({delList, setDelList, addToDelList, setModal, setItemId}) {
 
     /** 그룹화 */
     const groupedData = delList.reduce((acc, item) => {
@@ -61,6 +61,8 @@ function DELETE({delList, setDelList, addToDelList}) {
                             addToDelList={addToDelList}
                             setDelList={setDelList}
                             delList={delList}
+                            setModal={setModal}
+                            setItemId={setItemId}
                         />
                     ))}
                 </React.Fragment>

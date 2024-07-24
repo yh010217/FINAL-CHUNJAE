@@ -26,17 +26,13 @@ public class ErrorController {
         String content = dto.getContent();
         Integer itemId = dto.getItemId();
         String error_type = dto.getErrorType();
-        Long uid = 5L; // 임시값
-
-        log.info("~~~~~~~~~~~~~~ 값이 넘어갔습니다 ~~~~~~~~~~~~~~");
-        log.info(attachmentFileName + ">>>>>>>>>>>>>>> attachmentFileName");
-        log.info(attachmentFilePath + ">>>>>>>>>>>>>>> attachmentFilePath");
-        log.info(content + ">>>>>>>>>>>>>>> content");
-        log.info(String.valueOf(itemId));
-        log.info(error_type + ">>>>>>>>>>>>>>> error_type");
+        Long uid = 5L; // 세션값 임시
 
         service.insertError(dto, uid);
 
         return "/step2";
     }
+
+
+
 }

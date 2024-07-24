@@ -42,6 +42,7 @@ public class PaperInfoServiceImpl implements PaperInfoService {
                         .createdAt(item.getCreatedAt())
                         .updateAt(item.getUpdatedAt())
                         .delete_yn(item.getDelete_yn())
+                        .saveQuestionPath(item.getSaveQuestionPath())
                         .saveName(item.getSaveName())
                         .saveAnswerPath(item.getSaveAnswerPath())
                         .saveAllPath(item.getSaveAllPath())

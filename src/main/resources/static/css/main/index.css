@@ -129,7 +129,7 @@ ul li {
 .book-list {
     margin: 15px 0;
     display: flex;
-    gap: 42px;
+    gap: 39px;
 }
 .book-detail {
     display: flex;

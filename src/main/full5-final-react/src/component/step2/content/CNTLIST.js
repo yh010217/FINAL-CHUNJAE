@@ -13,7 +13,9 @@ function CNTLIST({
                      setChangeId,
                      setNo2,
                      removeList,
-                     groupedItems
+                     groupedItems,
+                     setModal,
+                     setItemId
                  }) {
 
     const [groupedData, setGroupedData] = useState(initialGroupData);
@@ -212,7 +214,12 @@ function CNTLIST({
                                         </div>
                                     </div>
                                     <div className="btn-wrap">
-                                        <button className="btn-error"></button>
+                                        <div className="btn-wrap">
+                                            <button className="btn-error" onClick={() => {
+                                                setModal(true);
+                                                setItemId(item.itemId);
+                                            }}></button>
+                                        </div>
                                         <button className="btn-delete" onClick={() => deletePage(item)}></button>
                                     </div>
                                 </div>

@@ -176,7 +176,10 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
                  setChangeId={setChangeId}
                  setNo2={setNo2}
                  groupedItems={groupedItems}
-                 removeList={removeList}/>
+                 removeList={removeList}
+                 setModal={setModal}
+                 setItemId={setItemId}
+        />
 
         {/** 문제지 요약, 유사문제, 문제삭제 **/}
         <CNTRIGHT initialChangeList={changeList}
