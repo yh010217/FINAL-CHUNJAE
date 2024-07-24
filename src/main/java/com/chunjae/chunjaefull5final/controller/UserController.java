@@ -98,6 +98,7 @@ public class UserController {
         model.addAttribute("userDTO", userDTO);
         return "admin/user_detail";
     }
+
     @GetMapping("/userdelete/{uid}")
     public String deleteUser(@PathVariable Long uid){
         Long id = userService.deleteUser(uid);

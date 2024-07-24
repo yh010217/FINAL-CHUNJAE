@@ -6,6 +6,7 @@ import com.chunjae.chunjaefull5final.domain.UserRole;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,9 @@ public class UserServiceImpl implements UserService {
 
     /** 이메일 중복체크*/
     public boolean findEmailCheck(String email) {
-        User findUser=userRepository.findByEmail(email);
+        log.info("email....{}", email);
+        User findUser=userRepository.findByCheckEmail(email);
+        log.info("findUser...{}", findUser);
         return findUser!=null;
     }
     /** 회원가입*/

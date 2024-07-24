@@ -8,16 +8,16 @@
 
     <!----======== CSS ======== -->
     <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
-
+<!--    <link rel="stylesheet" th:href="@{/css/admin/admin_modal.css}">-->
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- jQuery 라이브러리 추가 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
     <!-- Bootstrap CSS 추가 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
     <!-- Bootstrap JS와 Popper.js 추가 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>-->
+<!--        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
     <script th:src="@{/js/admin/user_detail.js}"></script>
     <title>Admin</title>
 </head>
@@ -37,13 +37,13 @@
             <li>
                 <a th:href="@{/admin/user}">
                     <i class="uil uil-user"></i>
-                <span class="link-name">유저관리</span>
-            </a></li>
-            <li><a th:href="@{/admin/testpage}" class="side_bar_menu">
+                    <span class="link-name">회원관리</span>
+                </a></li>
+            <li><a th:href="@{/admin/paper}" class="side_bar_menu">
                 <i class="uil uil-files-landscapes"></i>
-                <span class="link-name">문제관리</span>
+                <span class="link-name">시험지관리</span>
             </a></li>
-            <li><a th:href="@{/admin/errorpage}" class="side_bar_menu">
+            <li><a th:href="@{/admin/error}" class="side_bar_menu">
                 <i class="uil uil-file-question-alt"></i>
                 <span class="link-name">문제오류관리</span>
             </a></li>
@@ -51,15 +51,10 @@
 
         <ul class="logout-mode">
             <li>
-<!--                <form th:method="post" th:action="@{/logout}">-->
-<!--                    <button type="submit" th:class="link-name">-->
-<!--                        <i class="uil uil-signout"></i>Logout</button>-->
-<!--                </form>-->
                 <a th:href="@{/main}">
                     <i class="uil uil-home"></i>
-<!--                <i class="uil uil-signout"></i>-->
-                <span class="link-name">Main Page</span>
-            </a>
+                    <span class="link-name">Main Page</span>
+                </a>
 
             </li>
 
@@ -91,49 +86,51 @@
                 <button type="submit" id="search_user_btn">
                     <i class="uil uil-search"></i></button>
             </form>
-<!--            <input type="text" placeholder="Search here...">-->
         </div>
-
-        <!--<img src="images/profile.jpg" alt="">-->
+        <div></div>
     </div>
 
+<!--        <img src="images/profile.jpg" alt="">-->
     <div class="dash-content">
         <div class="activity">
             <div class="title">
-                <i class="uil uil-clock-three"></i>
+                <i class="uil uil-user"></i>
                 <span class="text">회원정보</span>
             </div>
-            <table class="activity-table">
-                <thead>
-                <tr>
-                    <th>회원번호</th>
-                    <th>이메일</th>
-                    <th>이름</th>
-                    <th>회원유형</th>
-                    <th>학교정보</th>
-                    <th>controller</th>
-                </tr>
-                </thead>
-                <tbody th:if="${!userList.isEmpty()}" th:each="item : ${userList}">
-                <tr>
-                    <td th:text="${item.uid}"></td>
-                    <td th:text="${item.email}"></td>
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${item.role}"></td>
-                    <td th:text="${item.schoolType}"></td>
-                    <td> <span>
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#memberModal"
-                                  th:onclick="'loadMemberDetails(' + ${item.uid} + ')'">
-                        <img src="/images/admin/icons8-popup-64.png" alt="아이콘" style="width: 20px; height: 20px;">
-                    </button>
-                        <div class="btn btn-primary btn-primary2">
-                        <a id="del" th:href="@{|/userdelete/${item.uid}|}">
-                            <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘"></a>
-                    </div>
-                    </span></td>
-                </tr>
-                </tbody>
-            </table>
+            <div id="user">
+                <ul>
+                    <li class="user_list_top">
+                        <span>회원번호</span>
+                        <span>이메일</span>
+                        <span>이름</span>
+                        <span>회원유형</span>
+                        <span>학교정보</span>
+<!--                        <span>Controller</span>-->
+                    </li>
+                    <li th:if="${!userList.isEmpty()}" th:each="item:${userList}" th:class="userList">
+                        <a th:href="@{'/admin/userdetail/'+${item.uid}}">
+                        <span th:text="${item.uid}"></span>
+                        <span th:text="${item.email}"></span>
+                        <span th:text="${item.name}"></span>
+                        <span th:text="${item.role}"></span>
+                        <span th:text="${item.schoolType}"></span>
+                        </a>
+<!--                        <span>-->
+<!--                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#memberModal"-->
+<!--                                    th:onclick="'loadMemberDetails(' + ${item.uid} + ')'">-->
+<!--                           <img src="/images/admin/icons8-popup-64.png" alt="아이콘" style="width: 20px; height: 20px;">-->
+<!--                           </button>-->
+<!--                        <div class="btn btn-primary btn-primary2">-->
+<!--                        <a id="del" th:href="@{|/userdelete/${item.uid}|}">-->
+<!--                            <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘"></a>-->
+<!--                    </div>-->
+<!--                    </span>-->
+                    </li>
+                    <li th:if="${userList.isEmpty()}">
+                        회원이 존재하지 않습니다.
+                    </li>
+                </ul>
+            </div>
             <div id="page">
                 <th:block th:if="${startPage>1}">
                     <a th:href="@{/admin/user(page=${startPage}-1, search=${search}, search_txt=${search_txt})}">
@@ -162,24 +159,25 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">회원 상세정보</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="memberDetails">회원 정보를 불러오는 중...</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<!--        <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog" role="document">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="exampleModalLabel">회원 상세정보</h5>-->
+<!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                            <span aria-hidden="true">&times;</span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <p id="memberDetails">회원 정보를 불러오는 중...</p>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 </section>
 
 <script th:src="@{/js/admin/admin_user.js}"></script>

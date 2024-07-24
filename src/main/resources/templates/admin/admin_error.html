@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_error.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/admin/admin_paper.css}">-->
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>Admin</title>
+</head>
+<body>
+<nav>
+    <div class="logo-name">
+        <div class="logo-image">
+            <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
+            <a th:href="@{/admin/user}" class="header_title"></a>
+        </div>
+
+        <span class="logo_name">문제은행</span>
+    </div>
+
+    <div class="menu-items">
+        <ul class="nav-links">
+            <li>
+                <a th:href="@{/admin/user}">
+                    <i class="uil uil-user"></i>
+                    <span class="link-name">회원관리</span>
+                </a></li>
+            <li><a th:href="@{/admin/paper}" class="side_bar_menu">
+                <i class="uil uil-files-landscapes"></i>
+                <span class="link-name">시험지관리</span>
+            </a></li>
+            <li><a th:href="@{/admin/error}" class="side_bar_menu">
+                <i class="uil uil-file-question-alt"></i>
+                <span class="link-name">문제오류관리</span>
+            </a></li>
+        </ul>
+
+        <ul class="logout-mode">
+            <li>
+                <a th:href="@{/main}">
+                    <i class="uil uil-home"></i>
+                    <span class="link-name">Main Page</span>
+                </a>
+
+            </li>
+
+            <li class="mode">
+                <a href="#">
+                    <i class="uil uil-moon"></i>
+                    <span class="link-name">Dark Mode</span>
+                </a>
+
+                <div class="mode-toggle">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-file-question-alt"></i>
+                <span class="text">문제오류관리</span>
+            </div>
+            <div id="error">
+                <ul>
+                    <li class="error_list_top">
+                        <span>오류번호</span>
+                        <span>문제오류타입</span>
+                        <span>문제번호</span>
+                        <span>처리상태</span>
+                    </li>
+                    <li th:if="${!questionList.isEmpty()}" th:each="item:${questionList}" th:class="questionList">
+                        <a th:href="@{'/admin/errordetail/'+${item.errorId}}">
+                            <span th:text="${item.errorId}"></span>
+                            <span th:text="${item.errorType}"></span>
+                            <span th:text="${item.itemId}"></span>
+                            <span th:text="${item.status}"></span>
+                        </a>
+                    </li>
+                    <li th:if="${questionList.isEmpty()}">
+                        시험지 정보가 존재하지 않습니다.
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+        <div id="page">
+            <th:block th:if="${startPage>1}">
+                <a th:href="@{/admin/error(page=${startPage}-1)}">
+                    <span class="arrow left"> 이전</span>
+                </a>
+            </th:block>
+
+            <th:block th:if="${questionList.totalPages>1}" th:each="index:${#numbers.sequence(startPage, endPage)}"
+                      th:class="page">
+                <span th:if="${index==questionList.pageable.getPageNumber()+1}" th:text="${index}"></span>
+                <span th:if="${index!=questionList.pageable.getPageNumber()+1}">
+				<a th:href="@{/admin/error(page=${index})}"
+                   th:text="${index}" class="page_num"></a>
+			</span>
+            </th:block>
+
+            <th:block th:if="${endPage<questionList.getTotalPages()}">
+                <a th:href="@{/admin/error(page=${endPage+1})}">
+                    <span class="arrow right">다음</span>
+                </a>
+            </th:block>
+
+        </div>
+    </div>
+
+
+</section>
+
+<script th:src="@{/js/admin/admin_user.js}"></script>
+</body>
+</html>
+
