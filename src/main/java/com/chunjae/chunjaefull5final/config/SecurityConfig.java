@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/css/**")
                 .requestMatchers("/full5-final-react/src/**")
                 .requestMatchers("/full5-final-react/component/**")
-                .requestMatchers("/file/**");
+                .requestMatchers("/file/**")
+                .requestMatchers("/api/**");
 //                .requestMatchers("/**");
     }
     @Bean
@@ -48,6 +49,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
+                        .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
                                 ,"/checkEmail","/oauth2/authorization/google","/index").permitAll()
