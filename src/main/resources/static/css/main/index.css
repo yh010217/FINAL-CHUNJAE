@@ -110,6 +110,9 @@ ul.tab .tab-link:after {
 
 .index-top h1 {
     font-family: 'KBO-Dia-Gothic_bold';
+    letter-spacing: 5px;
+    position: relative;
+    top: 10px;
 }
 
 ul li {
