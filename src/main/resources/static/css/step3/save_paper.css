@@ -94,3 +94,9 @@ img{
     margin-left: 7px;
     height: 50%;
 }
+
+.header>:last-child p{
+    position: relative;
+    top: -8px;
+    font-size: 14px;
+}

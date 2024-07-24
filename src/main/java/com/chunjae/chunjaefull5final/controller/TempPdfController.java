@@ -9,12 +9,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +40,22 @@ public class TempPdfController {
     @GetMapping("/save_paper")
     public String savePaper(){
         return "/step3/save_paper";
+    }
+
+    @GetMapping("/loading")
+    public String loading(){
+
+        return "/step3/loading";
+    }
+
+    @PostMapping("/save")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public String postThymeleafPage(
+            @RequestBody Map<String, Object> data,
+            Model model
+    ) {
+        model.addAttribute("data", data);
+        return "redirect:http://localhost:8080/save_paper";
     }
 
     @GetMapping("/api/pdftest/getImages/{paperId}/{type}")

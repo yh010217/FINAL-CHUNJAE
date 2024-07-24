@@ -42,7 +42,8 @@ public class SecurityConfig {
                 .requestMatchers("/full5-final-react/component/**")
                 .requestMatchers("/api/**")
                 .requestMatchers("/upload")
-                .requestMatchers("/convertImage");
+                .requestMatchers("/convertImage")
+                .requestMatchers("/save");
 
                 // .requestMatchers("/**");
     }
@@ -91,7 +92,7 @@ public class SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("https://img.chunjae-platform.com"));
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));

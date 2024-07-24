@@ -8,7 +8,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 <!--	<script defer th:src="@{/js/step3/save_paper.js}"></script>-->
 <!--	<script defer th:src="@{/js/step3/save_paper2.js}"></script>-->
-	<script defer th:src="@{/js/step3/save_paper3.js}"></script>
+<!--	<script defer th:src="@{/js/step3/save_paper3.js}"></script>-->
+	<script defer th:src="@{/js/step3/save_paper4.js}"></script>
 	<link rel="stylesheet" th:href="@{/css/step3/save_paper.css}">
 </head>
 <body>
@@ -16,4 +17,98 @@
 <div id="wrap">
 </div>
 </body>
+<script>
+	async function downloadPDF() {
+
+		async function generatePDFs() {
+			try {
+				// 클래스 이름이 'page'인 div 요소들을 PDF로 만들기
+				const pdfBuffer1 = await createPDFs('.page', 'output1.pdf');
+				console.log("pdfBuffer1 : ", pdfBuffer1)
+
+				// 클래스 이름이 'page2'인 div 요소들을 PDF로 만들기
+				const pdfBuffer2 = await createPDFs('.page2', 'output2.pdf');
+
+				// 클래스 이름이 'page2'인 div 요소들을 PDF로 만들기
+				const pdfBuffer3 = await createPDFs('.page3', 'output3.pdf');
+
+				const formData = new FormData();
+				formData.append('pdfFile1', pdfBuffer1, 'output1.pdf', 'application/pdf');
+				formData.append('pdfFile2', pdfBuffer2, 'output2.pdf', 'application/pdf');
+				formData.append('pdfFile3', pdfBuffer3, 'output3.pdf', 'application/pdf');
+
+				fetch('/upload', {
+					method: 'POST',
+					body: formData,
+					allowTaint: true,
+					useCORS: true,
+				})
+					.then(response => response.text())
+					.then(data => {
+						console.log('PDF uploaded to S3:', data);
+						alert('PDF uploaded to S3 successfully! : ' + data);
+					})
+					.catch(error => {
+						console.error('Error uploading PDF to S3:', error);
+						alert('Error uploading PDF to S3');
+					});
+
+				console.log('PDF 파일들이 성공적으로 S3에 업로드되었습니다.');
+			} catch (error) {
+				console.error('PDF 생성 및 업로드 중 오류가 발생했습니다.', error);
+			}
+		}
+
+// A4 사이즈 (210mm x 297mm)로 설정
+		const pdfWidth = 210;
+		const pdfHeight = 297;
+
+// 특정 클래스 이름을 가진 div 요소들을 PDF로 만들어 S3에 업로드하는 함수
+		async function createPDFs(className, fileName) {
+			const elements = document.querySelectorAll(className);
+
+			// 새로운 PDF 객체 생성
+			const pdf = new jspdf.jsPDF({
+				orientation: 'portrait', // 세로 방향
+				unit: 'mm',
+				format: [pdfWidth, pdfHeight],
+				foreignObjectRendering: true,
+				useCORS: true,
+				mode: 'cors', // CORS 요청 설정
+				credentials: 'include' // 필요에 따라 credentials 설정
+			});
+
+			for (let i = 0; i < elements.length; i++) {
+				const element = elements[i];
+
+				// div 요소를 이미지로 캡처
+				const canvas = await html2canvas(element, {
+					scale: 2, // 해상도 조정
+					allowTaint: true,
+					useCORS: true,
+					mode: 'cors', // CORS 요청 설정
+					credentials: 'include' // 필요에 따라 credentials 설정
+				});
+				const imageData = canvas.toDataURL('image/jpeg');
+
+				// 첫 페이지가 아니면 새 페이지 추가
+				if (i > 0) {
+					pdf.addPage();
+				}
+
+				// 이미지를 PDF에 추가
+				pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+			}
+
+			// PDF 파일을 버퍼로 변환
+			const pdfBuffer = pdf.output('arraybuffer');
+			return pdf.output('blob');
+		}
+
+
+		generatePDFs();
+	}
+
+	downloadPDF();
+</script>
 </html>
