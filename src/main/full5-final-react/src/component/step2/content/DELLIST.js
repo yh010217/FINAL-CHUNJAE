@@ -1,6 +1,6 @@
 import React from "react";
 
-function DELLIST({item, addToDelList, delList, setDelList}) {
+function DELLIST({item, addToDelList, delList, setDelList, setItemId, setModal}) {
 
     const DelReList =()=> {
         // 문제 다시 추가하기 => 최하단으로 가야 함.
@@ -27,7 +27,10 @@ function DELLIST({item, addToDelList, delList, setDelList}) {
                 </div>
             </div>
             <div className="btn-wrap">
-                <button className="btn-error"></button>
+                <button className="btn-error" onClick={() => {
+                    setModal(true);
+                    setItemId(item.itemId);
+                }}></button>
             </div>
         </div>
         <div className="view-que">

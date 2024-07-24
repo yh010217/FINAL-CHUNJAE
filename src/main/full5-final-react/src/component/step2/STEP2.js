@@ -5,7 +5,7 @@ import MODAL from "./content/MODAL";
 import React from "react";
 import {useState} from "react";
 
-function STEP2() {
+function STEP2({handlePaper}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
 
@@ -31,6 +31,7 @@ function STEP2() {
                 <S2content
                     setModal={setModal}
                     setItemId={setItemId}
+                    handlePaper={handlePaper}
                 />
             </div>
             <div className="step-btn-wrap">

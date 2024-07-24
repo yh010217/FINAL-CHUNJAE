@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 function CNTLIST({
                      initialChangeList,
+                     onChangeList,
                      initialGroupData,
                      onChangeGroup,
                      setSimilar,
@@ -12,7 +13,9 @@ function CNTLIST({
                      setChangeId,
                      setNo2,
                      removeList,
-                     groupedItems
+                     groupedItems,
+                     setModal,
+                     setItemId
                  }) {
 
     const [groupedData, setGroupedData] = useState(initialGroupData);
@@ -26,33 +29,34 @@ function CNTLIST({
     const sortByChapter = () => {
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
-                if (item1.largeChapterName !== item2.largeChapterName) {
-                    return item1.largeChapterName.localeCompare(item2.largeChapterName);
-                } else if (item1.mediumChapterName !== item2.mediumChapterName) {
-                    return item1.mediumChapterName.localeCompare(item2.mediumChapterName);
-                } else if (item1.smallChapterName !== item2.smallChapterName) {
-                    return item1.smallChapterName.localeCompare(item2.smallChapterName);
+                if (item1.largeChapterId !== item2.largeChapterId) {
+                    return item1.largeChapterId - item2.largeChapterId;
+                } else if (item1.mediumChapterId !== item2.mediumChapterId) {
+                    return item1.mediumChapterId - item2.mediumChapterId;
+                } else if (item1.smallChapterId !== item2.smallChapterId) {
+                    return item1.smallChapterId - item2.smallChapterId;
                 } else {
-                    return item1.topicChapterName.localeCompare(item2.topicChapterName)
+                    return item1.topicChapterId - item2.topicChapterId;
                 }
             });
         });
 
-        groupedData.sort((group1, group2)=>{
+        groupedData.sort((group1, group2) => {
             const firstItem1 = group1.items[0];
             const firstItem2 = group2.items[0];
 
-            if (firstItem1.largeChapterName !== firstItem2.largeChapterName) {
-                return firstItem1.largeChapterName.localeCompare(firstItem2.largeChapterName);
-            } else if (firstItem1.mediumChapterName !== firstItem2.mediumChapterName) {
-                return firstItem1.mediumChapterName.localeCompare(firstItem2.mediumChapterName);
-            } else if (firstItem1.smallChapterName !== firstItem2.smallChapterName) {
-                return firstItem1.smallChapterName.localeCompare(firstItem2.smallChapterName);
+            if (firstItem1.largeChapterId !== firstItem2.largeChapterId) {
+                return firstItem1.largeChapterId - firstItem2.largeChapterId;
+            } else if (firstItem1.mediumChapterId !== firstItem2.mediumChapterId) {
+                return firstItem1.mediumChapterId - firstItem2.mediumChapterId;
+            } else if (firstItem1.smallChapterId !== firstItem2.smallChapterId) {
+                return firstItem1.smallChapterId - firstItem2.smallChapterId;
             } else {
-                return firstItem1.topicChapterName.localeCompare(firstItem2.topicChapterName)
+                return firstItem1.topicChapterId - firstItem2.topicChapterId;
             }
-        })
+        });
     };
+
 
     // 난이도순 (하/중/상) 정렬
     const sortByDifficulty = () => {
@@ -67,12 +71,26 @@ function CNTLIST({
             const firstItem1 = group1.items[0];
             const firstItem2 = group2.items[0];
             return firstItem2.difficultyName.localeCompare(firstItem1.difficultyName);
+
         });
     };
 
 
     // 문제 형태순 (객관식/주관식) 정렬
     const sortByQuestionForm = () => {
+
+        groupedData.sort((group1, group2) => {
+            const form1 = group1.items.length > 0 ? group1.items[0].questionFormName : '';
+            const form2 = group2.items.length > 0 ? group2.items[0].questionFormName : '';
+
+            if (multipleChoiceForms.includes(form1) && !multipleChoiceForms.includes(form2)) {
+                return -1;
+            } else if (!multipleChoiceForms.includes(form1) && multipleChoiceForms.includes(form2)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
@@ -88,18 +106,6 @@ function CNTLIST({
             });
         });
 
-        groupedData.sort((group1, group2) => {
-            const form1 = group1.items.length > 0 ? group1.items[0].questionFormName : '';
-            const form2 = group2.items.length > 0 ? group2.items[0].questionFormName : '';
-
-            if (form1 < form2) {
-                return -1;
-            } else if (form1 > form2) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
     };
 
     const getSortedList = () => {
@@ -113,6 +119,9 @@ function CNTLIST({
                 break;
             case '문제 형태순':
                 sortByQuestionForm();
+                break;
+            case '사용자 정렬':
+                Object.values(groupedData);
                 break;
             default:
                 // Object.values(groupedData);
@@ -160,44 +169,57 @@ function CNTLIST({
 
     return (
         <div className="view-que-list scroll-inner">
-            {sortedList.map((group, groupIndex) => (
+            {groupedData.map((group, groupIndex) => (
                 <React.Fragment key={group.groupKey}>
                     {group.items.map((item, itemIndex) => (
                         <React.Fragment key={item.itemId}>
                             {itemIndex === 0 && (
-                                <div className="view-que-box">
-                                    <div className="que-top">
-                                        <div className="title">
+                                <>
+                                    {item.passageUrl && item.passageUrl !== 'null' && (
+                                        <div className="view-que-box">
+                                            <div className="que-top">
+                                                <div className="title">
                                             <span className="num">
-                                                {item.index} ~ {(group.items.length+item.index)-1}
+                                                {item.index} ~ {(group.items.length + item.index) - 1}
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div className="view-que">
-                                        <div className="que-content">
-                                            <p className="txt">※ 지문을 읽고 물음에 답하시오.</p>
-                                        </div>
-                                        <div className="que-bottom">
-                                            <div className="passage-area">
-                                                <img src={item.passageUrl} alt="지문"></img>
+                                                </div>
+                                            </div>
+                                            <div className="view-que">
+                                                <div className="que-content">
+                                                    <p className="txt">※ 지문을 읽고 물음에 답하시오.</p>
+                                                </div>
+                                                <div className="que-bottom">
+                                                    <div className="passage-area">
+                                                        <img src={item.passageUrl} alt="지문"></img>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    )}
+                                </>
                             )}
                             <div key={item.itemId} className="view-que-box" id={item.index}>
                                 <div className="que-top">
                                     <div className="title">
                                         <span className="num">{item.index}</span>
                                         <div className="que-badge-group">
-                                            <span className="que-badge">{item.difficultyName}</span>
+                                            <span className={`que-badge ${
+                                                item.difficultyName === '상' ? 'yellow' :
+                                                    item.difficultyName === '중' ? 'green' :
+                                                        'purple'
+                                            }`}>{item.difficultyName}</span>
                                             <span className="que-badge gray">
                                         {multipleChoiceForms.includes(item.questionFormName) ? '객관식' : '주관식'}
                                     </span>
                                         </div>
                                     </div>
                                     <div className="btn-wrap">
-                                        <button className="btn-error"></button>
+                                        <div className="btn-wrap">
+                                            <button className="btn-error" onClick={() => {
+                                                setModal(true);
+                                                setItemId(item.itemId);
+                                            }}></button>
+                                        </div>
                                         <button className="btn-delete" onClick={() => deletePage(item)}></button>
                                     </div>
                                 </div>
@@ -235,7 +257,7 @@ function CNTLIST({
                                                             item.itemId,
                                                             item.index,
                                                             item.passageId,
-                                                            (group.items.length+item.index)-1
+                                                            (group.items.length + item.index) - 1
                                                         )}
                                                     >
                                                         <i className="similar"></i>
@@ -254,7 +276,7 @@ function CNTLIST({
                                                         item.itemId,
                                                         item.index,
                                                         item.passageId,
-                                                        (group.items.length+item.index)-1
+                                                        (group.items.length + item.index) - 1
                                                     )}
                                                 >
                                                     <i className="similar"></i>
