@@ -47,5 +47,19 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/step3").setViewName("forward:/index.html");
         // 필요한 다른 경로도 추가
     }
+
+    /*
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/")
+                .setViewName("스프링 프로젝트 내 리액트 빌드 파일 경로");
+        registry.addViewController("/{spring:\\w+}")
+                .setViewName("스프링 프로젝트 내 리액트 빌드 파일 경로");
+        registry.addViewController("/*{spring:\\w+}")
+            .setViewName("스프링 프로젝트 내 리액트 빌드 파일 경로");
+        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css|\\.json)$}")
+                .setViewName("스프링 프로젝트 내 리액트 빌드 파일 경로");
+    }
+    */
 }
                 

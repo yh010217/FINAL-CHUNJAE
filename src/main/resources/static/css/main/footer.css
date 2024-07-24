@@ -1,0 +1,43 @@
+footer {
+    margin-top: 100px;
+}
+
+.footer-top {
+    background-color: lightgrey;
+}
+
+.footer-top p span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.footer-top-content {
+    width: 1295px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.footer-ul {
+    position: relative;
+    top: 2px;
+}
+
+.footer-ul li {
+    cursor: pointer;
+}
+
+.footer-ul li:not(:last-child):after {
+    content: "|";
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: black;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    margin: 0 auto;
+    text-align: center;
+}
