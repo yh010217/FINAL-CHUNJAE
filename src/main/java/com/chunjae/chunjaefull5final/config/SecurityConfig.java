@@ -34,7 +34,6 @@ public class SecurityConfig {
                                           , "/full5-final-react/component/**"
                                           , "/file/**"
                                           , "/test/error"
-
                 );
     }
 

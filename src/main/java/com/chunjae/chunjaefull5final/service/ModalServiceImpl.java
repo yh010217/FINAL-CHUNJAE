@@ -26,7 +26,7 @@ public class ModalServiceImpl implements ModelService {
         newError.setContent(dto.getContent());
         newError.setItemId(dto.getItemId());
         newError.setErrorType(dto.getErrorType());
-
+        newError.setStatus("no");
 
         /** uid 값 받아와서 수정해야 함. */
         User user = new User();

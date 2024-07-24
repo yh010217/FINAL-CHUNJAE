@@ -38,7 +38,15 @@ function CNTRIGHT({initialChangeList, onChangeList, groupedData, tab, setTab, si
                                 setItemId={setItemId}
                                 />;
             case 2:
-                return <div className="change_margin"><DELETE changeList={changeList} delList={delList} addToDelList={addToDelList} setDelList={setDelList}/></div>
+                return <div className="change_margin">
+                    <DELETE changeList={changeList}
+                            delList={delList}
+                            addToDelList={addToDelList}
+                            setDelList={setDelList}
+                            setModal={setModal}
+                            setItemId={setItemId}
+                            />
+                </div>
 
             default:
                 return null;
