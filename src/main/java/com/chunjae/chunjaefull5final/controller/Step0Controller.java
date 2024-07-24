@@ -6,6 +6,7 @@ import com.chunjae.chunjaefull5final.dto.PreviewItemInfoDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseInfoDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -31,7 +32,6 @@ public class Step0Controller {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private List<String> selectedExamIds; // 세션으로 받는 걸로 변경 예정
 
     @GetMapping("/step0/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, Model model) {
@@ -172,13 +172,18 @@ public class Step0Controller {
         return response;
     }
 
+
+ //   private List<String> selectedExamIds; // 세션으로 받는 걸로 변경 예정
+
+
     /**
      * @@@@@@@@@ 선택한 시험지 json 형식으로 받고 보내기
      */
     @PostMapping("/step0/examId")
-    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request) {
+    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request, HttpSession session) {
+        List<String> selectedExamIds = request.get("examIdList");
 
-        selectedExamIds = request.get("examIdList");
+        session.setAttribute("selectedExamIds", selectedExamIds);  // 세션에 selectedExamIds 저장
 
         for (String item : selectedExamIds) {
             log.info("examid.....{}", item);
@@ -188,8 +193,11 @@ public class Step0Controller {
     }
 
     @GetMapping("/step0/examId")
-    public ResponseEntity<Map<String, List<String>>> sendExamIds() {
+    public ResponseEntity<Map<String, List<String>>> sendExamIds(HttpSession session) {
         Map<String, List<String>> response = new HashMap<>();
+
+        // 세션에서 selectedExamIds 불러오기
+        List<String> selectedExamIds = (List<String>) session.getAttribute("selectedExamIds");
         response.put("examIdList", selectedExamIds);
 
         return ResponseEntity.ok(response);
