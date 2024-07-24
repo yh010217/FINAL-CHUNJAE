@@ -1,5 +1,6 @@
 package com.chunjae.chunjaefull5final.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @RestController
+@Slf4j
 public class HelloController {
 
     @GetMapping("/back/hello")
@@ -39,4 +41,13 @@ public class HelloController {
         // 처리 결과를 반환
         return responseEntity;
     }
+
+    @PostMapping("/back/savedpaper")
+    public ResponseEntity<String> reactTest(@RequestBody Map<String, Object> requestData) {
+
+        log.info("paperContent...{}", requestData);
+
+        return ResponseEntity.ok("Paper saved successfully");
+    }
+
 }
