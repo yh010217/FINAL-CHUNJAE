@@ -19,15 +19,27 @@
                     <li>메뉴4</li>
                 </ul>
             </nav>
-            <a class="header-3" th:src="@{/login}">로그인</a>
-            <th:block sec:authorize="hasAnyRole('User','Teacher','Stop','Admin')">
+            <ul>
+            <th:block sec:authorize="!isAuthenticated()">
+                <li><a th:href="@{/login}" th:text="로그인" th:class="login"></a></li>
+                <li><a th:href="@{/join}" th:text="회원가입" th:class="join"></a></li>
+            </th:block>
+            <th:block sec:authorize="hasAnyRole('User','Teacher','Stop')">
                 <li>
                     <form th:method="post" th:action="@{/logout}">
                         <button type="submit" th:class="logout">로그아웃</button>
                     </form>
                 </li>
             </th:block>
-
+            <th:block sec:authorize="hasRole('Admin')">
+                <li><a th:href="@{/admin/user}" th:text="관리자페이지"></a></li>
+                <li>
+                    <form th:method="post" th:action="@{/logout}">
+                        <button type="submit" th:class="logout">로그아웃</button>
+                    </form>
+                </li>
+            </th:block>
+            </ul>
         </header>
 
         <div class="index-top">
