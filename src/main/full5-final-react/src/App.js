@@ -4,7 +4,11 @@ import "./css/reset.css"
 import {useState} from "react";
 import STEP2 from "./component/step2/STEP2";
 import STEP3 from "./component/step3/STEP3";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+
+function Test() {
+    return "main";
+}
 
 function App() {
 
@@ -21,7 +25,13 @@ function App() {
 
     return <>
         <BrowserRouter>
+            <ul>
+                <li><Link to={'/'}>main</Link></li>
+                <li><Link to={'/step2'}>STEP2</Link></li>
+            </ul>
+
             <Routes>
+                <Route path={'/'} element={<Test/>}></Route>
                 {/** STEP 2 **/}
                 <Route path={'/step2'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
                 {/** STEP 3 **/}
