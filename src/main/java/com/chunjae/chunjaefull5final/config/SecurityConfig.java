@@ -23,19 +23,22 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring()
-                .requestMatchers("/resources/**")
-                .requestMatchers("/css/**")
-                .requestMatchers("/js/**")
-                .requestMatchers("/images/**")
-                .requestMatchers("/static/css/**")
-                .requestMatchers("/static/js/**")
-                .requestMatchers("/full5-final-react/images/**")
-                .requestMatchers("/full5-final-react/css/**")
-                .requestMatchers("/full5-final-react/src/**")
-                .requestMatchers("/full5-final-react/component/**")
-                .requestMatchers("/file/**")
-                .requestMatchers("/api/**");
-//                .requestMatchers("/**");
+                .requestMatchers("/resources/**"
+                                          , "/css/**"
+                                          , "/js/**"
+                                          , "/images/**"
+                                          , "/static/css/**"
+                                          , "/static/js/**"
+                                          , "/full5-final-react/images/**"
+                                          , "/full5-final-react/css/**"
+                                          , "/full5-final-react/src/**"
+                                          , "/full5-final-react/component/**"
+                                          , "/file/**"
+                                          , "/test/error"
+                                          , "/preview/**"
+                                          , "/step0/**"
+                                          , "/api/**"
+                );
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)
@@ -49,11 +52,12 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail","/oauth2/authorization/google","/index").permitAll()
-                        //관리자
+                                ,"/checkEmail","/**").permitAll()
+                        .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
+                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
+
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
                         .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin","Teacher","User")
