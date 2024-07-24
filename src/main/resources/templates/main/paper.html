@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main/index.css}">
+    <link rel="stylesheet" th:href="@{/css/main/header.css}">
+    <link rel="stylesheet" th:href="@{/css/main/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main/font.css}">
+    <link rel="stylesheet" th:href="@{/css/main/paper.css}">
+</head>
+<body>
+    <div id="wrap">
+        <header id="header">
+            <div class="header-1">
+                <img src="/images/admin/adminlogo-removebg-preview.png" alt="로고">
+            </div>
+            <nav class="header-2">
+                <ul>
+                    <li>교과서 자료</li>
+                    <li>문제은행</li>
+                    <li>에듀테크</li>
+                    <li>수업연구소</li>
+                </ul>
+            </nav>
+            <ul class="header-3">
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li><a th:href="@{/join}" th:text="회원가입" th:class="join"></a></li>
+                    <li><a th:href="@{/login}" th:text="로그인" th:class="login"></a></li>
+                </th:block>
+                <th:block sec:authorize="hasAnyRole('User','Teacher','Stop')">
+                    <li>
+                        <form th:method="post" th:action="@{/logout}">
+                            <button type="submit" th:class="logout">로그아웃</button>
+                        </form>
+                    </li>
+                </th:block>
+                <th:block sec:authorize="hasRole('Admin')">
+                    <li><a th:href="@{/admin/user}" th:text="관리자페이지"></a></li>
+                    <li>
+                        <form th:method="post" th:action="@{/logout}">
+                            <button type="submit" th:class="logout">로그아웃</button>
+                        </form>
+                    </li>
+                </th:block>
+            </ul>
+        </header>
+
+        <div class="index-top">
+            <h1>문제은행</h1>
+            <p>문제 출제, 시험지 편집까지! 편리하게 시험지 제작 서비스를 제공합니다. </p>
+        </div>
+
+        <div class="container">
+            <ul class="tabs">
+                <li class="tab-link"><a th:href="@{/index}">중학</a></li>
+                <li class="tab-link current"><a th:href="@{/paper}">시험지 보관함</a></li>
+            </ul>
+
+            <div id="tab-2" class="tab-content current">
+                <div class="download-container">
+                    <div class="download-box">
+                        <div class="download-left">
+                            <p>제목</p>
+                            <div class="left-box1">
+                                <span>과목 이름</span>
+                                <span>문항수</span>
+                                <span>날짜</span>
+                            </div>
+                            <hr>
+                            <div class="left-box2">
+                                <span>문항 편집</span>
+                                <span>시험지 삭제</span>
+                            </div>
+                        </div>
+                        <div class="download-right">
+                            <p>시험지 다운로드</p>
+                            <div class="btn-box">
+                                <button class="button1">전체</button>
+                                <button class="button2 two">문제</button>
+                                <button class="button3 three">정답 + 해설 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-top">
+            <div class="footer-top-content">
+                <p>
+                    <span> 고객센터 1577-7609 </span> (평일 09:00~17:30)
+                </p>
+                <div>
+                    <ul class="footer-ul">
+                        <li><a>이용안내</a></li>
+                        <li><a> 자주 묻는 질문 </a> </li>
+                        <li><a> 1:1 문의 </a></li>
+                        <li><a> 인 스 타 e t c </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>상호 : (주)티 문제은행 | 대표자명 : 최천재 <br>
+                사업자등록번호 : 0000-00-00000 | 통신판매업신고번호 : 제 0000-서울금천-0000호 <br>
+                연락처 : 02-1234-5678 | 팩스 : 02-1234-5678 | 이메일 : aa@aaa.com <br>
+                주소 : 서울특별시 구로구 <br> </p>
+            <p> ©Copyright 티셀파.All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>

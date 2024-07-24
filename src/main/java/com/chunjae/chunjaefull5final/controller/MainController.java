@@ -26,4 +26,9 @@ public class MainController {
 
         return "main/index";
     }
+
+    @GetMapping("/paper")
+    public String paper() {
+        return "main/paper";
+    }
 }

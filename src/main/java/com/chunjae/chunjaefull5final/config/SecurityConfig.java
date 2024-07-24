@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         // 모든사람
                         .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail","/oauth2/authorization/google","/index").permitAll()
+                                ,"/checkEmail","/oauth2/authorization/google","/index", "/paper").permitAll()
                         //관리자
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
