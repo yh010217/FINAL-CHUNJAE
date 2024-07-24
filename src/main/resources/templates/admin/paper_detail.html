@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/paper_detail.css}">
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script th:src="@{/js/admin/deltest.js}"></script>
+    <script th:src="@{/js/admin/paper_down.js}"></script>
+    <title>Admin</title>
+</head>
+<body>
+<nav>
+    <div class="logo-name">
+        <div class="logo-image">
+            <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
+            <a th:href="@{/admin/user}" class="header_title"></a>
+        </div>
+
+        <span class="logo_name">문제은행</span>
+    </div>
+
+    <div class="menu-items">
+        <ul class="nav-links">
+            <li>
+                <a th:href="@{/admin/user}">
+                    <i class="uil uil-user"></i>
+                    <span class="link-name">회원관리</span>
+                </a></li>
+            <li><a th:href="@{/admin/paper}" class="side_bar_menu">
+                <i class="uil uil-files-landscapes"></i>
+                <span class="link-name">시험지관리</span>
+            </a></li>
+            <li><a th:href="@{/admin/error}" class="side_bar_menu">
+                <i class="uil uil-file-question-alt"></i>
+                <span class="link-name">문제오류관리</span>
+            </a></li>
+        </ul>
+
+        <ul class="logout-mode">
+            <li>
+                <a th:href="@{/main}">
+                    <i class="uil uil-home"></i>
+                    <span class="link-name">Main Page</span>
+                </a>
+
+            </li>
+
+            <li class="mode">
+                <a href="#">
+                    <i class="uil uil-moon"></i>
+                    <span class="link-name">Dark Mode</span>
+                </a>
+
+                <div class="mode-toggle">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-files-landscapes"></i>
+                <span class="text">시험지상세페이지</span>
+            </div>
+            <div id="paper_detail">
+                <ul id="detail_ul">
+                    <li class="list">
+                        <span>시험지번호</span>
+                        <span th:text="${paperInfoDTO.paperId}"></span>
+                    </li>
+                    <li class="list">
+                        <span>제목</span>
+                        <span th:text="${paperInfoDTO.title}"></span>
+                    </li>
+                    <li class="list">
+                        <span>과목코드</span>
+                        <span th:text="${paperInfoDTO.subjectId}"></span>
+                    </li>
+                    <li class="list">
+                        <span>과목이름</span>
+                        <span th:text="${subjectNames[paperInfoDTO.subjectId]}"></span>
+                    </li>
+                    <li class="list">
+                        <span>시험문제개수</span>
+                        <span th:text="${paperInfoDTO.itemCount}"></span>
+                    </li>
+                    <li class="list">
+                        <span>학년</span>
+                        <span th:text="${paperInfoDTO.grade}"></span>
+                    </li>
+                    <li class="list">
+                        <span>학기</span>
+                        <span th:text="${paperInfoDTO.term}"></span>
+                    </li>
+                    <li class="list">
+                        <span>만든날짜</span>
+                        <span th:text="${paperInfoDTO.createdAt}"></span>
+                    </li>
+                    <li class="list">
+                        <span>만든회원정보</span>
+                        <span th:text="${paperInfoDTO.uid}"></span>
+                    </li>
+                    <li>
+                        <span>시험지파일다운</span>
+                        <span th:text="${paperInfoDTO.saveName}"></span>
+                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}">다운로드</button>
+                    </li>
+                    <li>
+                        <span>문제+정답 PDF 다운로드</span>
+                        <span th:text="${paperInfoDTO.saveAnswerPath}"></span>
+                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">다운로드</button>
+                    </li>
+                    <li>
+                        <span>문제+정답+해설 PDF 다운로드</span>
+                        <span th:text="${paperInfoDTO.saveAllPath}"></span>
+                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAllPath}">다운로드</button>
+                    </li>
+                </ul>
+                <div class="a_list">
+                    <a id="a_paper"th:href="@{/admin/paper}">목록으로</a>
+                    <a id="a_down" th:href="@{/file/csv_download/Download_Sample.pdf}">다운로드</a>
+                    <a id="a_down2" th:href="@{/file/paperDownload(fileName='test (5).pdf')}">다운로드22</a>
+                    <a id="a_del" th:href="@{/file/deleteImageFile(fileName='deltest.pdf')}" onclick="deleteFile(event)">삭제</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+<script th:src="@{/js/admin/admin_user.js}"></script>
+</body>
+</html>
+

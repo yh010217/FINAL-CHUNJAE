@@ -1,0 +1,58 @@
+header {
+    display: flex;
+    align-items: center;
+}
+
+ul li {
+    display: inline-block;
+}
+
+.header-1, .header-2, .header-3 {
+    flex: 1
+}
+
+.header-1 img {
+    width: 60px;
+    height: 60px;
+}
+
+.header-2 {
+    text-align: center;
+    font-family: 'SUITE-Regular';
+}
+
+.header-3 {
+    text-align: right;
+}
+
+.login{
+    background-color: #5670dc;
+    color: white;
+    padding: 10px 0;
+    border-radius: 12px;
+    display: inline-block;
+    width: 90px;
+    text-align: center;
+}
+
+.join {
+    border: 1px solid #5670dc;
+    color: #5670dc;
+    padding: 10px 0;
+    margin-right: 10px;
+    border-radius: 12px;
+    display: inline-block;
+    width: 90px;
+    text-align: center;
+}
+
+.logout {
+    background-color: #5670dc;
+    color: white;
+    padding: 10px 0;
+    border-radius: 12px;
+    display: inline-block;
+    width: 90px;
+    text-align: center;
+    border: none;
+}

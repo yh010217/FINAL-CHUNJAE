@@ -1,5 +1,15 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+body{
+    font-family: 'Pretendard-Regular';
+}
 #wrap{
     padding: 90px 0;
+    font-family: 'Pretendard-Regular';
 }
 #login_box{
     background-color: white;
@@ -7,7 +17,7 @@
     width: 40%;
     margin: 0 auto;
     padding: 30px 30px 70px;
-    border-radius: 6px;
+    border-radius: 30px;
 }
 
 #login_box > h1{
@@ -21,6 +31,7 @@
     display: flex;
     justify-content: center;
     margin: 20px;
+    font-family: 'Pretendard-Regular';
 }
 .google{
     list-style: none;
@@ -40,7 +51,7 @@
     width: 17vw;
     padding: 1.5vh 0.9vw;
     font-size: 1rem;
-
+    font-family: 'Pretendard-Regular';
 }
 #google_login{
     border: none;
@@ -51,7 +62,7 @@
     text-align: center;
     display: flex;
     justify-content: flex-start;
-
+    font-family: 'Pretendard-Regular';
 }
 #login_form ul button[type="submit"]{
     width: 18.8vw;
@@ -61,6 +72,7 @@
     color: #fff;
     font-size: 16px;
     background-color: #5670DC;
+    font-family: 'Pretendard-Regular';
 }
 .google_btn{
     display: flex;
@@ -72,4 +84,5 @@
     display: flex;
     justify-content: center;
     text-decoration: none;
+    margin-left: 36px;
 }

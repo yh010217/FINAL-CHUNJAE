@@ -29,6 +29,13 @@
                     </li>
                     <li>
                         <span class="sign_up_form_span">
+                            <label>비밀번호확인</label>
+                            <input type="password" th:name="pwd-retype" th:id="pwd-retype"  th:class="sign_up_input"  required>
+                        </span>
+                        <span id="confirm-password-message"></span>
+                    </li>
+                    <li>
+                        <span class="sign_up_form_span">
                             <label>이름</label>
                             <input type="text" th:name="name" th:id="name" th:class="sign_up_input" required>
                         </span>
@@ -41,6 +48,7 @@
                                 <option th:value="Element">초등</option>
                                 <option th:value="Middle">중등</option>
                                 <option th:value="High">고등</option>
+                                <option th:value="User">회원</option>
                             </select>
                         </span>
                     </li>

@@ -1,12 +1,20 @@
 /* ===== Google Font Import - Poppins ===== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
+@font-face {
+    font-family: 'GoyangIlsan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+
+}
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', 'GoyangIlsan',sans-serif;
 }
 
 
@@ -284,13 +292,14 @@ nav.close ~ .dashboard .top{
 
 .top .search-box i{
     position: absolute;
-    right: -14px;
+    left: 111px;
     font-size: 22px;
     z-index: 10;
     top: 50%;
     transform: translateY(-50%);
     color: var(--black-light-color);
 }
+
 #search_user_btn{
     border:none;
 }
@@ -324,7 +333,8 @@ nav.close ~ .dashboard .top{
 .dash-content .title{
     display: flex;
     align-items: center;
-    margin: 60px 0 30px 0;
+    margin: 34px 12px 29px 241px;
+    /*margin: 60px 0 30px 0;*/
 }
 .dash-content .title i{
     position: relative;
@@ -381,54 +391,78 @@ nav.close ~ .dashboard .top{
 .boxes .box.box3{
     background-color: var(--box3-color);
 }
-.activity-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 18px;
-    text-align: left;
+#user{
+    width: 60vw;
+    margin: 30px auto 10px;
+    padding: 3px 10px;
+    border-top: 5px solid #d7d7d7;
+    border-radius: 6px;
+    background-color: var(--panel-color);
+    color: var(--text-color);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px
+    , rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
-
-.activity-table th, .activity-table td {
-    padding: 12px 15px;
+#user ul li{
+    list-style: none;
+    padding: 1vw;
     color: var(--text-color);
 }
-
-.activity-table thead th {
-    background-color: var(--box1-color);
-    /*color: #ffffff;*/
-    color: var(--text-color);
-    text-align: left;
-    font-weight: bold;
+#user a{
+    color: #000;
 }
-
-.activity-table tbody tr {
-    border-bottom: 1px solid #dddddd;
+.userList{
     color: var(--text-color);
 }
-
-.activity-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+#user list, #user li:not(:last-child){
+    border-bottom: 1px rgba(153,153,153, 0.5);
 }
-
-.activity-table tbody tr:last-of-type {
-    border-bottom: 2px solid var(--box1-color);
+#user li span{
+    display: inline-block;
 }
-
-.activity-table tbody tr:hover {
-    background-color: #F8F8F8;
+#user li span:nth-child(1){
+    width: 10%;
+    text-align: center;
+    color: var(--text-color);
 }
-
+#user li span:nth-child(2){
+    width: 25%;
+    text-align: center;
+    color: var(--text-color);
+}
+#user li span:nth-child(3){
+    width: 25%;
+    text-align: center;
+    color: var(--text-color);
+}
+#user li span:nth-child(4){
+    width: 15%;
+    text-align: center;
+    color: var(--text-color);
+}
+#user li span:nth-child(5){
+    width: 15%;
+    text-align: center;
+    color: var(--text-color);
+}
+/*#user li span:nth-child(6) {*/
+/*    width: 20%;*/
+/*    text-align: center;*/
+/*}*/
 #page{
     text-align: center;
     font-size: 1.2rem;
-
+    text-decoration: none;
 }
 #page span{
     padding-right: 2px;
-    color: var(--text-color);
-
+    color: #000000;
+    /*color: var(--text-color);*/
 }
+#page a{
+    text-decoration: none;
+    color:  var(--text-color);
+}
+
 @media (max-width: 1000px) {
     nav{
         width: 73px;

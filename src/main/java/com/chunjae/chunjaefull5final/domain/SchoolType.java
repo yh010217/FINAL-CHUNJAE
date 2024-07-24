@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum SchoolType {
-    Element,Middle,High;
+
+    Element,Middle,High,User;
 
 }

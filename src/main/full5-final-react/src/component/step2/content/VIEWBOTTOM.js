@@ -52,8 +52,7 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
         setChangeList(newChangeList);
     };
 
-    /** CNTLIST 에서 정렬된 group
-     * 의 리스트만 changeList에 담음 **/
+    /** CNTLIST 에서 정렬된 group 의 리스트만 changeList에 담음 **/
     const handleGroupData = (newGroupData) => {
         setGroupedData(newGroupData);
         const updatedChangeList = newGroupData.reduce((acc, group) => {
@@ -177,7 +176,10 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
                  setChangeId={setChangeId}
                  setNo2={setNo2}
                  groupedItems={groupedItems}
-                 removeList={removeList}/>
+                 removeList={removeList}
+                 setModal={setModal}
+                 setItemId={setItemId}
+        />
 
         {/** 문제지 요약, 유사문제, 문제삭제 **/}
         <CNTRIGHT initialChangeList={changeList}

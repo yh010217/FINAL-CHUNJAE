@@ -48,7 +48,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String email=googleUserInfo.getEmail();
         String name=googleUserInfo.getName();
 
-       // String name=googleUserInfo.getName();
+        // String name=googleUserInfo.getName();
         // 소셜 ID 로 사용자를 조회, 없으면 socialId 와 이름으로 사용자 생성
         Optional<User> bySnsId = userRepository.findBySnsId(snsId);
         //User user = bySnsId.orElseGet(() -> saveSnsUser(snsId, name));
@@ -65,5 +65,4 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     }
 
 }
-
 

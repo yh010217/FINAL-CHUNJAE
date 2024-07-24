@@ -1,8 +1,13 @@
-import React from 'react';
+
+import React, {useEffect, useState} from 'react';
 
 function S3tab({paper}) {
+    // console.log(paper);
+    // const [changePaper, setChangePaper] = useState([]);
+    // useEffect(()=>{
+    //     setChangePaper(paper)
+    // }, [changePaper]);
 
-    console.log(paper);
     const multipleChoiceForms = ['5지 선택', '단답 무순형', '자유 선지형'];
 
     return <>
@@ -21,8 +26,8 @@ function S3tab({paper}) {
                             <div className="col">
                                 <span>{index+1}</span>
                                 <span className="tit">
-                            {item.largeChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
-                        </span>
+                                    {item.largeChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
+                                </span>
                                 <span>{multipleChoiceForms.includes(item.questionFormName) ? '객관식' : '주관식'}</span>
                                 <span>{item.difficultyName}</span>
                             </div>
