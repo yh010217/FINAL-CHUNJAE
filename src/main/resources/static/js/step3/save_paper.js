@@ -35,7 +35,7 @@ let index = 0; //이미지 번호
 window.onload = function (){
     const num=23;
 
-    const init_json =  function (){
+/*    const init_json =  function (){
          fetch("/api/pdftest/getImages/"+num+"/"+"question",
             {
                 method:'GET'
@@ -51,7 +51,7 @@ window.onload = function (){
             let dataList = [];
             let i = 0;
 
-            /* svg to png */
+            /!* svg to png *!/
             fetch('/convertImage', {
                 method: 'POST',
                 headers: {
@@ -105,7 +105,7 @@ window.onload = function (){
 
                 let index = 0;
                 dataList.map(item => {
-                    /* 첫번째 문제인 경우 */
+                    /!* 첫번째 문제인 경우 *!/
                     if(index===0){
                         // 헤더
                         const header = document.createElement('div');
@@ -155,7 +155,7 @@ window.onload = function (){
                         document.getElementById('wrap').appendChild(newPage);
 
                     }else{
-                        /* left, right 계산 */
+                        /!* left, right 계산 *!/
                         let leftCount = 0;
                         let left = null;
                         let leftChildCount = 0;
@@ -222,7 +222,7 @@ window.onload = function (){
                         // console.log(index,' : rightChildHeight..................', rightChildHeight);
 
 
-                        /* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 */
+                        /!* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 *!/
                         if(leftChildHeight > leftRightHeight){
                             // 요소 생성
                             const newRight = document.createElement('div');
@@ -234,12 +234,12 @@ window.onload = function (){
                             left.insertAdjacentElement('afterend', newRight);
                             // console.log('leftChildHeight > leftRightHeight.....',index);
                         }
-                        /* left 문제 수 2개 미만 && left 다음 right가 없는 경우 */
+                        /!* left 문제 수 2개 미만 && left 다음 right가 없는 경우 *!/
                         else if(leftChildHeight <= leftRightHeight && left.nextElementSibling===null){
                             left.appendChild(item);
                             // console.log('leftChildHeight <= leftRightHeight.....',index);
                         }
-                        /* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 */
+                        /!* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 *!/
                         else if(rightChildHeight > leftRightHeight){
                             console.log('right 높이 : ', right.firstChild.naturalHeight)
                             const newPage = document.createElement('div');
@@ -260,7 +260,7 @@ window.onload = function (){
                             document.getElementById('wrap').appendChild(newPage);
                             // console.log('rightChildHeight > leftRightHeight.....',index);
                         }
-                        /* right 문제 수 2개 미만 && right 존재하는 경우 */
+                        /!* right 문제 수 2개 미만 && right 존재하는 경우 *!/
                         else if(rightChildHeight <= leftRightHeight && right !== null){
                             right.appendChild(item);
                             // console.log('rightChildHeight <= leftRightHeight.....',index);
@@ -282,9 +282,9 @@ window.onload = function (){
                 console.log('finally');
             })
     }
-    init_json();
+    init_json();*/
 
-/*    const init_json = function (){
+    const init_json = function (){
         fetch("/api/pdftest/getImages/"+num+"/"+"question",
             {
                 method:'GET'
@@ -330,7 +330,7 @@ window.onload = function (){
 
             let index = 0;
             dataList.map(item => {
-                /!* 첫번째 문제인 경우 *!/
+                /* 첫번째 문제인 경우 */
                 if(index===0){
                     // 헤더
                     const header = document.createElement('div');
@@ -375,7 +375,7 @@ window.onload = function (){
                     document.getElementById('wrap').appendChild(newPage);
 
                 }else{
-                    /!* left, right 계산 *!/
+                    /* left, right 계산 */
                     let leftCount = 0;
                     let left = null;
                     let leftChildCount = 0;
@@ -439,7 +439,7 @@ window.onload = function (){
                     // console.log(index,' : rightChildHeight..................', rightChildHeight);
 
 
-                    /!* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 *!/
+                    /* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 */
                     if(leftChildHeight > leftRightHeight){
                         // 요소 생성
                         const newRight = document.createElement('div');
@@ -451,12 +451,12 @@ window.onload = function (){
                         left.insertAdjacentElement('afterend', newRight);
                         // console.log('leftChildHeight > leftRightHeight.....',index);
                     }
-                    /!* left 문제 수 2개 미만 && left 다음 right가 없는 경우 *!/
+                    /* left 문제 수 2개 미만 && left 다음 right가 없는 경우 */
                     else if(leftChildHeight <= leftRightHeight && left.nextElementSibling===null){
                         left.appendChild(item);
                         // console.log('leftChildHeight <= leftRightHeight.....',index);
                     }
-                    /!* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 *!/
+                    /* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 */
                     else if(rightChildHeight > leftRightHeight){
                         console.log('right 높이 : ', right.firstChild.naturalHeight)
                         const newPage = document.createElement('div');
@@ -477,7 +477,7 @@ window.onload = function (){
                         document.getElementById('wrap').appendChild(newPage);
                         // console.log('rightChildHeight > leftRightHeight.....',index);
                     }
-                    /!* right 문제 수 2개 미만 && right 존재하는 경우 *!/
+                    /* right 문제 수 2개 미만 && right 존재하는 경우 */
                     else if(rightChildHeight <= leftRightHeight && right !== null){
                         right.appendChild(item);
                         // console.log('rightChildHeight <= leftRightHeight.....',index);
@@ -493,7 +493,7 @@ window.onload = function (){
                 console.log('finally');
             })
     }
-    init_json();*/
+    init_json();
 
 /*    const init_json2 = function (){
         fetch("/api/pdftest/getImages/"+num+"/"+"answer_only",
@@ -809,7 +809,7 @@ async function downloadPDF() {
         console.error('Error generating PDF:', error);
     });*/
 
-    async function generatePDFs() {
+/*    async function generatePDFs() {
         try {
             // 클래스 이름이 'page'인 div 요소들을 PDF로 만들기
             const pdfBuffer1 = await createPDFs('.page', 'output1.pdf');
@@ -891,6 +891,28 @@ async function downloadPDF() {
     }
 
 
-    generatePDFs();
+    generatePDFs();*/
+
+    // HTML 요소 캡처
+    const element = document.getElementById('wrap');
+    const corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
+
+// HTML2Canvas 라이브러리를 사용하여 다른 페이지의 화면 캡쳐하기
+    const url = 'http://localhost:8080/login'; // 캡쳐할 페이지 URL
+
+// 캡쳐할 페이지를 로드하기 위한 iframe 생성
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none'; // 화면에 표시되지 않도록 설정
+    iframe.src = url;
+    document.body.appendChild(iframe);
+
+// iframe 내부의 내용을 캡쳐하여 이미지로 변환
+    iframe.onload = function() {
+        html2canvas(iframe.contentWindow.document.body).then(canvas => {
+            // 캡쳐된 캔버스를 사용하여 처리
+            document.body.appendChild(canvas);
+        });
+    };
+
 }
 

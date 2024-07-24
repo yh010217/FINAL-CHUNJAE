@@ -21,11 +21,13 @@ public class PdfUploadTest {
 
     @PostMapping("/upload")
     public @ResponseBody String pdfUpload(@RequestParam("pdfFile1") MultipartFile multipartFile1
-            , @RequestParam("pdfFile2") MultipartFile multipartFile2) throws IOException {
+            , @RequestParam("pdfFile2") MultipartFile multipartFile2
+            , @RequestParam("pdfFile3") MultipartFile multipartFile3) throws IOException {
 
         String dirName = "pdf_테스트폴더";
         String upload = uploader.upload(multipartFile1, dirName);
         String upload2 = uploader.upload(multipartFile2, dirName);
+        String upload3 = uploader.upload(multipartFile3, dirName);
 //        PaperInfoDTO dto = new PaperInfoDTO();
 //        dto.setSaveAllPath(upload);
 //        dto.setSaveName(multipartFile.getOriginalFilename());

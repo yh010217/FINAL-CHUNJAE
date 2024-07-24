@@ -1,8 +1,8 @@
 body{
-    background-color: #f5f5f5;
+    /*background-color: #f5f5f5;*/
 }
 
-.page,.page2{
+.page,.page2,.page3{
     width: 210mm;
     height: 297mm;
     border: 1px solid silver;
@@ -28,7 +28,8 @@ body{
     height: 980px;
 }
 
-.left, .left2{
+.left, .left2, .left3
+,.right, .right2, .right3{
     height: 100%;
 }
 
@@ -37,7 +38,7 @@ body{
 /*    margin: 10px 0 30px ;*/
 /*}*/
 
-.item, .item2{
+.item, .item2, .item3{
     /*width: 340px;*/
     margin: 10px 0 ;
 }
