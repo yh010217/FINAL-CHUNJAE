@@ -81,6 +81,14 @@ public class AWSController {
         S3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
+    /** 폴더 바꿔야함*/
+    private final String paperDFolderName="pdf_테스트폴더";
+    @DeleteMapping("/paperDelete")
+    public ResponseEntity<String>  paperDelete(@RequestParam String fileName){
+        String filepath=paperDFolderName+"/"+fileName;
+        S3Service.paperDeleteFile(filepath);
+        return ResponseEntity.ok(filepath);
+    }
 
     /** 오류사진 다운*/
     private final String folderName = "error"; // 폴더명 하드코딩
@@ -97,6 +105,14 @@ public class AWSController {
                 contentType = "image/jpeg";
             } else if (fileName.endsWith(".hwp")) {
                 contentType = "application/hwp";
+            } else if (fileName.endsWith(".pdf")) {
+                contentType="application/pdf";
+            } else if (fileName.endsWith(".txt")){
+                contentType="application/txt";
+            }else if (fileName.endsWith(".doc")){
+                contentType="application/doc";
+            }else if (fileName.endsWith(".docx")){
+                contentType="application/docx";
             }
             response.setContentType(contentType);
             S3Service.downloadFile(filePath, response);

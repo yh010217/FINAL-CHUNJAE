@@ -45,4 +45,8 @@ public class User {
         this.snsId=snsId;
     }
 
+    public String getFullName() {
+        return name;
+    }
+
 }

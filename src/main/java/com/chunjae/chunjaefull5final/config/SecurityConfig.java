@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.config;
 
-import com.chunjae.chunjaefull5final.config.oauth.CustomOAuth2UserService;
+// import com.chunjae.chunjaefull5final.config.oauth.CustomOAuth2UserService;
+import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,23 +18,24 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
+   // private final CustomOAuth2UserService customOAuth2UserService;
 
+    private final OAuth2UserService oAuth2UserService;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/resources/**"
-                                          , "/css/**"
-                                          , "/js/**"
-                                          , "/images/**"
-                                          , "/static/css/**"
-                                          , "/static/js/**"
-                                          , "/full5-final-react/images/**"
-                                          , "/full5-final-react/css/**"
-                                          , "/full5-final-react/src/**"
-                                          , "/full5-final-react/component/**"
-                                          , "/file/**"
-                                          , "/test/error"
+                        , "/css/**"
+                        , "/js/**"
+                        , "/images/**"
+                        , "/static/css/**"
+                        , "/static/js/**"
+                        , "/full5-final-react/images/**"
+                        , "/full5-final-react/css/**"
+                        , "/full5-final-react/src/**"
+                        , "/full5-final-react/component/**"
+                        , "/file/**"
+                        , "/test/error"
 
                 );
     }
@@ -44,12 +46,13 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/file/**", "/test/error").permitAll()
+                        .requestMatchers("/file/**", "/test/error","/error").permitAll()
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
                         .requestMatchers("/admin/**").hasRole("Admin")
                         .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")
                         .anyRequest().authenticated()
         );
+
 
         http.formLogin(formLogin -> formLogin
                 .loginPage("/login")
@@ -70,7 +73,7 @@ public class SecurityConfig {
         http.oauth2Login(oauth2Login -> oauth2Login
                 .loginPage("/oauth2/login")
                 .defaultSuccessUrl("/index")
-                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService))
+                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserService))
         );
 
         return http.build();

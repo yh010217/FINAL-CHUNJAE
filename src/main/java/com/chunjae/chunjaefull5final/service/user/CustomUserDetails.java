@@ -1,10 +1,12 @@
 package com.chunjae.chunjaefull5final.service.user;
 
 import com.chunjae.chunjaefull5final.domain.User;
+import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,8 +16,9 @@ public class CustomUserDetails implements UserDetails {
 
     private User user;
 
-    public CustomUserDetails(User user){this.user=user;}
 
+
+    public CustomUserDetails(User user){this.user=user;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,6 +35,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return user.getEmail();
+    }
+
+    public String getFullName() {
+        return user.getName();
     }
 
     @Override

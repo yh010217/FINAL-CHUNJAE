@@ -4,7 +4,7 @@ function deleteFile(event) {
     const params = new URLSearchParams(url.split('?')[1]); // URL에서 쿼리 파라미터 추출
     const fileName = params.get('fileName'); // 파일 이름 추출
 
-    fetch(`/file/deleteImageFile?fileName=${fileName}`, {
+    fetch(`/file/paperDelete?fileName=${fileName}`, {
         method: 'DELETE'
     })
         .then(response => {

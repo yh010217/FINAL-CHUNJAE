@@ -1,35 +1,3 @@
-//package com.chunjae.chunjaefull5final.config.oauth;
-//
-//import java.util.Map;
-//
-//public class GoogleUserInfo {
-//    public static String snsId;
-//    private String email;
-//
-////    private String name;
-//   // public static Map<String, Object> profile;
-//
-//    public GoogleUserInfo(Map<String, Object> attributes) {
-//        snsId = String.valueOf(attributes.get("id"));
-//        email = String.valueOf(attributes.get("email"));
-//       // profile = (Map<String, Object>) profile.get("profile");
-//    }
-//    public String getSnsId() {
-//        return snsId;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//    public String getName(){
-//        return name;
-//    }
-//
-////    public String getName() {
-////        return String.valueOf(profile.get("name"));
-////    }
-//
-//}
 package com.chunjae.chunjaefull5final.config.oauth;
 
 import java.util.Map;
@@ -49,7 +17,19 @@ public class GoogleUserInfo {
         return String.valueOf(attributes.get("email"));
     }
 
-    public String getName() {
-        return String.valueOf(attributes.get("name"));
+    public String getGivenName() {
+        return String.valueOf(attributes.get("given_name"));
     }
+
+    public String getFamilyName() {
+        return String.valueOf(attributes.get("family_name"));
+    }
+
+    public String getFullName() {
+        String givenName = getGivenName();
+        String familyName = getFamilyName();
+        return familyName + " " +givenName ; // 이름과 성을 합쳐 전체 이름을 생성
+    }
+
+
 }
