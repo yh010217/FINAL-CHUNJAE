@@ -22,7 +22,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 {/** STEP 2 **/}
-                <Route path={'/step2'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
+                <Route path={'/step2/:type/:getData'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'} element={<STEP3 paper={paper}/>}></Route>
             </Routes>

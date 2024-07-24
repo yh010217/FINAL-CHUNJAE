@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 
-
 function MODAL({ setModal, itemId }) {
     const [showPopup, setShowPopup] = useState(true);
     const [fileName, setFileName] = useState('');
@@ -153,6 +152,7 @@ function MODAL({ setModal, itemId }) {
                                     <th>첨부파일</th>
                                     <td className="file">
                                         <input id="file-input" type="text" placeholder="최대 100MB까지 등록가능" value={fileName} readOnly />
+
                                         <button type="button" className="btn-icon" onClick={handleFileAttachClick}> 파일 첨부 </button>
                                         <input
                                             type="file"

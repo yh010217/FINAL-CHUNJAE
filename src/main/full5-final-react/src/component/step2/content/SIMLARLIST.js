@@ -194,7 +194,6 @@ function SIMLARLIST(props) {
     );
 
 
-
 }
 
 export default SIMLARLIST;
