@@ -34,7 +34,8 @@ public class SecurityConfig {
                                           , "/full5-final-react/component/**"
                                           , "/file/**"
                                           , "/test/error"
-
+                                          , "/preview/**"
+                                          , "/step0/**"
                 );
     }
 
@@ -44,6 +45,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
+                        // 모든사람
+                        .requestMatchers("/join","/login","/logout"
+                                ,"/checkEmail","/**").permitAll()
                         .requestMatchers("/file/**", "/test/error").permitAll()
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
                         .requestMatchers("/admin/**").hasRole("Admin")
