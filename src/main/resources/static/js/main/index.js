@@ -1,6 +1,6 @@
 /** step 새로운 창 이런식으로 열기 */
-function openPopup() {
-    window.open('http://localhost:8080/step2', 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
+function openPopup(code) {
+    window.open(`http://localhost:8080/step0/${code}`, 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
 }
 
 function notLonginPopup() {
