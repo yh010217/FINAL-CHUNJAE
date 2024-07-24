@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('응답!!!!', data);
                     // 서버로 부터 데이터 성공적으로 받으면 step2로 이동
                     /* !!!!!! 경로 변경시 수정 !!!!!*/
-                    window.location.href = 'http://localhost:3000/step2';
+                    window.location.href = 'http://localhost:8080/step2';
                 }).catch(error => {
                 console.log('에러 발생', error);
                 alert('에러 발생..')
