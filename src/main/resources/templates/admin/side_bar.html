@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/admin/template.css}">
+</head>
+<body>
+<aside th:fragment="side_template">
+            <div id="side_bar">
+            <div id="side_bar_header">
+                <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
+                <a th:href="@{/admin/user}" class="header_title">문제은행</a>
+            </div>
+            <div id="side_bar_menus">
+                <a th:href="@{/admin/user}" class="side_bar_menu">
+                    <img class="side_bar_menu_image" src="/images/admin/icons8-유저관리-100.png" alt="유저 관리">
+                    <span class="side_bar_menu_name">회원 관리</span>
+                </a>
+                <a th:href="@{/admin/testpage}" class="side_bar_menu">
+                    <img class="side_bar_menu_image" src="/images/admin/icons8-문제관리-100.png" alt="문제 관리">
+                    <span class="side_bar_menu_name">문제관리</span>
+                </a>
+                <a th:href="@{/admin/errorpage}" class="side_bar_menu">
+                    <img class="side_bar_menu_image" src="/images/admin/icons8-문제오류-100.png" alt="문제 오류 관리">
+                    <span class="side_bar_menu_name">문제오류관리</span>
+                </a>
+                <a href="/main" class="go_index">
+                    홈페이지
+                </a>
+            </div>
+        </div>
+    </div>
+</aside>
+</body>
+</html>

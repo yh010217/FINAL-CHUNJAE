@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const checkboxes = document.querySelectorAll('.chk_paperId'); // 모든 체크박스 요소를 선택
-    const selectedCountElement = document.getElementById('chk_item_cnt'); // 선택된 문항 수
-    const editButton = document.getElementById('edit-selected'); // 선택한 시험지 편집하기 버튼
-    const newButton = document.getElementById('new-paper'); // 신규 시험지 만들기 버튼
-    const subjectIdInput = document.getElementById('subjectId'); // 과목코드
-    const subjectId = subjectIdInput.value; // 과목코드 값 가져오기
-    const maxItemCount = 90; // 최대 선택 가능한 문항수
+    let checkboxes = document.querySelectorAll('.chk_paperId'); // 모든 체크박스 요소를 선택
+    let selectedCountElement = document.getElementById('chk_item_cnt'); // 선택된 문항 수
+    let editButton = document.getElementById('edit-selected'); // 선택한 시험지 편집하기 버튼
+    let newButton = document.getElementById('new-paper'); // 신규 시험지 만들기 버튼
+    let subjectIdInput = document.getElementById('subjectId'); // 과목코드
+    let subjectId = subjectIdInput.value; // 과목코드 값 가져오기
+    let maxItemCount = 90; // 최대 선택 가능한 문항수
 
     // '신규 시험지 만들기' 버튼 클릭시
     newButton.addEventListener('click', function () {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedExamIds = [];   // 선택된 시험지 ID를 저장하는 배열
 
     // 선택된 문항 수를 업데이트하는 함수
-    const updateSelectedCount = () => {
+    let updateSelectedCount = () => {
         selectedCountElement.textContent = selectedItemCount;
     };
 
@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     checkboxes.forEach(checkbox => { // 각 체크박스에 이벤트 리스너를 추가
         checkbox.addEventListener('change', function () {
 
-            const itemCount = parseInt(this.getAttribute('item-cnt'));  // 체크한 문항 수 가져오기
-            const examId = this.getAttribute('exam-id');  // 체크한 시험지 ID 가져오기
+            let itemCount = parseInt(this.getAttribute('item-cnt'));  // 체크한 문항 수 가져오기
+            let examId = this.getAttribute('exam-id');  // 체크한 시험지 ID 가져오기
 
             if (this.checked) {
 
@@ -85,25 +85,34 @@ document.addEventListener('DOMContentLoaded', function () {
     // 셋팅지 미리보기
     document.querySelectorAll('.tbody').forEach(tbody => {  // tbody에 이벤트 리스너 추가
         tbody.addEventListener('click', function (event) {
-            if (event.target.closest('.pop-btn.btn-icon2')) {
-                const button = event.target.closest('.pop-btn.btn-icon2');
-                const examId = button.previousElementSibling.value; // 시험지 ID
-                //console.log('미리보기 클릭..examId..', examId;
+            let button = event.target.closest('.pop-btn.btn-icon2');
+            if (button) {
+                let examId = button.previousElementSibling.value;   // 시험지ID
 
-                // 셋팅지 미리보기 api 호출
-                // 문항+정답+해설
+            // 셋팅지 미리보기 api 호출
                 fetch('/preview/all', {
-                    method: 'POST'
-                    , headers: {
-                        'Accept': 'application/json'
-                        , 'Content-Type': 'application/json'
-                    }
-                    , body: JSON.stringify({examId: examId, differentiation: 'A'})
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({'examId': examId, 'differentiation': 'A'})
                 })
-                    .then(response => response.text())
-                    .then(data => {
-                        console.log('api 호출 되나', data);
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('preview URL fetch 실패: ' + response.statusText);
+                        }
+                       return response.text();
+
                     })
+                    .then(htmlContent => {
+                        // HTML content를 페이지에 삽입
+                        document.getElementById('previewContent').innerHTML = htmlContent;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('HTML 미리보기 실패: ' + error.message);
+                    });
+
 
 
                 // 문제
