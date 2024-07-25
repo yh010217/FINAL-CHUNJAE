@@ -25,12 +25,22 @@ function MODAL({ setModal, itemId }) {
         if (file) {
             setSelectedFile(file);
             setFileName(file.name);
+
+            /** 파일 크기 제한 */
+            const maxSizeInBytes = 100 * 1024 * 1024; // 100MB 제한
+
+            // 파일 크기 검사
+            if (file.size > maxSizeInBytes) {
+                alert('파일 크기가 100MB를 초과합니다.'); // 경고 메시지
+                event.target.value = ''; // 입력값 초기화
+                return;
+            }
         }
 
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (!allowedExtensions.includes(fileExtension)) {
             alert(`업로드 파일의 확장자를 확인해주세요`);
-            fileInputRef.current.value = ''; // 파일 선택을 초기화
+            setFileName(''); // 파일 선택 초기화
         } else {
             setSelectedFile(file);
         }
@@ -42,9 +52,6 @@ function MODAL({ setModal, itemId }) {
 
         try {
             const response = await axios({
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
                 url: "http://localhost:8080/file/uploadImageFile/error",
                 method: "POST",
                 data: formData,
@@ -53,7 +60,8 @@ function MODAL({ setModal, itemId }) {
             let responseData = response.data;
             const imageUrl = responseData[0].substring(responseData[0].lastIndexOf('/') + 1);
 
-            console.log(imageUrl); // 마지막 요소 출력
+            console.log(responseData[0], "데이터 값 확인하기");
+            console.log(imageUrl, "imageUrl"); // 마지막 요소 출력
 
             // DB에 저장할 데이터 구성
             let dbData = {
@@ -64,23 +72,14 @@ function MODAL({ setModal, itemId }) {
                 itemId: itemId
             };
 
-            console.log(dbData, "db로 넘어갈 데이터 확인하기");
-
             // DB로 값 넘기기
             await axios({
                 method: 'POST',
                 url: "http://localhost:8080/test/error", // 실제 API URL로 변경
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    'Accept': 'application/json'
-                },
                 data: dbData
             });
 
-            alert('신고가 완료되었습니다.');
         } catch (err) {
-            console.log(err); // 에러 로그 출력
-
             // 이미지 업로드 실패 시에도 DB 저장 시도
             let dbData = {
                 errorType: errorType,
@@ -92,22 +91,19 @@ function MODAL({ setModal, itemId }) {
                 await axios({
                     method: 'POST',
                     url: "http://localhost:8080/test/error", // 실제 API URL로 변경
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8',
-                        'Accept': 'application/json'
-                    },
                     data: dbData
                 });
 
-                alert('신고가 완료되었습니다.');
+                // 주말에 react-modal 사용해서 뭐 바꿔보기
             } catch (dbErr) {
                 console.log(dbErr);
-                alert('DB에 저장하는 데 실패하였습니다.');
+                alert('신고 실패! 다시 시도해 주세요.');
             }
         } finally {
-            closePopup();
+            alert('신고가 완료되었습니다.');
         }
     };
+
 
     const handleSelectErrorType = (type) => {
         setErrorType(type);
@@ -155,7 +151,8 @@ function MODAL({ setModal, itemId }) {
                                 <tr>
                                     <th>첨부파일</th>
                                     <td className="file">
-                                        <input type="text" placeholder="최대 100MB까지 등록가능" value={fileName} readOnly />
+                                        <input id="file-input" type="text" placeholder="최대 100MB까지 등록가능" value={fileName} readOnly />
+
                                         <button type="button" className="btn-icon" onClick={handleFileAttachClick}> 파일 첨부 </button>
                                         <input
                                             type="file"

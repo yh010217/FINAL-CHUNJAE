@@ -884,7 +884,12 @@ input[type=checkbox]:checked + label::before {
   color: #fff;
   background-color: #5670dc;
 }
-
+.select-wrap .select-list button {
+  display: block;
+  padding: 9px 12px;
+  line-height: 20px;
+  box-sizing: border-box;
+}
 .search-wrap {
   display: inline-block;
 }

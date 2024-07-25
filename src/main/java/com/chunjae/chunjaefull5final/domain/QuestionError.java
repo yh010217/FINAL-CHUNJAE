@@ -44,5 +44,4 @@ public class QuestionError {
 
     @Column(name = "item_id")
     private Integer itemId;
-
 }
