@@ -20,19 +20,14 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 @Slf4j
 @Controller
 public class TempPdfController {
 
     private final TempPdfService tempPdfService;
-    private final PdfUploadTest pdfTest;
-    public TempPdfController(TempPdfService tempPdfService, PdfUploadTest pdfTest){
+    private final S3UploadController pdfTest;
+    public TempPdfController(TempPdfService tempPdfService, S3UploadController pdfTest){
         this.tempPdfService = tempPdfService;
         this.pdfTest = pdfTest;
     }
@@ -48,14 +43,18 @@ public class TempPdfController {
         return "/step3/loading";
     }
 
+    @GetMapping("/save_comp")
+    public String saveComp(){
+        return "/step3/save_comp";
+    }
+
     @PostMapping("/save")
     @CrossOrigin(origins = "http://localhost:3000")
     public String postThymeleafPage(
-            @RequestBody Map<String, Object> data,
+            @RequestParam Map<String, Object> data,
             Model model
     ) {
-        model.addAttribute("data", data);
-        return "redirect:http://localhost:8080/save_paper";
+        return "redirect:/save_paper";
     }
 
     @GetMapping("/api/pdftest/getImages/{paperId}/{type}")

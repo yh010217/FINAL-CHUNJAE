@@ -1,7 +1,8 @@
 let index = 0; //이미지 번호
 
+const num = 27;
+
 window.onload = function () {
-    const num = 27;
 
     const init_json = function () {
 
@@ -532,7 +533,7 @@ window.onload = function () {
                         const name = document.createElement('div');
                         const name_p = document.createElement('p');
 
-                        const title_txt = document.createTextNode("answer_only");
+                        const title_txt = document.createTextNode("answer_explain");
                         const gradeClass_txt = document.createTextNode("학년 반 번");
                         const name_txt = document.createTextNode("이름 :");
 
@@ -691,4 +692,117 @@ window.onload = function () {
     init_json3();
 }
 
+async function downloadPDF() {
+
+    async function generatePDFs() {
+        try {
+            // 클래스 이름이 'page'인 div 요소들을 PDF로 만들기
+            const pdfBuffer1 = await createPDFs('.page', 'question.pdf');
+            console.log("pdfBuffer1 : ", pdfBuffer1)
+
+            // 클래스 이름이 'page2'인 div 요소들을 PDF로 만들기
+            const pdfBuffer2 = await createPDFs('.page2', 'answer_only.pdf');
+
+            // 클래스 이름이 'page2'인 div 요소들을 PDF로 만들기
+            const pdfBuffer3 = await createPDFs('.page3', 'answer_explain.pdf');
+
+            const formData = new FormData();
+            formData.append("paperId", num);
+            formData.append("saveName", "테스트");
+            formData.append('question', pdfBuffer1, 'question.pdf', 'application/pdf');
+            formData.append('answer_only', pdfBuffer2, 'answer_only.pdf', 'application/pdf');
+            formData.append('answer_explain', pdfBuffer3, 'answer_explain.pdf', 'application/pdf');
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData,
+                allowTaint: true,
+                useCORS: true,
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('PDF uploaded to S3:', data);
+                    alert('PDF uploaded to S3 successfully! : ' + data);
+                })
+                .catch(error => {
+                    console.error('Error uploading PDF to S3:', error);
+                    alert('Error uploading PDF to S3');
+                });
+
+            console.log('PDF 파일들이 성공적으로 S3에 업로드되었습니다.');
+        } catch (error) {
+            console.error('PDF 생성 및 업로드 중 오류가 발생했습니다.', error);
+        }
+    }
+
+// A4 사이즈 (210mm x 297mm)로 설정
+    const pdfWidth = 210;
+    const pdfHeight = 297;
+
+// 특정 클래스 이름을 가진 div 요소들을 PDF로 만들어 S3에 업로드하는 함수
+    async function createPDFs(className, fileName) {
+        const elements = document.querySelectorAll(className);
+
+        // 새로운 PDF 객체 생성
+        const pdf = new jspdf.jsPDF({
+            orientation: 'portrait', // 세로 방향
+            unit: 'mm',
+            format: [pdfWidth, pdfHeight],
+            foreignObjectRendering: true,
+            useCORS: true,
+            mode: 'cors', // CORS 요청 설정
+            credentials: 'include' // 필요에 따라 credentials 설정
+        });
+
+        for (let i = 0; i < elements.length; i++) {
+            const element = elements[i];
+
+            // div 요소를 이미지로 캡처
+            const canvas = await html2canvas(element, {
+                scale: 2, // 해상도 조정
+                allowTaint: true,
+                useCORS: true,
+                mode: 'cors', // CORS 요청 설정
+                credentials: 'include' // 필요에 따라 credentials 설정
+            });
+            const imageData = canvas.toDataURL('image/jpeg');
+
+            // 첫 페이지가 아니면 새 페이지 추가
+            if (i > 0) {
+                pdf.addPage();
+            }
+
+            // 이미지를 PDF에 추가
+            pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+        }
+
+        // PDF 파일을 버퍼로 변환
+        const pdfBuffer = pdf.output('arraybuffer');
+        return pdf.output('blob');
+    }
+
+
+    generatePDFs();
+
+}
+
+setTimeout(downloadPDF, 3000);
+
+
+
+/*
+fetch('/convertImage', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+        , 'Accept': 'application/json'
+    },
+    body: JSON.stringify(data)
+}).then(response => {
+    if (!response.ok)
+        throw new Error('not load');
+    return response.json();
+}).then(data => {
+})
+*/
 

@@ -15,9 +15,16 @@ public class Step3ServiceImpl implements Step3Service{
     @Override
     public void savePdf(PaperInfoDTO dto) {
 
-        PaperInfo paperInfo = PaperInfo.builder()
-                .saveName(dto.getSaveName())
-                .saveAllPath(dto.getSaveAllPath()).build();
+        PaperInfo paperInfo = paperInfoRepo
+                .findById(dto.getPaperId())
+                .orElseThrow(()-> new IllegalArgumentException("시험지 x"));
+
+
+        paperInfo.setSaveName(dto.getSaveName());
+        paperInfo.setSaveQuestionPath(dto.getSaveQuestionPath());
+        paperInfo.setSaveAnswerPath(dto.getSaveAnswerPath());
+        paperInfo.setSaveAllPath(dto.getSaveAllPath());
+
         paperInfoRepo.save(paperInfo);
     }
 }
