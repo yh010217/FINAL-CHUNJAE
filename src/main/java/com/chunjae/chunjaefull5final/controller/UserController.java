@@ -29,7 +29,8 @@ public class UserController {
     @GetMapping("/join")
     public String join(Model model){
         model.addAttribute("userDTO", new UserDTO());
-        return "user/join";
+        model.addAttribute("view","user/join");
+        return "main/index";
     }
     /** 회원가입 */
     @PostMapping("/join")
@@ -62,7 +63,8 @@ public class UserController {
         if (error!=null){
             model.addAttribute("loginError","loginError");
         }
-        return "user/login";
+        model.addAttribute("view","user/login");
+        return "main/index";
     }
     @GetMapping("/admin/user")
     public String adminUser(@PageableDefault(size = 10, page = 0) Pageable pageable

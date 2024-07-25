@@ -8,45 +8,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-<div id="wrap">
-    <form th:method="post" th:action="@{/login}" id="login_form">
-        <h1>로그인</h1>
-        <div class="txtb">
-            <input type="email" th:name="email" th:id="email">
-            <span data-placeholder="이메일"></span>
-        </div>
+    <section id="login-content">
+        <form th:method="post" th:action="@{/login}" id="login_form">
+            <h1>로그인</h1>
+            <div class="txtb">
+                <input type="email" th:name="email" th:id="email">
+                <span data-placeholder="이메일"></span>
+            </div>
 
-        <div class="txtb">
-            <input type="password" th:name="pwd" th:id="pwd">
-            <span data-placeholder="비밀번호"></span>
-        </div>
+            <div class="txtb">
+                <input type="password" th:name="pwd" th:id="pwd">
+                <span data-placeholder="비밀번호"></span>
+            </div>
 
-        <button type="submit" id="submit">로그인</button>
-        <div th:if="${loginError}">
-            <span id="fail_msg">이메일 또는 비밀번호를 다시 확인해 주세요.</span>
-        </div>
-        <div class="google">
-            <a href="/oauth2/authorization/google" class="google_btn" role="button">
-                <img src="/images/user/web_light_rd_ctn@1x.png">
-            </a>
+            <button type="submit" id="submit">로그인</button>
+            <div th:if="${loginError}">
+                <span id="fail_msg">이메일 또는 비밀번호를 다시 확인해 주세요.</span>
+            </div>
+            <div class="google">
+                <a href="/oauth2/authorization/google" class="google_btn" role="button">
+                    <img src="/images/user/web_light_rd_ctn@1x.png">
+                </a>
 
-        </div>
-        <div class="bottom-text">
-            처음방문 하셨나요? <a th:href="@{/join}">회원가입</a>
-        </div>
-  </form>
+            </div>
+            <div class="bottom-text">
+                처음방문 하셨나요? <a th:href="@{/join}">회원가입</a>
+            </div>
+      </form>
 
 
-</div>
-<script type="text/javascript">
-    $(".txtb input").on("focus",function(){
-        $(this).addClass("focus");
-    });
+    </section>
+    <script type="text/javascript">
+        $(".txtb input").on("focus",function(){
+            $(this).addClass("focus");
+        });
 
-    $(".txtb input").on("blur",function(){
-        if($(this).val() == "")
-            $(this).removeClass("focus");
-    })
-</script>
+        $(".txtb input").on("blur",function(){
+            if($(this).val() == "")
+                $(this).removeClass("focus");
+        })
+    </script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <body>
   <header id="header">
     <div class="header-1">
-      <img src="/images/admin/adminlogo-removebg-preview.png" alt="로고">
+      <a th:href="@{/index}"><img src="/images/admin/adminlogo-removebg-preview.png" alt="로고"></a>
     </div>
     <nav class="header-2">
       <ul>
@@ -25,7 +25,8 @@
         <li><a th:href="@{/login}" th:text="로그인" th:class="login"></a></li>
       </th:block>
       <th:block sec:authorize="hasAnyRole('User','Teacher','Stop')">
-        <li>
+        <li class="name-logout">
+          <span id="userFullName" th:text="|${fullName} 님|"></span>
           <form th:method="post" th:action="@{/logout}">
             <button type="submit" th:class="logout">로그아웃</button>
           </form>

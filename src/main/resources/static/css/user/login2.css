@@ -5,14 +5,14 @@
     font-style: normal;
 }
 *{
-    margin: 0;
-    padding: 0;
     text-decoration: none;
     font-family: 'Pretendard-Regular';
 }
-#wrap{
-    min-height: 100vh;
+
+#login-content{
+    min-height: 70vh;
 }
+
 #login_form{
     width: 360px;
     background:  #ffffff;
