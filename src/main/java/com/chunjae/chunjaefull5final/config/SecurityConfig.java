@@ -1,13 +1,15 @@
 package com.chunjae.chunjaefull5final.config;
-
-
+// import com.chunjae.chunjaefull5final.config.oauth.CustomOAuth2UserService;
 import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
+import com.chunjae.chunjaefull5final.service.user.CustomUserDetails;
+import com.chunjae.chunjaefull5final.service.user.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +20,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+
+   // private final CustomOAuth2UserService customOAuth2UserService;
 
     private final OAuth2UserService oAuth2UserService;
 
@@ -41,6 +46,7 @@ public class SecurityConfig {
                         , "/api/**"
                         , "/step1/**"
                         , "/step2/**"
+
                 );
     }
 
@@ -56,6 +62,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
+
+                        .requestMatchers("/file/**", "/test/error","/error").permitAll()
+
                         // 모든사람
                         .requestMatchers("/join", "/login", "/logout"
                                 , "/checkEmail", "/**").permitAll()
@@ -69,6 +78,7 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated()
         );
+
 
         // 로그인
         http.formLogin(formLogin -> formLogin
@@ -86,11 +96,20 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
         );
+
+
+        http.oauth2Login(oauth2Login -> oauth2Login
+                .loginPage("/oauth2/login")
+                .defaultSuccessUrl("/index")
+                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserService))
+        );
+
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                 httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
                         .defaultSuccessUrl("/index")
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
+
 
         return http.build();
     }
@@ -100,4 +119,5 @@ public class SecurityConfig {
 
         return new BCryptPasswordEncoder();
     }
+
 }
