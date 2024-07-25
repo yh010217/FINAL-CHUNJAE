@@ -1,5 +1,6 @@
 package com.chunjae.chunjaefull5final.controller;
 
+import org.springframework.ui.Model;
 import com.chunjae.chunjaefull5final.service.user.UserService;
 import com.sun.tools.jconsole.JConsoleContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,17 +19,15 @@ public class MainController {
     private final UserService userService;
 
     @GetMapping("/index")
-    public String main(HttpServletRequest request) {
+    public String main(HttpServletRequest request, Model model) {
 
-        // 이름 따오기
-        HttpSession session = request.getSession(false);
-        Long uid = (Long) session.getAttribute("sessionId");
-
+        model.addAttribute("view","main/subject");
         return "main/index";
     }
 
     @GetMapping("/paper")
-    public String paper() {
-        return "main/paper";
+    public String paper(Model model) {
+        model.addAttribute("view","main/paper");
+        return "main/index";
     }
 }

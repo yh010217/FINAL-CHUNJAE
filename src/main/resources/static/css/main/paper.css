@@ -1,5 +1,10 @@
+.download-fullBox {
+    display: flex;
+    justify-content: space-between;
+}
+
 .download-container {
-    width: 600px;
+    width: 550px;
     position: relative;
     outline: 1px solid #e0e0e0;
     border-radius: 6px;
@@ -21,18 +26,21 @@
     flex-direction: column;
 }
 
-.download-box p {
+.download-box .download-left p {
     margin-bottom: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 20px;
-    font-weight: 450;
+    font-weight: bolder;
 }
 
 .download-box .left-box1 {
     font-size: 15px;
     color: #333;
+    border-bottom: 1px solid #e6e6e6;
+    width: 90%;
+    padding-bottom: 18px;
 }
 
 .download-box .left-box1 span:not(last-child) {
@@ -58,6 +66,10 @@
 
 .download-right {
     flex: 1;
+}
+
+.download-right > p {
+    text-align: center;
 }
 
 .download-right .button1 {
@@ -89,7 +101,9 @@
     cursor: pointer;
     z-index: 2;
     border: none;
+    cursor: pointer;
 }
+
 
 .download-right .btn-box button.two {
     left: 60px;
@@ -97,4 +111,21 @@
 
 .download-right .btn-box button.three {
     left: 120px;
+}
+
+.button1:hover,
+.button1:hover ~ .button2,
+.button1:hover ~ .button3 {
+    background-color: #ffcc00;
+    color: #fff;
+}
+
+.button2:hover {
+    background-color: #ff6666;
+    color: #fff;
+}
+
+.button3:hover {
+    background-color: #66ccff;
+    color: #fff;
 }
