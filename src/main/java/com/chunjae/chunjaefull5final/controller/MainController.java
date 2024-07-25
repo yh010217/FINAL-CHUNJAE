@@ -26,4 +26,13 @@ public class MainController {
 
         return "main/index";
     }
+    @GetMapping("/index2")
+    public String main2(HttpServletRequest request) {
+
+        // 이름 따오기
+        HttpSession session = request.getSession(false);
+        Long uid = (Long) session.getAttribute("sessionId");
+
+        return "main/index";
+    }
 }

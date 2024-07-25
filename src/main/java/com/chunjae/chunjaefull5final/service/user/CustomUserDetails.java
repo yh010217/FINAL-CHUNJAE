@@ -20,19 +20,22 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities=new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().toString()));
         return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return user.getPwd();
     }
 
     @Override
     public String getUsername() {
         return user.getEmail();
     }
+    @Override
+    public String getPassword() {
+        return user.getPwd();
+    }
+    public String getSnsId() {
+        return user.getSnsId();
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {
