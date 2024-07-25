@@ -1,6 +1,11 @@
 /* ===== Google Font Import - Poppins ===== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-
+@font-face {
+    font-family: 'KBO-Dia-Gothic_bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
 @font-face {
     font-family: 'GoyangIlsan';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
@@ -14,14 +19,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', 'GoyangIlsan',sans-serif;
+    font-family: 'Poppins', 'GoyangIlsan','KBO-Dia-Gothic_bold',sans-serif;
 }
 
 
 :root{
     /* ===== Colors ===== */
     --primary-color: #0E4BF1;
-    --panel-color: #FFF;
+    --panel-color: #fffafa;
     --text-color: #000;
     --black-light-color: #707070;
     --border-color: #e6e5e5;
@@ -110,6 +115,7 @@ nav .logo-name .logo_name{
     color: var(--text-color);
     margin-left: 14px;
     transition: var(--tran-05);
+    font-family: 'KBO-Dia-Gothic_bold';
 }
 nav.close .logo_name{
     opacity: 0;

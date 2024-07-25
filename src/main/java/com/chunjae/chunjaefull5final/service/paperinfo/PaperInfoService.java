@@ -12,4 +12,11 @@ public interface PaperInfoService {
     Map<Integer, String> subjectNames();
 
     PaperInfoDTO getPaperDetail(Long paperId);
+
+
+    void updateQuestionPathToNull(Long paperId);
+
+    void updateSaveAnswerPathToNull(Long paperId);
+
+    void updateAllPathToNull(Long paperId);
 }
