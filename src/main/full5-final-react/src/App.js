@@ -6,14 +6,9 @@ import STEP2 from "./component/step2/STEP2";
 import STEP3 from "./component/step3/STEP3";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
-function Test() {
-    return "main";
-}
-
 function App() {
 
     /** STEP 0, 1 에서 REST GET 받아오기 **/
-
 
     /** STEP 2 만든 시험지 저장하는 곳 **/
     let [paper, setPaper] = useState([]);
@@ -22,18 +17,14 @@ function App() {
         // console.log(newPaper);
         setPaper(newPaper);
     }
+    console.log('hello');
 
     return <>
         <BrowserRouter>
-            <ul>
-                <li><Link to={'/'}>main</Link></li>
-                <li><Link to={'/step2'}>STEP2</Link></li>
-            </ul>
-
             <Routes>
-                <Route path={'/'} element={<Test/>}></Route>
                 {/** STEP 2 **/}
-                <Route path={'/step2'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
+                <Route exact path={'/step2'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
+                <Route exact path={'/step2/:type/:getData'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'} element={<STEP3 paper={paper}/>}></Route>
             </Routes>

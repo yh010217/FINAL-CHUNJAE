@@ -44,7 +44,6 @@ function CNTLIST({
         groupedData.sort((group1, group2) => {
             const firstItem1 = group1.items[0];
             const firstItem2 = group2.items[0];
-
             if (firstItem1.largeChapterId !== firstItem2.largeChapterId) {
                 return firstItem1.largeChapterId - firstItem2.largeChapterId;
             } else if (firstItem1.mediumChapterId !== firstItem2.mediumChapterId) {
@@ -56,7 +55,6 @@ function CNTLIST({
             }
         });
     };
-
 
     // 난이도순 (하/중/상) 정렬
     const sortByDifficulty = () => {
@@ -71,7 +69,6 @@ function CNTLIST({
             const firstItem1 = group1.items[0];
             const firstItem2 = group2.items[0];
             return firstItem2.difficultyName.localeCompare(firstItem1.difficultyName);
-
         });
     };
 
@@ -91,7 +88,6 @@ function CNTLIST({
                 return 0;
             }
         });
-
         groupedData.forEach(group => {
             group.items.sort((item1, item2) => {
                 if (multipleChoiceForms.includes(item1.questionFormName)
