@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -32,9 +32,6 @@
             </a>
         </div>
         <a class="join_a" th:href="@{/join}">회원가입</a>
-        <form th:method="post" th:action="@{/logout}">
-            <button type="submit" th:class="logout">로그아웃</button>
-        </form>
     </div>
 </div>
 

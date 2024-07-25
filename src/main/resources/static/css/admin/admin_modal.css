@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'GoyangIlsan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+
+}
+#openModalAndLoadDetails{
+    position: fixed;
+    display:none;
+    justify-content: center;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.4);
+}
+.reportp{
+    white-space: pre-wrap;
+    padding: 7px;
+}
+.modal{
+    position: absolute;
+    top: 50%;
+    width: 19vw;
+    right: 38vw;
+    height: 50vh;
+    padding: 40px;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+     transform: translateY(-50%);
+}
+#comment{
+    width: 100%;
+    height: 78%;
+    text-align: center;
+    font-size: 15px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    border-radius: 5px
+}
+.reportbtn{
+    border-radius: 5px;
+    background: #f5c943;
+    border: none;
+    padding: 2px;
+}
+.reportbtn:hover{
+    background: #b88d31;
+}
+.reportbtn1{
+    margin: 8px 8px 7px;
+}
+.reset{
+    border-radius: 5px;
+    border: none;
+}

@@ -20,35 +20,52 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfig {
 
     private final OAuth2UserService oAuth2UserService;
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
+    public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/resources/**")
-                .requestMatchers("/css/**")
-                .requestMatchers("/js/**")
-                .requestMatchers("/images/**")
-                .requestMatchers("/static/css/**")
-                .requestMatchers("/static/js/**")
-                .requestMatchers("/full5-final-react/images/**")
-                .requestMatchers("/full5-final-react/css/**")
-                .requestMatchers("/full5-final-react/src/**")
-                .requestMatchers("/full5-final-react/component/**")
-                .requestMatchers("/**");
+                .requestMatchers("/resources/**"
+                        , "/css/**"
+                        , "/js/**"
+                        , "/images/**"
+                        , "/static/css/**"
+                        , "/static/js/**"
+                        , "/full5-final-react/images/**"
+                        , "/full5-final-react/css/**"
+                        , "/full5-final-react/src/**"
+                        , "/full5-final-react/component/**"
+                        , "/file/**"
+                        , "/test/error"
+                        , "/preview/**"
+                        , "/step0/**"
+                        , "/api/**"
+                        , "/step1/**"
+                        , "/step2/**"
+                );
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception{
+            throws Exception {
 
-        http.csrf(csrf->
+        http.csrf(csrf ->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+
 
 //     http.csrf(csrf-> csrf.disable());
 
         http.authorizeHttpRequests(authorize ->
                 authorize
                         // 모든사람
-                        .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail","/**").permitAll()
+                        .requestMatchers("/join", "/login", "/logout"
+                                , "/checkEmail", "/**").permitAll()
+                        .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
+                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
+
+                        .requestMatchers("/admin/**").hasRole("Admin")
+                        //정지회원제외
+                        .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")
+
 
                         .anyRequest().authenticated()
         );
@@ -59,26 +76,27 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
-                .defaultSuccessUrl("/main")
+                .defaultSuccessUrl("/index")
                 .permitAll()
         );
 
         // 로그아웃
         http.logout(logout -> logout.logoutUrl("/logout")
-                .logoutSuccessUrl("/main")
+                .logoutSuccessUrl("/index")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
         );
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                 httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
-                        .defaultSuccessUrl("/main")
+                        .defaultSuccessUrl("/index")
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
 
         return http.build();
     }
+
     @Bean
-    public PasswordEncoder bCryptPasswordEncoder(){
+    public PasswordEncoder bCryptPasswordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
