@@ -1,7 +1,7 @@
 import S3viewtop from "./content/S3viewtop";
 import S3viewbottom from "./content/S3viewbottom";
 
-function S3content() {
+function S3content({setSave, save}) {
 
     return <div className="view-box">
 
@@ -10,7 +10,10 @@ function S3content() {
         </div>
 
         <div className="view-bottom type02 scroll-inner">
-            <S3viewbottom/>
+            <S3viewbottom
+                save={save}
+                setSave={setSave}
+            />
         </div>
 
     </div>

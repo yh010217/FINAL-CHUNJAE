@@ -5,13 +5,19 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,14 +27,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TempPdfController {
 
     private final TempPdfService tempPdfService;
-    private final PdfUploadTest pdfTest;
-    public TempPdfController(TempPdfService tempPdfService, PdfUploadTest pdfTest){
+    private final S3UploadController pdfTest;
+    public TempPdfController(TempPdfService tempPdfService, S3UploadController pdfTest){
         this.tempPdfService = tempPdfService;
         this.pdfTest = pdfTest;
     }
 
     @GetMapping("/save_paper")
     public String savePaper(){
+        return "/step3/save_paper";
+    }
+
+    @GetMapping("/loading")
+    public String loading(){
+
+        return "/step3/loading";
+    }
+
+    @GetMapping("/save_comp")
+    public String saveComp(){
+        return "/step3/save_comp";
+    }
+
+    @PostMapping("/save")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public String postThymeleafPage(
+            HttpServletResponse response,
+            @RequestParam("saveName") String saveName,
+            Model model
+    ) {
+        response.setHeader("X-Frame-Options", "ALLOW-FROM /loading");
+        log.info("=============name : {}==============", saveName);
+        model.addAttribute("saveName", saveName);
         return "/step3/save_paper";
     }
 
@@ -42,6 +72,46 @@ public class TempPdfController {
 
         return strList;
     }
+
+    @GetMapping("/getImage/{type}/{imageId}/{imageDetail}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getImage(@PathVariable String type
+            ,@PathVariable String imageId, @PathVariable String imageDetail){
+
+        String baseUrl = "https://img.chunjae-platform.com/upload/capture/tsherpa/"+type+"/"+imageId+"/"+imageDetail;
+
+        System.out.println(baseUrl);
+
+        try( InputStream svgInputStream = new URL(baseUrl).openStream();) {
+
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = svgInputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            // 바이트 배열 생성
+            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+
+            // HTTP 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "image/svg+xml"); // 이미지 타입에 맞게 설정 (예: image/jpeg)
+
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        }catch (MalformedURLException me){
+            System.out.println("url이 이상한듯?");
+            System.out.println(me);
+        }catch (IOException ie){
+            System.out.println("stream 처리가 이상한듯?");
+            System.out.println(ie);
+        }
+
+        return null;
+    }
+
+
 
     @RequestMapping("/test")
     public void convertHtmlToPdf(HttpServletResponse response) throws IOException {

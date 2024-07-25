@@ -1,28 +1,36 @@
 body{
-    background-color: #f5f5f5;
+    /*background-color: #f5f5f5;*/
+    overflow: hidden;
 }
 
-.page,.page2{
+.page,.page2,.page3{
     width: 210mm;
     height: 297mm;
     border: 1px solid silver;
     margin: auto;
+    page-break-before: always;
 }
 
 .pageInner, .pageInner2{
     width: 90%;
-    margin: auto;
+    margin: 30px auto 0;
+}
+
+.page:not(:first-of-type)
+.page2:not(:first-of-type){
+    margin: 70px auto 0;
 }
 
 .leftRightWrap, .leftRightWrap2{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
-    border: 1px solid silver;
+    /*border: 1px solid silver;*/
     height: 980px;
 }
 
-.left, .left2{
+.left, .left2, .left3
+,.right, .right2, .right3{
     height: 100%;
 }
 
@@ -31,7 +39,7 @@ body{
 /*    margin: 10px 0 30px ;*/
 /*}*/
 
-.item, .item2{
+.item, .item2, .item3{
     /*width: 340px;*/
     margin: 10px 0 ;
 }
@@ -86,4 +94,18 @@ img{
 ,.header2>:last-child>:last-child{
     margin-left: 7px;
     height: 50%;
+}
+
+.header>:last-child p{
+    position: relative;
+    top: -8px;
+    font-size: 14px;
+}
+
+#loading{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 9999;
+    border: none;
 }
