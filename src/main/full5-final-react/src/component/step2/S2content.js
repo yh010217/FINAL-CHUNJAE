@@ -14,34 +14,45 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
             if (paramType === 'edit') {
 
 
+                /** STEP 0 api 20번 **/
                 url = '/api/item-img/exam-list/item-list'
 
                 /** STEP 0 에서 넘겨주는 examIdList  **/
                 data = {
-                    examIdList: ["503"]
+                    // 영어
+                    // examIdList: ["1416"]
+                    // 국어
+                    //examIdList: ["503"]
+                    // 수학
+                    // examIdList: ["1534"]
+                    // ?
+                    // examIdList: ["356"]
+                    // 세계사
+                    examIdList: ["545"]
                 };
             }else if(paramType === 'new'){
                 url = 'http://localhost:8080/step1/step2-data/'+getData
 
+            }else if(paramType == null){
+
+
+                /** STEP 0 api 20번 **/
+                url = '/api/item-img/exam-list/item-list'
+
+                /** STEP 0 에서 넘겨주는 examIdList  **/
+                data = {
+                    // 영어
+                    // examIdList: ["1416"]
+                    // 국어
+                    //examIdList: ["503"]
+                    // 수학
+                    // examIdList: ["1534"]
+                    // ?
+                    // examIdList: ["356"]
+                    // 세계사
+                    examIdList: ["545"]
+                };
             }
-            /** 시험지 편집하기 **/
-            /** STEP 0 api 20번 **/
-            const url = '/api/item-img/exam-list/item-list'
-
-            /** STEP 0 에서 넘겨주는 examIdList  **/
-            const data = {
-                // 영어
-                // examIdList: ["1416"]
-                // 국어
-                //examIdList: ["503"]
-                // 수학
-                // examIdList: ["1534"]
-                // ?
-                // examIdList: ["356"]
-                // 세계사
-                 examIdList: ["545"]
-            };
-
             /** 신규 시험지 만들기 **/
             /** STEP 1 -> STEP 2 api 5번 **/
 

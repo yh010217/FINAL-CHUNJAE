@@ -20,31 +20,35 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfig {
 
     private final OAuth2UserService oAuth2UserService;
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
+    public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/resources/**"
-                                          , "/css/**"
-                                          , "/js/**"
-                                          , "/images/**"
-                                          , "/static/css/**"
-                                          , "/static/js/**"
-                                          , "/full5-final-react/images/**"
-                                          , "/full5-final-react/css/**"
-                                          , "/full5-final-react/src/**"
-                                          , "/full5-final-react/component/**"
-                                          , "/file/**"
-                                          , "/test/error"
-                                          , "/preview/**"
-                                          , "/step0/**"
-                                          , "/api/**"
+                        , "/css/**"
+                        , "/js/**"
+                        , "/images/**"
+                        , "/static/css/**"
+                        , "/static/js/**"
+                        , "/full5-final-react/images/**"
+                        , "/full5-final-react/css/**"
+                        , "/full5-final-react/src/**"
+                        , "/full5-final-react/component/**"
+                        , "/file/**"
+                        , "/test/error"
+                        , "/preview/**"
+                        , "/step0/**"
+                        , "/api/**"
+                        , "/step1/**"
+                        , "/step2/**"
                 );
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception{
+            throws Exception {
 
-        http.csrf(csrf->
+        http.csrf(csrf ->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
 
@@ -53,14 +57,14 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize ->
                 authorize
                         // 모든사람
-                        .requestMatchers("/join","/login","/logout"
-                                ,"/checkEmail","/**").permitAll()
+                        .requestMatchers("/join", "/login", "/logout"
+                                , "/checkEmail", "/**").permitAll()
                         .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
 
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
-                        .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin","Teacher","User")
+                        .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")
 
 
                         .anyRequest().authenticated()
@@ -90,8 +94,9 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     @Bean
-    public PasswordEncoder bCryptPasswordEncoder(){
+    public PasswordEncoder bCryptPasswordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
