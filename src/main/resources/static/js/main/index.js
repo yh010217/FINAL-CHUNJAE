@@ -26,7 +26,7 @@ function closeEx() {
 $(document).ready(function(){
 
     /** 중학 / 시험지 보관함 탭 */
-    $('ul.tabs li').click(function(){
+/*    $('ul.tabs li').click(function(){
         let tab_id = $(this).attr('data-tab');
 
         $('ul.tabs li').removeClass('current');
@@ -34,7 +34,7 @@ $(document).ready(function(){
 
         $(this).addClass('current');
         $("#" + tab_id).addClass('current');
-    });
+    });*/
 
     /** 과목별 탭 */
     $('ul.tab li').click(function(){

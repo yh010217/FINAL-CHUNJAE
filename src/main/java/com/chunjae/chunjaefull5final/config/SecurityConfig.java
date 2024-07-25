@@ -64,13 +64,10 @@ public class SecurityConfig {
                 authorize
 
                         .requestMatchers("/file/**", "/test/error","/error").permitAll()
-
-                        // 모든사람
                         .requestMatchers("/join", "/login", "/logout"
                                 , "/checkEmail", "/**").permitAll()
                         .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
-
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
                         .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")

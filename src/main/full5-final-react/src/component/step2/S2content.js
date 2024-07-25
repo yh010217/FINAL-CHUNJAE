@@ -13,7 +13,6 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
             let data ={};
             if (paramType === 'edit') {
 
-
                 /** STEP 0 api 20번 **/
                 url = '/api/item-img/exam-list/item-list'
 
