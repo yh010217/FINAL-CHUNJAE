@@ -1,83 +1,127 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.w3.org/1999/xhtml">
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/admin/template.css}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" th:href="@{/css/admin/admin_user.css}">
     <link rel="stylesheet" th:href="@{/css/admin/user_detail.css}">
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>Admin</title>
 </head>
 <body>
-<div id="wrap">
-    <div id="side_bar">
-        <div id="side_bar_header">
+<nav>
+    <div class="logo-name">
+        <div class="logo-image">
             <img class="header_img" src="/images/admin/adminlogo-removebg-preview.png">
-            <a th:href="@{/admin/user}" class="header_title">문제은행</a>
+            <a th:href="@{/admin/user}" class="header_title"></a>
         </div>
-        <div id="side_bar_menus">
-            <a th:href="@{/admin/user}" class="side_bar_menu">
-                <img class="side_bar_menu_image" src="/images/admin/icons8-유저관리-100.png" alt="유저 관리">
-                <span class="side_bar_menu_name">회원 관리</span>
-            </a>
-            <a th:href="@{/admin/testpage}" class="side_bar_menu">
-                <img class="side_bar_menu_image" src="/images/admin/icons8-문제관리-100.png" alt="문제 관리">
-                <span class="side_bar_menu_name">문제관리</span>
-            </a>
-            <a th:href="@{/admin/errorpage}" class="side_bar_menu">
-                <img class="side_bar_menu_image" src="/images/admin/icons8-문제오류-100.png" alt="문제 오류 관리">
-                <span class="side_bar_menu_name">문제오류관리</span>
-            </a>
-            <a href="/main" class="go_index">
-                홈페이지
-            </a>
-        </div>
-    </div>
-    <div id="content">
-    <div id="user_detail">
-        <div class="dttop">
-            <span>회원상세정보</span>
-        </div>
-        <div id="detail">
-            <ul id="detail_ul">
-                <li class="list">
-                    <span>회원번호</span>
-                    <span th:text="${userDTO.uid}"></span>
-                </li>
-                <li class="list">
-                    <span>이메일</span>
-                    <span th:text="${userDTO.email}"></span>
-                </li>
-                <li class="list">
-                    <span>이름</span>
-                    <span th:text="${userDTO.name}"></span>
-                </li>
-                <li class="list">
-                    <span>회원유형</span>
-                    <span th:text="${userDTO.role}"></span>
-                </li>
-                <li class="list">
-                    <span>학교정보</span>
-                    <span th:text="${userDTO.schoolType}"></span>
-                </li>
-                <li class="list">
-                    <span>Sns유형</span>
-                    <span th:text="${userDTO.snsType}"></span>
-                </li>
-                <li class="list">
-                    <span>Sns아이디</span>
-                    <span th:text="${userDTO.snsId}"></span>
-                </li>
-            </ul>
 
-        </div>
-        <div class="a_list">
-            <a id="a_user"th:href="@{/admin/user}">목록으로</a>
-            <a id="del" th:href="@{|/userdelete/${userDTO.uid}|}">탈퇴</a>
-        </div>
-    </div>
+        <span class="logo_name">문제은행</span>
     </div>
 
-</div>
+    <div class="menu-items">
+        <ul class="nav-links">
+            <li>
+                <a th:href="@{/admin/user}">
+                    <i class="uil uil-user"></i>
+                    <span class="link-name">회원관리</span>
+                </a></li>
+            <li><a th:href="@{/admin/paper}" class="side_bar_menu">
+                <i class="uil uil-files-landscapes"></i>
+                <span class="link-name">시험지관리</span>
+            </a></li>
+            <li><a th:href="@{/admin/error}" class="side_bar_menu">
+                <i class="uil uil-file-question-alt"></i>
+                <span class="link-name">문제오류관리</span>
+            </a></li>
+        </ul>
+
+        <ul class="logout-mode">
+            <li>
+                <a th:href="@{/main}">
+                    <i class="uil uil-home"></i>
+                    <span class="link-name">Main Page</span>
+                </a>
+
+            </li>
+
+            <li class="mode">
+                <a href="#">
+                    <i class="uil uil-moon"></i>
+                    <span class="link-name">Dark Mode</span>
+                </a>
+
+                <div class="mode-toggle">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="dashboard">
+    <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+    </div>
+
+    <div class="dash-content">
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-files-landscapes"></i>
+                <span class="text">회원상세페이지</span>
+            </div>
+            <div id="user_detail">
+                <ul id="detail_ul">
+                    <li class="list">
+                        <span>회원번호</span>
+                        <span th:text="${userDTO.uid}"></span>
+                    </li>
+                    <li class="list">
+                        <span>회원번호</span>
+                        <span th:text="${userDTO.name}"></span>
+                    </li>
+                    <li class="list">
+                        <span>이메일</span>
+                        <span th:text="${userDTO.email}"></span>
+                    </li>
+                    <li class="list">
+                        <span>회원유형</span>
+                        <span th:text="${userDTO.role}"></span>
+                    </li>
+                    <li class="list">
+                        <span>학교정보</span>
+                        <span th:text="${userDTO.schoolType}"></span>
+                    </li>
+                    <li class="list">
+                        <span>가입된 sns</span>
+                        <span th:text="${userDTO.snsType}"></span>
+                    </li>
+                    <li class="list">
+                        <span>SnsId</span>
+                        <span th:text="${userDTO.snsId}"></span>
+                    </li>
+                </ul>
+                <div class="a_list">
+                    <a id="a_user" th:href="@{/admin/user}">목록으로</a>
+                    <a id="del" th:href="@{|/userdelete/${userDTO.uid}|}">
+                        <img src="/images/admin/icons8-탈퇴-48.png" style="width: 20px; height: 20px;" alt="탈퇴아이콘">탈퇴하기</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 
+</section>
+
+<script th:src="@{/js/admin/admin_user.js}"></script>
 </body>
 </html>
+

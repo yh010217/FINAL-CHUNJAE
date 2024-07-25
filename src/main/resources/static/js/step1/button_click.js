@@ -14,6 +14,10 @@ let set_que_num = function (num) {
     document.querySelector('.que-num').innerHTML = num;
 }
 
+let prev_low;
+let prev_mid;
+let prev_high;
+
 let count_value_change = function () {
 
     let count_input = document.querySelector('.count-input');
@@ -87,27 +91,41 @@ let change_que_count = function () {
 
     let mod_count = que_num % active_buttons_num;
 
+    let sum_count = 0;
+
     for (let i = 0; i < active_buttons_num; i++) {
         if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
             low_count = low_count + mod_count;
             mod_count = 0;
             document.getElementById('range-low-count').innerHTML = low_count + '';
-            level_cnt[1] = low_count+'';
+            level_cnt[1] = low_count + '';
+            document.getElementById('level_low').value = low_count;
             document.getElementById('level_range_low').classList.remove('not_contain_level');
+
+            sum_count += low_count;
         } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
             mid_count = mid_count + mod_count;
             mod_count = 0;
             document.getElementById('range-mid-count').innerHTML = mid_count + '';
-            level_cnt[2] = mid_count+'';
+            level_cnt[2] = mid_count + '';
+            document.getElementById('level_mid').value = mid_count;
             document.getElementById('level_range_mid').classList.remove('not_contain_level');
+
+            sum_count += mid_count;
+
         } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
             high_count = high_count + mod_count;
             mod_count = 0;
             document.getElementById('range-high-count').innerHTML = high_count + '';
-            level_cnt[3] = high_count+'';
+            level_cnt[3] = high_count + '';
+            document.getElementById('level_high').value = high_count;
             document.getElementById('level_range_high').classList.remove('not_contain_level');
+
+            sum_count += high_count;
         }
     }
+    document.getElementById('level_sum').innerHTML = sum_count +'';
+
 
 }
 
@@ -154,15 +172,18 @@ document.getElementById('level_count_save').onclick = function () {
         for (let i = 0; i < active_buttons_num; i++) {
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
                 document.getElementById('range-low-count').innerHTML = value_low + '';
-                level_cnt[1] = low_num+'';
+                level_cnt[1] = low_num + '';
             } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
                 document.getElementById('range-mid-count').innerHTML = value_mid + '';
-                level_cnt[2] = mid_num+'';
+                level_cnt[2] = mid_num + '';
             } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
                 document.getElementById('range-high-count').innerHTML = value_high + '';
-                level_cnt[3] = high_num+'';
+                level_cnt[3] = high_num + '';
             }
         }
+
+        document.getElementById('level_sum').innerHTML = (low_num + mid_num + high_num) +'';
+
 
         document.querySelector('.dim').style = 'display : none;';
         document.querySelector('.range-type').style = 'display : none';
@@ -294,7 +315,7 @@ let make_question_form = function () {
     let count = 0;
     for (let i = 0; i < question_forms.length; i++) {
         if (question_forms[i].classList.contains('active')) {
-            if(count !== 0) question_form = question_form.concat(',');
+            if (count !== 0) question_form = question_form.concat(',');
             let form_id_str = question_forms[i].id.substring(5);
             question_form = question_form.concat(form_id_str);
             count++;
@@ -328,23 +349,13 @@ document.getElementById('go-step2').onclick = function () {
 
     let activityCategoryList = make_activityCategory();
 
-    // 나중에 수향누님이 이거 컨트롤 할듯
-    let canSend = true;
+    canSendCheck(minorClassification, questionForm, activityCategoryList);
 
-    if (canSend) {
 
-        sendData(minorClassification, questionForm, activityCategoryList);
-
-    } else {
-        /* 문항 조건 충족 안했을 때 팝업 */
-        let range_type02 = document.querySelector('.range-type02');
-        range_type02.style = 'display : block';
-        let dim_div = document.querySelector('.dim');
-        dim_div.style = 'display : block';
-    }
 }
 
-let sendData = function (minorClassification, questionForm, activityCategoryList) {
+let canSendCheck = async function (minorClassification, questionForm, activityCategoryList) {
+
     let send_body = {
         minorClassification: minorClassification
         , levelCnt: level_cnt
@@ -352,19 +363,96 @@ let sendData = function (minorClassification, questionForm, activityCategoryList
         , activityCategoryList: activityCategoryList
     }
 
-    fetch('/step1/make_exam/'+subject, {
+    await fetch('/step1/make_exam/' + subject, {
         method: 'post',
         headers: {
             'Content-type': 'application/json'
         },
         body: JSON.stringify(send_body)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('가능한지 체크과정중에 안됨');
+        }
+        return response.json();
+    }).then(data => {
+
+
+        if (data.enable === 'Y') {
+
+            if (data.fit) {
+                // 바로 저장 메서드
+                saveQuestions(data);
+
+            } else {
+                /* 문항 조건 충족 안했을 때 팝업 */
+                let range_type02 = document.querySelector('.range-type02');
+                range_type02.style = 'display : block';
+                let dim_div = document.querySelector('.dim');
+                dim_div.style = 'display : block';
+
+
+
+                let low = Number(data.fitCount[0]);
+                let mid = Number(data.fitCount[1]);
+                let high = Number(data.fitCount[2]);
+
+                range_type02.querySelector('#type02-low').innerHTML = low
+                range_type02.querySelector('#type02-mid').innerHTML = mid
+                range_type02.querySelector('#type02-high').innerHTML = high
+                let tot = low+mid+high
+                range_type02.querySelector('#type02-tot').innerHTML = tot;
+
+                document.querySelector('.type-02-accept').onclick = function (){
+                    saveQuestions(data);
+                }
+
+
+            }
+        } else {
+            alert('저장할 수 없습니다.');
+        }
+
+
+    }).catch(error => {
+        console.error(error);
     })
 
+}
+
+let removePrev = function (){
+
+    document.querySelector('#type02-low').innerHTML = ''
+    document.querySelector('#type02-mid').innerHTML = ''
+    document.querySelector('#type02-high').innerHTML = ''
+    document.querySelector('#type02-tot').innerHTML = '';
+
+    document.querySelector('.type-02-accept').onclick = null;
 
 }
 
 
+let saveQuestions = function(data){
 
+    fetch('/step1/save_questions',{
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(response =>{
+        if(!response.ok){
+            throw new Error('save questions 에러')
+        }
+        return response.json();
+    }).then(item=>{
+        if(item.success === 'Y'){
+            location.href = "/step1/step2-go/"+data.paperId;
+        }else{
+            alert('저장에 실패했습니다');
+        }
+    }).catch(error => {
+        console.log('enable 은 y 였는데, 안되네...');
+    })
 
-
+}
 

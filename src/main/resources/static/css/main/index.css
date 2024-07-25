@@ -1,0 +1,282 @@
+body {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    font-family: 'Pretendard-Regular';
+    overflow-y: scroll;
+}
+
+#wrap {
+    width: 1300px;
+    margin: 0 auto;
+}
+
+* {
+    color: black;
+    text-decoration: none;
+}
+
+h3 {
+    margin: 0;
+    padding: 0;
+}
+
+/** 탭메뉴 관련 => 수정해야 함 */
+
+ul.tabs{
+    margin: 0 auto;
+    padding: 4px 0;
+    list-style: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #F5F6F9;
+}
+ul.tabs li{
+    background: none;
+    color: #222;
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+/* 중학 / 시험지 보관 */
+ul.tabs li.current{
+    background: #fff;
+    border-radius: 22px;
+    color: #5670dc;
+    font-weight: 450;
+    box-shadow: 3px 3px 1px rgba(228, 229, 231, 0.5);
+}
+
+.tab-content{
+    display: none;
+    padding: 15px 0;
+    border-top:3px solid #eee;
+}
+
+.tab-content.current{
+    display: inherit;
+}
+
+/* 과목별 탭 */
+ul.tab li.now{
+    color: #6a4cbe;
+    font-weight: bolder;
+}
+
+ul.tab {
+    width: 640px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+ul.tab li.tab-link {
+    font-size: 1.1rem;
+    cursor: Pointer;
+}
+
+ul.tab .tab-link:after {
+    transform: translateY(-50%);
+    width: 1px;
+    height: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    content: '|';
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 15px;
+    font-weight: initial;
+}
+
+.tab-book{
+    display: none;
+}
+
+.tab-book.now{
+    display: inherit;
+}
+
+/** 기타 설정 */
+
+.index-top {
+    display: flex;
+    align-items: flex-end;
+}
+
+.index-top h1 {
+    font-family: 'KBO-Dia-Gothic_bold';
+    letter-spacing: 5px;
+    position: relative;
+    top: 10px;
+}
+
+ul li {
+    display: inline-block;
+}
+
+.font {
+    line-height: 20px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.book-list {
+    margin: 15px 0;
+    display: flex;
+    gap: 39px;
+}
+.book-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-detail > img {
+    width: 180px;
+    height: 230px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.notice-box {
+    display: flex;
+}
+
+.book-button {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-button a {
+    display: flex;
+    width: 180px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+    line-height: 36px;
+    font-size: 14px;
+    color: #333;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+/** 무단 배포 주의사항 */
+.notice-box {
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    padding: 0 35px 20px 0;
+}
+.notice-1 {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notice-2 {
+    flex: 5;
+}
+
+.red {
+    color: red;
+    font-size: 14px;
+}
+
+.notice-content {
+    line-height: 3px;
+}
+
+.notice-2 h2 {
+    font-weight: bolder;
+}
+
+/* 모달창 관련 css */
+#modalContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#modal {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 787px;
+    background-color: white;
+    border-radius: 0.3rem;
+}
+
+#modalContainer.block {
+    display: none;
+}
+
+.modal-top {
+    display: flex;
+    justify-content: center;
+    background-color: #5670dc;
+    position: relative;
+    width: 100%;
+    border-radius: 0.3rem 0.3rem 0 0;
+}
+
+.modal-top p {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-x {
+    position: absolute;
+    right: 20px;
+    top: 14px;
+    border: none;
+    background-color: #5670dc;
+    cursor: pointer;
+    color: white;
+    font-size: 29px;
+    font-weight: bolder;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-content .modal-textbox {
+    border: 1px solid silver;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+
+.modal-content .modal-textbox p span {
+    padding: 3px 8px;
+    background-color: #5670DC;
+    border-radius: 3px;
+    color: white;
+}
+
+.modal-content .modal-textbox p {
+    font-size: 14px;
+}
+
+.modal-bottom {
+    border: 1px solid silver;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #f0f3f7;
+    font-size: 15px;
+    border-radius: 10px;
+}
