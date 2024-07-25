@@ -4,7 +4,7 @@ const num = 27;
 
 window.onload = function () {
 
-    const init_json = function () {
+    const question = function () {
 
         fetch("/api/pdftest/getImages/" + num + "/" + "question", {
             method: 'GET'
@@ -231,9 +231,9 @@ window.onload = function () {
                 console.log('finally');
             })
     }
-    init_json();
+    question();
 
-    const init_json2 = function () {
+    const answer_only = function () {
 
         fetch("/api/pdftest/getImages/" + num + "/" + "answer_only", {
             method: 'GET'
@@ -460,9 +460,9 @@ window.onload = function () {
                 console.log('finally');
             })
     }
-    init_json2();
+    answer_only();
 
-    const init_json3 = function () {
+    const answer_explain = function () {
 
         fetch("/api/pdftest/getImages/" + num + "/" + "answer_explain", {
             method: 'GET'
@@ -689,7 +689,7 @@ window.onload = function () {
                 console.log('finally');
             })
     }
-    init_json3();
+    answer_explain();
 }
 
 async function downloadPDF() {
