@@ -1,10 +1,6 @@
 let index = 0; //이미지 번호
 
-const num = 27;
-
-const loading = document.getElementById("loading");
-
-fetch("loading.html",)
+const num = 25;
 
 window.onload = function () {
 
@@ -696,7 +692,7 @@ window.onload = function () {
     answer_explain();
 }
 
-async function downloadPDF() {
+function downloadPDF() {
     const saveName = document.getElementById("saveName").value;
 
     async function generatePDFs() {
@@ -714,9 +710,9 @@ async function downloadPDF() {
             const formData = new FormData();
             formData.append("paperId", num);
             formData.append("saveName", saveName);
-            formData.append('question', pdfBuffer1, 'question.pdf', 'application/pdf');
-            formData.append('answer_only', pdfBuffer2, 'answer_only.pdf', 'application/pdf');
-            formData.append('answer_explain', pdfBuffer3, 'answer_explain.pdf', 'application/pdf');
+            formData.append('question', pdfBuffer1, saveName+'_question.pdf', 'application/pdf');
+            formData.append('answer_only', pdfBuffer2, saveName+'_answer_only.pdf', 'application/pdf');
+            formData.append('answer_explain', pdfBuffer3, saveName+'_answer_explain.pdf', 'application/pdf');
 
             fetch('/upload', {
                 method: 'POST',
@@ -736,7 +732,7 @@ async function downloadPDF() {
         } catch (error) {
             console.error('PDF 생성 및 업로드 중 오류가 발생했습니다.', error);
         }
-        location.href = "/save_comp"
+        window.location.href = '/save_comp';
     }
 
 // A4 사이즈 (210mm x 297mm)로 설정
@@ -785,12 +781,12 @@ async function downloadPDF() {
         return pdf.output('blob');
     }
 
-
-    generatePDFs();
+    generatePDFs()
 
 }
 
-setTimeout(downloadPDF, 3000);
+setTimeout(downloadPDF, 3000)
+
 
 
 

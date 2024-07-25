@@ -15,6 +15,7 @@ function S3topform({setSave, save}){
                         className="search"
                         value={save}
                         onChange={saveName}
+                        size="20"
                     />
                 </div>
             </div>

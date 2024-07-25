@@ -30,7 +30,10 @@ public class S3UploadController {
 
         PaperInfoDTO dto = new PaperInfoDTO();
 
-        log.info("========={}=========", paperId);
+        log.info("=========시험지명 : {}=========", saveName);
+        log.info("=========문제 : {}=========", questionPdf.getOriginalFilename());
+        log.info("=========정답 : {}=========", answerOnlyPdf.getOriginalFilename());
+        log.info("=========해설 : {}=========", answerExplainPdf.getOriginalFilename());
 
         try {
             String dirName = "pdf_테스트폴더";
