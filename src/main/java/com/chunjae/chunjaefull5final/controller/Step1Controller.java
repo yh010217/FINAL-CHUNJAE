@@ -124,7 +124,7 @@ public class Step1Controller {
 
     @GetMapping("/step1/step2-go/{paperId}")
     public String step2Go(@PathVariable Long paperId){
-        return "redirect:http://localhost:3000/step2/new/"+paperId;
+        return "redirect:http://localhost:8080/step2/new/"+paperId;
     }
     @PostMapping("/step1/step2-data/{paperId}")
     @ResponseBody
@@ -134,5 +134,6 @@ public class Step1Controller {
         result.put("itemList",itemList);
         return result;
     }
+
 
 }

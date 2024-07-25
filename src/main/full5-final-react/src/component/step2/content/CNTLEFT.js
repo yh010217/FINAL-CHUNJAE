@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import CNTLIST from "./CNTLIST";
 import CNTBOTTOM from "./CNTBOTTOM";
 
-function CNTLEFT({changeList, onChangeList, onChangeGroup, userSort, setUserSort, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList}) {
+function CNTLEFT({changeList, onChangeList, onChangeGroup, userSort, setUserSort, setSimilar, tab, setTab, setNo, setChangeId, setNo2, groupedItems, groupedData, removeList ,setModal, setItemId}) {
 
 
     const [sortList1, setSortList1] = useState(false);
