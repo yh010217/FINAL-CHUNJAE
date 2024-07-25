@@ -5,13 +5,13 @@
     padding: 0.3vw 0.5vw;
     border-radius: 10px;
     font-size: 15px;
-}
-#down:hover{
-    color: #7892fa;
-}
-#down:active{
-    box-shadow: inset -.3rem -.1rem 1.4rem  #FBFBFB, inset .3rem .4rem .8rem #BEC5D0;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#down:hover{
+    background-color: rgba(183, 179, 179, 0.63);
+    transform: scale(1.1);
 }
 
 #error_detail{
@@ -42,21 +42,10 @@
 }
 .a_list>#a_error{
     color: var(--text-color);
-    background-color: rgb(153, 153, 153);;
-    /*background-color: var(--panel-color);*/
+    background-color: var(--panel-color);
     padding: 0.5vw 1vw;
     border-radius: 10px;
-    box-shadow: 3px 3px 3px black;
-    transition-duration: 0.3s;
     text-decoration: none;
-}
-/*#a_error{*/
-
-/*}*/
-#a_error:active{
-    margin-left: 5px;
-    margin-top: 5px;
-    box-shadow: none;
 }
 
 .a_list>#status {
