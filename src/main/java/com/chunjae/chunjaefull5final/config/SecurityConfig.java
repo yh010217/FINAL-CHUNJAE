@@ -44,6 +44,7 @@ public class SecurityConfig {
                         , "/preview/**"
                         , "/step0/**"
                         , "/api/**"
+                        , "/back/**"
                         , "/step1/**"
                         , "/step2/**"
 

@@ -10,7 +10,7 @@ function STEP2({handlePaper}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
     const params = useParams();
-    console.log(params.type);
+    // console.log(params.type);
 
     /** 모달 관련 이벤트 */
     let block = {}; // display : block 로 만들기 위한 노력...
@@ -39,6 +39,7 @@ function STEP2({handlePaper}) {
                     getData={params.getData}
                 />
             </div>
+
             <div className="step-btn-wrap">
                 <S2stepbtn/>
             </div>

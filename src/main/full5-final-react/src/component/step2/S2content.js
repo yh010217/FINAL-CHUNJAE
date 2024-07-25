@@ -5,6 +5,7 @@ import VIEWBOTTOM from "./content/VIEWBOTTOM";
 
 function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
     const [itemList, setItemList] = useState([]);
+    const [subjectId, setSubjectId] = useState();
 
     const fetchItemList = async () => {
         try {
@@ -66,6 +67,9 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
             })
             setItemList(indexList);
 
+            let subjectId = response.data.subjectId;
+            setSubjectId(subjectId);
+
             // setItemList(response.data.itemList);
 
         } catch (error) {
@@ -85,7 +89,7 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
     return (
         <div className="view-box">
             {/** 시험지 정보 / 과목 명칭(선생님 이름) / 재검색 / 출제범위 **/}
-            <VIEWTOP itemList={itemList} onReSearch={handleItemList}/>
+            <VIEWTOP itemList={itemList} onReSearch={handleItemList} subjectId={subjectId}/>
             {/** 문제 목록, 문제 요약, 유사, 삭제 **/}
             <VIEWBOTTOM itemList={itemList} setModal={setModal} setItemId={setItemId} handlePaper={handlePaper}/>
         </div>

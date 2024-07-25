@@ -9,8 +9,9 @@ function S3viewtop() {
 
     const handleConfirm = () => {
         setShowConfirmation(false);
+
         // STEP 0 으로
-        // window.location.href = '/';
+        // window.location.href = '/step0/{subjectId}';
     }
 
     const handleCancel = () => {
