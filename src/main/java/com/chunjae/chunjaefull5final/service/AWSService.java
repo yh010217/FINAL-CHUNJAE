@@ -57,8 +57,6 @@ public class AWSService {
     public List<String> uploadFile(List<MultipartFile> multipartFiles, String folderName) {
         List<String> fileNameList = new ArrayList<>();
 
-        // log.info("file......{}",multipartFiles);
-
         if (multipartFiles != null) {
             multipartFiles.forEach(file -> {
                 String fileName = folderName+'/'+createFileName(file.getOriginalFilename());

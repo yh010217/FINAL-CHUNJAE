@@ -19,6 +19,7 @@
         <li>수업연구소</li>
       </ul>
     </nav>
+    <p th:text="|${uid} dd|"></p>
     <ul class="header-3">
       <th:block sec:authorize="!isAuthenticated()">
         <li><a th:href="@{/join}" th:text="회원가입" th:class="join"></a></li>

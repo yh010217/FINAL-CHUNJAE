@@ -21,14 +21,15 @@
 
         <div id="tab-2" class="tab-content current">
             <div class="download-fullBox">
-                <div class="download-container">
+
+                <div class="download-container" th:each="item:${dto}">
                     <div class="download-box">
                         <div class="download-left">
-                            <p>제목</p>
+                            <p th:text="${item.saveName}"></p>
                             <div class="left-box1">
-                                <span>과목 이름</span>
-                                <span>문항수</span>
-                                <span>날짜</span>
+                                <span th:text="${item.title}">과목 이름</span>
+                                <span th:text="|${item.itemCount}개|">문항수</span>
+                                <span th:text="${item.saveAllPath}">날짜</span>
                             </div>
                             <hr>
                             <div class="left-box2">
@@ -39,7 +40,7 @@
                         <div class="download-right">
                             <p>시험지 다운로드</p>
                             <div class="btn-box">
-                                <button class="button1">전체</button>
+                                <button id="btn1" class="button1" th:onclick="allDown([[${item.saveAllPath}]])">전체</button>
                                 <button class="button2 two">문제</button>
                                 <button class="button3 three">정답 <br> + <br> 해설 </button>
                             </div>
@@ -47,36 +48,13 @@
                     </div>
                 </div>
 
-                <div class="download-container">
-                    <div class="download-box">
-                        <div class="download-left">
-                            <p>제목</p>
-                            <div class="left-box1">
-                                <span>과목 이름</span>
-                                <span>문항수</span>
-                                <span>날짜</span>
-                            </div>
-                            <hr>
-                            <div class="left-box2">
-                                <span>문항 편집</span>
-                                <span>시험지 삭제</span>
-                            </div>
-                        </div>
-                        <div class="download-right">
-                            <p>시험지 다운로드</p>
-                            <div class="btn-box">
-                                <button class="button1">전체</button>
-                                <button class="button2 two">문제</button>
-                                <button class="button3 three">정답 + 해설 </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
         </div>
     </div>
 
+    <script th:inline="javascript">
+
+    </script>
 
 </body>
 </html>
