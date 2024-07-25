@@ -10,26 +10,14 @@ public class GoogleUserInfo {
     }
 
     public String getSnsId() {
-        return String.valueOf(attributes.get("sub")); // 구글의 사용자 ID는 "sub" 키에 저장됩니다.
+        return (String) attributes.get("sub"); // 구글 사용자 고유 ID
     }
 
     public String getEmail() {
-        return String.valueOf(attributes.get("email"));
-    }
-
-    public String getGivenName() {
-        return String.valueOf(attributes.get("given_name"));
-    }
-
-    public String getFamilyName() {
-        return String.valueOf(attributes.get("family_name"));
+        return (String) attributes.get("email");
     }
 
     public String getFullName() {
-        String givenName = getGivenName();
-        String familyName = getFamilyName();
-        return familyName + " " +givenName ; // 이름과 성을 합쳐 전체 이름을 생성
+        return (String) attributes.get("name");
     }
-
-
 }

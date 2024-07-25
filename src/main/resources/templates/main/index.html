@@ -24,10 +24,9 @@
                 <li><a th:href="@{/login}" th:text="로그인" th:class="login"></a></li>
                 <li><a th:href="@{/join}" th:text="회원가입" th:class="join"></a></li>
             </th:block>
-
                 <th:block sec:authorize="hasAnyRole('User','Teacher','Stop')">
                     <li>
-                        <span th:text="${fullName}"></span>
+                        <span id="userFullName" th:text="${fullName}"></span>
                         <form th:method="post" th:action="@{/logout}">
                             <button type="submit" th:class="logout">로그아웃</button>
                         </form>

@@ -18,7 +18,6 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class MainController {
 
-
     @GetMapping("/index")
     public String main(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -29,7 +28,7 @@ public class MainController {
             String fullName = userDetails.getFullName();
             model.addAttribute("fullName", fullName);
         } else {
-            model.addAttribute("fullName", "알 수 없는 사용자");
+            model.addAttribute("fullName", "구글회원");
         }
 
         return "main/index"; // index.html 템플릿으로 이동

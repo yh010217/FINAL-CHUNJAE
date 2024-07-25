@@ -163,6 +163,7 @@ nav.close li a .link-name{
     opacity: 0;
     pointer-events: none;
 }
+
 .nav-links li a:hover i,
 .nav-links li a:hover .link-name{
     color: var(--primary-color);
@@ -408,6 +409,12 @@ nav.close ~ .dashboard .top{
     list-style: none;
     padding: 1vw;
     color: var(--text-color);
+}
+#user a:hover{
+    color: var(--primary-color);
+}
+#page a:hover{
+    color: var(--primary-color);
 }
 #user a{
     color: #000;

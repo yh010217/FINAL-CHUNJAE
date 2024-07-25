@@ -46,7 +46,7 @@
 
         <ul class="logout-mode">
             <li>
-                <a th:href="@{/main}">
+                <a th:href="@{/index}">
                     <i class="uil uil-home"></i>
                     <span class="link-name">Main Page</span>
                 </a>
@@ -119,26 +119,32 @@
                     <li>
                         <span>시험지파일다운</span>
                         <span th:text="${paperInfoDTO.saveName}"></span>
+                        <div>
                         <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}">다운로드</button>
                         <button type="button" class="del-btn" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}">삭제</button>
+                        </div>
                     </li>
                     <li>
                         <span>문제+정답 PDF 다운로드</span>
                         <span th:text="${paperInfoDTO.saveAnswerPath}"></span>
-                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">다운로드</button>
-                        <button type="button" class="del-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">삭제</button>
+                        <div>
+                            <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">다운로드</button>
+                            <button type="button" class="del-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">삭제</button>
+                        </div>
                     </li>
                     <li>
                         <span>문제+정답+해설 PDF 다운로드</span>
                         <span th:text="${paperInfoDTO.saveAllPath}"></span>
+                        <div>
                         <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAllPath}">다운로드</button>
                         <button type="button" class="del-btn" th:data-attachment-file-name="${paperInfoDTO.saveAllPath}">삭제</button>
+                        </div>
                     </li>
                 </ul>
                 <div class="a_list">
                     <a id="a_paper"th:href="@{/admin/paper}">목록으로</a>
-                    <a id="a_down2" th:href="@{/file/paperDownload(fileName='deltest.pdf')}">test용다운로드22</a>
-                    <a id="a_del" th:href="@{/file/paperDelete(fileName='deltest.pdf')}" onclick="deleteFile(event)">tset용삭제</a>
+<!--                    <a id="a_down2" th:href="@{/file/paperDownload(fileName='deltest.pdf')}">test용다운로드22</a>-->
+<!--                    <a id="a_del" th:href="@{/file/paperDelete(fileName='deltest.pdf')}" onclick="deleteFile(event)">tset용삭제</a>-->
                 </div>
             </div>
 

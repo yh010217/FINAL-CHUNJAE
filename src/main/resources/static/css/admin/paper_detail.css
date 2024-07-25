@@ -1,6 +1,7 @@
 #paper_detail{
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--panel-color);
+    color: var(--text-color);
     /*box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px*/
     /*, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;*/
     margin: 4vh 30vw 0px 12.5vw;
@@ -50,6 +51,20 @@
     padding: 0.3vw 0.5vw;
     border-radius: 10px;
     font-size: 15px;
+}
+.download-btn:hover{
+    color: #7892fa;
+}
+.download-btn:active{
+    box-shadow: inset -.3rem -.1rem 1.4rem  #FBFBFB, inset .3rem .4rem .8rem #BEC5D0;
+    cursor: pointer;
+}
+.del-btn:hover{
+    color: #f87b8c;
+}
+.del-btn:active{
+    box-shadow: inset -.3rem -.1rem 1.4rem  #FBFBFB, inset .3rem .4rem .8rem #BEC5D0;
+    cursor: pointer;
 }
 .del-btn{
     border: rgb(153 153 153) 1px solid;
