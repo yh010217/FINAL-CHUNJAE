@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 
+import com.chunjae.chunjaefull5final.service.UidService;
 import com.chunjae.chunjaefull5final.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UidService uidService;
 
     /** 회원가입페이지이동 */
     @GetMapping("/join")
@@ -34,7 +36,7 @@ public class UserController {
     public String joinResult(@Valid @ModelAttribute UserDTO dto, BindingResult bindingResult, Model model) {
         boolean emailCheck = userService.findEmailCheck(dto.getEmail());
         if (emailCheck) {
-            model.addAttribute("joinError", "joinError");
+           model.addAttribute("joinError", "joinError");
             model.addAttribute("dto", dto);
             return "user/join";
         } else if (bindingResult.hasErrors()) {
@@ -110,7 +112,10 @@ public class UserController {
         UserDTO userDTO = userService.getUserDetail(uid);
         return userDTO;
     }
-
+//    @GetMapping("/currentUser")
+//    public String getCurrentUser() {
+//        return uidService.getCurrentUserUid();
+//    }
 
 
 

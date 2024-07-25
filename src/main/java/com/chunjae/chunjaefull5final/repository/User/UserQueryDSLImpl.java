@@ -2,6 +2,8 @@ package com.chunjae.chunjaefull5final.repository.User;
 
 
 import com.chunjae.chunjaefull5final.domain.UserRole;
+import com.chunjae.chunjaefull5final.dto.UserDTO;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,18 @@ public class UserQueryDSLImpl implements UserQueryDSL {
             totalCount = count.intValue();
         }
         return totalCount;
+    }
+
+    @Override
+    public UserDTO findUserInfo(long uidByEmail) {
+        UserDTO dto = queryFactory.select(Projections.fields(UserDTO.class
+                        , user.uid
+                        , user.email
+                        , user.name))
+                .from(user)
+                .where(user.uid.eq(uidByEmail))
+                .fetchOne();
+        return dto;
     }
 
 }

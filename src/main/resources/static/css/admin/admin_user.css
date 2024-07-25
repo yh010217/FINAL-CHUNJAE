@@ -163,6 +163,7 @@ nav.close li a .link-name{
     opacity: 0;
     pointer-events: none;
 }
+
 .nav-links li a:hover i,
 .nav-links li a:hover .link-name{
     color: var(--primary-color);
@@ -284,6 +285,7 @@ nav.close ~ .dashboard .top{
     background-color: var(--panel-color);
     color: var(--text-color);
     outline: none;
+
 }
 #search_user option{
     background-color: var(--panel-color);
@@ -311,6 +313,7 @@ nav.close ~ .dashboard .top{
 }
 #search_user{
     width: 91px;
+    height: 45.5px;
     border: 1px solid var(--border-color);
     box-sizing: border-box;
     border-radius: 5px;
@@ -406,6 +409,12 @@ nav.close ~ .dashboard .top{
     list-style: none;
     padding: 1vw;
     color: var(--text-color);
+}
+#user a:hover{
+    color: var(--primary-color);
+}
+#page a:hover{
+    color: var(--primary-color);
 }
 #user a{
     color: #000;

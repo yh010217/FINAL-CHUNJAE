@@ -14,17 +14,16 @@ body{
 #sign_up{
     background: #ffffff;
     border: 1px solid #F0F6FF;
-    box-shadow: 7px 7px 39px rgb(86, 112, 220);
-    border-radius: 20px;
+    box-shadow: 7px 7px 39px #85afee;
+    border-radius: 30px;
     width: 45vw;
     margin: 0 auto;
     font-family: 'Pretendard-Regular';
 }
 #sign_up h1{
-    color: #5670DC;
     text-align: center;
-    border-radius: 35px 0;
     padding: 15px;
+    color: #5670DC;
 }
 #sign_up_form{
     display: flex;
@@ -74,21 +73,22 @@ body{
 .sign_up_form_span>input{
     width: 55%;
     padding: 0.5vw 0.9vw;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid #d5d5d5;
 }
 .sign_up_input{
     width: 15vw;
     padding: 1.5vh 0.9vw;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid #d5d5d5;
     font-size: 1rem;
+    font-family: 'Pretendard-Regular';
 }
 #schoolType, #role{
     padding: 5px 10px 5px 3px;
     font-size: 1rem;
     border: 1px solid #d5d5d5;
-    border-radius: 5px;
+    border-radius: 10px;
     font-family: 'Pretendard-Regular';
 }
 .sign_up_input:focus,#role:focus,#schoolType:focus{
@@ -105,20 +105,25 @@ body{
     font-family: 'Pretendard-Regular';
 }
 #submit{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     padding: 0.8vw 6vw;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid #d5d5d5;
-    background-color: #5670DC;
+    background: linear-gradient(120deg, #d7a5ff,#85afee,#5670DC);
     color: white;
     cursor: pointer;
+    outline: none;
     font-family: 'Pretendard-Regular';
+}
+#submit:hover{
+    background-position: right;
 }
 #fail_msg{
     display: flex;
     justify-content: center;
     position: relative;
     top: 0.7vw;
+    font-size: 1rem;
 }
 #emsg,#email_valid{
     margin: 5px 0;
@@ -126,11 +131,17 @@ body{
     justify-content: right;
     font-size: 1rem;
 }
-.msg_error,#email_valid {
+.msg_error,#email_valid,#confirm-password-message{
     color: #f62c2c;
+    font-size: 1rem;
 }
 .msg_ok{
     color: #1d3ed7;
+    font-size: 1rem;
+    text-align: end;
+}
+#confirm-password-message,#email_valid,.msg_error{
+    text-align: end;
 }
 #fail_msg{
     display: flex;
