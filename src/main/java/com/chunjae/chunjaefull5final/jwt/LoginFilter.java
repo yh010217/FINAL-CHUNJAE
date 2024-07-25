@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.jwt;
 
 import com.chunjae.chunjaefull5final.service.user.CustomUserDetails;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.Nullable;
@@ -86,7 +87,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = jwtUtil.createJwt(username, role, 60*60*10L);
 
+        Cookie jwtCookie = new Cookie("Authorization", token);
+
+        jwtCookie.setHttpOnly(true); // 클라이언트 측 스크립트에서 쿠키 접근 불가
+        jwtCookie.setSecure(true); // HTTPS에서만 쿠키 전송
+        jwtCookie.setPath("/"); // 모든 경로에서 쿠키 사용 가능
+        jwtCookie.setMaxAge(60 * 60 * 10); // 쿠키의 유효기간 설정 (초 단위)
+
+
+        response.addCookie(jwtCookie);
+
         response.addHeader("Authorization", "Bearer " + token);
+        try {
+            response.sendRedirect("/index");
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     //로그인 실패시 실행하는 메소드
