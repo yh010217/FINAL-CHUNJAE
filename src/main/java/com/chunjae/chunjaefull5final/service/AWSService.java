@@ -129,6 +129,12 @@ public class AWSService {
     }
 
 
+    public void paperDeleteFile(String filepath) {
+        System.out.println(">>>>>>>>> 버킷: "+bucket+"///파일 명:"+filepath);
+        System.out.println(">>>>>>>>> "+bucket+filepath);
+        amazonS3.deleteObject(new DeleteObjectRequest(bucket, filepath));
+    }
+
 
 }
 

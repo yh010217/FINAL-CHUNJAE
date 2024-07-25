@@ -26,14 +26,12 @@ function S3stepbtn({ paperTitle, paper }) {
 
     const handleSaveConfirm = () => {
         setShowConfirm(false);
-        // 저장 로딩 화면 구현해야됨
         handleSave();
-        // window.href='/';
     };
 
     const handleSave = async () => {
         try {
-            const url = '/back/back/savedpaper';
+            const url = '/back/savedpaper';
             const data = {
                 paper: [paperTitle, paper]
             };

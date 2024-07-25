@@ -12,7 +12,6 @@ module.exports = function (app) {
         changeOrigin: true,
         logLevel: 'debug'
     }));
-
     app.use('/api', createProxyMiddleware({
         target: 'https://tsherpa.item-factory.com',
         changeOrigin: true,

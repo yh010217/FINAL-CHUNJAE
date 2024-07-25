@@ -1,0 +1,131 @@
+.download-fullBox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.download-container {
+    width: 550px;
+    position: relative;
+    outline: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 25px 32px 28px 40px;
+    background: #fff;
+    margin-bottom: 25px;
+}
+
+.download-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.download-left {
+    flex: 2;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.download-box .download-left p {
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.download-box .left-box1 {
+    font-size: 15px;
+    color: #333;
+    border-bottom: 1px solid #e6e6e6;
+    width: 90%;
+    padding-bottom: 18px;
+}
+
+.download-box .left-box1 span:not(last-child) {
+    margin-right: 20px;
+}
+
+.download-box .left-box2 span {
+    padding: 0 11px 0 10px;
+    background: #9cabe1;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    height: 21px;
+    line-height: 21px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 2px;
+    letter-spacing: -0.36px;
+    font-weight: 250;
+}
+
+/* 오른쪽 */
+
+.download-right {
+    flex: 1;
+}
+
+.download-right > p {
+    text-align: center;
+}
+
+.download-right .button1 {
+    position: absolute;
+    top: 0;
+    width: 75px;
+    height: 79px;
+    border-radius: 50%;
+    display: block;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.download-right .btn-box {
+    text-align: right;
+    position: relative;
+    width: 197px;
+    height: 79px;
+    margin-top: 16px;
+}
+
+.download-right .btn-box button {
+    position: absolute;
+    top: 0;
+    width: 75px;
+    height: 79px;
+    border-radius: 50%;
+    display: block;
+    cursor: pointer;
+    z-index: 2;
+    border: none;
+    cursor: pointer;
+}
+
+
+.download-right .btn-box button.two {
+    left: 60px;
+}
+
+.download-right .btn-box button.three {
+    left: 120px;
+}
+
+.button1:hover,
+.button1:hover ~ .button2,
+.button1:hover ~ .button3 {
+    background-color: #ffcc00;
+    color: #fff;
+}
+
+.button2:hover {
+    background-color: #ff6666;
+    color: #fff;
+}
+
+.button3:hover {
+    background-color: #66ccff;
+    color: #fff;
+}

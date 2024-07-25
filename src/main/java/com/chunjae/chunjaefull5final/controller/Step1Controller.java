@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.EvaluationDTO;
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
+import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
 import com.chunjae.chunjaefull5final.service.Step1Service;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -67,8 +68,14 @@ public class Step1Controller {
 
     @PostMapping("step1/make_exam/{subject}")
     @ResponseBody
-    public String makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
-        String result;
+    public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
+        JSONObject result;
+
+        if(body == null){
+            result = new JSONObject();
+            result.put("enable","N");
+            return result;
+        }
 
         List<String> levelCnt = (List<String>) body.get("levelCnt");
         for(String level : levelCnt){
@@ -77,16 +84,58 @@ public class Step1Controller {
 
         String url = "https://tsherpa.item-factory.com/item-img/chapters/item-list";
         ResponseEntity<String> examApi = step1Service.postRequest(url,body);
+        if(examApi == null){
+            result = new JSONObject();
+            result.put("enable","N");
+            return result;
+        }
+
         String examBody = examApi.getBody();
 
         try {
-            result = step1Service.saveExam(examBody,subject);
+            result = step1Service.saveExam(examBody,subject,levelCnt);
         }catch (ParseException e){
             System.out.println(e);
-            result = "N";
+            result = new JSONObject();
+            result.put("enable","N");
         }
 
         return result;
     }
+
+    @PostMapping("/step1/save_questions")
+    @ResponseBody
+    public Map<String,Object> saveQuestions(@RequestBody JSONObject body){
+
+        Map<String,Object> result = new HashMap<>();
+        if(body == null){
+            result = new JSONObject();
+            result.put("enable","N");
+            return result;
+        }
+
+        step1Service.saveQuestions(body);
+
+
+
+        result.put("success","Y");
+        return result;
+    }
+
+    @GetMapping("/step1/step2-go/{paperId}")
+    public String step2Go(@PathVariable Long paperId){
+        return "redirect:http://localhost:8080/step2/new/"+paperId;
+    }
+    @PostMapping("/step1/step2-data/{paperId}")
+    @ResponseBody
+    public Map<String,Object> step2Data(@PathVariable Long paperId){
+        Map<String,Object> result = new HashMap<>();
+        int subjectId = step1Service.getSubjectId(paperId);
+        List<QuestionsDTO> itemList = step1Service.getQuestions(paperId);
+        result.put("itemList",itemList);
+        result.put("subjectId",subjectId);
+        return result;
+    }
+
 
 }

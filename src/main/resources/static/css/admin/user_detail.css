@@ -26,8 +26,16 @@
 }
 .a_list>#a_user{
     color: var(--text-color);
-    background-color: var(--panel-color);
+    background-color: rgb(153, 153, 153);;
     padding: 0.5vw 1vw;
     border-radius: 10px;
+    text-decoration: none;
+}
+.a_list>#del{
+    background-color: rgb(241 14 43 / 43%);
+    color: var(--text-color);
+    padding: 0.5vw 1vw;
+    border-radius: 10px;
+    border: none;
     text-decoration: none;
 }

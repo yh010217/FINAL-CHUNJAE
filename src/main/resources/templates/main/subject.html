@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main/index.css}">
+</head>
+<body>
+    <div class="index-top">
+        <h1>문제은행</h1>
+        <p>문제 출제, 시험지 편집까지! 편리하게 시험지 제작 서비스를 제공합니다. </p>
+    </div>
+
+    <div class="container">
+
+        <ul class="tabs">
+            <li class="tab-link current"><a th:href="@{/index}">중학</a></li>
+            <li class="tab-link"><a th:href="@{/paper}">시험지 보관함</a></li>
+        </ul>
+
+        <!-- 중학교 시험지 관련 -->
+        <div id="tab-1" class="tab-content current">
+
+            <ul class="tab">
+                <li class="tab-link current" data-subject="kor">국어</li>
+                <li class="tab-link" data-subject="eng">영어</li>
+                <li class="tab-link" data-subject="math">수학</li>
+                <li class="tab-link" data-subject="soc">사회</li>
+                <li class="tab-link" data-subject="his">역사</li>
+                <li class="tab-link" data-subject="eth">도덕</li>
+                <li class="tab-link" data-subject="sci">과학</li>
+                <li class="tab-link" data-subject="tec">기술/가정</li>
+                <li class="tab-link" data-subject="info">정보</li>
+                <li class="tab-link" data-subject="mus">음악</li>
+                <li class="tab-link" data-subject="art">미술</li>
+                <li class="tab-link" data-subject="pe">체육</li>
+                <li class="tab-link" data-subject="opt">선택</li>
+                <li class="tab-link" data-subject="chi">생활 중국어</li>
+                <li class="tab-link" data-subject="jap">생활 일본어</li>
+            </ul>
+
+            <div id="kor" class="tab-book now">
+                <h3>노미숙</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노미숙 국어 1-1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 1-1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1154)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노미숙 국어 1-2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 국어 1-2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1155)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노미숙 국어 2-1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 2-1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1156)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노미숙 국어 2-2.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 2-2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1157)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노미숙 국어 3-1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 3-1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1158)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노미숙 국어 3-2.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 3-2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1159)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>박영목</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박영목 국어 1-1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font">국어 1-1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1198)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박영목 국어 1-2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 국어 1-2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1199)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박영목 국어 2-1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 2-1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1200)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박영목 국어 2-2.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 2-2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1201)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박영목 국어 3-1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 국어 3-1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1202)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박영목 국어 3-2.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font">국어 3-2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1203)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="eng" class="tab-book">
+                <h3>이재영</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/이재영 영어1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 영어 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1160)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/이재영 영어2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 영어 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1161)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/이재영 영어3.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 영어 3</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1162)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>정사열</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/정사열 영어1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font">영어 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1163)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/정사열 영어2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 영어 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1164)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/정사열 영어3.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 영어 3</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1165)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="math" class="tab-book">
+                <h3>류희찬</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/류희찬 수학 1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 수학 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1136)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/류희찬 수학 2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 수학 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1137)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/류희찬 수학 3.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 수학 3</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1138)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>이준열</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/이준열 수학 1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font">수학 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1139)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/이준열 수학 2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 수학 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1140)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/이준열 수학 3.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 수학 3</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1141)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="soc" class="tab-book">
+                <h3>구정화</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/구정화 사회1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 사회 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1166)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/구정화 사회2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 사회 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1167)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                </div>
+
+                <h3>박형준</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박형준 사회1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font">사회 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1168)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/박형준 사회2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 사회 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1169)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="his" class="tab-book">
+                <h3>김덕수</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/김덕수 역사1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 역사 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1170)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/김덕수 역사2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 역사 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1171)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="eth" class="tab-book">
+                <h3>변순용</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/변순용 도덕1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 도덕 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1172)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/변순용 도덕2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 도덕 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1173)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sci" class="tab-book">
+                <h3>노태희</h3>
+                <hr>
+                <div class="book-list">
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노태희 과학1.jpg}" alt="사진 안 넣었음"/>
+                        <p class="font"> 과학 1</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1174)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노태희 과학2.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 과학 2</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1175)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="book-detail">
+                        <img th:src="@{/images/main/노태희 과학3.jpg}" alt="사진 안 넣었음">
+                        <p class="font"> 과학 3</p>
+                        <div class="book-button">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <!-- 로그인 상태인 경우 -->
+                                <a href="#" onclick="openPopup(1176)">시험지 만들기</a>
+                                <a href="#" onclick="openPopup()">평가자료 다운</a>
+                            </th:block>
+
+                            <th:block sec:authorize="isAnonymous()">
+                                <!-- 로그인되지 않은 상태인 경우 -->
+                                <a href="#" onclick="notLonginPopup()">시험지 만들기</a>
+                                <a href="#" onclick="notLonginPopup()">평가자료 다운</a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 경고 박스 -->
+        <div class="notice-box">
+            <div class="notice-1">
+                <img src="/images/main/느낌표.png" alt="느낌표 이미지"/>
+            </div>
+            <div class="notice-2">
+                <h2> T셀파 교수자료 무단 배포 주의사항 안내 드립니다. </h2>
+                <div class="notice-content">
+                    <p> 소중한 T셀파의 교수자료가 무단 배포 및 유출되지 않도록 선생님들의 적극적인 협조 부탁드립니다. </p>
+                    <p> 자료 유출로 인한 어려움을 겪지 않도록 선생님들께 간곡한 부탁드립니다. </p>
+                    <p> 학교에서 연구 목적 또는 수업 시에만 활용해 주세요. </p>
+                </div>
+
+                <p class="red"> T셀파의 교수자료의 저작권은 (주)천재교육에 있으며, <br>
+                    당사의 허락 없이 무단으로 이를 유출하거나 무단으로 타 사이트에 게재하는 경우 저작권법에 위배됩니다.
+                </p>
+                <button onclick="openEx()">유출 사례 보기 > </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
