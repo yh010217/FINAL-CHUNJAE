@@ -56,7 +56,7 @@ public class TempPdfController {
             @RequestParam("saveName") String saveName,
             Model model
     ) {
-        response.setHeader("X-Frame-Options", "ALLOW-FROM https://localhost:8080/loading");
+        response.setHeader("X-Frame-Options", "ALLOW-FROM /loading");
         log.info("=============name : {}==============", saveName);
         model.addAttribute("saveName", saveName);
         return "/step3/save_paper";
