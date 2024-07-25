@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -51,10 +52,14 @@ public class TempPdfController {
     @PostMapping("/save")
     @CrossOrigin(origins = "http://localhost:3000")
     public String postThymeleafPage(
-            @RequestParam Map<String, Object> data,
+            HttpServletResponse response,
+            @RequestParam("saveName") String saveName,
             Model model
     ) {
-        return "redirect:/save_paper";
+        response.setHeader("X-Frame-Options", "ALLOW-FROM https://localhost:8080/loading");
+        log.info("=============name : {}==============", saveName);
+        model.addAttribute("saveName", saveName);
+        return "/step3/save_paper";
     }
 
     @GetMapping("/api/pdftest/getImages/{paperId}/{type}")

@@ -2,6 +2,10 @@ let index = 0; //이미지 번호
 
 const num = 27;
 
+const loading = document.getElementById("loading");
+
+fetch("loading.html",)
+
 window.onload = function () {
 
     const question = function () {
@@ -693,6 +697,7 @@ window.onload = function () {
 }
 
 async function downloadPDF() {
+    const saveName = document.getElementById("saveName").value;
 
     async function generatePDFs() {
         try {
@@ -708,7 +713,7 @@ async function downloadPDF() {
 
             const formData = new FormData();
             formData.append("paperId", num);
-            formData.append("saveName", "테스트");
+            formData.append("saveName", saveName);
             formData.append('question', pdfBuffer1, 'question.pdf', 'application/pdf');
             formData.append('answer_only', pdfBuffer2, 'answer_only.pdf', 'application/pdf');
             formData.append('answer_explain', pdfBuffer3, 'answer_explain.pdf', 'application/pdf');
@@ -722,17 +727,16 @@ async function downloadPDF() {
                 .then(response => response.text())
                 .then(data => {
                     console.log('PDF uploaded to S3:', data);
-                    alert('PDF uploaded to S3 successfully! : ' + data);
                 })
                 .catch(error => {
                     console.error('Error uploading PDF to S3:', error);
-                    alert('Error uploading PDF to S3');
                 });
 
             console.log('PDF 파일들이 성공적으로 S3에 업로드되었습니다.');
         } catch (error) {
             console.error('PDF 생성 및 업로드 중 오류가 발생했습니다.', error);
         }
+        location.href = "/save_comp"
     }
 
 // A4 사이즈 (210mm x 297mm)로 설정

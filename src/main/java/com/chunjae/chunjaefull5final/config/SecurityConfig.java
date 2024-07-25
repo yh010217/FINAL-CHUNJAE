@@ -52,6 +52,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http)
             throws Exception{
 
+        http.headers(header->{
+            header.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin());
+        });
+
         http.csrf(csrf->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 

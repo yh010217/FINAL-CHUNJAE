@@ -14,7 +14,9 @@
 </head>
 <body>
 <!--<button id="save-pdf" onclick="downloadPDF()">pdf로 저장하기</button>-->
+<iframe src="http://localhost:8080/loading" id="loading"></iframe>
 <div id="wrap">
+	<input type="hidden" id="saveName" th:value="${saveName}">
 </div>
 </body>
 </html>
