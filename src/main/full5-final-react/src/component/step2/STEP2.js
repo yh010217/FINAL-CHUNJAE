@@ -6,7 +6,7 @@ import React from "react";
 import {useState} from "react";
 import {useParams} from "react-router-dom";
 
-function STEP2({handlePaper}) {
+function STEP2({handlePaper, getSubjectId}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
     const params = useParams();
@@ -37,6 +37,7 @@ function STEP2({handlePaper}) {
                     handlePaper={handlePaper}
                     paramType={params.type}
                     getData={params.getData}
+                    getSubjectId={getSubjectId}
                 />
             </div>
 
