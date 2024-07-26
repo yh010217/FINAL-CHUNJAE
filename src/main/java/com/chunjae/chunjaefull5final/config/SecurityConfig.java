@@ -21,15 +21,14 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
-   // private final CustomOAuth2UserService customOAuth2UserService;
-
     private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/resources/**"
+                .requestMatchers(
+                        //전체허용
+                        "/resources/**"
                         , "/css/**"
                         , "/js/**"
                         , "/images/**"
@@ -62,12 +61,12 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-
-                        .requestMatchers("/file/**", "/test/error","/error").permitAll()
+                        //전체허용
+                        .requestMatchers("/file/**", "/test/error","/error","/api/**").permitAll()
                         .requestMatchers("/join", "/login", "/logout"
-                                , "/checkEmail", "/**").permitAll()
-                        .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
-                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
+                                , "/checkEmail", "/index").permitAll()
+
+                        //관리자(role에 따라 달라지는)
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
                         .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")

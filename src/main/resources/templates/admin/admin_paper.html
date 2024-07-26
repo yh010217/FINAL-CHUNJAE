@@ -84,7 +84,7 @@
                      <span>문제개수</span>
                      <span>학년</span>
                      <span>과목이름</span>
-                     <span>삭제날짜</span>
+                     <span>삭제여부(null or Y)</span>
                  </li>
                  <li th:if="${!paperList.isEmpty()}" th:each="item:${paperList}" th:class="paperList">
                      <a th:href="@{'/admin/paperdetail/'+${item.paperId}}">
