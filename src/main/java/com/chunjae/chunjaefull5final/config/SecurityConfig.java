@@ -5,6 +5,7 @@ import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
 import com.chunjae.chunjaefull5final.jwt.JWTFilter;
 import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.jwt.LoginFilter;
+import com.chunjae.chunjaefull5final.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -94,7 +95,7 @@ public class SecurityConfig {
         // 로그인
         http.formLogin(formLogin -> formLogin
                 .loginPage("/login")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/index")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
                 .defaultSuccessUrl("/index")

@@ -1,5 +1,6 @@
 package com.chunjae.chunjaefull5final.jwt;
 
+import com.chunjae.chunjaefull5final.dto.UserDTO;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,18 +30,42 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
+    public Long getUid(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("uid", Long.class);
+    }
+
     public Boolean isExpired(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
     // 토큰 생성
-    public String createJwt(String username, String role, Long expiredMs) {
+    public String createJwtNormal(long uid,String username,String realName, String role, Long expiredMs) {
+
 
         System.out.println(username);
         return Jwts.builder()
+                .claim("uid",uid)
                 .claim("email", username)
-//                .claim("role", role)
+                .claim("role", role)
+                .claim("realName", realName)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                .signWith(secretKey)
+                .compact();
+    }
+    // 토큰 생성
+    public String createJwtSns(long uid,String username,String realName, String snsId, String role, Long expiredMs) {
+
+
+        System.out.println(username);
+        return Jwts.builder()
+                .claim("uid",uid)
+                .claim("email", username)
+                .claim("role", role)
+                .claim("realName",realName)
+                .claim("snsId",snsId)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)

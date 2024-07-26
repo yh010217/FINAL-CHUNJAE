@@ -1,6 +1,9 @@
 package com.chunjae.chunjaefull5final.jwt;
 
+import com.chunjae.chunjaefull5final.domain.User;
+import com.chunjae.chunjaefull5final.dto.UserDTO;
 import com.chunjae.chunjaefull5final.service.user.CustomUserDetails;
+import com.chunjae.chunjaefull5final.service.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +26,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
+
+
 
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 
@@ -76,8 +81,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //UserDetails
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+        Long uid = customUserDetails.getUid();
+        String email = customUserDetails.getUsername();
+        String realName = customUserDetails.getRealName();
+        String snsId = customUserDetails.getSnsId();
 
-        String username = customUserDetails.getUsername();
+
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -85,7 +94,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*10L);
+        String token = "";
+        if(snsId == null){
+            token = jwtUtil.createJwtNormal(uid,email,realName,role, 60*60*10L);
+        }else{
+            token = jwtUtil.createJwtSns(uid,email,realName,snsId,role, 60*60*10L);
+        }
+
 
         Cookie jwtCookie = new Cookie("Authorization", token);
 
@@ -97,12 +112,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.addCookie(jwtCookie);
 
+
         response.addHeader("Authorization", "Bearer " + token);
-        try {
-            response.sendRedirect("/index");
-        }catch (Exception e){
-            System.out.println(e);
-        }
     }
 
     //로그인 실패시 실행하는 메소드

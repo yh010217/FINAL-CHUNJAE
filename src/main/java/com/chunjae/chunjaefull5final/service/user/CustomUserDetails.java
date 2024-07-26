@@ -14,13 +14,15 @@ public class CustomUserDetails implements UserDetails {
 
     private User user;
 
-    public CustomUserDetails(User user){this.user=user;}
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities=new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().toString()));
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
         return authorities;
     }
 
@@ -28,12 +30,22 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
+
+    public String getRealName() {
+        return user.getName();
+    }
+
     @Override
     public String getPassword() {
         return user.getPwd();
     }
+
     public String getSnsId() {
         return user.getSnsId();
+    }
+
+    public Long getUid() {
+        return user.getUid();
     }
 
 
