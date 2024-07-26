@@ -8,9 +8,14 @@ import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
 function App() {
 
-    /** STEP 0, 1 에서 REST GET 받아오기 **/
+    /** subjectId 받아오기 **/
+    const [subjectId, setSubjectId] = useState('');
 
-    /** STEP 2 만든 시험지 저장하는 곳 **/
+    const getSubjectId = (getId) => {
+        setSubjectId(getId);
+    }
+
+    /** STEP 2 만든 시험지 저장 **/
     let [paper, setPaper] = useState([]);
 
     const handlePaper = (newPaper) => {
@@ -22,10 +27,10 @@ function App() {
         <BrowserRouter>
             <Routes>
                 {/** STEP 2 **/}
-                <Route exact path={'/step2'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
-                <Route exact path={'/step2/:type/:getData'} element={<STEP2 handlePaper={handlePaper}/>}></Route>
+                <Route exact path={'/step2'} element={<STEP2 handlePaper={handlePaper} getSubjectId={getSubjectId}/>}></Route>
+                <Route exact path={'/step2/:type/:getData'} element={<STEP2 handlePaper={handlePaper} getSubjectId={getSubjectId}/>}></Route>
                 {/** STEP 3 **/}
-                <Route path={'/step3'} element={<STEP3 paper={paper}/>}></Route>
+                <Route path={'/step3'} element={<STEP3 paper={paper} subjectId={subjectId}/>}></Route>
             </Routes>
         </BrowserRouter>
     </>

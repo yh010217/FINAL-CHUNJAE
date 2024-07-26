@@ -43,9 +43,11 @@ function S3stepbtn({ paperTitle, paper }) {
 
     };
 
+    // step2 가는 버튼 구현 ...
+
     return (
         <>
-            <Link to="/step2">
+            <Link>
                 <button className="btn-step">STEP 2 문항 편집</button>
             </Link>
             <button className="btn-step next" onClick={handleSaveBtn}>
@@ -53,7 +55,7 @@ function S3stepbtn({ paperTitle, paper }) {
             </button>
 
             {showAlert && (
-                <div className="step3-modal">
+                <div className="step-modal">
                     {paperTitle === '' && (
                         <>
                             <p>시험지명을 입력해주세요.</p>
@@ -78,7 +80,7 @@ function S3stepbtn({ paperTitle, paper }) {
             )}
 
             {showConfirm && (
-                <div className="step3-modal">
+                <div className="step-modal">
                     <p>시험지를 저장하시겠습니까?</p>
                     <div className="btn-wrap">
                         <button className="btn-default" onClick={handleCancel}>

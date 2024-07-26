@@ -3,7 +3,7 @@ import S3content from "./S3content";
 import S3stepbtn from "./S3stepbtn";
 import {useState} from "react";
 
-function STEP3({paper}){
+function STEP3({paper, subjectId}){
 
     const [paperTitle, setPaperTitle] = useState('');
 
@@ -18,7 +18,7 @@ function STEP3({paper}){
                 <S3header/>
             </div>
             <div className="pop-content">
-                <S3content paper={paper} onChangeTitle={handlePaperTitle}/>
+                <S3content paper={paper} subjectId={subjectId} onChangeTitle={handlePaperTitle}/>
             </div>
             <div className="step-btn-wrap">
                 <S3stepbtn paperTitle={paperTitle} paper={paper}/>

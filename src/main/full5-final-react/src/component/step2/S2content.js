@@ -3,7 +3,7 @@ import axios from "axios";
 import VIEWTOP from "./content/VIEWTOP";
 import VIEWBOTTOM from "./content/VIEWBOTTOM";
 
-function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
+function S2content({setModal, setItemId, handlePaper, paramType, getData, getSubjectId}) {
     const [itemList, setItemList] = useState([]);
     const [subjectId, setSubjectId] = useState();
 
@@ -34,24 +34,7 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
                 url = 'http://localhost:8080/step1/step2-data/'+getData
 
             }else if(paramType == null){
-
-
-                /** STEP 0 api 20번 **/
-                url = '/api/item-img/exam-list/item-list'
-
-                /** STEP 0 에서 넘겨주는 examIdList  **/
-                data = {
-                    // 영어
-                    // examIdList: ["1416"]
-                    // 국어
-                    //examIdList: ["503"]
-                    // 수학
-                    // examIdList: ["1534"]
-                    // ?
-                    // examIdList: ["356"]
-                    // 세계사
-                    examIdList: ["545"]
-                };
+                console.log('paramType is null');
             }
             /** 신규 시험지 만들기 **/
             /** STEP 1 -> STEP 2 api 5번 **/
@@ -64,13 +47,12 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
                 item.index = i;
                 i++;
                 return item;
-            })
+            });
             setItemList(indexList);
 
             let subjectId = response.data.subjectId;
             setSubjectId(subjectId);
-
-            // setItemList(response.data.itemList);
+            getSubjectId(subjectId);
 
         } catch (error) {
             console.error('Error response api .... ', error)
