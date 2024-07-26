@@ -5,6 +5,7 @@ import {useState} from "react";
 function VIEWTOP({itemList, onReSearch}) {
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [chapterName, setChapterName] = useState([]); // 단원명 그룹화해서 담을 애
 
     const openModal = () => {
         setModalOpen(true);
@@ -15,6 +16,30 @@ function VIEWTOP({itemList, onReSearch}) {
         setModalOpen(false);
         document.body.style.overflow = "unset";
     };
+    // itemList에 있는 largeChapterName, mediumChapterName, smallChapterName 그룹화해서 하나만 뽑아와야 함
+
+    /** 그룹화 */
+    const groupedData = itemList.reduce((acc, item, index) => {
+        let groupKey = null;
+        if (item.examId !== null) {
+            groupKey = item.examId;
+        }
+
+        const groupIndex = acc.findIndex(group => group.groupKey === groupKey);
+        if (groupIndex === -1) {
+            acc.push({
+                groupKey,
+                items: [{ ...item, index: index + 1 }]
+            });
+        } else {
+            acc[groupIndex].items.push({ ...item, index: index + 1 });
+        }
+
+        return acc; // 여기서 acc를 반환해야 합니다.
+    }, []); // 초기값을 빈 배열로 설정합니다.
+
+    console.log(groupedData, "그룹화 값 확인하기")
+
 
     return <>
         <div className="view-top">
@@ -28,7 +53,11 @@ function VIEWTOP({itemList, onReSearch}) {
                 <i className="research"></i>재검색
             </button>
             <button onClick={openModal} className="btn-default pop-btn">출제범위</button>
-            <ListModal data={itemList} open={modalOpen} onClose={closeModal}/>
+            <ListModal
+                data={groupedData}
+                open={modalOpen}
+                onClose={closeModal}
+            />
 
         </div>
     </>

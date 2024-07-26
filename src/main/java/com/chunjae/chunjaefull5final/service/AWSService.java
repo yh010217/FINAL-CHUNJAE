@@ -20,6 +20,7 @@ import java.io.InputStream;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,7 @@ public class AWSService {
     private String bucket;
 
     private final AmazonS3 amazonS3;
+    private final PaperInfoRepository repository;
 
     public List<String> uploadFile(List<MultipartFile> multipartFiles, String folderName) {
         List<String> fileNameList = new ArrayList<>();
@@ -131,8 +133,8 @@ public class AWSService {
         System.out.println(">>>>>>>>> 버킷: "+bucket+"///파일 명:"+filepath);
         System.out.println(">>>>>>>>> "+bucket+filepath);
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, filepath));
+
+        // 삭제한 다음에 리파지토리 처리하기
     }
-
-
 }
 

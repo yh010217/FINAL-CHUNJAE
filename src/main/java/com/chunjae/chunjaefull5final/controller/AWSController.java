@@ -66,15 +66,6 @@ public class AWSController {
         return ResponseEntity.ok(fileName);
     }
 
-    /** 시험지 pdf 다운로드 */
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<byte[]> download_pdf(@PathVariable String fileName) throws IOException {
-        return S3Service.getObject(fileName);
-    }
-
-
-
-
     /** 폴더 바꿔야함*/
     private final String paperDFolderName="pdf_테스트폴더";
     @DeleteMapping("/paperDelete")

@@ -29,20 +29,20 @@
                             <div class="left-box1">
                                 <span th:text="${item.title}">과목 이름</span>
                                 <span th:text="|${item.itemCount}개|">문항수</span>
-                                <span th:text="${item.saveAllPath}">날짜</span>
+                                <span th:text="${item.saveQuestionPath}">날짜</span>
                             </div>
                             <hr>
                             <div class="left-box2">
                                 <span>문항 편집</span>
-                                <span>시험지 삭제</span>
+                                <span class="del-btn">시험지 삭제</span>
                             </div>
                         </div>
                         <div class="download-right">
                             <p>시험지 다운로드</p>
                             <div class="btn-box">
-                                <button id="btn1" class="button1" th:onclick="allDown([[${item.saveAllPath}]])">전체</button>
-                                <button class="button2 two">문제</button>
-                                <button class="button3 three">정답 <br> + <br> 해설 </button>
+                                <button type="button" class="button1 btn" th:data-attachment-file-name="${item.saveAllPath}">전체</button>
+                                <button class="button2 two btn" th:data-attachment-file-name="${item.saveQuestionPath}">문제</button>
+                                <button class="button3 three btn" th:data-attachment-file-name="${item.saveAnswerPath}">정답 <br> + <br> 해설 </button>
                             </div>
                         </div>
                     </div>
@@ -53,6 +53,56 @@
     </div>
 
     <script th:inline="javascript">
+
+        /** 다운로드 */
+        document.addEventListener('DOMContentLoaded', () => {
+            const downloadButtons = document.querySelectorAll('.btn'); // 모든 버튼 선택
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const attachmentFilePath = event.currentTarget.getAttribute('data-attachment-file-name');
+                    console.log(attachmentFilePath, "g");
+                    csv_download(attachmentFilePath);
+                });
+            });
+        });
+
+        function csv_download(attachmentFilePath) {
+            const encodedFilePath = encodeURIComponent(attachmentFilePath);
+            window.location.href = '/file/paperDownload?fileName=' + encodedFilePath;
+        }
+
+        /** 삭제하기 */
+        // 기본 null, 삭제시 삭제된 시간 기입, 유저 탈퇴 시 삭제시간 기입
+        // 삭제시간 기입후 일정 시간 지나면 S3 파일 삭제, 행 삭제
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 삭제 버튼 클릭 이벤트 리스너
+            const deleteButtons = document.querySelectorAll('.del-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const attachmentFilePath = event.currentTarget.getAttribute('data-attachment-file-name');
+                    delete_file(attachmentFilePath);
+                });
+            });
+        });
+        function delete_file(attachmentFilePath) {
+            const encodedFilePath = encodeURIComponent(attachmentFilePath);
+            fetch(`/file/paperDelete?fileName=${encodedFilePath}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('파일이 성공적으로 삭제되었습니다.');
+                        // 필요 시 삭제된 파일과 관련된 UI 업데이트
+                    } else {
+                        alert('파일 삭제에 실패했습니다.');
+                    }
+                })
+                .catch(error => console.error('Error:', error))
+        };
 
     </script>
 
