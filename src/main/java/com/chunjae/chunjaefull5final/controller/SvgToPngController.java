@@ -28,13 +28,11 @@ import java.util.List;
 @Slf4j
 public class SvgToPngController {
 
-    String uploadPath = "D:\\FINAL-CHUNJAE\\src\\main\\resources\\static\\images\\svgToPng";
-
     @PostMapping("/convertImage")
     public ResponseEntity<List<ImageDTO>> convertAndSave(@RequestBody List<String> dataList) {
         List<ImageDTO> resultList = new ArrayList<>();
 
-        log.info("===================!!!!!!!!!!!!!!전달 성공 convertAndSave!!!!!!!!!!!!=====================");
+//        log.info("===================!!!!!!!!!!!!!!전달 성공 convertAndSave!!!!!!!!!!!!=====================");
         for (String item : dataList) {
             try {
                 if (isSvgUrl(item)) {
@@ -55,156 +53,96 @@ public class SvgToPngController {
     private int[] getRatioSvg(String item) {
         int[] intArr = new int[2];
 
+        // 재시도 설정
+        int maxRetries = 5;
+        int retryDelay = 1000; // 1초 대기
+
         System.out.println(item);
-        if(item.contains("/getImage/")){
-
+        if (item.contains("/getImage/")) {
             String getContent = item.split("/getImage/")[1];
-
             String baseUrl = "https://img.chunjae-platform.com/upload/capture/tsherpa/"+getContent;
 
             System.out.println(baseUrl);
 
-            try (InputStream svgInputStream = new URL(baseUrl).openStream();) {
+            boolean success = false;
 
+            for (int attempt = 0; attempt < maxRetries; attempt++) {
+                try (InputStream svgInputStream = new URL(baseUrl).openStream();
+                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
 
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = svgInputStream.read(buffer)) != -1) {
-                    byteArrayOutputStream.write(buffer, 0, bytesRead);
-                }
-
-                // 바이트 배열 생성
-                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-
-
-                try {
-                    InputStream svgInputStream2 = new ByteArrayInputStream(imageBytes);
-
-                    // XML 파서 설정
-                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder builder = factory.newDocumentBuilder();
-                    Document document = builder.parse(svgInputStream2);
-
-                    // SVG 루트 엘리먼트 가져오기
-                    Element svgElement = document.getDocumentElement();
-
-                    // width와 height 속성 읽기
-                    String width = svgElement.getAttribute("width");
-                    String height = svgElement.getAttribute("height");
-
-                    // 출력
-                    System.out.println("SVG Width: " + width);
-                    System.out.println("SVG Height: " + height);
-
-                    // 비율 계산
-                    if (!width.isEmpty() && !height.isEmpty()) {
-                        intArr[0] = 310;
-                        intArr[1] = (int)Math.ceil(((Integer.parseInt(height)*1.0 / Integer.parseInt(width)) * 310));
-
-                        double widthValue = Double.parseDouble(width);
-                        double heightValue = Double.parseDouble(height);
-                        double ratio = widthValue / heightValue;
-                        System.out.println("Aspect Ratio: " + ratio);
-                    } else {
-                        System.out.println("Width or Height attribute is missing.");
+                    // URL에서 SVG 데이터 읽기
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = svgInputStream.read(buffer)) != -1) {
+                        byteArrayOutputStream.write(buffer, 0, bytesRead);
                     }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    // 바이트 배열 생성
+                    byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
-            } catch (MalformedURLException me) {
-                System.out.println("url이 이상한듯?");
-                System.out.println(me);
-            } catch (IOException ie) {
-                System.out.println("stream 처리가 이상한듯?");
-                System.out.println(ie);
+                    // SVG 데이터 파싱
+                    try (InputStream svgInputStream2 = new ByteArrayInputStream(imageBytes)) {
+                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        Document document = builder.parse(svgInputStream2);
+
+                        // SVG 루트 엘리먼트 가져오기
+                        Element svgElement = document.getDocumentElement();
+
+                        // width와 height 속성 읽기
+                        String width = svgElement.getAttribute("width");
+                        String height = svgElement.getAttribute("height");
+
+                        // 출력
+//                        System.out.println("SVG Width: " + width);
+//                        System.out.println("SVG Height: " + height);
+
+                        // 비율 계산
+                        if (!width.isEmpty() && !height.isEmpty()) {
+                            intArr[0] = 310;
+                            intArr[1] = (int) Math.ceil(((Integer.parseInt(height) * 1.0 / Integer.parseInt(width)) * 310));
+
+                            double widthValue = Double.parseDouble(width);
+                            double heightValue = Double.parseDouble(height);
+                            double ratio = widthValue / heightValue;
+//                            System.out.println("Aspect Ratio: " + ratio);
+                            success = true;
+                            break; // 성공적으로 요청이 완료되면 루프 종료
+                        } else {
+                            System.out.println("Width or Height attribute is missing.");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (MalformedURLException me) {
+                    System.out.println("URL이 이상한듯?");
+                    System.out.println(me);
+                    break; // URL이 잘못된 경우 재시도하지 않음
+                } catch (IOException ie) {
+                    System.out.println("Stream 처리 문제가 발생했음.");
+                    System.out.println(ie);
+                    // 일시적으로 대기 후 재시도
+                    try {
+                        Thread.sleep(retryDelay);
+                    } catch (InterruptedException ie2) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
             }
 
-
+            if (!success) {
+                System.out.println("Failed to retrieve SVG after " + maxRetries + " attempts.");
+            }
         }
 
         return intArr;
     }
 
+
     private boolean isSvgUrl(String url) {
-        // 간단한 SVG URL 체크 로직 예시
-        log.info("===================!!!!!!!!!!!!!!전달 성공 isSvgUrl!!!!!!!!!!!!=====================");
+//        log.info("===================!!!!!!!!!!!!!!전달 성공 isSvgUrl!!!!!!!!!!!!=====================");
         return url.toLowerCase().endsWith(".svg");
     }
 
-    private String convertSvgToPngAndSaveLocally(String svgUrl) throws IOException, TranscoderException {
-/*        String svgData = fetchSvgFromUrl(svgUrl); // SVG 데이터 가져오기
-        byte[] pngData = convertSvgToPng(svgData); // SVG를 PNG로 변환*/
-
-//        // PNG 파일을 로컬에 저장
-//        String fileName = "image_" + System.currentTimeMillis() + ".png"; // 고유한 파일명 생성
-//        String filePath = uploadPath + File.separator + fileName;
-//        savePngLocally(pngData, filePath);
-
-        String svgName
-                = svgUrl.substring(svgUrl.lastIndexOf("/", svgUrl.lastIndexOf("/") - 1) + 1
-                , svgUrl.lastIndexOf("/"));
-        String pngFilePath = "D:\\FINAL-CHUNJAE\\src\\main\\resources\\static\\images\\svgToPng\\" + svgName + ".png";
-
-        InputStream svgInputStream = new URL(svgUrl).openStream();
-
-        String tempSvgFilePath = "D:\\FINAL-CHUNJAE\\src\\main\\resources\\static\\images\\svgToPng\\" + svgName + ".svg";
-
-        try (OutputStream tempSvgOutputStream = new FileOutputStream(tempSvgFilePath)) {
-            IOUtils.copy(svgInputStream, tempSvgOutputStream);
-        }
-
-        // SVG 파일을 PNG 파일로 변환
-        try (InputStream svgFileStream = new FileInputStream(tempSvgFilePath);
-             OutputStream pngFileStream = new FileOutputStream(pngFilePath)) {
-
-            TranscoderInput inputSvgImage = new TranscoderInput(svgFileStream);
-            TranscoderOutput outputPngImage = new TranscoderOutput(pngFileStream);
-
-            PNGTranscoder transcoder = new PNGTranscoder();
-            transcoder.transcode(inputSvgImage, outputPngImage);
-        }
-
-        int index = pngFilePath.lastIndexOf("\\");
-        String pngFilePathSub = pngFilePath.substring(index + 1);
-        log.info("================={}=================", pngFilePathSub);
-        return pngFilePathSub; // PNG 파일 경로 반환
-    }
-
-    private String fetchSvgFromUrl(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        URLConnection connection = url.openConnection();
-
-        StringWriter svgContent = new StringWriter();
-        try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            int c;
-            while ((c = reader.read()) != -1) {
-                svgContent.write(c);
-            }
-        }
-
-        return svgContent.toString();
-    }
-
-    private byte[] convertSvgToPng(String svgData) throws IOException, TranscoderException {
-        PNGTranscoder transcoder = new PNGTranscoder();
-        TranscoderInput input = new TranscoderInput(new StringReader(svgData));
-        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-        TranscoderOutput output = new TranscoderOutput(pngOutputStream);
-
-        try {
-            transcoder.transcode(input, output);
-            return pngOutputStream.toByteArray();
-        } finally {
-            pngOutputStream.close();
-        }
-    }
-
-    private void savePngLocally(byte[] pngData, String filePath) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pngData);
-        }
-    }
 }
