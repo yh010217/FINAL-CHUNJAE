@@ -37,15 +37,15 @@ public class S3UploadController {
 
         try {
             String dirName = "pdf_테스트폴더";
-            String upload = uploader.upload(questionPdf, dirName);
-            String upload2 = uploader.upload(answerOnlyPdf, dirName);
-            String upload3 = uploader.upload(answerExplainPdf, dirName);
+            String upload = uploader.upload(questionPdf, dirName, saveName);
+            String upload2 = uploader.upload(answerOnlyPdf, dirName, saveName);
+            String upload3 = uploader.upload(answerExplainPdf, dirName, saveName);
 
             dto.setPaperId(paperId);
             dto.setSaveName(saveName);
-            dto.setSaveQuestionPath(questionPdf.getOriginalFilename());
-            dto.setSaveAnswerPath(answerOnlyPdf.getOriginalFilename());
-            dto.setSaveAllPath(answerExplainPdf.getOriginalFilename());
+            dto.setSaveQuestionPath(saveName+"_"+questionPdf.getOriginalFilename());
+            dto.setSaveAnswerPath(saveName+"_"+answerOnlyPdf.getOriginalFilename());
+            dto.setSaveAllPath(saveName+"_"+answerExplainPdf.getOriginalFilename());
 
             service.savePdf(dto);
 

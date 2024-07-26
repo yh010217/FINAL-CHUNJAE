@@ -25,16 +25,18 @@ public class S3Uploader {
     private String bucket;
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException { // dirName의 디렉토리가 S3 Bucket 내부에 생성됨
+    public String upload(MultipartFile multipartFile, String dirName, String saveName) throws IOException { // dirName의 디렉토리가 S3 Bucket 내부에 생성됨
 
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
-        return upload(uploadFile, dirName);
+        return upload(uploadFile, dirName, saveName);
     }
 
-    private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
+    private String upload(File uploadFile, String dirName, String saveName) {
+        String fileName = dirName + "/" + saveName+"_"+uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
+
+        log.info("===========파일이름 : {}========", saveName);
 
         removeNewFile(uploadFile);  // convert()함수로 인해서 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
 
