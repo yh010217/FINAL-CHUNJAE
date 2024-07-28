@@ -1,5 +1,6 @@
 package com.chunjae.chunjaefull5final.service.user;
 
+import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,7 @@ public interface UserService {
 
     Long deleteUser(Long uid);
 
-//    User snsUser(UserDTO dto);
+    UserDTO findUserInfo(String name);
+
+    User snsUser(UserDTO dto);
 }

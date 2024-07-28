@@ -4,24 +4,33 @@ import "./css/reset.css"
 import {useState} from "react";
 import STEP2 from "./component/step2/STEP2";
 import STEP3 from "./component/step3/STEP3";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
 function App() {
 
-    /** 만든 시험지 저장하는 곳 **/
+    /** subjectId 받아오기 **/
+    const [subjectId, setSubjectId] = useState('');
+
+    const getSubjectId = (getId) => {
+        setSubjectId(getId);
+    }
+
+    /** STEP 2 만든 시험지 저장 **/
     let [paper, setPaper] = useState([]);
 
-    /**
-        STEP 0, 1 에서 REST 받아오기
-    **/
+    const handlePaper = (newPaper) => {
+        // console.log(newPaper);
+        setPaper(newPaper);
+    }
 
     return <>
         <BrowserRouter>
             <Routes>
                 {/** STEP 2 **/}
-                <Route path={'/step2'} element={<STEP2/>}></Route>
+                <Route exact path={'/step2'} element={<STEP2 handlePaper={handlePaper} getSubjectId={getSubjectId}/>}></Route>
+                <Route exact path={'/step2/:type/:getData'} element={<STEP2 handlePaper={handlePaper} getSubjectId={getSubjectId}/>}></Route>
                 {/** STEP 3 **/}
-                <Route path={'/step3'} element={<STEP3/>}></Route>
+                <Route path={'/step3'} element={<STEP3 paper={paper} subjectId={subjectId}/>}></Route>
             </Routes>
         </BrowserRouter>
     </>

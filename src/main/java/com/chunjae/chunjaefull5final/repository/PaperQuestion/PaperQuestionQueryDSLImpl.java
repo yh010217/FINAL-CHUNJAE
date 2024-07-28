@@ -1,6 +1,11 @@
 package com.chunjae.chunjaefull5final.repository.PaperQuestion;
 
 
+import com.chunjae.chunjaefull5final.domain.PaperQuestion;
+import static com.chunjae.chunjaefull5final.domain.QPaperQuestion.*;
+import static com.chunjae.chunjaefull5final.domain.QPaperInfo.*;
+import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -12,6 +17,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
@@ -25,7 +33,7 @@ public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
     @Override
     @Transactional
     @Modifying
-    public void saveQuestions(JSONArray itemInfoList, Long paperId) {
+    public void saveQuestions(List<Map<String,Object>> itemList, Long paperId) {
 
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO paper_question (paper_id,item_id, item_no, passage_id" +
@@ -34,20 +42,20 @@ public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
                 ", small_chapter_id, small_chapter_name, topic_chapter_id, topic_chapter_name" +
                 ", passage_url, question_url, answer_url, explain_url) VALUES ");
 
-        for(int i = 0 ; i < itemInfoList.size() ; i ++){
-            JSONObject item = (JSONObject) itemInfoList.get(i);
+        for(int i = 0 ; i < itemList.size() ; i ++){
+            Map<String,Object> item = itemList.get(i);
 
-            int itemId = ((Long)item.get("itemId")).intValue();
+            int itemId = (Integer)item.get("itemId");
 
-            Long tempPassageId = (Long)item.get("passageId");
+            Integer tempPassageId = (Integer)item.get("passageId");
             Integer passageId = tempPassageId == null ? null : tempPassageId.intValue();
-            String questionFormCode = (String)item.get("questionForm");
+            String questionFormCode = (String)item.get("questionFormName");
             String questionLevel = (String)item.get("difficultyName");
-            Long largeChapterId = (Long)item.get("largeChapterId");
+            Integer largeChapterId = (Integer)item.get("largeChapterId");
             String largeChapterName = (String)item.get("largeChapterName");
-            Long mediumChapterId = (Long)item.get("mediumChapterId");
+            Integer mediumChapterId = (Integer)item.get("mediumChapterId");
             String mediumChapterName = (String)item.get("mediumChapterName");
-            Long smallChapterId = (Long)item.get("smallChapterId");
+            Integer smallChapterId = (Integer)item.get("smallChapterId");
             String smallChapterName = (String)item.get("smallChapterName");
             Long topicChapterId = (Long)item.get("topicChapterId");
             String topicChapterName = (String)item.get("topicChapterName");
@@ -71,5 +79,17 @@ public class PaperQuestionQueryDSLImpl implements PaperQuestionQueryDSL {
         Query query = entityManager.createNativeQuery(sql.toString());
 
         query.executeUpdate();
+    }
+
+    @Override
+    public List<PaperQuestion> getQuestions(Long paperId) {
+
+        List<PaperQuestion> list = queryFactory.select(paperQuestion)
+                .from(paperQuestion)
+                .where(paperQuestion.paperInfo.paperId.eq(paperId))
+                .fetch();
+
+
+        return list;
     }
 }

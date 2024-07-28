@@ -2,8 +2,9 @@ import SIMLARLIST from "./SIMLARLIST";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import React from "react";
+import Test from "./Test";
 
-function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
+function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, setItemId, changeList}) {
     let [option, setOption] = useState(false);
     const [activeOption, setActiveOption] = useState('');
     const options = ['상', '중', '하'];
@@ -34,9 +35,10 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
         setView(difficultyCode);
     };
 
-    const removeList =(itemId)=> {
-        setRemove([...remove, itemId]); // spread 연산자를 사용하여 배열에 추가
+    const simRemove = async (itemId) => {
+        await setRemove(prevRemove => [...prevRemove, itemId]); // 두 개 이상 넣을 때 안 됨 => 함수형 업데이트 사용하기
     }
+
 
     /** 유사 문제 API 불러오기 */
     const [response, setResponse] = useState([])
@@ -72,21 +74,30 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
     }, [similar, remove]); // similar 값이나 remove 배열이 변경될 때마다 호출
 
     /** 그룹화 */
-    const groupedData = response.reduce((acc, item) => {
-        if (!acc[item.passageId]) {
-            acc[item.passageId] = {
-                passageUrl: item.passageUrl,
-                items: []
-            };
+    const groupedData = response.reduce((acc, item, index) => {
+        let groupKey = null;
+        if(item.passageId !== null) {
+            groupKey = item.passageId
+        } else {
+            groupKey = item.itemId
         }
-        acc[item.passageId].items.push(item);
+
+        const groupIndex = acc.findIndex(group => group.groupKey === groupKey); // 기존 그룹 인덱스 확인
+        if (groupIndex === -1) {
+            acc.push({
+                groupKey,
+                items: [{...item, index: index + 1}]
+            });
+        } else {
+            acc[groupIndex].items.push({...item, index: index + 1});
+        }
         return acc;
-    }, {});
+    }, []);
 
     return <>
         <div className="contents on">
             <div className="cnt-top">
-                <span className="title">{no + 1}번 유사문제</span>
+                <span className="title">{no}번 유사문제</span>
                 <div className="right-area">
                     <div className="select-wrap">
                         <button onClick={toggleMenu} className={`select-btn ${option ? 'active' : ''}`}>
@@ -111,47 +122,15 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove}) {
                     <div key="no-data" className="view-que-list no-data" dangerouslySetInnerHTML={{ __html: insert }} />
                 ) : (
                     <div className="view-que-list scroll-inner">
-                        {Object.values(groupedData).map((group, index) => (
-                            <React.Fragment key={index}>
-                                {group.passageUrl && (
-                                    <div className="view-que-box">
-                                        <div className="que-top">
-                                            <div className="title">
-                                                {group.items.length > 1 ? (
-                                                    <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                                ) : (
-                                                    <span className="num">지문 {group.items[0].itemNo}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="view-que">
-                                            <img src={group.passageUrl} alt="지문입니다..." />
-                                        </div>
-                                    </div>
-                                )}
-                                {group.items.map((item, itemIndex) => (
-                                    <SIMLARLIST
-                                        key={item.itemId}
-                                        itemId={item.itemId}
-                                        itemNo={item.itemNo}
-                                        difficultyName={item.difficultyName}
-                                        questionFormName={item.questionFormName}
-                                        questionUrl={item.questionUrl}
-                                        explainUrl={item.explainUrl}
-                                        answerUrl={item.answerUrl}
-                                        largeChapterName={item.largeChapterName}
-                                        mediumChapterName={item.mediumChapterName}
-                                        smallChapterName={item.smallChapterName}
-                                        topicChapterName={item.topicChapterName}
-                                        passageUrl={item.passageUrl}
-                                        passageId={item.passageId}
-                                        list={removeList}
-                                        addToChangeList={addToChangeList}
-                                        view={view}
-                                    />
-                                ))}
-                            </React.Fragment>
-                        ))}
+                        <SIMLARLIST
+                            groupedData={groupedData}
+                            list={simRemove}
+                            addToChangeList={addToChangeList}
+                            view={view}
+                            setModal={setModal}
+                            setItemId={setItemId}
+                            changeList={changeList}
+                        />
                     </div>
                 )}
             </>

@@ -17,7 +17,7 @@
 	* 100% 보다 더 크게 적용 하고 싶으면 return 부분을 수정하면됨.
 	* 참고사이트 http://sassbreak.com/viewport-relative-headings-with-sass/
 	*/
-@import url(font.css);
+@import url(resources/static/inc/css/font.css);
 #q-preview {
   width: 1200px;
 }
@@ -43,7 +43,7 @@
 #q-preview .pop-inner .scroll-inner .example-area {
   width: 453px;
   margin-bottom: 15px;
-  padding: 0 55px 0 0;
+  padding: 12px 55px 0 0;
 }
 #q-preview .pop-inner .scroll-inner .example-area:nth-child(2n)::after {
   content: "";
@@ -53,7 +53,10 @@
   transform: translate(-50%, 0%);
   width: 1px;
   height: 100%;
-  background-color: #ccc;
+  /*background-color: #ccc;*/
+}
+#q-preview .pop-inner .scroll-inner .example-area img{
+  max-width: 453px;
 }
 #q-preview .numbering {
   font-size: 20px;
@@ -61,12 +64,13 @@
   padding-right: 6px;
 }
 #q-preview .numbering-numbers {
+  padding-right: 5px;
   font-size: 15px;
   font-weight: 500;
 }
 #q-preview .item-question {
   display: flex;
-  align-items: center;
+/*  align-items: center;*/
   margin-bottom: 15px;
 }
 #q-preview .choice-contanier .answer-input {
@@ -87,7 +91,7 @@
 #q-preview .answer-container {
   margin-bottom: 10px;
   display: flex;
-  align-items: center;
+  /*align-items: center;*/
 }
 #q-preview .answer-container .answer-img {
   width: 25px;
@@ -100,6 +104,14 @@
   align-items: flex-start;
   line-height: 1.5;
 }
+#q-preview .passage-area img {
+  margin-left: 3px;
+}
+
+
+
+
+
 
 html {
   min-width: 1280px;
@@ -178,9 +190,43 @@ body {
   color: #000;
   font-weight: 500;
 }
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table {
+  width: 100%;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table th,
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table td {
+  padding: 10px;
+  text-align: center;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table thead {
+  background-color: #939393;
+  height: 70px;
+  color: #fff;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table thead th {
+  border: 1px solid #fff;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table tbody {
+  height: 50px;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table tbody .tit {
+  text-align: left;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table tbody td {
+  border: 1px solid #E0E0E0;
+  font-family: "맑은 고딕", "Malgun Gothic", Dotum;
+  font-size: 10px;
+  font-weight: 600;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table tbody td:first-child {
+  border-left: 0;
+}
+.pop-wrap.prev-type .pop-inner .view-box .table-wrap .tbl-view table tbody td:last-child {
+  border-right: 0;
+}
 @media (max-width: 1280px) {
   .loading-cnt,
-.error-cnt {
+  .error-cnt {
     width: 100%;
   }
 }
@@ -677,7 +723,7 @@ l .btn-step.next.done {
   }
 }
 .pop-wrap.prev-type .pop-inner .view-box {
-  margin: 0 50px;
+  margin: 0 40px;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
@@ -3217,4 +3263,50 @@ input[type=checkbox]:checked + label::before {
 
 .ui-sortable-helper {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.tab-menu-type02 {
+  width: 100%;
+  padding: 4px;
+}
+
+.tab-menu-type02 {
+  padding: 20px 40px 0;
+  width: 100%;
+}
+.tab-menu-type02 li {
+  width: 100%;
+  border: 1px solid #E0E0E0;
+  border-right: 0;
+  display: flex;
+  flex: 1;
+  border-radius: 8px;
+  height: 45px;
+}
+.tab-menu-type02 li:nth-child(2) {
+  border-radius: 0;
+}
+.tab-menu-type02 li:nth-child(3) {
+  border-radius: 0;
+}
+.tab-menu-type02 li:first-child {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.tab-menu-type02 li:last-child {
+  border-right: 1px solid #E0E0E0;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.tab-menu-type02 li.active a {
+  color: #5670DC;
+}
+.tab-menu-type02 li a {
+  width: 100%;
+  font-weight: 500;
+}
+.pop-wrap.prev-type .pop-inner .view-box .layout-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
