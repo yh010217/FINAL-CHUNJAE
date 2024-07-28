@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.config;
 
 
+import com.chunjae.chunjaefull5final.config.oauth.CustomOAuthLoginFilter;
 import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
 import com.chunjae.chunjaefull5final.jwt.JWTFilter;
 import com.chunjae.chunjaefull5final.jwt.JWTUtil;
@@ -18,6 +19,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -122,6 +126,10 @@ public class SecurityConfig {
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         http
+                .addFilterAt(new CustomOAuthLoginFilter(clientRegistrationRepository,authorizedClientRepository
+                ,"/login/oauth2/code/*",authenticationManager(authenticationConfiguration)), OAuth2LoginAuthenticationFilter.class);
+
+        http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
@@ -132,6 +140,10 @@ public class SecurityConfig {
 
         return http.build();
     }
+    private final ClientRegistrationRepository clientRegistrationRepository;
+
+    private final OAuth2AuthorizedClientRepository authorizedClientRepository;
+
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
