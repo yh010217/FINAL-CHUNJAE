@@ -64,10 +64,6 @@ public class UserController {
 
 
     }
-    @PostMapping("/login")
-    public String login(){
-        return "/s3test/upload";
-    }
     @GetMapping("/admin/user")
     public String adminUser(@PageableDefault(size = 10, page = 0) Pageable pageable
             , @RequestParam(required = false, defaultValue = "") String search

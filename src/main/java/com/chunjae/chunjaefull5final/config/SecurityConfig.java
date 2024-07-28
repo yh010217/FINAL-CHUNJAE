@@ -95,7 +95,7 @@ public class SecurityConfig {
         // 로그인
         http.formLogin(formLogin -> formLogin
                 .loginPage("/login")
-                .loginProcessingUrl("/index")
+                .loginProcessingUrl("/login")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
                 .defaultSuccessUrl("/index")
@@ -106,11 +106,13 @@ public class SecurityConfig {
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/index")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("XSRF-TOKEN")
+                .deleteCookies("Authorization")
         );
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
-                httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
-                        .defaultSuccessUrl("/index2")
+                httpSecurityOAuth2LoginConfigurer
+                        .loginPage("/oauth2/login")
+                        .defaultSuccessUrl("/index")
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
 

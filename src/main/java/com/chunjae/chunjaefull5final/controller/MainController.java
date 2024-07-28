@@ -24,7 +24,7 @@ public class MainController {
     private final JWTUtil jwtUtil;
     @GetMapping("/index")
     public String main(HttpServletRequest request) {
-        final Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         String jwt = null;
         String username = null;
 
@@ -35,24 +35,13 @@ public class MainController {
                 }
             }
         }
-        System.out.println(jwt);
-        System.out.println(jwtUtil.getUid(jwt));
-        // 이름 따오기
-/*        HttpSession session = request.getSession(false);
-        Long uid = (Long) session.getAttribute("sessionId");*/
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-
-
-        return "main/index";
-    }
-    @GetMapping("/index2")
-    public String main2(HttpServletRequest request) {
-
-        // 이름 따오기
-        HttpSession session = request.getSession(false);
-        Long uid = (Long) session.getAttribute("sessionId");
+        Long uid = null;
+        try{
+            uid = jwtUtil.getUid(jwt);
+        }catch (Exception e){
+            System.out.println("아마 쿠키에서 받아올 수 있는 게 없어서 그러는듯 : " + e);
+        }
 
         return "main/index";
     }

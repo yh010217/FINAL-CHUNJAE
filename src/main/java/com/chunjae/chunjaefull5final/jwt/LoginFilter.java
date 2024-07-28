@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,6 +57,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }catch (Exception e){
             System.out.println(e);
         }
+
+        setDetails(request, authToken);
+
         return result;
     }
     @Override
@@ -78,6 +82,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+
         //UserDetails
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -85,8 +90,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String email = customUserDetails.getUsername();
         String realName = customUserDetails.getRealName();
         String snsId = customUserDetails.getSnsId();
-
-
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -96,11 +99,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = "";
         if(snsId == null){
-            token = jwtUtil.createJwtNormal(uid,email,realName,role, 60*60*10L);
+            token = jwtUtil.createJwtNormal(uid,email,realName,role, 1000*60*30L);
         }else{
-            token = jwtUtil.createJwtSns(uid,email,realName,snsId,role, 60*60*10L);
+            token = jwtUtil.createJwtSns(uid,email,realName,snsId,role, 1000*60*30L);
         }
-
 
         Cookie jwtCookie = new Cookie("Authorization", token);
 
@@ -109,11 +111,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         jwtCookie.setPath("/"); // 모든 경로에서 쿠키 사용 가능
         jwtCookie.setMaxAge(60 * 60 * 10); // 쿠키의 유효기간 설정 (초 단위)
 
-
         response.addCookie(jwtCookie);
 
-
         response.addHeader("Authorization", "Bearer " + token);
+
+        try {
+            chain.doFilter(request, response);
+        }catch (Exception e){
+            System.out.println("chain doFilter 중에 예외"+e);
+        }
     }
 
     //로그인 실패시 실행하는 메소드
