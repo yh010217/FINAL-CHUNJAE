@@ -100,6 +100,7 @@ public class Step1Controller {
             result.put("enable","N");
         }
 
+        System.out.println(result);
         return result;
     }
 
