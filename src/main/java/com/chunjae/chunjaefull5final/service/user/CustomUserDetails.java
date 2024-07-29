@@ -42,12 +42,17 @@ public class CustomUserDetails implements UserDetails {
     public String getSnsId() {
         return user.getSnsId();
     }
+    public String getFullName() {
+        return user.getName();
+    }
 
     public Long getUid() {
         return user.getUid();
     }
 
-
+    public String getSnsId(){
+        return user.getSnsId();
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

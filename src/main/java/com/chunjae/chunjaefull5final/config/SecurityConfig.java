@@ -1,13 +1,15 @@
 package com.chunjae.chunjaefull5final.config;
 
-
 import com.chunjae.chunjaefull5final.config.oauth.CustomOAuthLoginFailHandler;
 import com.chunjae.chunjaefull5final.config.oauth.CustomOAuthLoginSuccessHandler;
-import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
 import com.chunjae.chunjaefull5final.jwt.JWTFilter;
 import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.jwt.LoginFilter;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
+// import com.chunjae.chunjaefull5final.config.oauth.CustomOAuth2UserService;
+import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
+import com.chunjae.chunjaefull5final.service.user.CustomUserDetails;
+import com.chunjae.chunjaefull5final.service.user.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -62,7 +65,9 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/resources/**"
+                .requestMatchers(
+                        //로그인 하지 않고 들어가기 가능(css, js 없이)
+                        "/resources/**"
                         , "/css/**"
                         , "/js/**"
                         , "/images/**"
@@ -72,13 +77,16 @@ public class SecurityConfig {
                         , "/full5-final-react/css/**"
                         , "/full5-final-react/src/**"
                         , "/full5-final-react/component/**"
-                        , "/file/**"
                         , "/test/error"
+                        , "/file/**"
                         , "/preview/**"
                         , "/step0/**"
                         , "/api/**"
+                        , "/back/**"
                         , "/step1/**"
                         , "/step2/**"
+                        , "/item-img/**"
+
                 );
     }
 
@@ -101,12 +109,17 @@ public class SecurityConfig {
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
                         .requestMatchers("/logout").permitAll()
                         .requestMatchers("/admin/**").hasRole("Admin")
+                        //전체허용
+                        .requestMatchers("/file/**", "/test/error","/error","/api/**").permitAll()
+                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/index").permitAll()
+                        //관리자허용
+                        .requestMatchers("/admin/**","/userdelete/**","/userdetail/**","/errorstatus/**").hasRole("Admin")
+
                         //정지회원제외
-                        .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")
-
-
+                        .requestMatchers("/step0/**","/step1/**", "/step2/**","/preview/**").hasAnyRole("Admin", "Teacher", "User")
                         .anyRequest().authenticated()
         );
+
 
         // 로그인
         http.formLogin(formLogin -> formLogin
@@ -126,6 +139,14 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID")
                 .deleteCookies("Authorization")
         );
+
+
+        http.oauth2Login(oauth2Login -> oauth2Login
+                .loginPage("/oauth2/login")
+                .defaultSuccessUrl("/index")
+                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserService))
+        );
+
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                 httpSecurityOAuth2LoginConfigurer
                         .loginPage("/oauth2/login")
@@ -148,14 +169,8 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-
         return http.build();
     }
-    /*
-    private final ClientRegistrationRepository clientRegistrationRepository;
-
-    private final OAuth2AuthorizedClientRepository authorizedClientRepository;
-*/
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {

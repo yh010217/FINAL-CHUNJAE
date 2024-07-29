@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.io.InputStream;
 */
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,11 +56,10 @@ public class AWSService {
     private String bucket;
 
     private final AmazonS3 amazonS3;
+    private final PaperInfoRepository repository;
 
     public List<String> uploadFile(List<MultipartFile> multipartFiles, String folderName) {
         List<String> fileNameList = new ArrayList<>();
-
-        // log.info("file......{}",multipartFiles);
 
         if (multipartFiles != null) {
             multipartFiles.forEach(file -> {
@@ -127,8 +129,19 @@ public class AWSService {
             }
         }
     }
-
-
+    public void paperDeleteFile(String filepath) {
+        try {
+            System.out.println(">>>>>>>>> 버킷: " + bucket + "///파일 명:" + filepath);
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, filepath));
+            System.out.println("파일이 성공적으로 삭제되었습니다.");
+        } catch (AmazonServiceException e) {
+            System.err.println("AmazonServiceException: " + e.getMessage());
+            throw e;
+        } catch (SdkClientException e) {
+            System.err.println("SdkClientException: " + e.getMessage());
+            throw e;
+        }
+    }
 
 }
 

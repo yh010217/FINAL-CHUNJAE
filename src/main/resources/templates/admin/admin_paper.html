@@ -44,7 +44,7 @@
 
         <ul class="logout-mode">
             <li>
-                <a th:href="@{/main}">
+                <a th:href="@{/index}">
                     <i class="uil uil-home"></i>
                     <span class="link-name">Main Page</span>
                 </a>
@@ -83,7 +83,8 @@
                      <span>제목</span>
                      <span>문제개수</span>
                      <span>학년</span>
-                     <span>과목번호</span>
+                     <span>과목이름</span>
+                     <span>삭제여부(null or Y)</span>
                  </li>
                  <li th:if="${!paperList.isEmpty()}" th:each="item:${paperList}" th:class="paperList">
                      <a th:href="@{'/admin/paperdetail/'+${item.paperId}}">
@@ -92,6 +93,7 @@
                          <span th:text="${item.itemCount}"></span>
                          <span th:text="${item.grade}"></span>
                          <span th:text="${subjectNames[item.subjectId]}"></span>
+                         <span th:text="${item.delete_yn}"></span>
                      </a>
                  </li>
                  <li th:if="${paperList.isEmpty()}">

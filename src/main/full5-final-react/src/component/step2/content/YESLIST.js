@@ -2,9 +2,8 @@ import SIMLARLIST from "./SIMLARLIST";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import React from "react";
-import Test from "./Test";
 
-function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, setItemId}) {
+function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, setItemId, changeList}) {
     let [option, setOption] = useState(false);
     const [activeOption, setActiveOption] = useState('');
     const options = ['상', '중', '하'];
@@ -74,21 +73,30 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, set
     }, [similar, remove]); // similar 값이나 remove 배열이 변경될 때마다 호출
 
     /** 그룹화 */
-    const groupedData = response.reduce((acc, item) => {
-        if (!acc[item.passageId]) {
-            acc[item.passageId] = {
-                passageUrl: item.passageUrl,
-                items: []
-            };
+    const groupedData = response.reduce((acc, item, index) => {
+        let groupKey = null;
+        if(item.passageId !== null) {
+            groupKey = item.passageId
+        } else {
+            groupKey = item.itemId
         }
-        acc[item.passageId].items.push(item);
+
+        const groupIndex = acc.findIndex(group => group.groupKey === groupKey); // 기존 그룹 인덱스 확인
+        if (groupIndex === -1) {
+            acc.push({
+                groupKey,
+                items: [{...item, index: index + 1}]
+            });
+        } else {
+            acc[groupIndex].items.push({...item, index: index + 1});
+        }
         return acc;
-    }, {});
+    }, []);
 
     return <>
         <div className="contents on">
             <div className="cnt-top">
-                <span className="title">{no + 1}번 유사문제</span>
+                <span className="title">{no}번 유사문제</span>
                 <div className="right-area">
                     <div className="select-wrap">
                         <button onClick={toggleMenu} className={`select-btn ${option ? 'active' : ''}`}>
@@ -120,6 +128,7 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, set
                             view={view}
                             setModal={setModal}
                             setItemId={setItemId}
+                            changeList={changeList}
                         />
                     </div>
                 )}
