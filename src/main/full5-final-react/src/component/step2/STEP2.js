@@ -3,14 +3,19 @@ import S2content from "./S2content";
 import S2stepbtn from "./S2stepbtn";
 import MODAL from "./content/MODAL";
 import React from "react";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 
-function STEP2({handlePaper, getSubjectId}) {
+function STEP2({handlePaper, getSubjectId, getParamType}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
     const params = useParams();
-    // console.log(params.type);
+
+    useEffect(() => {
+        if (params.type) {
+            getParamType.current = params.type;
+        }
+    }, [params.type, getParamType]);
 
     /** 모달 관련 이벤트 */
     let block = {}; // display : block 로 만들기 위한 노력...

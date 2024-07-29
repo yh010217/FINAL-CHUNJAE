@@ -198,6 +198,7 @@ public class Step0Controller {
 
         // 세션에서 selectedExamIds 불러오기
         List<String> selectedExamIds = (List<String>) session.getAttribute("selectedExamIds");
+
         response.put("examIdList", selectedExamIds);
 
         return ResponseEntity.ok(response);
@@ -225,6 +226,7 @@ public class Step0Controller {
 
                 request.setSuccessYn(successYn);
                 request.setItemList(new ArrayList<>(itemList));
+
             } else {
                 request.setSuccessYn("N");
                 request.setItemList(null);
@@ -246,7 +248,6 @@ public class Step0Controller {
 
         return ResponseEntity.ok(request);
     }
-
 
     /** 셋팅지 미리보기 - 문항 정보표 */
     @PostMapping("/preview/info")
