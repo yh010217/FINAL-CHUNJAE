@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 function SIMLARLIST(props) {
+
+    const topRef = useRef(null); // 최상단에 대한 참조 생성
 
     // 유사 문제 삭제 함수
     const simRemoveList = (itemId) => {
@@ -72,6 +74,8 @@ function SIMLARLIST(props) {
         }
     };
 
+
+
     // 필터된 아이템이 있는지 확인하는 변수
     let hasFilteredItems = false;
 
@@ -105,7 +109,9 @@ function SIMLARLIST(props) {
                         <React.Fragment key={index}>
                             {/* 지문이 있는 경우 */}
                             {passageId[0] != null && (
-                                <div className="view-que-box">
+                                <div className="view-que-box"
+                                     ref={index === 0 ? topRef : null}
+                                >
                                     <div className="que-top">
                                         <div className="title">
                                             {group.items.length > 1 ? (
@@ -187,7 +193,9 @@ function SIMLARLIST(props) {
                                                 </div>
                                                 {/* 추가 버튼 */}
                                                 <div className="btn-wrap">
-                                                    <button className="btn-default" onClick={() => addToChangeList(item)}>
+                                                    <button className="btn-default" onClick={() => {
+                                                        addToChangeList(item);
+                                                    }}>
                                                         <i className="add-type02"></i>
                                                         추가
                                                     </button>

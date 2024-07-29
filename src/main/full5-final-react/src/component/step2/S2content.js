@@ -44,7 +44,7 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
                     // 영어
                     // examIdList: ["1416"]
                     // 국어
-                    //examIdList: ["503"]
+                    // examIdList: ["503"]
                     // 수학
                     // examIdList: ["1534"]
                     // ?

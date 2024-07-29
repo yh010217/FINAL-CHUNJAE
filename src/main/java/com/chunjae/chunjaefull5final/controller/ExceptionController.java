@@ -14,10 +14,11 @@ public class ExceptionController {
 
     // 예외 처리, 마지막에 주석 풀기
 
-    /*@ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public String except(Exception ex, Model model) {
         model.addAttribute("error_msg", ex);
-        return "error/error";
+        model.addAttribute("view", "error/error");
+        return "main/index";
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -34,7 +35,7 @@ public class ExceptionController {
         model.addAttribute("error_msg", "접근이 거부되었습니다.");
         model.addAttribute("view", "error/403");
         return "main/index";
-    }*/
+    }
 
     // 추가적인 예외 처리 메소드 필요 시 여기에 추가
 }
