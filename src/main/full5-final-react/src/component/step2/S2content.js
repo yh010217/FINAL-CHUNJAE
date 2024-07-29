@@ -27,7 +27,8 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
                     // ?
                     // examIdList: ["356"]
                     // 세계사
-                    examIdList: ["545"]
+                    // examIdList: ["545"]
+
                 };
             }else if(paramType === 'new'){
                 url = 'http://localhost:8080/step1/step2-data/'+getData
@@ -43,13 +44,14 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData}) {
                     // 영어
                     // examIdList: ["1416"]
                     // 국어
-                    //examIdList: ["503"]
+                    // examIdList: ["503"]
                     // 수학
                     // examIdList: ["1534"]
                     // ?
                     // examIdList: ["356"]
                     // 세계사
-                    examIdList: ["545"]
+                    // examIdList: ["545"]
+                    examIdList: ["1416", "503", "1534", "356", "545"]
                 };
             }
             /** 신규 시험지 만들기 **/

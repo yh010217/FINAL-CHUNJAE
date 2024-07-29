@@ -4,10 +4,12 @@ import com.chunjae.chunjaefull5final.domain.PrincipalDetail;
 import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.domain.UserRole;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -26,8 +28,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
-
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.info("--------------------------- OAuth2UserService ---------------------------");
@@ -37,7 +37,11 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        log.info("OAuth2USer = {}", oAuth2User);
+       // HttpSession session = (HttpSession) SecurityContextHolder.getContext().getAttribute("SPRING_SECURITY_CONTEXT");
+
+
+
+        log.info("OAuth2USer = {}", oAuth2User.getAttributes().get("sub"));
         log.info("attributes = {}", attributes);
 
         GoogleUserInfo googleUserInfo = new GoogleUserInfo(attributes);

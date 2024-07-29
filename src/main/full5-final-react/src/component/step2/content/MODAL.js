@@ -101,6 +101,7 @@ function MODAL({ setModal, itemId }) {
             }
         } finally {
             alert('신고가 완료되었습니다.');
+            setModal(false);
         }
     };
 

@@ -17,8 +17,6 @@ function App() {
         // console.log(newPaper);
         setPaper(newPaper);
     }
-    console.log('hello');
-
     return <>
         <BrowserRouter>
             <Routes>

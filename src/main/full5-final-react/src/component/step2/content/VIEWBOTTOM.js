@@ -81,7 +81,6 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
         if (itemToAdd.passageId === null || itemToAdd.passageId === '') {
             setChangeList(prevList => {
                 const index = prevList.findIndex(item => item.itemId === similar);
-                console.log(index, "index 값 찾기 1")
                 if (index === -1) { // 값이 못 찾으면 가장 아래로 보내기
                     return [...prevList, itemToAdd];
                 } else {
@@ -109,15 +108,9 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
                     });
                 }
             }
-            /*if (changeId === itemToAdd.passageId) {
-                // 마지막 지문 바로 아래에 추가되어야 함.
-                console.log('추후 추가 예정~~^^');
-            } else {
-                // changeId가 itemToAdd의 passageId와 일치하지 않을 때
-
-            }*/
         }
     };
+
 
     /** 삭제하기 구현하기 */
     const removeList = (itemDelItem) => {
@@ -138,12 +131,10 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
         for (let key in groupedItems) {
             if (Number(key) === result) {
                 let keyLen = groupedItems[result].length;
-                console.log(keyLen, "key값 길이");
                 setChangeList((prevList) => {
                     const index = prevList.findIndex(
                         (item) => item.passageId === Number(key)
                     );
-                    console.log(index, "index 값");
                     return [
                         ...prevList.slice(0, index + keyLen),
                         itemReDelItem,

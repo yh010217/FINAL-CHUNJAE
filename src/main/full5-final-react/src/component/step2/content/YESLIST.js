@@ -2,7 +2,6 @@ import SIMLARLIST from "./SIMLARLIST";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import React from "react";
-import Test from "./Test";
 
 function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, setItemId, changeList}) {
     let [option, setOption] = useState(false);
