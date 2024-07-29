@@ -1,8 +1,6 @@
 package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.service.TempPdfService;
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -31,35 +29,6 @@ public class TempPdfController {
     public TempPdfController(TempPdfService tempPdfService, S3UploadController pdfTest){
         this.tempPdfService = tempPdfService;
         this.pdfTest = pdfTest;
-    }
-
-    @GetMapping("/save_paper")
-    public String savePaper(){
-        return "/step3/save_paper";
-    }
-
-    @GetMapping("/loading")
-    public String loading(){
-
-        return "/step3/loading";
-    }
-
-    @GetMapping("/save_comp")
-    public String saveComp(){
-        return "/step3/save_comp";
-    }
-
-    @PostMapping("/save")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public String postThymeleafPage(
-            HttpServletResponse response,
-            @RequestParam("saveName") String saveName,
-            Model model
-    ) {
-        response.setHeader("X-Frame-Options", "ALLOW-FROM /loading");
-        log.info("=============name : {}==============", saveName);
-        model.addAttribute("saveName", saveName);
-        return "/step3/save_paper";
     }
 
     @GetMapping("/api/pdftest/getImages/{paperId}/{type}")
@@ -110,28 +79,5 @@ public class TempPdfController {
 
         return null;
     }
-
-
-
-    @RequestMapping("/test")
-    public void convertHtmlToPdf(HttpServletResponse response) throws IOException {
-        // 입력 HTML 파일 경로
-        String htmlFilePath = "D:\\FINAL-CHUNJAE\\src\\main\\resources\\templates\\step3\\save_paper.html";
-
-        // ConverterProperties 생성
-        ConverterProperties converterProperties = new ConverterProperties();
-
-        // HTML을 PDF로 변환하여 HttpServletResponse에 출력
-        try (OutputStream outputStream = response.getOutputStream()) {
-            HtmlConverter.convertToPdf(new FileInputStream(htmlFilePath), outputStream, converterProperties);
-
-            // 브라우저에 PDF 파일 전송
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=\"output.pdf\"");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

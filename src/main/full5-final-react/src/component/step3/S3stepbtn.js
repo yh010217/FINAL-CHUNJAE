@@ -43,8 +43,6 @@ function S3stepbtn({ paperTitle, paper }) {
 
     };
 
-    // step2 가는 버튼 구현 ...
-
     return (
         <>
             <Link>
@@ -86,24 +84,17 @@ function S3stepbtn({ paperTitle, paper }) {
                         <button className="btn-default" onClick={handleCancel}>
                             취소
                         </button>
-                        <button className="btn-default" onClick={handleSaveConfirm}>
-                            확인
-                        </button>
+                        <form action="http://localhost:8080/save" method="post">
+                            <input type="hidden" name="paper" value={paper}/>
+                            {/*<input type="hidden" name="paperTitle" value={paperTitle}/>*/}
+                            <button type="submit" className="btn-default" onClick={handleSaveConfirm}>
+                                확인
+                            </button>
+                        </form>
                     </div>
                 </div>
             )}
         </>
     );
-
-
-/*    return <>
-        <Link to="/step2"><button className="btn-step">STEP 2 문항 편집</button></Link>
-        {/!*<Link><button onClick={handleSavePdf} className="btn-step next">시험지 저장하기</button></Link>*!/}
-        <form action="http://localhost:8080/save" method="post">
-            <input type="hidden" name="saveName" value={save_name}/>
-            {/!*<input type="hidden" name="paperData" value={itemList}/>*!/}
-            <button className="btn-step next">시험지 저장하기</button>
-        </form>
-    </>*/
 }
 export default S3stepbtn;
