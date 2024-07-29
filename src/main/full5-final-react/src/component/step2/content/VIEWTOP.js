@@ -21,22 +21,38 @@ function VIEWTOP({itemList, onReSearch}) {
     /** 그룹화 */
     const groupedData = itemList.reduce((acc, item, index) => {
         let groupKey = null;
+        let largeChapterName = null;
+        let mediumChapterName = null;
+
         if (item.examId !== null) {
             groupKey = item.examId;
+            largeChapterName = item.largeChapterName;
+            mediumChapterName = item.mediumChapterName;
         }
 
         const groupIndex = acc.findIndex(group => group.groupKey === groupKey);
+
         if (groupIndex === -1) {
             acc.push({
                 groupKey,
-                items: [{ ...item, index: index + 1 }]
+                largeChapterName,
+                mediumChapterName,
+                smallChapters: {} // 소단원 그룹화 초기화
             });
-        } else {
-            acc[groupIndex].items.push({ ...item, index: index + 1 });
         }
 
-        return acc; // 여기서 acc를 반환해야 합니다.
-    }, []); // 초기값을 빈 배열로 설정합니다.
+        const currentGroup = acc[groupIndex === -1 ? acc.length - 1 : groupIndex];
+
+        const smallChapterName = item.smallChapterName || '기타'; // 소단원이 없으면 '기타'로 설정
+
+        if (!currentGroup.smallChapters[smallChapterName]) {
+            currentGroup.smallChapters[smallChapterName] = []; // 소단원 배열 초기화
+        }
+
+        currentGroup.smallChapters[smallChapterName].push({ ...item, index: index + 1 });
+
+        return acc;
+    }, []); // 초기값을 빈 배열로 설정
 
     console.log(groupedData, "그룹화 값 확인하기")
 

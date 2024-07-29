@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function ListModal({ open, onClose, data }) {
+    const [list, setList] = useState([]);
+
     if (!open) return null;
+    console.log(data, "data값 확인하깅")
 
     return (
         <>
@@ -14,18 +17,21 @@ function ListModal({ open, onClose, data }) {
                     </div>
                     <div className="pop-content scroll-inner" style={{ overflow: 'scroll' }}>
                         <div className="scope-wrap">
-                            <ul>
-                                {data.items.map((item, index) => (
-                                    <li key={item.id || index}> {/* item에 고유한 id가 있다면 사용 */}
-                                        <div>{item.largeChapterName}</div>
-                                        <div>
-                                            {item.mediumChapterName}
-                                            <span>{item.smallChapterName}</span>
-                                        </div>
+                            {data.map((item, index) => (
+                                <ul key={index}>
+                                    <h3>{item.largeChapterName}</h3> {/* 대단원 이름 출력 */}
+                                    <li>
+                                        <h4>{item.mediumChapterName}</h4> {/* 중단원 이름 출력 */}
+                                        <span>
+                                            {Object.entries(item.smallChapters).map(([smallChapterName, smallItems]) => (
+                                                <React.Fragment key={smallChapterName}> {/* 소단원 이름 출력 */}
+                                                    {smallChapterName}
+                                                </React.Fragment>
+                                            ))}
+                                        </span>
                                     </li>
-                                ))}
-                            </ul>
-
+                                </ul>
+                            ))}
                         </div>
                     </div>
                 </div>
