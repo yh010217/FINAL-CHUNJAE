@@ -44,7 +44,7 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
 
     useEffect(() => {
         handlePaper(changeList);
-    }, [changeList]);
+    }, [changeList, handlePaper]);
 
     /** SUMMARY -> CNTRIGHT 에서 받아온 리스트 **/
     const handleChangeList = (newChangeList) => {
