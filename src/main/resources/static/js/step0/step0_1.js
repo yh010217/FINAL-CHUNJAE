@@ -10,6 +10,16 @@ document.addEventListener('DOMContentLoaded', function () {
     let itemCount = 0;
     let itemInfoShow = false;
 
+    // 체크박스 상태 초기화
+    let resetCheckboxes = () => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false; // 모든 체크박스 해제
+        });
+        selectedItemCount = 0; // 선택된 문항 수 초기화
+        selectedExamIds = []; // 선택된 시험지 ID 배열 초기화
+        updateSelectedCount(); // 선택된 문항 수 업데이트
+    };
+
     // '신규 시험지 만들기' 버튼 클릭시
     newButton.addEventListener('click', function () {
         // console.log('subjectId..',subjectId);
@@ -19,11 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedItemCount = 0;  // 선택된 문항 수를 추적 변수
     let selectedExamIds = [];   // 선택된 시험지 ID를 저장하는 배열
 
+
     // 선택된 문항 수를 업데이트하는 함수
     let updateSelectedCount = () => {
         selectedCountElement.textContent = selectedItemCount;
     };
-
 
     checkboxes.forEach(checkbox => { // 각 체크박스에 이벤트 리스너를 추가
         checkbox.addEventListener('change', function () {
@@ -72,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('응답!!!!', data);
                     // 서버로 부터 데이터 성공적으로 받으면 step2로 이동
                     /* !!!!!! 경로 변경시 수정 !!!!!*/
-                    window.location.href = 'http://localhost:8080/step2';
+                    window.location.href = 'http://localhost:8080/step2/edit/'+subjectId;
                 }).catch(error => {
                 console.log('에러 발생', error);
                 alert('에러 발생..')
@@ -82,17 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 초기 선택된 문항 수 업데이트
     updateSelectedCount();
-
-
-    // 체크박스 상태 초기화
-    let resetCheckboxes = () => {
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = false; // 모든 체크박스 해제
-        });
-        selectedItemCount = 0; // 선택된 문항 수 초기화
-        selectedExamIds = []; // 선택된 시험지 ID 배열 초기화
-        updateSelectedCount(); // 선택된 문항 수 업데이트
-    };
 
     // 페이지가 로드될 때 체크박스 초기화
     window.addEventListener('load', resetCheckboxes);
@@ -107,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let examId = col.querySelector('input[id="examId"]').value; // examId 가져오기
                 let paperTitle = col.querySelector('input[id="paperName"]').value; // paperName 가져오기
                 let itemCnt = col.querySelector('input[id="itemCount"]').value; // itemCount 가져오기
+                let urls = []; // URL을 저장할 배열
                 itemInfoShow = false;
 
                 // 미리보기 진입시 첫번째 탭으로
@@ -116,6 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     previewTabItems[0].classList.add('active');
                 }
                 clickPreview('A');
+
+                document.querySelector(".title_header").textContent = paperTitle;
 
                 // 셋팅지 미리보기 api 호출
                 // 문항 불러오기
@@ -171,6 +173,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                         html += '   <img src="' + obj.passageUrl + '" alt="' + obj.passageId + '" width="453px">';
                                         html += '</div>';
                                         tmpPassageId = obj.passageId;
+
+                                        // URL을 배열에 추가
+                                        urls.push(obj.passageUrl);
                                     }
                                     tmpNum = passageNum;
                                 }
@@ -179,14 +184,26 @@ document.addEventListener('DOMContentLoaded', function () {
                                 html += '   <span class="numbering question-num" data-passageNum="' + passageNum + '">' + (s < 9 ? "0" + (s + 1) : (s + 1)) + '.</span>';
                                 html += '   <img class="item-img" src="' + obj.questionUrl + '" alt="' + obj.itemId + '">';
                                 html += '</div>';
+
+                                // URL을 배열에 추가
+                                urls.push(obj.questionUrl);
+
                                 html += '<div class="answer-container">';
-                                html += '   <div class="answer-tit">(정답)</div>';
+                                html += '   <div class="answer-tit">정답</div>';
                                 html += '   <div class="answer-img"><img src="' + obj.answerUrl + '" alt="' + obj.itemId + '"></div>';
                                 html += '</div>';
+
+                                // URL을 배열에 추가
+                                urls.push(obj.answerUrl);
+
                                 html += '<div class="explain-answer ">';
-                                html += '   <div class="explain-tit">(해설)</div>';
+                                html += '   <div class="explain-tit">해설</div>';
                                 html += '   <div class="explain-img"><img src="' + obj.explainUrl + '" alt="' + obj.itemId + '"></div>';
                                 html += '</div>';
+
+
+                                // URL을 배열에 추가
+                                urls.push(obj.explainUrl);
                                 html += '</div></div>';
                                 tmpNum = 0;
                             }
@@ -224,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 console.warn('passage number 값 없음', passageNumElement);
                             }
                         });
+
 
 
                     })
@@ -277,6 +295,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             itemInfoShow = false;
                         }
 
+
+
+
+
                     })
                     .catch(error => {
                         alert("미리보기를 불러오지 못했습니다. 관리자에게 문의해 주시기 바랍니다.");
@@ -286,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // loadingIndicator.style.display = 'none';
                     });
 
-                // 미리보기 tab 이동
+   /*             // 미리보기 tab 이동
                 document.querySelectorAll('#preview-tab a').forEach(function (link) {
                     link.addEventListener('click', function () {
 
@@ -305,9 +327,317 @@ document.addEventListener('DOMContentLoaded', function () {
                         clickPreview(this.getAttribute('data-type'));    // data-type 속성의 값을 가져와서 changePreview 호출
 
                     });
+                });*/
+
+    //  전체 캡쳐만 됨 - img X, 왜 안되지
+/*
+
+              document.querySelector('.preview-download').addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    const paperElement = document.querySelector('.paper');
+
+                    html2canvas(paperElement).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+
+                        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+                        const imgWidth = 210; // A4 width in mm
+                        const pageHeight = 297; // A4 height in mm
+                        const imgHeight = canvas.height * imgWidth / canvas.width;
+                        let heightLeft = imgHeight;
+
+                        let position = 0;
+
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+
+                        while (heightLeft >= 0) {
+                            position = heightLeft - imgHeight;
+                            pdf.addPage();
+                            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= pageHeight;
+                        }
+                        pdf.save('download.pdf');
+                    });
                 });
 
-                // 미리보기 tab 별 style 변경
+
+                document.querySelectorAll('#preview-tab a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        let parentLi = this.parentElement;
+                        let siblings = parentLi.parentElement.children;
+                        for (let i = 0; i < siblings.length; i++) {
+                            siblings[i].classList.remove('active');
+                        }
+                        parentLi.classList.add('active');
+
+                        let type = this.getAttribute('data-type');
+                        clickPreview(type);
+
+                        document.querySelector('.preview-download').setAttribute('data-type', type);
+                    });
+                });
+*/
+               // cors 에러 짱나...... 한 페이지만 나옴
+           document.querySelector('.preview-download').addEventListener('click', async function () {
+
+
+                    const paperElement = document.querySelector('.paper');
+                    const pdf = new jspdf.jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4',
+                        putOnlyUsedFonts: true,
+                        floatPrecision: 16,
+                        foreignObjectRendering: true,
+                        useCORS: true,
+                        mode: 'cors',
+                        credentials: 'include'
+                    });
+
+                    const pageHeight = pdf.internal.pageSize.height;
+                    const pageWidth = pdf.internal.pageSize.width;
+                    const scrollHeight = paperElement.scrollHeight;
+
+                    // 전체 캡처
+                    const canvas = await html2canvas(paperElement, {
+                        scrollX: 0,
+                        scrollY: 0,
+                        width: paperElement.offsetWidth,
+                        height: scrollHeight,
+                        useCORS: true,
+                        scale: 2,
+                        mode: 'cors',
+                        credentials: 'include'
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg');
+                    pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, (canvas.height * pageWidth) / canvas.width);
+
+                    // SVG URL 배열을 사용하여 PDF에 추가
+                    const svgUrls = urls.filter(url => url.endsWith('.svg')); // SVG URL만 필터링
+                    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // 프록시 URL
+
+                    for (let svgUrl of svgUrls) {
+                        try {
+                            const svg = await fetch(svgUrl).then(response => {
+                                if (!response.ok) throw new Error('Network response was not ok');
+                                return response.text();
+                            });
+
+                            const base64 = btoa(unescape(encodeURIComponent(svg))); // SVG를 Base64로 인코딩
+                            const base64Data = `data:image/svg+xml;base64,${base64}`;
+
+                            const img = new Image();
+                            img.crossOrigin = "anonymous"; // CORS 문제 해결
+                            img.src = base64Data;
+
+                            await new Promise((resolve) => {
+                                img.onload = () => {
+                                    const imgWidth = pageWidth;
+                                    const imgHeight = (img.height * imgWidth) / img.width; // 비율 유지
+                                    pdf.addImage(img.src, 'JPEG', 0, 0, imgWidth, imgHeight);
+                                    resolve();
+                                };
+                                img.onerror = (e) => {
+                                    console.error('SVG Image loading error:', e);
+                                    resolve(); // 에러가 나도 계속 진행
+                                };
+                            });
+                        } catch (error) {
+                            console.error('SVG Fetch Error:', error);
+                        }
+                    }
+
+                    // 추가적인 이미지 요소에 대한 처리
+                    const imgElements = paperElement.querySelectorAll('img:not([src$=".svg"])'); // SVG 제외
+                    for (let imgElement of imgElements) {
+                        const img = new Image();
+                        img.crossOrigin = "anonymous"; // CORS 문제 해결
+                        img.src = imgElement.src; // img 요소의 src 속성에서 URL 가져오기
+
+                        await new Promise((resolve) => {
+                            img.onload = async () => {
+                                const imgWidth = pageWidth;
+                                const imgHeight = (img.height * imgWidth) / img.width; // 비율 유지
+                                pdf.addImage(img.src, 'JPEG', 0, 0, imgWidth, imgHeight);
+                                resolve();
+                            };
+                            img.onerror = (e) => {
+                                console.error('Image loading error:', e);
+                                resolve(); // 에러가 나도 계속 진행
+                            };
+                        });
+                    }
+
+                    pdf.save(paperTitle+'.pdf');
+                });
+    /* 페이지는 다 나오는데 문제가 짤림
+               document.querySelector('.preview-download').addEventListener('click', async function () {
+
+                    const paperElement = document.querySelector('.paper');
+                    const pdf = new jspdf.jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4',
+                        putOnlyUsedFonts: true,
+                        floatPrecision: 16,
+                        useCORS: true,
+                    });
+
+                    const scrollHeight = paperElement.scrollHeight;
+
+                    // 전체 캡처
+                    const canvas = await html2canvas(paperElement, {
+                        scrollX: 0,
+                        scrollY: 0,
+                        width: paperElement.offsetWidth,
+                        height: scrollHeight,
+                        scale: 2,
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg');
+                    const imgWidth = pdf.internal.pageSize.width;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 원본 이미지 비율 유지
+
+                    // A4 페이지 크기 조정
+                    const pageHeight = pdf.internal.pageSize.height;
+                    let currentHeight = 0;
+
+                    // 이미지가 A4를 초과할 경우 페이지를 나누어 추가
+                    while (currentHeight < imgHeight) {
+                        const remainingHeight = imgHeight - currentHeight;
+                        const heightToDraw = Math.min(pageHeight, remainingHeight); // 현재 페이지에 그릴 높이
+
+                        pdf.addImage(imgData, 'JPEG', 0, -currentHeight, imgWidth, imgHeight);
+                        currentHeight += heightToDraw;
+
+                        if (currentHeight < imgHeight) {
+                            pdf.addPage(); // 다음 페이지 추가
+                        }
+                    }
+
+                    pdf.save(paperTitle+'.pdf');
+                });*/
+/*
+ 화면이 쭈룩 나옴
+                document.querySelector('.preview-download').addEventListener('click', async function () {
+                    const paperElement = document.querySelector('.paper');
+                    const pdf = new jspdf.jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4',
+                        putOnlyUsedFonts: true,
+                        floatPrecision: 16,
+                        useCORS: true,
+                    });
+
+                    const scrollHeight = paperElement.scrollHeight;
+
+                    // 전체 캡처
+                    const canvas = await html2canvas(paperElement, {
+                        scrollX: 0,
+                        scrollY: 0,
+                        width: paperElement.offsetWidth,
+                        height: scrollHeight,
+                        scale: 2,
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg');
+                    const imgWidth = pdf.internal.pageSize.width;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 원본 이미지 비율 유지
+
+                    // A4 페이지 크기 조정
+                    const pageHeight = pdf.internal.pageSize.height;
+                    let currentHeight = 0;
+
+                    // 이미지가 A4를 초과할 경우 페이지를 나누어 추가
+                    while (currentHeight < imgHeight) {
+                        const remainingHeight = imgHeight - currentHeight;
+                        const heightToDraw = Math.min(pageHeight, remainingHeight); // 현재 페이지에 그릴 높이
+
+                        pdf.addImage(imgData, 'JPEG', 0, -currentHeight, imgWidth, imgHeight);
+                        currentHeight += heightToDraw;
+
+                        if (currentHeight < imgHeight) {
+                            pdf.addPage(); // 다음 페이지 추가
+                        }
+                    }
+
+                    // SVG URL 배열을 가져와서 JPEG로 변환 후 PDF에 추가
+                    const svgUrls = urls; // SVG URL 배열
+
+                    for (let svgUrl of svgUrls) {
+                        try {
+                            const svgResponse = await fetch(svgUrl);
+                            console.error('Error fetching SVG:', svgResponse.status, svgResponse.statusText);
+                            if (!svgResponse.ok) throw new Error('Network response was not ok');
+                            const svgText = await svgResponse.text();
+
+                            // SVG를 이미지로 변환
+                            const svgBlob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+                            const url = URL.createObjectURL(svgBlob);
+
+                            const img = new Image();
+                            img.crossOrigin = 'anonymous'; // CORS 문제 해결
+
+                            img.src = url;
+                            await new Promise((resolve) => {
+                                img.onload = () => {
+                                    const jpegCanvas = document.createElement('canvas');
+                                    const ctx = jpegCanvas.getContext('2d');
+                                    jpegCanvas.width = img.width;
+                                    jpegCanvas.height = img.height;
+                                    ctx.drawImage(img, 0, 0);
+
+                                    // JPEG로 변환
+                                    const jpegData = jpegCanvas.toDataURL('image/jpeg');
+                                    const jpegImgHeight = (jpegCanvas.height * imgWidth) / jpegCanvas.width; // 비율 유지
+                                    pdf.addImage(jpegData, 'JPEG', 0, currentHeight, imgWidth, jpegImgHeight);
+                                    currentHeight += jpegImgHeight;
+
+                                    // 페이지 추가
+                                    if (currentHeight > pageHeight) {
+                                        pdf.addPage();
+                                        currentHeight = 0; // 다음 페이지의 시작 위치 초기화
+                                    }
+                                    resolve();
+                                };
+                                img.onerror = (e) => {
+                                    console.error('Image loading error:', e);
+                                    resolve(); // 에러가 나도 계속 진행
+                                };
+                            });
+                        } catch (error) {
+                            console.error('SVG Fetch Error:', error);
+                        }
+                    }
+
+                    pdf.save(paperTitle + '.pdf');
+                });
+*/
+
+
+
+                document.querySelectorAll('#preview-tab a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        let parentLi = this.parentElement;
+                        let siblings = parentLi.parentElement.children;
+                        for (let i = 0; i < siblings.length; i++) {
+                            siblings[i].classList.remove('active');
+                        }
+                        parentLi.classList.add('active');
+
+                        let type = this.getAttribute('data-type');
+                        clickPreview(type);
+
+                        document.querySelector('.preview-download').setAttribute('data-type', type);
+                    });
+                });
+
+
+
+
+                    // 미리보기 tab 별 style 변경
                 function setStyle(selector, displayStyle) {
                     let elemnets = document.querySelectorAll(selector);
                     elemnets.forEach(element => {
@@ -317,9 +647,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 function clickPreview(type) {
                     document.querySelector(".preview-download").setAttribute("data-type", type);    // .preview-download 요소의 data-type 속성 설정
-                    document.querySelector(".preview-data .scroll-inner").scrollTop = 0;          // 스크롤 위치를 맨 위로
+                  //  document.querySelector(".preview-data .scroll-inner").scrollTop = 0;          // 스크롤 위치를 맨 위로
                     document.querySelector('.preview-data .view-box').classList.add('type-line');  // .view-box에 type-line 클래스 추가
-
 
                     // 각 타입에 따른 화면 전환
                     if (type === 'A') { // 문제+해설+정답
