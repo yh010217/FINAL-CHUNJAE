@@ -1,20 +1,26 @@
 package com.chunjae.chunjaefull5final.config.oauth;
 
+import com.chunjae.chunjaefull5final.domain.PrincipalDetail;
 import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.jwt.JWTUtil;
+import com.chunjae.chunjaefull5final.repository.User.UserRepository;
+import com.chunjae.chunjaefull5final.service.user.CustomUserDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,28 +28,33 @@ public class CustomOAuthLoginSuccessHandler implements AuthenticationSuccessHand
 
     private final JWTUtil jwtUtil;
 
+    private final UserRepository userRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         log.info(".....auth login success.........");
 
 
-        //UserDetails
-        Object customUserDetails = authentication.getPrincipal();
-/*
+        PrincipalDetail principalDetail = (PrincipalDetail) authentication.getPrincipal();
+        String subId = principalDetail.getAttribute("sub");
 
-        Long uid = customUserDetails.getUid();
-        String snsId = customUserDetails.getSnsId();
+        User userEntity = userRepository.findBySnsId(subId).orElse(null);
+
+        CustomUserDetails user = new CustomUserDetails(userEntity);
+
+        //스프링 시큐리티 인증 토큰 생성
+        Authentication authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        //세션에 사용자 등록
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-
-        String token = "";
-        token = jwtUtil.createJwtSns(uid, snsId, role, 1000 * 60 * 30L);
-
+        String token = jwtUtil.createJwtSns(user.getUid(), subId,role, 1000*60*30L);
 
         Cookie jwtCookie = new Cookie("Authorization", token);
 
@@ -55,7 +66,7 @@ public class CustomOAuthLoginSuccessHandler implements AuthenticationSuccessHand
         response.addCookie(jwtCookie);
 
         response.addHeader("Authorization", "Bearer " + token);
-*/
+
 
         response.sendRedirect("/index");
 

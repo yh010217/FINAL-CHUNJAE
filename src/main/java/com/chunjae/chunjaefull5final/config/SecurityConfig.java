@@ -7,6 +7,7 @@ import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
 import com.chunjae.chunjaefull5final.jwt.JWTFilter;
 import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.jwt.LoginFilter;
+import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,7 @@ public class SecurityConfig {
 
     //JWTUtil 주입
     private final JWTUtil jwtUtil;
+    private final UserRepository userRepository;
 
 
     @Bean
@@ -47,7 +49,7 @@ public class SecurityConfig {
 
     @Bean
     public CustomOAuthLoginSuccessHandler customOAuthLoginSuccessHandler(){
-        return new CustomOAuthLoginSuccessHandler(jwtUtil);
+        return new CustomOAuthLoginSuccessHandler(jwtUtil,userRepository);
     }
     @Bean
     public CustomOAuthLoginFailHandler customOAuthLoginFailHandler(){
@@ -136,12 +138,6 @@ public class SecurityConfig {
         //JWTFilter 등록
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-/*
-
-        http
-                .addFilterAt(new CustomOAuthLoginFilter(clientRegistrationRepository,authorizedClientRepository
-                ,"/login/oauth2/code/*",authenticationManager(authenticationConfiguration)), OAuth2LoginAuthenticationFilter.class);
-*/
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);

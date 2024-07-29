@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.service.user;
 
 import com.chunjae.chunjaefull5final.domain.User;
+import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,11 +19,6 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.user = user;
     }
-    public CustomUserDetails(Long uid) {
-        /*repository 주입 받아서 만들어 슈바*/
-
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
