@@ -6,7 +6,7 @@ import React from "react";
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 
-function STEP2({handlePaper, getSubjectId, getParamType}) {
+function STEP2({handlePaper, subjectId, getSubjectId, getParamType}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
     const params = useParams();
@@ -47,7 +47,10 @@ function STEP2({handlePaper, getSubjectId, getParamType}) {
             </div>
 
             <div className="step-btn-wrap">
-                <S2stepbtn/>
+                <S2stepbtn
+                    paramType={params.type}
+                    subjectId={subjectId}
+                />
             </div>
         </div>
     </div>
