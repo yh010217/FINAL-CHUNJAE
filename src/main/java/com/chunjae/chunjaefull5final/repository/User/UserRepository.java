@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository<User,Long>,UserQueryDSL {
-     @Query(" select  u from  User u where u.email=:email order by u.uid desc ")
+     @Query(" select  u from  User u where u.email=:email")
       User findByEmail(String email);
 
     @Override

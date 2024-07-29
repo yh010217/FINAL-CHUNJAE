@@ -13,7 +13,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,6 +74,17 @@ public class QuestionErrorServiceImpl implements QuestionErrorService {
         }
     }
 
+    @Override
+    public Map<Long, String> userNames() {
+        List<Object[]>results=questionErrorRepository.userNames();
+        Map<Long,String> userMap=new HashMap<>();
+        for (Object[] result: results){
+            Long uid=(Long) result[0];
+            String name=(String) result[1];
+            userMap.put(uid,name);
+        }
+        return userMap;
+    }
 
 
 }

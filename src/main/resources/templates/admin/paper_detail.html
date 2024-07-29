@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <script th:src="@{/js/admin/deltest.js}"></script>
     <script th:src="@{/js/admin/paper_down.js}"></script>
+    <script th:src="@{/js/admin/paper_delete.js}"></script>
     <title>Admin</title>
 </head>
 <body>
@@ -45,7 +46,7 @@
 
         <ul class="logout-mode">
             <li>
-                <a th:href="@{/main}">
+                <a th:href="@{/index}">
                     <i class="uil uil-home"></i>
                     <span class="link-name">Main Page</span>
                 </a>
@@ -112,30 +113,41 @@
                         <span th:text="${paperInfoDTO.createdAt}"></span>
                     </li>
                     <li class="list">
-                        <span>만든회원정보</span>
+                        <span>만든회원번호</span>
                         <span th:text="${paperInfoDTO.uid}"></span>
+                    </li>
+                    <li class="list">
+                        <span>삭제여부</span>
+                        <span th:text="${paperInfoDTO.delete_yn}"></span>
                     </li>
                     <li>
                         <span>시험지파일다운</span>
-                        <span th:text="${paperInfoDTO.saveName}"></span>
-                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}">다운로드</button>
+                        <span th:text="${paperInfoDTO.saveQuestionPath}"></span>
+                        <div>
+                            <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}">다운로드</button>
+                            <button type="button" class="del-btn" id="delete-button" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}" th:data-paper-id="${paperInfoDTO.paperId}">삭제</button>
+                        </div>
+
                     </li>
                     <li>
                         <span>문제+정답 PDF 다운로드</span>
                         <span th:text="${paperInfoDTO.saveAnswerPath}"></span>
-                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">다운로드</button>
+                        <div>
+                            <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}">다운로드</button>
+                            <button type="button" class="del-btn2"  th:data-attachment-file-name="${paperInfoDTO.saveAnswerPath}" th:data-paper-id="${paperInfoDTO.paperId}">삭제</button>
+                        </div>
                     </li>
                     <li>
                         <span>문제+정답+해설 PDF 다운로드</span>
                         <span th:text="${paperInfoDTO.saveAllPath}"></span>
-                        <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAllPath}">다운로드</button>
+                        <div>
+                            <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveAllPath}">다운로드</button>
+                            <button type="button" class="del-btn3"  th:data-attachment-file-name="${paperInfoDTO.saveAllPath}" th:data-paper-id="${paperInfoDTO.paperId}">삭제</button>
+                        </div>
                     </li>
                 </ul>
                 <div class="a_list">
                     <a id="a_paper"th:href="@{/admin/paper}">목록으로</a>
-                    <a id="a_down" th:href="@{/file/csv_download/Download_Sample.pdf}">다운로드</a>
-                    <a id="a_down2" th:href="@{/file/paperDownload(fileName='test (5).pdf')}">다운로드22</a>
-                    <a id="a_del" th:href="@{/file/deleteImageFile(fileName='deltest.pdf')}" onclick="deleteFile(event)">삭제</a>
                 </div>
             </div>
 

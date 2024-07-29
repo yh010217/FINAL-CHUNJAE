@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 */
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
@@ -125,6 +127,19 @@ public class AWSService {
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 response.getOutputStream().write(buffer, 0, bytesRead);
             }
+        }
+    }
+    public void paperDeleteFile(String filepath) {
+        try {
+            System.out.println(">>>>>>>>> 버킷: " + bucket + "///파일 명:" + filepath);
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, filepath));
+            System.out.println("파일이 성공적으로 삭제되었습니다.");
+        } catch (AmazonServiceException e) {
+            System.err.println("AmazonServiceException: " + e.getMessage());
+            throw e;
+        } catch (SdkClientException e) {
+            System.err.println("SdkClientException: " + e.getMessage());
+            throw e;
         }
     }
 
