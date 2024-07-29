@@ -35,6 +35,9 @@ public class MainController {
     @GetMapping("/index")
     public String main(HttpServletRequest request, Model model) {
 
+        Long uidByJWT = jwtUtil.getUidByRequest(request);
+
+
         /** 상단바에 이름 뜨게 하기 */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();

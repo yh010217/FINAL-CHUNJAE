@@ -13,6 +13,7 @@ import com.chunjae.chunjaefull5final.service.user.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -95,7 +96,8 @@ public class SecurityConfig {
             throws Exception {
 
         http.csrf(csrf ->
-                csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+                csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .ignoringRequestMatchers("/logout"));
 
 
 //     http.csrf(csrf-> csrf.disable());
@@ -104,14 +106,12 @@ public class SecurityConfig {
                 authorize
                         // 모든사람
                         .requestMatchers("/join", "/login", "/logout"
-                                , "/checkEmail", "/**").permitAll()
+                                , "/checkEmail").permitAll()
                         .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
-                        .requestMatchers("/logout").permitAll()
-                        .requestMatchers("/admin/**").hasRole("Admin")
+                        .requestMatchers(HttpMethod.POST,"/logout").permitAll()
                         //전체허용
                         .requestMatchers("/file/**", "/test/error","/error","/api/**").permitAll()
-                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/index").permitAll()
                         //관리자허용
                         .requestMatchers("/admin/**","/userdelete/**","/userdetail/**","/errorstatus/**").hasRole("Admin")
 
@@ -134,18 +134,13 @@ public class SecurityConfig {
         // 로그아웃
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/index")
-                //.invalidateHttpSession(true)
+                //.logoutSuccessHandler(new CustomLogoutHandler())
+                .invalidateHttpSession(true)
                 .deleteCookies("XSRF-TOKEN")
                 .deleteCookies("JSESSIONID")
                 .deleteCookies("Authorization")
         );
 
-
-        http.oauth2Login(oauth2Login -> oauth2Login
-                .loginPage("/oauth2/login")
-                .defaultSuccessUrl("/index")
-                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserService))
-        );
 
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                 httpSecurityOAuth2LoginConfigurer
