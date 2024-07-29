@@ -1,6 +1,7 @@
 .download-fullBox {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .download-container {

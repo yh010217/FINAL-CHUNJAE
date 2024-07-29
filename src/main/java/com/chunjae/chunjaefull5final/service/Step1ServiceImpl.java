@@ -60,9 +60,17 @@ public class Step1ServiceImpl implements Step1Service {
                 return result;
             }
 
-            result = makeQuestionsForm(itemList, saved.getPaperId(), levelCnt);
-            result.put("enable","Y");
 
+            JSONObject tempObject;
+            tempObject = makeQuestionsForm(itemList, saved.getPaperId(), levelCnt);
+            if(tempObject != null) {
+                result = tempObject;
+                result.put("paperId",saved.getPaperId());
+                result.put("enable", "Y");
+            }else{
+                result = new JSONObject();
+                result.put("enable","N");
+            }
 
         } else {
             result = new JSONObject();
@@ -114,7 +122,12 @@ public class Step1ServiceImpl implements Step1Service {
         requestBody.put("itemIdList", itemIdList);
         ResponseEntity<String> itemResponse = postRequest(url, requestBody);
 
-        String itemResponseBody = itemResponse.getBody();
+        String itemResponseBody = null;
+        try {
+            itemResponseBody = itemResponse.getBody();
+        }catch (Exception e){
+            return null;
+        }
         try {
             JSONParser parser = new JSONParser();
             Object parsedBody = parser.parse(itemResponseBody);
@@ -123,7 +136,6 @@ public class Step1ServiceImpl implements Step1Service {
             JSONArray itemInfoList = (JSONArray) itemListJson.get("itemList");
 
             result = toSaveItems(itemInfoList, levelCnt);
-            result.put("paperId",paperId);
 
 
         } catch (Exception e) {

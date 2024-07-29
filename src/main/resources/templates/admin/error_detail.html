@@ -81,7 +81,7 @@
             <div id="error_detail">
                 <ul id="detail_ul">
                     <li class="list">
-                        <span>errorId</span>
+                        <span>오류번호</span>
                         <span th:text="${questionErrorDTO.errorId}"></span>
                     </li>
                     <li class="list">
@@ -101,8 +101,11 @@
                         <span th:text="${questionErrorDTO.status}"></span>
                     </li>
                     <li class="list">
-                        <span>회원번호</span>
-                        <span th:text="${questionErrorDTO.uid}"></span>
+                        <span>회원번호/회원이름</span>
+                        <div>
+                            <span th:text="${questionErrorDTO.uid}"></span>
+                            <span th:text="${userNames[questionErrorDTO.uid]}"></span>
+                        </div>
                     </li>
                     <li class="list">
                         <span>첨부파일 오류 이유</span>
@@ -110,8 +113,10 @@
                     </li>
                     <li>
                         <span>첨부파일이름</span>
-                        <span th:text="${questionErrorDTO.attachmentFileName}"></span>
-                        <button type="button" id="down" th:data-attachment-file-name="${questionErrorDTO.attachmentFilePath}">첨부파일다운</button>
+                        <div>
+                            <span th:text="${questionErrorDTO.attachmentFileName}"></span>
+                            <button type="button" id="down" th:data-attachment-file-name="${questionErrorDTO.attachmentFilePath}">첨부파일다운</button>
+                        </div>
                     </li>
                 </ul>
                 <div class="a_list">

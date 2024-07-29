@@ -3,7 +3,7 @@ import DELLIST from "./DELLIST";
 import NoDel from "./NoDel";
 import YesDel from "./YesDel";
 
-function DELETE({delList, setDelList, addToDelList, setModal, setItemId}) {
+function DELETE({changeList ,delList, setDelList, addToDelList, setModal, setItemId}) {
 
     /** 그룹화 */
     const groupedData = delList.reduce((acc, item, index) => {
@@ -36,6 +36,7 @@ function DELETE({delList, setDelList, addToDelList, setModal, setItemId}) {
                     setModal={setModal}
                     setItemId={setItemId}
                     groupedData={groupedData}
+                    changeList={changeList}
                 /> :
                 <NoDel/>
             }

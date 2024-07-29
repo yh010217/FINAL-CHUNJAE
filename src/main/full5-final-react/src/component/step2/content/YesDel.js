@@ -1,18 +1,28 @@
 import React from "react";
 import DELLIST from "./DELLIST";
 
-function YesDel({delList, setDelList, addToDelList, setModal, setItemId, groupedData}) {
+function YesDel({delList, setDelList, addToDelList, setModal, setItemId, groupedData, changeList}) {
 
     /** 한 번에 지우기 */
     const allDelList = (group) => {
-        console.log(group, "얘부터 다시 확인하기")
+
         const itemIds = group.items.map(item => item.itemId);
+
+        const totalItemsToAdd = group.items.length + changeList.length;
+
+        if (totalItemsToAdd > 100) {
+            alert("최대 100개까지만 추가할 수 있습니다.");
+            return; // 추가를 중단
+        }
+
+        // delList에서 삭제할 아이템을 필터링
         const newDelList = delList.filter(list => !itemIds.includes(list.itemId));
         setDelList(newDelList); // 클릭하면 한 번에 리스트에서 삭제
 
         // 문제 다시 추가하기
-        group.items.forEach(item => addToDelList(item))
-    }
+        group.items.forEach(item => addToDelList(item));
+    };
+
 
     return (
         <>
@@ -56,6 +66,7 @@ function YesDel({delList, setDelList, addToDelList, setModal, setItemId, grouped
                                 delList={delList}
                                 setModal={setModal}
                                 setItemId={setItemId}
+                                changeList={changeList}
                             />
                         ))}
                     </React.Fragment>

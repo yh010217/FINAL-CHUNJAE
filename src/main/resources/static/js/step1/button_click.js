@@ -85,6 +85,10 @@ let change_que_count = function () {
         }
     }
 
+    let low_result= 0;
+    let mid_result= 0;
+    let high_result = 0;
+
     let low_count = Math.floor(que_num / active_buttons_num);
     let mid_count = Math.floor(que_num / active_buttons_num);
     let high_count = Math.floor(que_num / active_buttons_num);
@@ -97,8 +101,9 @@ let change_que_count = function () {
         if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
             low_count = low_count + mod_count;
             mod_count = 0;
+            low_result = low_count;
             document.getElementById('range-low-count').innerHTML = low_count + '';
-            level_cnt[1] = low_count + '';
+
             document.getElementById('level_low').value = low_count;
             document.getElementById('level_range_low').classList.remove('not_contain_level');
 
@@ -106,8 +111,10 @@ let change_que_count = function () {
         } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
             mid_count = mid_count + mod_count;
             mod_count = 0;
+            mid_result = mid_count;
+
             document.getElementById('range-mid-count').innerHTML = mid_count + '';
-            level_cnt[2] = mid_count + '';
+
             document.getElementById('level_mid').value = mid_count;
             document.getElementById('level_range_mid').classList.remove('not_contain_level');
 
@@ -116,13 +123,17 @@ let change_que_count = function () {
         } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
             high_count = high_count + mod_count;
             mod_count = 0;
+            high_result = high_count;
+
             document.getElementById('range-high-count').innerHTML = high_count + '';
-            level_cnt[3] = high_count + '';
             document.getElementById('level_high').value = high_count;
             document.getElementById('level_range_high').classList.remove('not_contain_level');
 
             sum_count += high_count;
         }
+        level_cnt[1] = low_result + '';
+        level_cnt[2] = mid_result + '';
+        level_cnt[3] = high_result + '';
     }
     document.getElementById('level_sum').innerHTML = sum_count +'';
 
@@ -141,6 +152,10 @@ let change_level = function () {
     let number_mid = Number(value_mid);
     let number_high = Number(value_high);
     let number_sum = number_high + number_mid + number_low;
+
+    level_cnt[1] = value_low;
+    level_cnt[2] = value_mid;
+    level_cnt[3] = value_high;
 
 
     let value_sum = document.createTextNode(number_sum.toString());
@@ -370,6 +385,7 @@ let canSendCheck = async function (minorClassification, questionForm, activityCa
         },
         body: JSON.stringify(send_body)
     }).then(response => {
+        console.log(response);
         if (!response.ok) {
             throw new Error('가능한지 체크과정중에 안됨');
         }
