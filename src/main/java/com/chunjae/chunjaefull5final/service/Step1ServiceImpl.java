@@ -301,6 +301,11 @@ public class Step1ServiceImpl implements Step1Service {
         return result;
     }
 
+    @Override
+    public int getSubjectId(Long paperId) {
+        return paperInfoRepo.getSubjectId(paperId);
+    }
+
 
     public List<EvaluationDTO> getEvalList(String evalBody) {
         List<EvaluationDTO> evaluationList = new ArrayList<>();

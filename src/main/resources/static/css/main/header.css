@@ -56,3 +56,13 @@ ul li {
     text-align: center;
     border: none;
 }
+
+.name-logout {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.name-logout span {
+    margin-right: 20px;
+}

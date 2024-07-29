@@ -1,5 +1,6 @@
 package com.chunjae.chunjaefull5final.service.user;
 
+import com.chunjae.chunjaefull5final.domain.PrincipalDetail;
 import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,4 +27,7 @@ public class UserDetailService implements UserDetailsService {
             return new CustomUserDetails(findUser);
         return null;
     }
+
+
+
 }

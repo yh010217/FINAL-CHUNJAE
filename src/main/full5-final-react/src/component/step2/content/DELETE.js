@@ -1,72 +1,44 @@
 import React from "react";
 import DELLIST from "./DELLIST";
+import NoDel from "./NoDel";
+import YesDel from "./YesDel";
 
 function DELETE({delList, setDelList, addToDelList, setModal, setItemId}) {
 
     /** 그룹화 */
-    const groupedData = delList.reduce((acc, item) => {
-        if (!acc[item.passageId]) {
-            acc[item.passageId] = {
-                passageUrl: item.passageUrl,
-                items: []
-            };
+    const groupedData = delList.reduce((acc, item, index) => {
+        let groupKey = null;
+        if(item.passageId !== null) {
+            groupKey = item.passageId
+        } else {
+            groupKey = item.itemId
         }
-        acc[item.passageId].items.push(item);
+
+        const groupIndex = acc.findIndex(group => group.groupKey === groupKey); // 기존 그룹 인덱스 확인
+        if (groupIndex === -1) {
+            acc.push({
+                groupKey,
+                items: [{...item, index: index + 1}]
+            });
+        } else {
+            acc[groupIndex].items.push({...item, index: index + 1});
+        }
         return acc;
-    }, {});
-
-    /** 한 번에 지우기 */
-    const allDelList = (group) => {
-        console.log(group, "얘부터 다시 확인하기")
-        const itemIds = group.items.map(item => item.itemId);
-        const newDelList = delList.filter(list => !itemIds.includes(list.itemId));
-        setDelList(newDelList); // 클릭하면 한 번에 리스트에서 삭제
-
-        // 문제 다시 추가하기
-        group.items.forEach(item => addToDelList(item))
-    }
+    }, []);
     
     return (
         <div className="view-que-list scroll-inner">
-            {Object.values(groupedData).map((group, index) => (
-                <React.Fragment key={group.passageId}>
-                    {group.passageUrl && (
-                        <div className="view-que-box">
-                            <div className="que-top">
-                                <div className="title">
-                                    {group.items.length > 1 ? (
-                                        <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                    ) : (
-                                        <span className="num">지문 {group.items[0].itemNo}</span>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="view-que">
-                                <img src={group.passageUrl} alt="지문입니다..." />
-                                <div className="que-bottom">
-                                    <div className="data-area">
-                                        <button className="btn-default" onClick={() => allDelList(group)}>
-                                            <i className="add-type02"></i>
-                                            전체 추가
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    {group.items.map((item, itemIndex) => (
-                        <DELLIST
-                            itemIndex={itemIndex}
-                            item={item}
-                            addToDelList={addToDelList}
-                            setDelList={setDelList}
-                            delList={delList}
-                            setModal={setModal}
-                            setItemId={setItemId}
-                        />
-                    ))}
-                </React.Fragment>
-            ))}
+            {delList.length > 0 ?
+                <YesDel
+                    delList={delList}
+                    setDelList={setDelList}
+                    addToDelList={addToDelList}
+                    setModal={setModal}
+                    setItemId={setItemId}
+                    groupedData={groupedData}
+                /> :
+                <NoDel/>
+            }
         </div>
     );
 

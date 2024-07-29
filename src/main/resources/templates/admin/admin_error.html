@@ -45,7 +45,7 @@
 
         <ul class="logout-mode">
             <li>
-                <a th:href="@{/main}">
+                <a th:href="@{/index}">
                     <i class="uil uil-home"></i>
                     <span class="link-name">Main Page</span>
                 </a>
@@ -94,7 +94,7 @@
                         </a>
                     </li>
                     <li th:if="${questionList.isEmpty()}">
-                        시험지 정보가 존재하지 않습니다.
+                       오류정보가 존재하지 않습니다
                     </li>
 
                 </ul>
