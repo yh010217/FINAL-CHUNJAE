@@ -50,11 +50,12 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
                     return item;
                 })
                 setItemList(indexList);
-                getSubjectId(getData);
 
                 let subjectId = response.data.subjectId;
                 setSubjectId(subjectId);
+                getSubjectId(subjectId);
 
+                console.log(subjectId);
             }else if(paramType == null){
                 console.log('paramType is null');
             }
