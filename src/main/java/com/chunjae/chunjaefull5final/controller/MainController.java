@@ -37,7 +37,6 @@ public class MainController {
 
         Long uidByJWT = jwtUtil.getUidByRequest(request);
 
-
         /** 상단바에 이름 뜨게 하기 */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -47,10 +46,8 @@ public class MainController {
             CustomUserDetails userDetails = (CustomUserDetails) principal;
             String fullName = userDetails.getFullName();
             Long uid = userDetails.getUid();
-            System.out.println(uid + "아아ㅏ아아아아앙");
-            log.info(uid + ">>>>>>>>>>>>>>> uid 값 확인하기");
             model.addAttribute("fullName", fullName);
-            model.addAttribute("Uid", uid); // google 로그인이면 못 받아옴 => why?
+            model.addAttribute("Uid", uid);
 
         } else {
             model.addAttribute("fullName", "구글회원");
@@ -63,7 +60,9 @@ public class MainController {
     }
 
     @GetMapping("/paper")
-    public String paper(Model model) {
+    public String paper(HttpServletRequest request, Model model) {
+
+        Long uidByJWT = jwtUtil.getUidByRequest(request);
 
         /** 상단바에 이름 뜨게 하기 */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,12 +77,8 @@ public class MainController {
         }
 
         /** 문항 다운로드하기 목록 불러오기 */
-        Long uid = 5L; // 몰라서 하드코딩
-        List<PaperInfoDTO> dto = mainService.getList(uid);
+        List<PaperInfoDTO> dto = mainService.getList(uidByJWT);
         model.addAttribute("dto", dto);
-        log.info(dto.get(0).getSaveName() + "saveName 정보 얻어오기");
-        log.info(dto.get(0).getUpdateAt() + "업데이트 정보 얻어오기");
-
         model.addAttribute("view","main/paper");
         return "main/index";
     }
