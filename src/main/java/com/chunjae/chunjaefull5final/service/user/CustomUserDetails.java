@@ -39,9 +39,6 @@ public class CustomUserDetails implements UserDetails {
         return user.getPwd();
     }
 
-    public String getSnsId() {
-        return user.getSnsId();
-    }
     public String getFullName() {
         return user.getName();
     }
