@@ -1603,13 +1603,13 @@ input[type=checkbox]:checked + label::before {
   font-weight: 800;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-wrap .select-btn {
-  width: 130px;
+  width: 140px;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-wrap + .select-wrap {
   margin-left: 10px;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-wrap + .select-wrap .select-btn {
-  width: 130px;
+  width: 140px;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-list .disabled a {
   color: #666;
