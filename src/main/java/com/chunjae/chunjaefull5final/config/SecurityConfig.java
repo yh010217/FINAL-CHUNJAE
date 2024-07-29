@@ -47,6 +47,7 @@ public class SecurityConfig {
                         , "/back/**"
                         , "/step1/**"
                         , "/step2/**"
+                        , "/item-img/**"
 
                 );
     }

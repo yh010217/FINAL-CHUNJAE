@@ -2,7 +2,7 @@ import ListModal from "./ListModal";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-function VIEWTOP({ itemList, onReSearch, subjectId }) {
+function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [response, setResponse] = useState('');
@@ -20,6 +20,7 @@ function VIEWTOP({ itemList, onReSearch, subjectId }) {
     const handleSubject = async () => {
         try {
             const url = '/api/chapter/chapter-list';
+
             const data = {
                 subjectId: subjectId
             };
@@ -28,12 +29,14 @@ function VIEWTOP({ itemList, onReSearch, subjectId }) {
 
             let subjectName = respData.data.chapterList.map(item => item.subjectName);
             setResponse(subjectName[0] || '');
+
+
         } catch (error) {
             console.log('Error fetching data: ', error);
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         handleSubject()
     }, [subjectId])
 
@@ -49,7 +52,7 @@ function VIEWTOP({ itemList, onReSearch, subjectId }) {
                     <i className="research"></i>재검색
                 </button>
                 <button onClick={openModal} className="btn-default pop-btn">출제범위</button>
-                <ListModal data={itemList} open={modalOpen} onClose={closeModal} />
+                <ListModal data={itemList} open={modalOpen} onClose={closeModal}/>
             </div>
         </>
     );

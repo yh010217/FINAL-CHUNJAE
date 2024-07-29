@@ -11,48 +11,53 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
         try {
 
             let url ='';
+            let getUrl = '';
             let data ={};
             if (paramType === 'edit') {
 
-                /** STEP 0 api 20번 **/
-                url = '/api/item-img/exam-list/item-list'
+                getUrl = 'http://localhost:8080/step0/examId'
+                const responseGet = await axios.get(getUrl);
+                let examId = responseGet.data.examIdList.map(item=>item);
 
-                /** STEP 0 에서 넘겨주는 examIdList  **/
                 data = {
-                    // 영어
-                    // examIdList: ["1416"]
-                    // 국어
-                    //examIdList: ["503"]
-                    // 수학
-                    // examIdList: ["1534"]
-                    // ?
-                    // examIdList: ["356"]
-                    // 세계사
-                    examIdList: ["545"]
+                    examIdList: examId
                 };
+
+                url = '/api/item-img/exam-list/item-list'
+                const responsePost = await axios.post(url, data);
+
+                let i = 1;
+                let indexList = responsePost.data.itemList.map(item=>{
+
+                    item.index = i;
+                    i++;
+                    return item;
+                })
+                setItemList(indexList);
+                setSubjectId(getData);
+                getSubjectId(getData);
+
             }else if(paramType === 'new'){
                 url = 'http://localhost:8080/step1/step2-data/'+getData
+
+                const response = await axios.post(url, data);
+
+                let i = 1;
+                let indexList = response.data.itemList.map(item=>{
+
+                    item.index = i;
+                    i++;
+                    return item;
+                })
+                setItemList(indexList);
+                getSubjectId(getData);
+
+                let subjectId = response.data.subjectId;
+                setSubjectId(subjectId);
 
             }else if(paramType == null){
                 console.log('paramType is null');
             }
-            /** 신규 시험지 만들기 **/
-            /** STEP 1 -> STEP 2 api 5번 **/
-
-            const response = await axios.post(url, data);
-          
-            let i = 1;
-            let indexList = response.data.itemList.map(item=>{
-
-                item.index = i;
-                i++;
-                return item;
-            });
-            setItemList(indexList);
-
-            let subjectId = response.data.subjectId;
-            setSubjectId(subjectId);
-            getSubjectId(subjectId);
 
         } catch (error) {
             console.error('Error response api .... ', error)
@@ -71,7 +76,7 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
     return (
         <div className="view-box">
             {/** 시험지 정보 / 과목 명칭(선생님 이름) / 재검색 / 출제범위 **/}
-            <VIEWTOP itemList={itemList} onReSearch={handleItemList} subjectId={subjectId}/>
+            <VIEWTOP itemList={itemList} onReSearch={handleItemList} paramType={paramType} subjectId={subjectId}/>
             {/** 문제 목록, 문제 요약, 유사, 삭제 **/}
             <VIEWBOTTOM itemList={itemList} setModal={setModal} setItemId={setItemId} handlePaper={handlePaper}/>
         </div>
