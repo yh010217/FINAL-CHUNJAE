@@ -4,6 +4,7 @@ import com.chunjae.chunjaefull5final.dto.UserDTO;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -64,8 +65,61 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
+    public Long getExpiredPeriod(String token){
+        Long exp = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("exp", Long.class);
+        Long iat = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("iat", Long.class);
+        return exp-iat;
+    }
+
+    public String getSnsId(String token){
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("snsId", String.class);
+    }
+    public void refreshExpiredTime(HttpServletResponse response, String token){
+        String refreshToken;
+
+        Long uid = getUid(token);
+        String role = getRole(token);
+        Long expiredMs = getExpiredPeriod(token);
+
+        String email;
+        String snsId;
+        if(getSnsId(token) == null){
+            email = getUsername(token);
+            refreshToken = Jwts.builder()
+                    .claim("uid",uid)
+                    .claim("email", email)
+                    .claim("role", role)
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    .signWith(secretKey)
+                    .compact();
+
+        }else{
+            snsId = getSnsId(token);
+
+            refreshToken = Jwts.builder()
+                    .claim("uid",uid)
+                    .claim("role", role)
+                    .claim("snsId",snsId)
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    .signWith(secretKey)
+                    .compact();
+
+        }
+        Cookie jwtCookie = new Cookie("Authorization", refreshToken);
+
+        jwtCookie.setHttpOnly(true); // 클라이언트 측 스크립트에서 쿠키 접근 불가
+        jwtCookie.setSecure(true); // HTTPS에서만 쿠키 전송
+        jwtCookie.setPath("/"); // 모든 경로에서 쿠키 사용 가능
+        jwtCookie.setMaxAge(60 * 60 * 10); // 쿠키의 유효기간 설정 (초 단위)
+
+        response.addCookie(jwtCookie);
+
+    }
+
     // 토큰 생성
-    public String createJwtNormal(long uid,String username,String realName, String role, Long expiredMs) {
+    public String createJwtNormal(long uid,String username, String role, Long expiredMs) {
 
 
         System.out.println(username);
@@ -73,7 +127,6 @@ public class JWTUtil {
                 .claim("uid",uid)
                 .claim("email", username)
                 .claim("role", role)
-                .claim("realName", realName)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)

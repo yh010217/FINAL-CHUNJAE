@@ -61,7 +61,7 @@ public class CustomOAuthLoginSuccessHandler implements AuthenticationSuccessHand
         jwtCookie.setHttpOnly(true); // 클라이언트 측 스크립트에서 쿠키 접근 불가
         jwtCookie.setSecure(true); // HTTPS에서만 쿠키 전송
         jwtCookie.setPath("/"); // 모든 경로에서 쿠키 사용 가능
-        jwtCookie.setMaxAge(60 * 60 * 10); // 쿠키의 유효기간 설정 (초 단위)
+        jwtCookie.setMaxAge(60 * 60); // 쿠키의 유효기간 설정 (초 단위)
 
         response.addCookie(jwtCookie);
 
