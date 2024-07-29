@@ -32,6 +32,9 @@ public class SvgToPngController {
     public ResponseEntity<List<ImageDTO>> convertAndSave(@RequestBody List<String> dataList) {
         List<ImageDTO> resultList = new ArrayList<>();
 
+        for(String item: dataList){
+        }
+
 //        log.info("===================!!!!!!!!!!!!!!전달 성공 convertAndSave!!!!!!!!!!!!=====================");
         for (String item : dataList) {
             try {
@@ -58,82 +61,83 @@ public class SvgToPngController {
         int retryDelay = 1000; // 1초 대기
 
         System.out.println(item);
-        if (item.contains("/getImage/")) {
-            String getContent = item.split("/getImage/")[1];
-            String baseUrl = "https://img.chunjae-platform.com/upload/capture/tsherpa/"+getContent;
+        String getContent = item.split("/tsherpa/")[1];
 
-            System.out.println(baseUrl);
+        String baseUrl = item;
 
-            boolean success = false;
+        System.out.println(baseUrl);
 
-            for (int attempt = 0; attempt < maxRetries; attempt++) {
-                try (InputStream svgInputStream = new URL(baseUrl).openStream();
-                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+        boolean success = false;
 
-                    // URL에서 SVG 데이터 읽기
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = svgInputStream.read(buffer)) != -1) {
-                        byteArrayOutputStream.write(buffer, 0, bytesRead);
-                    }
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            try (InputStream svgInputStream = new URL(baseUrl).openStream();
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
 
-                    // 바이트 배열 생성
-                    byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                // URL에서 SVG 데이터 읽기
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = svgInputStream.read(buffer)) != -1) {
+                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+                }
 
-                    // SVG 데이터 파싱
-                    try (InputStream svgInputStream2 = new ByteArrayInputStream(imageBytes)) {
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(svgInputStream2);
+                // 바이트 배열 생성
+                byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
-                        // SVG 루트 엘리먼트 가져오기
-                        Element svgElement = document.getDocumentElement();
+                // SVG 데이터 파싱
+                try (InputStream svgInputStream2 = new ByteArrayInputStream(imageBytes)) {
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+                    Document document = builder.parse(svgInputStream2);
 
-                        // width와 height 속성 읽기
-                        String width = svgElement.getAttribute("width");
-                        String height = svgElement.getAttribute("height");
+                    // SVG 루트 엘리먼트 가져오기
+                    Element svgElement = document.getDocumentElement();
 
-                        // 출력
+                    // width와 height 속성 읽기
+                    String width = svgElement.getAttribute("width");
+                    String height = svgElement.getAttribute("height");
+
+                    log.info("========높이!!==={}", height);
+
+                    // 출력
 //                        System.out.println("SVG Width: " + width);
 //                        System.out.println("SVG Height: " + height);
 
-                        // 비율 계산
-                        if (!width.isEmpty() && !height.isEmpty()) {
-                            intArr[0] = 310;
-                            intArr[1] = (int) Math.ceil(((Integer.parseInt(height) * 1.0 / Integer.parseInt(width)) * 310));
+                    // 비율 계산
+                    if (!width.isEmpty() && !height.isEmpty()) {
+                        intArr[0] = 310;
+                        intArr[1] = (int) Math.ceil(((Integer.parseInt(height) * 1.0 / Integer.parseInt(width)) * 310));
 
-                            double widthValue = Double.parseDouble(width);
-                            double heightValue = Double.parseDouble(height);
-                            double ratio = widthValue / heightValue;
+                        double widthValue = Double.parseDouble(width);
+                        double heightValue = Double.parseDouble(height);
+                        double ratio = widthValue / heightValue;
 //                            System.out.println("Aspect Ratio: " + ratio);
-                            success = true;
-                            break; // 성공적으로 요청이 완료되면 루프 종료
-                        } else {
-                            System.out.println("Width or Height attribute is missing.");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        success = true;
+                        break; // 성공적으로 요청이 완료되면 루프 종료
+                    } else {
+                        System.out.println("Width or Height attribute is missing.");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                } catch (MalformedURLException me) {
-                    System.out.println("URL이 이상한듯?");
-                    System.out.println(me);
-                    break; // URL이 잘못된 경우 재시도하지 않음
-                } catch (IOException ie) {
-                    System.out.println("Stream 처리 문제가 발생했음.");
-                    System.out.println(ie);
-                    // 일시적으로 대기 후 재시도
-                    try {
-                        Thread.sleep(retryDelay);
-                    } catch (InterruptedException ie2) {
-                        Thread.currentThread().interrupt();
-                    }
+            } catch (MalformedURLException me) {
+                System.out.println("URL이 이상한듯?");
+                System.out.println(me);
+                break; // URL이 잘못된 경우 재시도하지 않음
+            } catch (IOException ie) {
+                System.out.println("Stream 처리 문제가 발생했음.");
+                System.out.println(ie);
+                // 일시적으로 대기 후 재시도
+                try {
+                    Thread.sleep(retryDelay);
+                } catch (InterruptedException ie2) {
+                    Thread.currentThread().interrupt();
                 }
             }
+        }
 
-            if (!success) {
-                System.out.println("Failed to retrieve SVG after " + maxRetries + " attempts.");
-            }
+        if (!success) {
+            System.out.println("Failed to retrieve SVG after " + maxRetries + " attempts.");
         }
 
         return intArr;

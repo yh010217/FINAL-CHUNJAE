@@ -31,17 +31,43 @@ function S3stepbtn({ paperTitle, paper }) {
 
     const handleSave = async () => {
         try {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'http://localhost:8080/save';
+
+            const input1 = document.createElement('input');
+            input1.type = 'hidden';
+            input1.name = 'paperTitle';
+            input1.value = paperTitle;
+            form.appendChild(input1);
+
+            const input2 = document.createElement('input');
+            input2.type = 'hidden';
+            input2.name = 'paper';
+            input2.value = JSON.stringify(paper);
+            form.appendChild(input2);
+
+            document.body.appendChild(form);
+            form.submit();
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        }
+    };
+
+/*      const handleSave = async () => {
+        try {
             const url = '/back/savedpaper';
             const data = {
                 paper: [paperTitle, paper]
             };
-
             await axios.post(url, data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
 
     };
+*/
+
 
     return (
         <>
@@ -51,7 +77,6 @@ function S3stepbtn({ paperTitle, paper }) {
             <button className="btn-step next" onClick={handleSaveBtn}>
                 시험지 저장하기
             </button>
-
             {showAlert && (
                 <div className="step-modal">
                     {paperTitle === '' && (
@@ -84,13 +109,9 @@ function S3stepbtn({ paperTitle, paper }) {
                         <button className="btn-default" onClick={handleCancel}>
                             취소
                         </button>
-                        <form action="http://localhost:8080/save" method="post">
-                            <input type="hidden" name="paper" value={paper}/>
-                            {/*<input type="hidden" name="paperTitle" value={paperTitle}/>*/}
-                            <button type="submit" className="btn-default" onClick={handleSaveConfirm}>
-                                확인
-                            </button>
-                        </form>
+                        <button type="submit" className="btn-default" onClick={handleSaveConfirm}>
+                            확인
+                        </button>
                     </div>
                 </div>
             )}

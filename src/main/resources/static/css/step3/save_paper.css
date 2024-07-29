@@ -1,6 +1,6 @@
 body{
     /*background-color: #f5f5f5;*/
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .page,.page2,.page3{
