@@ -1,12 +1,12 @@
 package com.chunjae.chunjaefull5final.config;
 
 
-import com.chunjae.chunjaefull5final.config.oauth.CustomOAuthLoginFilter;
+import com.chunjae.chunjaefull5final.config.oauth.CustomOAuthLoginFailHandler;
+import com.chunjae.chunjaefull5final.config.oauth.CustomOAuthLoginSuccessHandler;
 import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
 import com.chunjae.chunjaefull5final.jwt.JWTFilter;
 import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.jwt.LoginFilter;
-import com.chunjae.chunjaefull5final.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +19,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -45,6 +42,19 @@ public class SecurityConfig {
 
         return configuration.getAuthenticationManager();
     }
+
+
+
+    @Bean
+    public CustomOAuthLoginSuccessHandler customOAuthLoginSuccessHandler(){
+        return new CustomOAuthLoginSuccessHandler(jwtUtil);
+    }
+    @Bean
+    public CustomOAuthLoginFailHandler customOAuthLoginFailHandler(){
+        return new CustomOAuthLoginFailHandler(jwtUtil);
+    }
+
+
 
 
     @Bean
@@ -116,7 +126,9 @@ public class SecurityConfig {
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
                 httpSecurityOAuth2LoginConfigurer
                         .loginPage("/oauth2/login")
-                        .defaultSuccessUrl("/index")
+                        .successHandler(customOAuthLoginSuccessHandler())
+                        .failureHandler(customOAuthLoginFailHandler())
+                        //.defaultSuccessUrl("/index")
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
 
@@ -124,10 +136,12 @@ public class SecurityConfig {
         //JWTFilter 등록
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+/*
 
         http
                 .addFilterAt(new CustomOAuthLoginFilter(clientRegistrationRepository,authorizedClientRepository
                 ,"/login/oauth2/code/*",authenticationManager(authenticationConfiguration)), OAuth2LoginAuthenticationFilter.class);
+*/
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
@@ -140,10 +154,11 @@ public class SecurityConfig {
 
         return http.build();
     }
+    /*
     private final ClientRegistrationRepository clientRegistrationRepository;
 
     private final OAuth2AuthorizedClientRepository authorizedClientRepository;
-
+*/
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {

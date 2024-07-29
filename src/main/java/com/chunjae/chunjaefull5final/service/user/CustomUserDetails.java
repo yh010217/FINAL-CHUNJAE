@@ -18,6 +18,10 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.user = user;
     }
+    public CustomUserDetails(Long uid) {
+        /*repository 주입 받아서 만들어 슈바*/
+
+    }
 
 
     @Override

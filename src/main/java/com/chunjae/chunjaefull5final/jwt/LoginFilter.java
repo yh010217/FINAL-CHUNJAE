@@ -101,7 +101,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         if(snsId == null){
             token = jwtUtil.createJwtNormal(uid,email,realName,role, 1000*60*30L);
         }else{
-            token = jwtUtil.createJwtSns(uid,email,realName,snsId,role, 1000*60*30L);
+            token = jwtUtil.createJwtSns(uid,snsId,role, 1000*60*30L);
         }
 
         Cookie jwtCookie = new Cookie("Authorization", token);

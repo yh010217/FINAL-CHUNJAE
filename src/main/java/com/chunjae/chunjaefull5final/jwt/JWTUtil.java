@@ -56,15 +56,11 @@ public class JWTUtil {
                 .compact();
     }
     // 토큰 생성
-    public String createJwtSns(long uid,String username,String realName, String snsId, String role, Long expiredMs) {
+    public String createJwtSns(long uid, String snsId, String role, Long expiredMs) {
 
-
-        System.out.println(username);
         return Jwts.builder()
                 .claim("uid",uid)
-                .claim("email", username)
                 .claim("role", role)
-                .claim("realName",realName)
                 .claim("snsId",snsId)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
