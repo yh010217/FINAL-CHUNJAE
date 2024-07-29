@@ -1,0 +1,9 @@
+.backHome {
+    background-color: #5670dc;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 12px;
+    position: relative;
+    top: 17px;
+    font-weight: 100;
+}
