@@ -23,7 +23,6 @@ function App() {
         // console.log(newPaper);
         setPaper(newPaper);
     }
-
     return <>
         <BrowserRouter>
             <Routes>

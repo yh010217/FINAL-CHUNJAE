@@ -9,43 +9,30 @@ import org.springframework.web.multipart.MultipartFile;
 */
 
 import com.amazonaws.services.s3.model.S3Object;
+import com.chunjae.chunjaefull5final.dto.PaperInfoDTO;
 import com.chunjae.chunjaefull5final.service.AWSService;
+import com.chunjae.chunjaefull5final.service.paperinfo.PaperInfoService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.HandlerMapping;
 
-import java.io.File;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/file")
 public class AWSController {
     private final AWSService S3Service;
+
+    private final PaperInfoService paperInfoService;
 
     private static final Logger logger = LoggerFactory.getLogger(AWSController.class);
 
@@ -81,15 +68,63 @@ public class AWSController {
         S3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
+
     /** 폴더 바꿔야함*/
     private final String paperDFolderName="pdf_테스트폴더";
-    @DeleteMapping("/paperDelete")
-    public ResponseEntity<String>  paperDelete(@RequestParam String fileName){
-        String filepath=paperDFolderName+"/"+fileName;
-        S3Service.paperDeleteFile(filepath);
-        return ResponseEntity.ok(filepath);
+    @DeleteMapping("/fileDelete")
+    public ResponseEntity<Map<String, Object>> deleteFile(@RequestParam String fileName, @RequestParam Long paperId) {
+        String filepath = paperDFolderName + "/" + fileName;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            S3Service.paperDeleteFile(filepath);
+            paperInfoService.updateQuestionPathToNull(paperId);
+
+            response.put("success", true);
+            response.put("filepath", filepath);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @DeleteMapping("/fileDelete2")
+    public ResponseEntity<Map<String, Object>> paperDelete2(@RequestParam String fileName, @RequestParam Long paperId) {
+        String filepath = paperDFolderName + "/" + fileName;
+        try {
+            S3Service.paperDeleteFile(filepath);
+            paperInfoService.updateSaveAnswerPathToNull(paperId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("filepath", filepath);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
+    @DeleteMapping("/fileDelete3")
+    public ResponseEntity<Map<String, Object>> paperDelete3(@RequestParam String fileName, @RequestParam Long paperId) {
+        String filepath = paperDFolderName + "/" + fileName;
+        try {
+            S3Service.paperDeleteFile(filepath);
+            paperInfoService.updateAllPathToNull(paperId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("filepath", filepath);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
     /** 오류사진 다운*/
     private final String folderName = "error"; // 폴더명 하드코딩
     @GetMapping("/download")
