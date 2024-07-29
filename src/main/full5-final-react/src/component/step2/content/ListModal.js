@@ -4,7 +4,6 @@ function ListModal({ open, onClose, data }) {
     const [list, setList] = useState([]);
 
     if (!open) return null;
-    console.log(data, "data값 확인하깅")
 
     return (
         <>

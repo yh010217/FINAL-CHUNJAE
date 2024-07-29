@@ -54,7 +54,6 @@ function VIEWTOP({itemList, onReSearch}) {
         return acc;
     }, []); // 초기값을 빈 배열로 설정
 
-    console.log(groupedData, "그룹화 값 확인하기")
 
 
     return <>

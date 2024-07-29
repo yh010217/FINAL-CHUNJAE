@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 function SIMLARLIST(props) {
+
     // 유사 문제 삭제 함수
     const simRemoveList = (itemId) => {
         props.list(itemId);
@@ -10,6 +11,14 @@ function SIMLARLIST(props) {
     const allSimList = async (group) => {
         // 아이템 순서를 뒤집음
         group.items.reverse();
+
+        const totalItemsToAdd = group.items.length + props.changeList.length;
+
+        if (totalItemsToAdd > 100) {
+            alert("변경 목록은 최대 100개까지만 추가할 수 있습니다.");
+            return; // 추가를 중단
+        }
+
         for (let item of group.items) {
             await props.list(item.itemId);
 
@@ -29,10 +38,10 @@ function SIMLARLIST(props) {
                 passageUrl: item.passageUrl
             };
 
-            // 상위 컴포넌트에서 전달된 함수 호출
             props.addToChangeList(itemToAdd);
         }
     };
+
 
     // 리스트에 추가하기 함수
     const addToChangeList = (item) => {
@@ -52,10 +61,15 @@ function SIMLARLIST(props) {
             passageUrl: item.passageUrl
         };
 
-        props.addToChangeList(itemToAdd);
-
-        // 삭제 함수 호출
-        simRemoveList(item.itemId);
+        // changeList의 길이가 100을 초과하는지 확인
+        if (props.changeList.length >= 100) {
+            alert("최대 100개까지만 추가할 수 있습니다.");
+        } else if (props.changeList.length < 100) {
+            props.addToChangeList(itemToAdd);
+            simRemoveList(item.itemId); // 삭제 함수 호출
+        } else {
+            console.log('오류 발생')
+        }
     };
 
     // 필터된 아이템이 있는지 확인하는 변수
@@ -68,7 +82,6 @@ function SIMLARLIST(props) {
 
                 const passageId = group.items.map(item => item.passageId);
                 const passageUrl = group.items.map(item => item.passageUrl);
-                console.log(group)
 
                 // 난이도에 따라 아이템 필터링
                 switch (props.view) {
