@@ -19,7 +19,7 @@ div.table.half-type .depth-01.ui-sortable.single-item .col{
 /* ======================= ====================== ====================== */
 
 /* ====================== STEP 3 처음으로 모달 =============== */
-.step3-modal {
+.step-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -31,7 +31,7 @@ div.table.half-type .depth-01.ui-sortable.single-item .col{
     text-align: center;
 }
 
-.step3-modal p{
+.step-modal p{
     margin: 5px 0;
 }
 /* ====================== ================ =============== */

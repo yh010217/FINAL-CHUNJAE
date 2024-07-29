@@ -43,8 +43,10 @@ public class SecurityConfig {
                         , "/preview/**"
                         , "/step0/**"
                         , "/api/**"
-                         , "/step1/**"
+                        , "/back/**"
+                        , "/step1/**"
                         , "/step2/**"
+                        , "/item-img/**"
 
                 );
     }

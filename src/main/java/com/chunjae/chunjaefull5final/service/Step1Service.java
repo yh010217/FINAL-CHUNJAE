@@ -27,4 +27,6 @@ public interface Step1Service {
     void saveQuestions(JSONObject body) throws RuntimeException;
 
     List<QuestionsDTO> getQuestions(Long paperId);
+
+    int getSubjectId(Long paperId);
 }

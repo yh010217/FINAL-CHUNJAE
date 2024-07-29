@@ -130,8 +130,10 @@ public class Step1Controller {
     @ResponseBody
     public Map<String,Object> step2Data(@PathVariable Long paperId){
         Map<String,Object> result = new HashMap<>();
+        int subjectId = step1Service.getSubjectId(paperId);
         List<QuestionsDTO> itemList = step1Service.getQuestions(paperId);
         result.put("itemList",itemList);
+        result.put("subjectId",subjectId);
         return result;
     }
 
