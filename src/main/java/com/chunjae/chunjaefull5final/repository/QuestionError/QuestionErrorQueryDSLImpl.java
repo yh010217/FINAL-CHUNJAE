@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.repository.QuestionError;
 
 import com.chunjae.chunjaefull5final.domain.QuestionError;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -13,6 +14,7 @@ import static com.chunjae.chunjaefull5final.domain.QQuestionError.questionError;
 import static com.chunjae.chunjaefull5final.domain.QUser.user;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class QuestionErrorQueryDSLImpl implements QuestionErrorQueryDSL{
@@ -39,5 +41,15 @@ public class QuestionErrorQueryDSLImpl implements QuestionErrorQueryDSL{
                 .from(questionError)
                 .fetchOne();
         return new PageImpl<>(fetch, pageable, totalCount);
+    }
+
+    @Override
+    public List<Object[]> userNames() {
+        List<Tuple> fetch = queryFactory.select(user.uid, user.name)
+                .from(user)
+                .fetch();
+        return fetch.stream()
+                .map(tuple -> new Object[]{tuple.get(user.uid),tuple.get(user.name)})
+                .collect(Collectors.toList());
     }
 }

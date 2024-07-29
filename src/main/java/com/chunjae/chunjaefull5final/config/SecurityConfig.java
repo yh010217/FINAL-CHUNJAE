@@ -21,15 +21,14 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
-   // private final CustomOAuth2UserService customOAuth2UserService;
-
     private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/resources/**"
+                .requestMatchers(
+                        //로그인 하지 않고 들어가기 가능(css, js 없이)
+                        "/resources/**"
                         , "/css/**"
                         , "/js/**"
                         , "/images/**"
@@ -39,12 +38,12 @@ public class SecurityConfig {
                         , "/full5-final-react/css/**"
                         , "/full5-final-react/src/**"
                         , "/full5-final-react/component/**"
-                        , "/file/**"
                         , "/test/error"
+                        , "/file/**"
                         , "/preview/**"
                         , "/step0/**"
                         , "/api/**"
-                        , "/step1/**"
+                         , "/step1/**"
                         , "/step2/**"
 
                 );
@@ -62,17 +61,13 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-
-                        .requestMatchers("/file/**", "/test/error","/error").permitAll()
-                        .requestMatchers("/join", "/login", "/logout"
-                                , "/checkEmail", "/**").permitAll()
-                        .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
-                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
-                        .requestMatchers("/admin/**").hasRole("Admin")
+                        //전체허용
+                        .requestMatchers("/file/**", "/test/error","/error","/api/**").permitAll()
+                        .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/index").permitAll()
+                        //관리자허용
+                        .requestMatchers("/admin/**","/userdelete/**","/userdetail/**","/errorstatus/**").hasRole("Admin")
                         //정지회원제외
-                        .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")
-
-
+                        .requestMatchers("/step0/**","/step1/**", "/step2/**","/preview/**").hasAnyRole("Admin", "Teacher", "User")
                         .anyRequest().authenticated()
         );
 
