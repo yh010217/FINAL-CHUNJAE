@@ -1,5 +1,8 @@
 package com.chunjae.chunjaefull5final.controller;
 
+import com.chunjae.chunjaefull5final.jwt.JWTUtil;
+import com.sun.tools.jconsole.JConsoleContext;
+import jakarta.servlet.http.Cookie;
 import com.chunjae.chunjaefull5final.dto.PaperInfoDTO;
 import com.chunjae.chunjaefull5final.service.MainService;
 import org.springframework.ui.Model;
@@ -7,6 +10,8 @@ import com.chunjae.chunjaefull5final.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
@@ -26,6 +31,7 @@ public class MainController {
     private final UserService userService;
     private final MainService mainService;
 
+    private final JWTUtil jwtUtil;
     @GetMapping("/index")
     public String main(HttpServletRequest request, Model model) {
 
