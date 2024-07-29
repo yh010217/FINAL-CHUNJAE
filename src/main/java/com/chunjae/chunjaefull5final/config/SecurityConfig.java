@@ -99,7 +99,7 @@ public class SecurityConfig {
                                 , "/checkEmail", "/**").permitAll()
                         .requestMatchers("/file/**", "/test/error", "/api/**").permitAll()
                         .requestMatchers("/join", "/login", "/logout", "/checkEmail", "/oauth2/authorization/google", "/index").permitAll()
-
+                        .requestMatchers("/logout").permitAll()
                         .requestMatchers("/admin/**").hasRole("Admin")
                         //정지회원제외
                         .requestMatchers("/step1/**", "/step2/**").hasAnyRole("Admin", "Teacher", "User")
@@ -121,8 +121,9 @@ public class SecurityConfig {
         // 로그아웃
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/index")
-                .invalidateHttpSession(true)
+                //.invalidateHttpSession(true)
                 .deleteCookies("XSRF-TOKEN")
+                .deleteCookies("JSESSIONID")
                 .deleteCookies("Authorization")
         );
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->

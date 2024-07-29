@@ -2,6 +2,8 @@ package com.chunjae.chunjaefull5final.jwt;
 
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,28 @@ public class JWTUtil {
     public Long getUid(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("uid", Long.class);
+    }
+
+    public Long getUidByRequest(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        String jwt = null;
+        String username = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("Authorization".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                }
+            }
+        }
+
+        Long uid = null;
+        try{
+            uid = getUid(jwt);
+        }catch (Exception e){
+            System.out.println("아마 쿠키에서 받아올 수 있는 게 없어서 그러는듯 : " + e);
+        }
+        return uid;
     }
 
     public Boolean isExpired(String token) {

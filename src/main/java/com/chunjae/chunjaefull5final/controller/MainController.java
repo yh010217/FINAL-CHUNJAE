@@ -24,24 +24,6 @@ public class MainController {
     private final JWTUtil jwtUtil;
     @GetMapping("/index")
     public String main(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        String jwt = null;
-        String username = null;
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("Authorization".equals(cookie.getName())) {
-                    jwt = cookie.getValue();
-                }
-            }
-        }
-
-        Long uid = null;
-        try{
-            uid = jwtUtil.getUid(jwt);
-        }catch (Exception e){
-            System.out.println("아마 쿠키에서 받아올 수 있는 게 없어서 그러는듯 : " + e);
-        }
 
         return "main/index";
     }

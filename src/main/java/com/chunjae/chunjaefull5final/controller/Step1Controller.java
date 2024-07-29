@@ -3,7 +3,9 @@ package com.chunjae.chunjaefull5final.controller;
 import com.chunjae.chunjaefull5final.dto.EvaluationDTO;
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
 import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
+import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.service.Step1Service;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,16 +29,17 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class Step1Controller {
-
-    private final RestTemplate restTemplate;
-
     private final Step1Service step1Service;
 
+    private final JWTUtil jwtUtil;
+
     @GetMapping("/step1/select-chapter/{subjectId}")
-    public String selectChapter(@PathVariable Long subjectId, Model model){
+    public String selectChapter(@PathVariable Long subjectId, HttpServletRequest request, Model model){
 
         String chapterUrl = "https://tsherpa.item-factory.com/chapter/chapter-list";
 
+        Long uid = jwtUtil.getUidByRequest(request);
+        System.out.println(uid);
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("subjectId",subjectId);
