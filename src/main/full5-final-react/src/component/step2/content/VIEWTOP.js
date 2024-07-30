@@ -2,7 +2,7 @@ import ListModal from "./ListModal";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
+function VIEWTOP({itemList, subjectId}) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [response, setResponse] = useState('');
@@ -36,6 +36,11 @@ function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
         }
     };
 
+    /** 재검색 기능 핸들러 **/
+    const handleResearch = () => {
+        window.location.reload();
+    };
+
     useEffect(() => {
         handleSubject()
     }, [subjectId])
@@ -48,7 +53,7 @@ function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
                 </div>
 
                 {/** 신규 시험지 만들기시 활성화 / 선택한 시험지 선택시 비활성화 **/}
-                <button className="btn-default btn-research" onClick={onReSearch}>
+                <button className="btn-default btn-research" onClick={handleResearch}>
                     <i className="research"></i>재검색
                 </button>
                 <button onClick={openModal} className="btn-default pop-btn">출제범위</button>
