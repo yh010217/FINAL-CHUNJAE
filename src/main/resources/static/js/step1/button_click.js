@@ -78,6 +78,10 @@ let change_que_count = function () {
     let step_wrap_buttons = step_wrap.querySelectorAll('.active');
     let active_buttons_num = step_wrap_buttons.length;
 
+    let non_active_buttons = [...(step_wrap.querySelectorAll('button'))].filter(item => !item.classList.contains('active'));
+        //.filter(item => !item.classList.contains('active'))
+    let non_active_num = non_active_buttons.length;
+
     let que_range_pop_divs = document.querySelectorAll('.change_level_div');
     for (let i = 0; i < que_range_pop_divs.length; i++) {
         if (!que_range_pop_divs[i].classList.contains('not_contain_level')) {
@@ -97,6 +101,33 @@ let change_que_count = function () {
 
     let sum_count = 0;
 
+    for (let i = 0; i < non_active_num; i++) {
+        if (non_active_buttons[i].getAttribute('data-step') === 'stap2') {
+            low_count = 0;
+            document.getElementById('range-low-count').innerHTML = 0 + '';
+
+            document.getElementById('level_low').value = 0;
+
+        }
+        if (non_active_buttons[i].getAttribute('data-step') === 'stap3') {
+            mid_count = 0;
+
+            document.getElementById('range-mid-count').innerHTML = 0 + '';
+
+            document.getElementById('level_mid').value = 0;
+
+        }
+        if (non_active_buttons[i].getAttribute('data-step') === 'stap4') {
+            high_count = 0;
+
+            document.getElementById('range-high-count').innerHTML = 0 + '';
+
+            document.getElementById('level_high').value = 0;
+        }
+
+
+    }
+
     for (let i = 0; i < active_buttons_num; i++) {
         if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
             low_count = low_count + mod_count;
@@ -107,8 +138,10 @@ let change_que_count = function () {
             document.getElementById('level_low').value = low_count;
             document.getElementById('level_range_low').classList.remove('not_contain_level');
 
+            level_cnt[1] = low_result+'';
             sum_count += low_count;
-        } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
+        }
+        if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
             mid_count = mid_count + mod_count;
             mod_count = 0;
             mid_result = mid_count;
@@ -118,9 +151,11 @@ let change_que_count = function () {
             document.getElementById('level_mid').value = mid_count;
             document.getElementById('level_range_mid').classList.remove('not_contain_level');
 
+            level_cnt[2] = mid_result+'';
             sum_count += mid_count;
 
-        } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
+        }
+        if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
             high_count = high_count + mod_count;
             mod_count = 0;
             high_result = high_count;
@@ -129,12 +164,11 @@ let change_que_count = function () {
             document.getElementById('level_high').value = high_count;
             document.getElementById('level_range_high').classList.remove('not_contain_level');
 
+            level_cnt[3] = high_result+'';
             sum_count += high_count;
         }
-        level_cnt[1] = low_result + '';
-        level_cnt[2] = mid_result + '';
-        level_cnt[3] = high_result + '';
     }
+
     document.getElementById('level_sum').innerHTML = sum_count +'';
 
 
@@ -188,12 +222,20 @@ document.getElementById('level_count_save').onclick = function () {
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
                 document.getElementById('range-low-count').innerHTML = value_low + '';
                 level_cnt[1] = low_num + '';
-            } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
+            }else{
+                level_cnt[1] = 0+'';
+            }
+            if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
                 document.getElementById('range-mid-count').innerHTML = value_mid + '';
                 level_cnt[2] = mid_num + '';
-            } else if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
+            }else{
+                level_cnt[2] = 0+'';
+            }
+            if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
                 document.getElementById('range-high-count').innerHTML = value_high + '';
                 level_cnt[3] = high_num + '';
+            }else{
+                level_cnt[3] = 0+'';
             }
         }
 

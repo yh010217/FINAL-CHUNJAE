@@ -31,14 +31,19 @@ public class JWTFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         String token = null;
 
+        Cookie jwtCookie = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("Authorization".equals(cookie.getName())) {
+                    jwtCookie = cookie;
                     token = cookie.getValue();
                 }
             }
         }
-        if (token != null && !"".equals(token)) {
+        if (token != null && !"".equals(token) && !jwtUtil.isExpired(token)) {
+
+            jwtUtil.refreshExpiredTime(response,token);
+
             //토큰에서 username과 role 획득
             String username = jwtUtil.getUsername(token);
             String role = jwtUtil.getRole(token);
@@ -56,7 +61,10 @@ public class JWTFilter extends OncePerRequestFilter {
             Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             //세션에 사용자 등록
             SecurityContextHolder.getContext().setAuthentication(authToken);
+        } else if(token != null && !"".equals(token) && jwtUtil.isExpired(token)){
+            jwtCookie.setMaxAge(0);
         }
+
         filterChain.doFilter(request, response);
     }
 }
