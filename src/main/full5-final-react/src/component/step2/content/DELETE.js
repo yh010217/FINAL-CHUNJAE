@@ -25,7 +25,8 @@ function DELETE({changeList ,delList, setDelList, addToDelList, setModal, setIte
         }
         return acc;
     }, []);
-    
+
+
     return (
         <div className="view-que-list scroll-inner">
             {delList.length > 0 ?

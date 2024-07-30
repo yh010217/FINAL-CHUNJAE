@@ -1,7 +1,6 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 
 function SIMLARLIST(props) {
-
     const topRef = useRef(null); // 최상단에 대한 참조 생성
 
     // 유사 문제 삭제 함수
@@ -44,7 +43,6 @@ function SIMLARLIST(props) {
         }
     };
 
-
     // 리스트에 추가하기 함수
     const addToChangeList = (item) => {
         // 추가할 아이템 정보
@@ -74,18 +72,17 @@ function SIMLARLIST(props) {
         }
     };
 
-
-
-    // 필터된 아이템이 있는지 확인하는 변수
-    let hasFilteredItems = false;
+    // 함수: 클릭 시 스크롤 이동
+    const handleScrollToTop = () => {
+        if (topRef.current) {
+            topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     return (
-        <>
+        <div className="view-que-list scroll-inner">
             {Object.values(props.groupedData).map((group, index) => {
                 let filteredItems = group.items;
-
-                const passageId = group.items.map(item => item.passageId);
-                const passageUrl = group.items.map(item => item.passageUrl);
 
                 // 난이도에 따라 아이템 필터링
                 switch (props.view) {
@@ -104,15 +101,21 @@ function SIMLARLIST(props) {
 
                 // 필터링된 아이템이 있을 경우
                 if (filteredItems.length > 0) {
-                    hasFilteredItems = true;
+                    // 참조를 담을 배열을 만듭니다.
+                    const refs = filteredItems.reduce((acc, item) => {
+                        acc[item.itemId] = React.createRef();
+                        return acc;
+                    }, {});
+
+                    // hasFilteredItems 값을 true로 설정
+                    let hasFilteredItems = true;
+
                     return (
                         <React.Fragment key={index}>
                             {/* 지문이 있는 경우 */}
-                            {passageId[0] != null && (
-                                <div className="view-que-box"
-                                     ref={index === 0 ? topRef : null}
-                                >
-                                    <div className="que-top">
+                            {group.items[0].passageId != null && (
+                                <div className="view-que-box" ref={index === 0 ? topRef : null}>
+                                    <div className="que-top" ref={refs[group.items[0].itemId]}>
                                         <div className="title">
                                             {group.items.length > 1 ? (
                                                 <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
@@ -122,11 +125,13 @@ function SIMLARLIST(props) {
                                         </div>
                                     </div>
                                     <div className="view-que">
-                                        <img src={passageUrl[0]} alt="지문입니다..." />
+                                        <img src={group.items[0].passageUrl} alt="지문입니다..." />
                                         <div className="que-bottom">
                                             <div className="data-area">
-                                                {/* 전체 추가 버튼 */}
-                                                <button className="btn-default" onClick={() => allSimList(group)}>
+                                                <button className="btn-default" onClick={() => {
+                                                    allSimList(group);
+                                                    handleScrollToTop(); // 최상단으로 스크롤 이동
+                                                }}>
                                                     <i className="add-type02"></i>
                                                     전체 추가
                                                 </button>
@@ -137,13 +142,12 @@ function SIMLARLIST(props) {
                             )}
 
                             {/* 필터된 아이템들을 매핑 */}
-                            {filteredItems.map((item, itemIndex) => (
+                            {filteredItems.map((item) => (
                                 <div className="view-que-box" key={item.itemId}>
                                     <div className="que-top">
                                         <div className="title">
                                             <span className="num">{item.itemNo}</span>
                                             <div className="que-badge-group">
-                                                {/* 난이도 뱃지 */}
                                                 <span
                                                     className={`que-badge ${
                                                         item.difficultyName === '상' ? 'yellow' :
@@ -151,14 +155,14 @@ function SIMLARLIST(props) {
                                                                 'purple'
                                                     }`}
                                                 >
-                                                {item.difficultyName}
-                                            </span>
-                                                {/* 문제 형식 뱃지 */}
-                                                <span className="que-badge gray">{item.questionFormName === '단답 유순형' ? '주관식' : '객관식'}</span>
+                                                    {item.difficultyName}
+                                                </span>
+                                                <span className="que-badge gray">
+                                                    {item.questionFormName === '단답 유순형' ? '주관식' : '객관식'}
+                                                </span>
                                             </div>
                                         </div>
                                         <div className="btn-wrap">
-                                            {/* 오류 버튼 */}
                                             <button className="btn-error" onClick={() => {
                                                 props.setModal(true);
                                                 props.setItemId(item.itemId);
@@ -171,7 +175,6 @@ function SIMLARLIST(props) {
                                         </div>
                                         <div className="que-bottom">
                                             <div className="data-area">
-                                                {/* 해설 정보 */}
                                                 <div className="que-info">
                                                     <p className="answer">
                                                         <span className="label">해설</span>
@@ -182,7 +185,6 @@ function SIMLARLIST(props) {
                                                 </div>
                                             </div>
                                             <div className="data-area type01">
-                                                {/* 정답 정보 */}
                                                 <div className="que-info">
                                                     <p className="answer">
                                                         <span className="label type01">정답</span>
@@ -191,10 +193,10 @@ function SIMLARLIST(props) {
                                                         <img src={item.answerUrl} alt="정답" />
                                                     </div>
                                                 </div>
-                                                {/* 추가 버튼 */}
                                                 <div className="btn-wrap">
                                                     <button className="btn-default" onClick={() => {
                                                         addToChangeList(item);
+                                                        handleScrollToTop(); // 최상단으로 스크롤 이동
                                                     }}>
                                                         <i className="add-type02"></i>
                                                         추가
@@ -206,7 +208,7 @@ function SIMLARLIST(props) {
                                     <div className="que-info-last">
                                         {/* 챕터 정보 */}
                                         <p className="chapter">
-                                            {item.mediumChapterName} > {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
+                                            {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
                                         </p>
                                     </div>
                                 </div>
@@ -219,7 +221,26 @@ function SIMLARLIST(props) {
             })}
 
             {/* 필터된 아이템이 없을 경우 */}
-            {!hasFilteredItems && (
+            {Object.values(props.groupedData).every(group => {
+                let filteredItems = group.items;
+
+                // 난이도에 따라 아이템 필터링
+                switch (props.view) {
+                    case '01':
+                        filteredItems = group.items.filter(item => item.difficultyName === '상');
+                        break;
+                    case '02':
+                        filteredItems = group.items.filter(item => item.difficultyName === '중');
+                        break;
+                    case '03':
+                        filteredItems = group.items.filter(item => item.difficultyName === '하');
+                        break;
+                    default:
+                        filteredItems = group.items;
+                }
+
+                return filteredItems.length > 0;
+            }) ? null : (
                 <div className="contents on">
                     <div className="view-que-list no-data">
                         <p>
@@ -228,9 +249,8 @@ function SIMLARLIST(props) {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
-
 }
 
 export default SIMLARLIST;
