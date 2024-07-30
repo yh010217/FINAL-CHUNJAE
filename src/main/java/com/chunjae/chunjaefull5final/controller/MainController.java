@@ -38,12 +38,11 @@ public class MainController {
         Long uidByJWT = jwtUtil.getUidByRequest(request);
 
         /** 상단바에 이름 뜨게 하기 */
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        System.out.println("Principal Class: " + principal.getClass().getName());
+        if(uidByJWT != null) {
+            String name = userService.getName(uidByJWT);
+            model.addAttribute("fullName", name);
+        }
 
-        String name = userService.getName(uidByJWT);
-        model.addAttribute("fullName", name);
         model.addAttribute("view","main/subject");
 
         return "main/index";
@@ -55,9 +54,10 @@ public class MainController {
         Long uidByJWT = jwtUtil.getUidByRequest(request);
 
         /** 상단바에 이름 뜨게 하기 */
-        String name = userService.getName(uidByJWT);
-        model.addAttribute("fullName", name);
-        model.addAttribute("view","main/subject");
+        if(uidByJWT != null) {
+            String name = userService.getName(uidByJWT);
+            model.addAttribute("fullName", name);
+        }
 
         /** 문항 다운로드하기 목록 불러오기 */
         List<PaperInfoDTO> dto = mainService.getList(uidByJWT);
