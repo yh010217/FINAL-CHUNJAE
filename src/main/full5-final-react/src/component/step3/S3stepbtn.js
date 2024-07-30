@@ -34,7 +34,6 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/save';
-
             const input1 = document.createElement('input');
             input1.type = 'hidden';
             input1.name = 'paperTitle';
