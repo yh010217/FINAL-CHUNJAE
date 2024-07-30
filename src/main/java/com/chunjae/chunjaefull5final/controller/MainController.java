@@ -37,53 +37,31 @@ public class MainController {
 
         Long uidByJWT = jwtUtil.getUidByRequest(request);
 
-
         /** 상단바에 이름 뜨게 하기 */
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        System.out.println("Principal Class: " + principal.getClass().getName());
-
-        if (principal instanceof CustomUserDetails) { // CustomUSerDetails에서 user에 대한 get을 받아옴
-            CustomUserDetails userDetails = (CustomUserDetails) principal;
-            String fullName = userDetails.getFullName();
-            Long uid = userDetails.getUid();
-            System.out.println(uid + "아아ㅏ아아아아앙");
-            log.info(uid + ">>>>>>>>>>>>>>> uid 값 확인하기");
-            model.addAttribute("fullName", fullName);
-            model.addAttribute("Uid", uid); // google 로그인이면 못 받아옴 => why?
-
-        } else {
-            model.addAttribute("fullName", "구글회원");
+        if(uidByJWT != null) {
+            String name = userService.getName(uidByJWT);
+            model.addAttribute("fullName", name);
         }
 
-
-
         model.addAttribute("view","main/subject");
+
         return "main/index";
     }
 
     @GetMapping("/paper")
-    public String paper(Model model) {
+    public String paper(HttpServletRequest request, Model model) {
+
+        Long uidByJWT = jwtUtil.getUidByRequest(request);
 
         /** 상단바에 이름 뜨게 하기 */
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        System.out.println("Principal Class: " + principal.getClass().getName());
-        if (principal instanceof CustomUserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) principal;
-            String fullName = userDetails.getFullName();
-            model.addAttribute("fullName", fullName);
-        } else {
-            model.addAttribute("fullName", "구글회원");
+        if(uidByJWT != null) {
+            String name = userService.getName(uidByJWT);
+            model.addAttribute("fullName", name);
         }
 
         /** 문항 다운로드하기 목록 불러오기 */
-        Long uid = 5L; // 몰라서 하드코딩
-        List<PaperInfoDTO> dto = mainService.getList(uid);
+        List<PaperInfoDTO> dto = mainService.getList(uidByJWT);
         model.addAttribute("dto", dto);
-        log.info(dto.get(0).getSaveName() + "saveName 정보 얻어오기");
-        log.info(dto.get(0).getUpdateAt() + "업데이트 정보 얻어오기");
-
         model.addAttribute("view","main/paper");
         return "main/index";
     }

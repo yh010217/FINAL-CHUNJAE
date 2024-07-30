@@ -30,7 +30,7 @@ public class ModalServiceImpl implements ModelService {
 
         /** uid 값 받아와서 수정해야 함. */
         User user = new User();
-        user.setUid(5L);
+        user.setUid(uid);
         newError.setUser(user); // User 객체 설정
 
         // 저장

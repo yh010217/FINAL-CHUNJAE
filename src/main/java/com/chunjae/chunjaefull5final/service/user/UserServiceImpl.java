@@ -151,6 +151,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public String getName(Long uidByJWT) {
+        Optional<User> userOptional = userRepository.findById(uidByJWT);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getName();
+        } else {
+            return null;
+        }
+    }
+
 
 
 }
