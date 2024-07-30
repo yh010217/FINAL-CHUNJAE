@@ -398,6 +398,11 @@ let make_activityCategory = function () {
     return activityCategory;
 }
 
+document.getElementById('go-step0').onclick = function () {
+
+    location.href='/step0/'+subject
+}
+
 document.getElementById('go-step2').onclick = function () {
 
     let minorClassification = make_minorClassification();

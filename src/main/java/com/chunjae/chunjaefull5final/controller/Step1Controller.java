@@ -128,7 +128,7 @@ public class Step1Controller {
 
     @GetMapping("/step1/step2-go/{paperId}")
     public String step2Go(@PathVariable Long paperId){
-        return "redirect:http://localhost:8080/step2/new/"+paperId;
+        return "redirect:http://10.41.1.61:8080/step2/new/"+paperId;
     }
     @PostMapping("/step1/step2-data/{paperId}")
     @ResponseBody

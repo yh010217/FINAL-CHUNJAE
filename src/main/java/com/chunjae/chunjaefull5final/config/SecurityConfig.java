@@ -99,6 +99,7 @@ public class SecurityConfig {
                         , "/convertImage"
                         , "/save"
                         , "/item-img/**"
+                        , "http://10.41.1.61:8080/**"
 
 
                 );
