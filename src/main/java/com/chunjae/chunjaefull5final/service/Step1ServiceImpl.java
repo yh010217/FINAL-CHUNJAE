@@ -282,12 +282,51 @@ public class Step1ServiceImpl implements Step1Service {
             }
         }
 
+        /*돌아가서 다시 보면서 순서 맞던게 풀릴수도 잇음*/
+
+
+        Map<Long, List<JSONObject>> secondGroupedItems = new HashMap<>();
+        List<JSONObject> secondNonGroupedItems = new ArrayList<>();
+
+
+        for (int i = 0; i < fitArray.size(); i++) {
+
+            JSONObject item = (JSONObject) fitArray.get(i);
+            if (item.get("passageId") == null) {
+                secondNonGroupedItems.add(item);
+            } else {
+                Long passageId = (Long) item.get("passageId");
+                if (secondGroupedItems.containsKey(passageId)) {
+                    secondGroupedItems.get(passageId).add(item);
+                } else {
+                    List<JSONObject> itemList = new ArrayList<>();
+                    itemList.add(item);
+                    secondGroupedItems.put(passageId, itemList);
+                }
+            }
+        }
+
+        JSONArray resultArray = new JSONArray();
+        Iterator<Long> resultGroupIta = secondGroupedItems.keySet().iterator();
+        while (resultGroupIta.hasNext()){
+            List<JSONObject> passageList = secondGroupedItems.get(resultGroupIta.next());
+            for(int i = 0 ; i < passageList.size() ; i++){
+                resultArray.add(passageList.get(i));
+            }
+
+        }
+
+        for(int i = 0 ; i < nonGroupedItems.size() ; i++){
+            resultArray.add(nonGroupedItems.get(i));
+        }
+
+
         List<Integer> fitCount = new ArrayList<>();
         fitCount.add(lowCount);
         fitCount.add(midCount);
         fitCount.add(highCount);
 
-        result.put("fitArray", fitArray);
+        result.put("fitArray", resultArray);
         result.put("fitCount", fitCount);
 
         return result;
