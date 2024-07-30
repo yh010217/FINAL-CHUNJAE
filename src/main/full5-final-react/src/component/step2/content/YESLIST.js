@@ -120,17 +120,15 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, set
                 {insert ? (
                     <div key="no-data" className="view-que-list no-data" dangerouslySetInnerHTML={{ __html: insert }} />
                 ) : (
-                    <div className="view-que-list scroll-inner">
-                        <SIMLARLIST
-                            groupedData={groupedData}
-                            list={simRemove}
-                            addToChangeList={addToChangeList}
-                            view={view}
-                            setModal={setModal}
-                            setItemId={setItemId}
-                            changeList={changeList}
-                        />
-                    </div>
+                    <SIMLARLIST
+                        groupedData={groupedData}
+                        list={simRemove}
+                        addToChangeList={addToChangeList}
+                        view={view}
+                        setModal={setModal}
+                        setItemId={setItemId}
+                        changeList={changeList}
+                    />
                 )}
             </>
         </div>
