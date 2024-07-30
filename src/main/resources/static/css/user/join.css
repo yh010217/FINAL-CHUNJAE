@@ -1,19 +1,26 @@
-#wrap{
-    padding: 70px 0;
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }
+body{
+    font-family: 'Pretendard-Regular';
+}
+
 #sign_up{
     background: #ffffff;
     border: 1px solid #F0F6FF;
-    box-shadow: 7px 7px 39px rgb(86, 112, 220);
-    border-radius: 20px;
+    box-shadow: 7px 7px 39px #85afee;
+    border-radius: 30px;
     width: 45vw;
     margin: 0 auto;
+    font-family: 'Pretendard-Regular';
 }
 #sign_up h1{
-    color: #5670DC;
     text-align: center;
-    border-radius: 35px 0;
     padding: 15px;
+    color: #5670DC;
 }
 #sign_up_form{
     display: flex;
@@ -30,12 +37,12 @@
     font-size: 1.2rem;
     display: flex;
 }
-#sign_up_form ul li:nth-child(-n+5)
+#sign_up_form ul li:nth-child(-n+6)
 , #sign_up_form ul li:last-child{
     flex-direction: column;
     justify-content: space-between;
 }
-#sign_up_form ul li:nth-child(7){
+#sign_up_form ul li:nth-child(8){
     justify-content: right;
     position: relative;
     top: -1vw;
@@ -63,21 +70,23 @@
 .sign_up_form_span>input{
     width: 55%;
     padding: 0.5vw 0.9vw;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid #d5d5d5;
 }
 .sign_up_input{
     width: 15vw;
     padding: 1.5vh 0.9vw;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid #d5d5d5;
     font-size: 1rem;
+    font-family: 'Pretendard-Regular';
 }
 #schoolType, #role{
     padding: 5px 10px 5px 3px;
     font-size: 1rem;
     border: 1px solid #d5d5d5;
-    border-radius: 5px;
+    border-radius: 10px;
+    font-family: 'Pretendard-Regular';
 }
 .sign_up_input:focus,#role:focus,#schoolType:focus{
     outline: 1px solid #5670DC;
@@ -90,21 +99,28 @@
     border: 1px solid #d5d5d5;
     padding: 10px;
     resize: none;
+    font-family: 'Pretendard-Regular';
 }
 #submit{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     padding: 0.8vw 6vw;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid #d5d5d5;
-    background-color: #5670DC;
+    background: linear-gradient(120deg, #d7a5ff,#85afee,#5670DC);
     color: white;
     cursor: pointer;
+    outline: none;
+    font-family: 'Pretendard-Regular';
+}
+#submit:hover{
+    background-position: right;
 }
 #fail_msg{
     display: flex;
     justify-content: center;
     position: relative;
     top: 0.7vw;
+    font-size: 1rem;
 }
 #emsg,#email_valid{
     margin: 5px 0;
@@ -112,11 +128,17 @@
     justify-content: right;
     font-size: 1rem;
 }
-.msg_error,#email_valid {
+.msg_error,#email_valid,#confirm-password-message{
     color: #f62c2c;
+    font-size: 1rem;
 }
 .msg_ok{
     color: #1d3ed7;
+    font-size: 1rem;
+    text-align: end;
+}
+#confirm-password-message,#email_valid,.msg_error{
+    text-align: end;
 }
 #fail_msg{
     display: flex;

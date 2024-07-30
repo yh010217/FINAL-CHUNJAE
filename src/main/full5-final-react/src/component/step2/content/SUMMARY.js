@@ -1,41 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import outerDragHandleIcon from '../../../images/common/ico_move_type01.png';
 import SummaryList from "./SummaryList";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-function SUMMARY({ initialChangeList = [], onChangeList }) {
+function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
     const [changeList, setChangeList] = useState(initialChangeList);
-    const [groupedData, setGroupedData] = useState([]);
-    const [multipleCount, setMultiple] = useState(0);
-    const [subjectiveCount, setSubjective] = useState(0);
+    const [multipleCount, setMultipleCount] = useState(0);
+    const [subjectiveCount, setSubjectiveCount] = useState(0);
+
+    const multipleChoiceForms = useMemo(() => ['5지 선택', '단답 무순형', '자유 선지형'], []);
+    const subjectiveForms = useMemo(() => ['단답 유순형', '서술형'], []);
 
     useEffect(() => {
-        // 그룹화된 데이터 생성
-        const grouped = changeList.reduce((acc, item) => {
-            const groupKey = item.passageId || item.itemId;
-            const existingGroupIndex = acc.findIndex(group => group.groupKey === groupKey);
-            if (existingGroupIndex === -1) {
-                acc.push({
-                    groupKey,
-                    items: [item]
-                });
-            } else {
-                acc[existingGroupIndex].items.push(item);
-            }
-            return acc;
-        }, []);
+        const multipleCount = changeList.filter(item => multipleChoiceForms.includes(item.questionFormName)).length;
+        const subjectiveCount = changeList.filter(item => subjectiveForms.includes(item.questionFormName)).length;
 
-        setGroupedData(grouped);
+        setMultipleCount(multipleCount);
+        setSubjectiveCount(subjectiveCount);
+    }, [changeList, multipleChoiceForms, subjectiveForms]);
 
-        // 개수 집계
-        const multipleCount = changeList.filter(item => item.questionFormName === '5지 선택').length;
-        const subjectiveCount = changeList.filter(item => item.questionFormName === '단답 유순형').length;
-        const m_fc = changeList.filter(item => item.questionFormName === '자유 선지형').length;
-        const m_s = changeList.filter(item => item.questionFormName === '단답 무순형').length;
-
-        setMultiple(multipleCount + m_fc + m_s);
-        setSubjective(subjectiveCount);
-    }, [changeList]);
 
     useEffect(() => {
         setChangeList(initialChangeList);
@@ -47,6 +30,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
     };
 
     const handleDragEnd = (result) => {
+        // console.log("Drag result:", result);
         const { source, destination, type } = result;
 
         // 드래그 작업이 완료되지 않았을 경우 처리하지 않음
@@ -60,12 +44,11 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             // console.log("destination:", destination);
             // console.log("type:", type);
 
-
             if (source.index === destination.index) {
                 return;
             }
 
-            const newGroupedData = Array.from(groupedData);
+            const newGroupedData = Array.from(groupData);
             const [movedGroup] = newGroupedData.splice(source.index, 1);
             newGroupedData.splice(destination.index, 0, movedGroup);
 
@@ -73,7 +56,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             const newChangeList = newGroupedData.flatMap(group => group.items);
 
             // 상태 업데이트
-            setGroupedData(newGroupedData);
+            // setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
         }
@@ -87,11 +70,11 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                 return;
             }
 
-            const newGroupedData = Array.from(groupedData);
+            const newGroupedData = Array.from(groupData);
             const sourceGroup = newGroupedData[sourceGroupIndex];
             const destinationGroup = newGroupedData[destinationGroupIndex];
 
-            // `groupKey`가 다른 그룹으로 이동하는 것을 방지
+            // 다른 그룹으로 이동하는 것을 방지
             if (sourceGroup.groupKey !== destinationGroup.groupKey) {
                 return;
             }
@@ -104,11 +87,14 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
             const newChangeList = newGroupedData.flatMap(group => group.items);
 
             // 상태 업데이트
-            setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
         }
     };
+
+    // console.log('changeList...', changeList)
+    // console.log('groupedData...', groupedData)
+    // console.log('groupedData...', groupData)
 
     return (
         <div className="contents on">
@@ -122,7 +108,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                         >
                             <div className="fix-head">
                                 <span>이동</span>
-                                <span>번호</span>
+                                <span>순서</span>
                                 <span>단원명</span>
                                 <span>문제 형태</span>
                                 <span>난이도</span>
@@ -131,7 +117,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                             <div className="tbody">
                                 <div className="scroll-inner">
                                     <div className="test ui-sortable" id="table-1">
-                                        {groupedData.map((group, groupIndex) => (
+                                        {groupData.map((group, groupIndex) => (
                                             <Draggable
                                                 key={group.groupKey.toString()}
                                                 draggableId={group.groupKey.toString()}
@@ -141,7 +127,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                     <div
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
-                                                        className="depth-01 ui-sortable"
+                                                        className={`depth-01 ui-sortable ${group.items.length === 1 ? 'single-item' : ''}`}
                                                     >
                                                         {group.groupKey !== null && (
                                                             <div className="drag-type02 dragHandle"
@@ -167,18 +153,20 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                                                                 <div
                                                                                     ref={provided.innerRef}
                                                                                     {...provided.draggableProps}
-                                                                                    {...provided.dragHandleProps}
                                                                                 >
                                                                                     <SummaryList
                                                                                         itemId={item.itemId}
-                                                                                        itemNo={item.itemNo}
-                                                                                        index={itemIndex}
+                                                                                        index={item.index}
                                                                                         difficultyName={item.difficultyName}
                                                                                         questionFormName={item.questionFormName}
                                                                                         largeChapterName={item.largeChapterName}
                                                                                         mediumChapterName={item.mediumChapterName}
                                                                                         smallChapterName={item.smallChapterName}
                                                                                         topicChapterName={item.topicChapterName}
+                                                                                        dragHandleProps={provided.dragHandleProps}
+                                                                                        multipleChoiceForms={multipleChoiceForms}
+                                                                                        subjectiveForms={subjectiveForms}
+                                                                                        isSingleItem={group.items.length === 1}
                                                                                     />
                                                                                 </div>
                                                                             )}
@@ -193,6 +181,7 @@ function SUMMARY({ initialChangeList = [], onChangeList }) {
                                             </Draggable>
                                         ))}
                                         {provided.placeholder}
+
                                     </div>
                                 </div>
                             </div>

@@ -9,15 +9,6 @@ import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 
 import com.chunjae.chunjaefull5final.domain.PaperQuestion;
 import com.chunjae.chunjaefull5final.repository.TempPdfRepo;
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Table;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;

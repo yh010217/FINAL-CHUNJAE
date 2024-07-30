@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -28,6 +29,10 @@ public class User {
     private String snsType;
     @Column(name = "sns_id")
     private String snsId;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<PaperInfo> paperInfos;
+
     @Builder
     public User(Long uid, String email, String name,String pwd, UserRole role, SchoolType schoolType, String snsType, String snsId){
         this.uid=uid;
@@ -38,6 +43,10 @@ public class User {
         this.schoolType=schoolType;
         this.snsType=snsType;
         this.snsId=snsId;
+    }
+
+    public String getFullName() {
+        return name;
     }
 
 }

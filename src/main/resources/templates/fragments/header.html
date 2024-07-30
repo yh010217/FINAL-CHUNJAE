@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main/font.css}">
+    <link rel="stylesheet" th:href="@{/css/main/header.css}">
+</head>
+<body>
+  <header id="header">
+    <div class="header-1">
+      <a th:href="@{/index}"><img src="/images/admin/adminlogo-removebg-preview.png" alt="로고"></a>
+    </div>
+    <nav class="header-2">
+      <ul>
+        <li>교과서 자료</li>
+        <li>문제은행</li>
+        <li>에듀테크</li>
+        <li>수업연구소</li>
+      </ul>
+    </nav>
+    <ul class="header-3">
+      <th:block sec:authorize="!isAuthenticated()">
+        <li><a th:href="@{/join}" th:text="회원가입" th:class="join"></a></li>
+        <li><a th:href="@{/login}" th:text="로그인" th:class="login"></a></li>
+      </th:block>
+      <th:block sec:authorize="hasAnyRole('User','Teacher','Stop')">
+        <li class="name-logout">
+          <span id="userFullName" th:text="|${fullName} 님|"></span>
+          <form th:method="post" th:action="@{/logout}">
+            <button type="submit" th:class="logout">로그아웃</button>
+          </form>
+        </li>
+      </th:block>
+      <th:block sec:authorize="hasRole('Admin')">
+        <li><a th:href="@{/admin/user}" th:text="관리자페이지"></a></li>
+        <li>
+          <form th:method="post" th:action="@{/logout}">
+            <button type="submit" th:class="logout">로그아웃</button>
+          </form>
+        </li>
+      </th:block>
+    </ul>
+  </header>
+</body>
+</html>

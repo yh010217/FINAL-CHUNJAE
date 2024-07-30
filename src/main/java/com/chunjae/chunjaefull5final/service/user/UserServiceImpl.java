@@ -6,6 +6,7 @@ import com.chunjae.chunjaefull5final.domain.UserRole;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +32,15 @@ public class UserServiceImpl implements UserService {
 
     /** 이메일 중복체크*/
     public boolean findEmailCheck(String email) {
-        User findUser=userRepository.findByEmail(email);
+        log.info("email....{}", email);
+        User findUser=userRepository.findByCheckEmail(email);
+        log.info("findUser...{}", findUser);
         return findUser!=null;
     }
     /** 회원가입*/
     @Override
     public Long joinUser(UserDTO dto) {
-        String pwd=encoder.encode(dto.getPwd());
+       String pwd=encoder.encode(dto.getPwd());
         UserRole userRole=UserRole.valueOf(dto.getRole());
 
         SchoolType schoolType=SchoolType.valueOf(dto.getSchoolType());
@@ -105,6 +109,43 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteUser(uid);
         return uid;
     }
+
+    @Override
+    public UserDTO findUserInfo(String name) {
+        long uidByEmail=findUidByEmail(name);
+        UserDTO userDTO=userRepository.findUserInfo(uidByEmail);
+        return userDTO;
+    }
+
+    @Override
+    public User snsUser(UserDTO dto) {
+        String snsId = dto.getSnsId();
+        String email = dto.getEmail();
+        String name = dto.getName();
+
+        log.info("SNS ID: {}", snsId);
+        log.info("Email: {}", email);
+        log.info("Name: {}", name);
+
+        Optional<User> optionalUser = userRepository.findBySnsId(snsId);
+        if (optionalUser.isPresent()) {
+            log.info("Existing user found: {}", optionalUser.get());
+            return optionalUser.get();
+        } else {
+            log.info("Creating new user");
+            User newUser = User.builder()
+                    .snsId(snsId)
+                    .email(email)
+                    .name(name)
+                    .role(UserRole.User)
+                    .snsType("google")
+                    .build();
+            User savedUser = userRepository.save(newUser);
+            log.info("Saved new user: {}", savedUser);
+            return savedUser;
+        }
+    }
+
 
 
 }

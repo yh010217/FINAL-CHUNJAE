@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository<User,Long>,UserQueryDSL {
-     @Query(" select  u from  User u where u.email=:email ")
+     @Query(" select  u from  User u where u.email=:email")
       User findByEmail(String email);
 
     @Override
@@ -43,5 +43,9 @@ public interface UserRepository extends JpaRepository<User,Long>,UserQueryDSL {
             + " set u.pwd='' ,u.role='Stop'"
             + " where u.uid=:uid ")
     void deleteUser(Long uid);
+    @Query(" select  u from  User u where u.email=:email")
+    User findByCheckEmail(String email);
+
+
 
 }
