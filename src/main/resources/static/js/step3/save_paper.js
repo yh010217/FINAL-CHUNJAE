@@ -1,5 +1,3 @@
-let index = 0; //이미지 번호
-
 window.onload = function () {
 
     const saveName = document.getElementById("saveName").value;
@@ -8,12 +6,6 @@ window.onload = function () {
     let questionList = [];
     let answerExplainList = [];
     let allList = [];
-
-/*    const div = document.createElement('div');
-    const div_t = document.createTextNode(paperId);
-    div.appendChild(div_t);
-    document.getElementById('wrap').appendChild(div)*/
-
 
     let index = 1;
     paperListJson.map(item=>{
