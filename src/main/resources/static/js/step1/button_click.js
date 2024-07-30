@@ -138,6 +138,7 @@ let change_que_count = function () {
             document.getElementById('level_low').value = low_count;
             document.getElementById('level_range_low').classList.remove('not_contain_level');
 
+            level_cnt[1] = low_result+'';
             sum_count += low_count;
         }
         if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
@@ -150,6 +151,7 @@ let change_que_count = function () {
             document.getElementById('level_mid').value = mid_count;
             document.getElementById('level_range_mid').classList.remove('not_contain_level');
 
+            level_cnt[2] = mid_result+'';
             sum_count += mid_count;
 
         }
@@ -162,6 +164,7 @@ let change_que_count = function () {
             document.getElementById('level_high').value = high_count;
             document.getElementById('level_range_high').classList.remove('not_contain_level');
 
+            level_cnt[3] = high_result+'';
             sum_count += high_count;
         }
     }
