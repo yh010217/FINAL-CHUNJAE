@@ -36,6 +36,7 @@ public class PaperInfoQueryDSLImpl implements PaperInfoQueryDSL{
                 .fetchJoin()
                 .join(paperInfo.subject, subject)
                 .fetchJoin()
+                .orderBy(paperInfo.paperId.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -67,6 +68,16 @@ public class PaperInfoQueryDSLImpl implements PaperInfoQueryDSL{
                 .fetchOne();
 
         return subjectId;
+    }
+
+    @Override
+    public List<Object[]> userNames() {
+        List<Tuple> fetch = queryFactory.select(user.uid, user.name)
+                .from(user)
+                .fetch();
+        return fetch.stream()
+                .map(tuple -> new Object[]{tuple.get(user.uid),tuple.get(user.name)})
+                .collect(Collectors.toList());
     }
 
 

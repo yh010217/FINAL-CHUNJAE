@@ -127,6 +127,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
+                .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/index")
                 .permitAll()
         );

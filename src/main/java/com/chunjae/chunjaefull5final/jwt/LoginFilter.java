@@ -56,6 +56,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             result = authenticationManager.authenticate(authToken);
         }catch (Exception e){
             System.out.println(e);
+            try{
+                response.sendRedirect("/login?error=true");
+            }catch (Exception e2){
+                System.out.println(e2);
+            }
         }
 
         setDetails(request, authToken);
@@ -99,7 +104,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = "";
         if(snsId == null){
-            token = jwtUtil.createJwtNormal(uid,email,realName, 1000*60*30L);
+            token = jwtUtil.createJwtNormal(uid,email,role, 1000*60*30L);
         }else{
             token = jwtUtil.createJwtSns(uid,snsId,role, 1000*60*30L);
         }

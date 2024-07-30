@@ -19,4 +19,6 @@ public interface PaperInfoService {
     void updateSaveAnswerPathToNull(Long paperId);
 
     void updateAllPathToNull(Long paperId);
+
+    Map<Long,String> userNames();
 }
