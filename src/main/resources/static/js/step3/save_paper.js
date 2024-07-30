@@ -240,7 +240,7 @@ window.onload = function () {
             })
         })
     }
-    question();
+    // question();
 
     const answerExplain = function (){
 
@@ -448,7 +448,7 @@ window.onload = function () {
             })
         })
     }
-    answerExplain();
+    // answerExplain();
 
     const all = function (){
 
@@ -656,7 +656,20 @@ window.onload = function () {
             })
         })
     }
-    all();
+    // all();
+
+    function test() {
+        question()
+        console.log('완려')
+        answerExplain()
+        console.log('완료')
+        all()
+        console.log('완ㄴ료ㅛ')
+        // await  downloadPDF()
+        setTimeout(downloadPDF, 3000)
+    }
+
+    test()
 
 }
 
@@ -747,8 +760,6 @@ function downloadPDF() {
             pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
         }
 
-        // PDF 파일을 버퍼로 변환
-        const pdfBuffer = pdf.output('arraybuffer');
         return pdf.output('blob');
     }
 
@@ -756,5 +767,4 @@ function downloadPDF() {
 
 }
 
-setTimeout(downloadPDF, 3000)
 

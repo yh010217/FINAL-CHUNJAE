@@ -38,4 +38,7 @@ public class PaperDTO {
     private String answerUrl;
     private String explainUrl;
     private Long index;
+    private Long examId;
+    private String examName;
+    private String difficultyCode;
 }
