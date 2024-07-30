@@ -87,6 +87,7 @@ public class SecurityConfig {
                         , "/step1/**"
                         , "/step2/**"
                         , "/item-img/**"
+                        , "http://10.41.1.61:8080/**"
 
                 );
     }
