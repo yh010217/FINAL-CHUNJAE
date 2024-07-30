@@ -21,7 +21,10 @@
 
         <div id="tab-2" class="tab-content current">
             <div class="download-fullBox">
-
+                <div th:if="${dto.isEmpty}" class="null-container">
+                    <img src="/images/main/시험지.png" alt="시험지"/>
+                    시험지 보관함이 비어있어요!
+                </div>
                 <div class="download-container" th:each="item:${dto}">
                     <div class="download-box">
                         <div class="download-left">
@@ -47,7 +50,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

@@ -42,20 +42,10 @@ public class MainController {
         Object principal = authentication.getPrincipal();
         System.out.println("Principal Class: " + principal.getClass().getName());
 
-        if (principal instanceof CustomUserDetails) { // CustomUSerDetails에서 user에 대한 get을 받아옴
-            CustomUserDetails userDetails = (CustomUserDetails) principal;
-            String fullName = userDetails.getFullName();
-            Long uid = userDetails.getUid();
-            model.addAttribute("fullName", fullName);
-            model.addAttribute("Uid", uid);
-
-        } else {
-            model.addAttribute("fullName", "구글회원");
-        }
-
-
-
+        String name = userService.getName(uidByJWT);
+        model.addAttribute("fullName", name);
         model.addAttribute("view","main/subject");
+
         return "main/index";
     }
 
@@ -65,16 +55,9 @@ public class MainController {
         Long uidByJWT = jwtUtil.getUidByRequest(request);
 
         /** 상단바에 이름 뜨게 하기 */
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        System.out.println("Principal Class: " + principal.getClass().getName());
-        if (principal instanceof CustomUserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) principal;
-            String fullName = userDetails.getFullName();
-            model.addAttribute("fullName", fullName);
-        } else {
-            model.addAttribute("fullName", "구글회원");
-        }
+        String name = userService.getName(uidByJWT);
+        model.addAttribute("fullName", name);
+        model.addAttribute("view","main/subject");
 
         /** 문항 다운로드하기 목록 불러오기 */
         List<PaperInfoDTO> dto = mainService.getList(uidByJWT);
