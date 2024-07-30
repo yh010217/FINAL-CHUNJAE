@@ -54,6 +54,7 @@ public String adminPaper(@PageableDefault(size = 10, page = 0) Pageable pageable
     @GetMapping("/admin/paperdetail/{paperId}")
     public String paperAdminDetail(@PathVariable Long paperId, Model model){
         PaperInfoDTO paperInfoDTO = paperInfoService.getPaperDetail(paperId);
+        Map<Long,String> userNames=paperInfoService.userNames();
         if(paperInfoDTO !=null){
             System.out.println("paper uid:" + paperInfoDTO.getUid());
         }else {
@@ -62,6 +63,7 @@ public String adminPaper(@PageableDefault(size = 10, page = 0) Pageable pageable
         Map<Integer,String> subjectNames= paperInfoService.subjectNames();
         model.addAttribute("paperInfoDTO", paperInfoDTO);
         model.addAttribute("subjectNames",subjectNames);
+        model.addAttribute("userNames",userNames);
         return "admin/paper_detail";
     }
 
