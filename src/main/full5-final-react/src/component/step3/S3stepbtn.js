@@ -33,7 +33,7 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         try {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'http://localhost:8080/save';
+            form.action = 'http://10.41.1.61:8080/save';
 
             const input1 = document.createElement('input');
             input1.type = 'hidden';
