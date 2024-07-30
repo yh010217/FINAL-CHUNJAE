@@ -68,7 +68,7 @@ public class JWTUtil {
     public Long getExpiredPeriod(String token){
         Long exp = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("exp", Long.class);
         Long iat = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("iat", Long.class);
-        return exp-iat;
+        return (exp-iat)*1000;
     }
 
     public String getSnsId(String token){
@@ -83,14 +83,19 @@ public class JWTUtil {
 
         String email;
         String snsId;
+
+        Long issuedAt = System.currentTimeMillis();
+        Long expiration = issuedAt + expiredMs;
         if(getSnsId(token) == null){
             email = getUsername(token);
             refreshToken = Jwts.builder()
                     .claim("uid",uid)
                     .claim("email", email)
                     .claim("role", role)
-                    .issuedAt(new Date(System.currentTimeMillis()))
-                    .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    //.issuedAt(new Date(System.currentTimeMillis()))
+                    //.expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    .issuedAt(new Date(issuedAt))
+                    .expiration(new Date(expiration))
                     .signWith(secretKey)
                     .compact();
 
@@ -101,8 +106,10 @@ public class JWTUtil {
                     .claim("uid",uid)
                     .claim("role", role)
                     .claim("snsId",snsId)
-                    .issuedAt(new Date(System.currentTimeMillis()))
-                    .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    //.issuedAt(new Date(System.currentTimeMillis()))
+                    //.expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    .issuedAt(new Date(issuedAt))
+                    .expiration(new Date(expiration))
                     .signWith(secretKey)
                     .compact();
 
