@@ -2,10 +2,12 @@ package com.chunjae.chunjaefull5final.service;
 
 import com.chunjae.chunjaefull5final.domain.PaperInfo;
 import com.chunjae.chunjaefull5final.domain.PaperQuestion;
+import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.dto.PaperDTO;
 import com.chunjae.chunjaefull5final.dto.PaperInfoDTO;
 import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
 import com.chunjae.chunjaefull5final.repository.PaperQuestion.PaperQuestionRepository;
+import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Step3ServiceImpl implements Step3Service{
 
+    private final UserRepository userRepository;
     private final PaperInfoRepository paperInfoRepo;
     private final PaperQuestionRepository questionRepository;
 
@@ -26,7 +29,11 @@ public class Step3ServiceImpl implements Step3Service{
                 .findById(dto.getPaperId())
                 .orElseThrow(()-> new IllegalArgumentException("시험지 x"));
 
+        User user = userRepository
+                .findById(dto.getUid())
+                .orElseThrow(()-> new IllegalArgumentException("유저 x"));
 
+        paperInfo.setUser(user);
         paperInfo.setSaveName(dto.getSaveName());
         paperInfo.setSaveQuestionPath(dto.getSaveQuestionPath());
         paperInfo.setSaveAnswerPath(dto.getSaveAnswerPath());

@@ -9,12 +9,18 @@
 	<link rel="stylesheet" th:href="@{/css/step3/save_paper.css}">
 </head>
 <body>
-<!--<button id="save-pdf" onclick="downloadPDF()">pdf로 저장하기</button>-->
 <iframe src="/loading" id="loading"></iframe>
 <div id="wrap">
 	<input type="hidden" id="saveName" th:value="${saveName}">
 	<input type="hidden" id="paperList" th:value="${paperList}">
 	<input type="hidden" id="paperId" th:value="${paperId}">
 </div>
+<script>
+	let list = [[${paperList}]];
+	const div = document.createElement('div');
+	const div_t = document.createTextNode('ㅁㄴ이라ㅓ민ㅇㄹ : '+list[0].itemNo);
+	div.appendChild(div_t);
+	document.getElementById('wrap').appendChild(div)
+</script>
 </body>
 </html>
