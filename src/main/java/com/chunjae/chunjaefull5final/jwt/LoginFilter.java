@@ -99,7 +99,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = "";
         if(snsId == null){
-            token = jwtUtil.createJwtNormal(uid,email,realName, 1000*60*30L);
+            token = jwtUtil.createJwtNormal(uid,email,role, 1000*60*30L);
         }else{
             token = jwtUtil.createJwtSns(uid,snsId,role, 1000*60*30L);
         }
