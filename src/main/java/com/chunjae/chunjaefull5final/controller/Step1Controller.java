@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,9 @@ public class Step1Controller {
     private final Step1Service step1Service;
 
     private final JWTUtil jwtUtil;
+
+    @Value("${spring.server-name}")
+    private String serverName;
 
     @GetMapping("/step1/select-chapter/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, HttpServletRequest request, Model model){
@@ -71,8 +75,11 @@ public class Step1Controller {
 
     @PostMapping("step1/make_exam/{subject}")
     @ResponseBody
-    public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
+    public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject
+    ,HttpServletRequest request){
         JSONObject result;
+
+        Long uid = jwtUtil.getUidByRequest(request);
 
         if(body == null){
             result = new JSONObject();
@@ -96,7 +103,7 @@ public class Step1Controller {
         String examBody = examApi.getBody();
 
         try {
-            result = step1Service.saveExam(examBody,subject,levelCnt);
+            result = step1Service.saveExam(examBody,subject,levelCnt, uid);
         }catch (ParseException e){
             System.out.println(e);
             result = new JSONObject();
@@ -128,7 +135,7 @@ public class Step1Controller {
 
     @GetMapping("/step1/step2-go/{paperId}")
     public String step2Go(@PathVariable Long paperId){
-        return "redirect:http://10.41.1.61:8080/step2/new/"+paperId;
+        return "redirect:/step2/new/"+paperId;
     }
     @PostMapping("/step1/step2-data/{paperId}")
     @ResponseBody

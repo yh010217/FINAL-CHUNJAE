@@ -43,7 +43,7 @@ public class Step3Controller {
     }
 
     @PostMapping("/save")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://10.41.1.61:8080")
     public String postThymeleafPage(
             HttpServletResponse response,
             @RequestParam("paperTitle") String paperTitle,
