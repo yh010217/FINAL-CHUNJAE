@@ -23,7 +23,7 @@
   position: relative;
 }
 #q-preview .pop-inner .scroll-inner .example-area {
-  width: 453px;
+  width: 441px;
   margin-bottom: 15px;
   padding: 12px 55px 0 0;
 }
@@ -38,7 +38,7 @@
 /*  background-color: #ccc;*/
 }
 #q-preview .pop-inner .scroll-inner .example-area img{
-  max-width: 453px;
+  max-width: 450px;
 }
 #q-preview .numbering {
   font-size: 20px;
@@ -776,7 +776,7 @@ l .btn-step.next.done {
   }
 }
 .pop-wrap.prev-type .pop-inner .view-box .scroll-inner {
-  height: 650px;
+  height: 560px;
 }
 @media (max-width: 1280px) {
   .pop-wrap.prev-type .pop-inner .view-box .scroll-inner {
