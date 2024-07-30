@@ -9,6 +9,11 @@ window.onload = function () {
     let answerExplainList = [];
     let allList = [];
 
+/*    const div = document.createElement('div');
+    const div_t = document.createTextNode(paperId);
+    div.appendChild(div_t);
+    document.getElementById('wrap').appendChild(div)*/
+
 
     paperListJson.map(item=>{
         /* 문제 */
@@ -31,14 +36,6 @@ window.onload = function () {
         allList.push(item.explainUrl);
     });
 
-
-    questionList.map(item=>{
-        const div = document.createElement('div');
-        const div_txt = document.createTextNode(item);
-        div.appendChild(div_txt);
-        document.getElementById("wrap").appendChild(div);
-    })
-
     const question = function (){
 
         let dataList = [];
@@ -57,8 +54,8 @@ window.onload = function () {
         }).then(result => {
             for (let i = 0; i < result.length; i++) {
                 let item = result[i];
-
-                if (item.content.substring(item.content.length - 3) === "svg") {
+//item.content.substring(item.content.length - 3) === "svg"
+                if (item.content.substring(0,4) === "data") {
                     const img = document.createElement('img');
                     img.src = item.content;
                     img.alt = '이미지' + (i + 1);
@@ -247,7 +244,7 @@ window.onload = function () {
     }
     question();
 
-/*    const answerExplain = function (){
+    const answerExplain = function (){
 
         let dataList = [];
 
@@ -266,7 +263,7 @@ window.onload = function () {
             for (let i = 0; i < result.length; i++) {
                 let item = result[i];
 
-                if (item.content.substring(item.content.length - 3) === "svg") {
+                if (item.content.substring(0,4) === "data") {
                     const img = document.createElement('img');
                     img.src = item.content;
                     img.alt = '이미지' + (i + 1);
@@ -291,7 +288,7 @@ window.onload = function () {
             }
             let index = 0;
             dataList.map(item => {
-                /!* 첫번째 문제인 경우 *!/
+                /* 첫번째 문제인 경우 */
                 if (index === 0) {
                     // 헤더
                     const header = document.createElement('div');
@@ -340,7 +337,7 @@ window.onload = function () {
                     document.getElementById('wrap').appendChild(newPage);
 
                 } else {
-                    /!* left, right 계산 *!/
+                    /* left, right 계산 */
                     let leftCount = 0;
                     let left = null;
                     let leftChildCount = 0;
@@ -404,7 +401,7 @@ window.onload = function () {
                     // console.log(index,' : rightChildHeight..................', rightChildHeight);
 
 
-                    /!* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 *!/
+                    /* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 */
                     if (leftChildHeight > leftRightHeight) {
                         // 요소 생성
                         const newRight = document.createElement('div');
@@ -416,12 +413,12 @@ window.onload = function () {
                         left.insertAdjacentElement('afterend', newRight);
                         // console.log('leftChildHeight > leftRightHeight.....',index);
                     }
-                    /!* left 문제 수 2개 미만 && left 다음 right가 없는 경우 *!/
+                    /* left 문제 수 2개 미만 && left 다음 right가 없는 경우 */
                     else if (leftChildHeight <= leftRightHeight && left.nextElementSibling === null) {
                         left.appendChild(item);
                         // console.log('leftChildHeight <= leftRightHeight.....',index);
                     }
-                    /!* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 *!/
+                    /* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 */
                     else if (rightChildHeight > leftRightHeight) {
                         console.log('right 높이 : ', right.firstChild.naturalHeight)
                         const newPage = document.createElement('div');
@@ -442,7 +439,7 @@ window.onload = function () {
                         document.getElementById('wrap').appendChild(newPage);
                         // console.log('rightChildHeight > leftRightHeight.....',index);
                     }
-                    /!* right 문제 수 2개 미만 && right 존재하는 경우 *!/
+                    /* right 문제 수 2개 미만 && right 존재하는 경우 */
                     else if (rightChildHeight <= leftRightHeight && right !== null) {
                         right.appendChild(item);
                         // console.log('rightChildHeight <= leftRightHeight.....',index);
@@ -474,7 +471,7 @@ window.onload = function () {
             for (let i = 0; i < result.length; i++) {
                 let item = result[i];
 
-                if (item.content.substring(item.content.length - 3) === "svg") {
+                if (item.content.substring(0,4) === "data") {
                     const img = document.createElement('img');
                     img.src = item.content;
                     img.alt = '이미지' + (i + 1);
@@ -499,7 +496,7 @@ window.onload = function () {
             }
             let index = 0;
             dataList.map(item => {
-                /!* 첫번째 문제인 경우 *!/
+                /* 첫번째 문제인 경우 */
                 if (index === 0) {
                     // 헤더
                     const header = document.createElement('div');
@@ -548,7 +545,7 @@ window.onload = function () {
                     document.getElementById('wrap').appendChild(newPage);
 
                 } else {
-                    /!* left, right 계산 *!/
+                    /* left, right 계산 */
                     let leftCount = 0;
                     let left = null;
                     let leftChildCount = 0;
@@ -612,7 +609,7 @@ window.onload = function () {
                     // console.log(index,' : rightChildHeight..................', rightChildHeight);
 
 
-                    /!* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 *!/
+                    /* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 */
                     if (leftChildHeight > leftRightHeight) {
                         // 요소 생성
                         const newRight = document.createElement('div');
@@ -624,12 +621,12 @@ window.onload = function () {
                         left.insertAdjacentElement('afterend', newRight);
                         // console.log('leftChildHeight > leftRightHeight.....',index);
                     }
-                    /!* left 문제 수 2개 미만 && left 다음 right가 없는 경우 *!/
+                    /* left 문제 수 2개 미만 && left 다음 right가 없는 경우 */
                     else if (leftChildHeight <= leftRightHeight && left.nextElementSibling === null) {
                         left.appendChild(item);
                         // console.log('leftChildHeight <= leftRightHeight.....',index);
                     }
-                    /!* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 *!/
+                    /* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 */
                     else if (rightChildHeight > leftRightHeight) {
                         console.log('right 높이 : ', right.firstChild.naturalHeight)
                         const newPage = document.createElement('div');
@@ -650,7 +647,7 @@ window.onload = function () {
                         document.getElementById('wrap').appendChild(newPage);
                         // console.log('rightChildHeight > leftRightHeight.....',index);
                     }
-                    /!* right 문제 수 2개 미만 && right 존재하는 경우 *!/
+                    /* right 문제 수 2개 미만 && right 존재하는 경우 */
                     else if (rightChildHeight <= leftRightHeight && right !== null) {
                         right.appendChild(item);
                         // console.log('rightChildHeight <= leftRightHeight.....',index);
@@ -661,11 +658,12 @@ window.onload = function () {
             })
         })
     }
-    all();*/
+    all();
 
 }
 
 function downloadPDF() {
+    const paperId = document.getElementById("paperId").value;
     const saveName = document.getElementById("saveName").value;
     const paperList = document.getElementById("paperList").value;
 
@@ -682,8 +680,9 @@ function downloadPDF() {
             const pdfBuffer3 = await createPDFs('.page3', 'answer_explain.pdf');
 
             const formData = new FormData();
-            formData.append("paperId", 587);
+            formData.append("paperId", paperId);
             formData.append("saveName", saveName);
+            formData.append("paperList", paperList);
             formData.append('question', pdfBuffer1, 'question.pdf', 'application/pdf');
             formData.append('answer_only', pdfBuffer2, 'answer_only.pdf', 'application/pdf');
             formData.append('answer_explain', pdfBuffer3, 'answer_explain.pdf', 'application/pdf');
@@ -697,7 +696,7 @@ function downloadPDF() {
                 .then(response => response.text())
                 .then(data => {
                     console.log('PDF uploaded to S3:', data);
-                    // window.location.href = '/save_comp';
+                    window.location.href = '/save_comp';
                 })
                 .catch(error => {
                     console.error('Error uploading PDF to S3:', error);
@@ -714,7 +713,7 @@ function downloadPDF() {
     const pdfHeight = 297;
 
 // 특정 클래스 이름을 가진 div 요소들을 PDF로 만들어 S3에 업로드하는 함수
-    async function createPDFs(className, fileName) {
+    async function createPDFs(className) {
         const elements = document.querySelectorAll(className);
 
         // 새로운 PDF 객체 생성

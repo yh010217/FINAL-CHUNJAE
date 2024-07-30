@@ -50,7 +50,7 @@ public class Step3Controller {
             @RequestParam("paper") String paper,
             Model model
     ) throws JsonProcessingException {
-//        log.info("paperTitle...{}", paperTitle);
+//       log.info("paperTitle...{}", paperTitle);
 
         ObjectMapper objectMapper = new ObjectMapper();
         
@@ -67,6 +67,7 @@ public class Step3Controller {
 
         model.addAttribute("saveName", paperTitle);
         model.addAttribute("paperList", paper);
+        model.addAttribute("paperId", itemList.get(0).getPaperId());
 
         response.setHeader("X-Frame-Options", "ALLOW-FROM /loading");
         return "/step3/save_paper";

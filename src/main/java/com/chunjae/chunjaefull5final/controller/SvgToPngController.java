@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -39,8 +40,10 @@ public class SvgToPngController {
         for (String item : dataList) {
             try {
                 if (isSvgUrl(item)) {
+                    String svgData = readSvgDataFromUrl(item);
+                    String base64Svg = "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(svgData.getBytes());
                     int[] widthHeight = getRatioSvg(item);
-                    resultList.add(new ImageDTO(item, widthHeight[0], widthHeight[1]));
+                    resultList.add(new ImageDTO(base64Svg, widthHeight[0], widthHeight[1]));
                 } else {
                     resultList.add(new ImageDTO(item, 310, 21)); // SVG URL이 아닌 경우 그대로 추가
                 }
@@ -147,6 +150,20 @@ public class SvgToPngController {
     private boolean isSvgUrl(String url) {
 //        log.info("===================!!!!!!!!!!!!!!전달 성공 isSvgUrl!!!!!!!!!!!!=====================");
         return url.toLowerCase().endsWith(".svg");
+    }
+
+    private String readSvgDataFromUrl(String url) throws IOException {
+        try (InputStream svgInputStream = new URL(url).openStream();
+             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
+            // URL에서 SVG 데이터 읽기
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = svgInputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+            return byteArrayOutputStream.toString();
+        }
     }
 
 }

@@ -65,7 +65,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addMapping("/convertImage")
                 .allowedOrigins("http://localhost:8080","https://img.chunjae-platform.com")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedMethods("GET", "POST", "PUT", "DELETE","OPTION")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
