@@ -34,9 +34,6 @@ public class Step1Controller {
 
     private final JWTUtil jwtUtil;
 
-    @Value("${spring.server-name}")
-    private String serverName;
-
     @GetMapping("/step1/select-chapter/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, HttpServletRequest request, Model model){
 
