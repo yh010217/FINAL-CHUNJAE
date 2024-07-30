@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/css/step0/reset_step0.css">
 <!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
     <link rel="stylesheet" href="/css/step0/step0.css">
-    <script src="/js/step0/step0_1.js"></script>
+    <script src="/js/step0/step0.js"></script>
 <!--    <script src="/js/step0/step0_2.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -24,18 +24,6 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="/inc/js/common.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js'></script>
-    <script>
-        axios({
-            url: 'https://cors-proxy.org/api/',
-            method: 'get',
-            headers: {
-                'cors-proxy-url' : 'http://localhost/8080' // 이 부분을 이용하는 서버 URL로 변경
-            },
-        }).then((res) => {
-            console.log(res.data);
-        })
-    </script>
 </head>
 <style>
     .paper{
@@ -66,30 +54,7 @@
         height: 23px;
         line-height: 23px;
     }
-    .column {
-        width: 593px; /* 전체 너비를 사용하도록 설정 */
-        height: 820px;
-        column-count: 2;
-        column-rule-color: lightgrey;
-        column-rule-style: solid;
-        column-rule-width: thin;
-        /*column-width: auto; !* 열의 너비를 자동으로 조절 *!*/
-        /* overflow: auto;*/
-        border-bottom: 0.2px solid black;
-        margin-bottom: 100px;
-    }
-    .column-first {
-        width: 595px; /* 전체 너비를 사용하도록 설정 */
-        height: 772px;
-        column-count: 2;
-        column-rule-color: lightgrey;
-        column-rule-style: solid;
-        column-rule-width: thin;
-        /*column-width: auto; !* 열의 너비를 자동으로 조절 *!*/
-        /* overflow: auto;*/
-        border-bottom: 0.2px solid black;
-        margin-bottom: 100px;
-    }
+
     .column img {
         width: 100%; /* 이미지가 열의 너비에 맞게 조절되도록 설정 */
         height: auto; /* 이미지의 가로세로 비율을 유지하면서 자동으로 조절 */
@@ -208,10 +173,10 @@
                                                 </span>
                                                 <span>
                                                      <div class="btn-wrap">
-                                                        <button type="button" class="btn-default">전체</button>
-                                                        <button type="button" class="btn-default">문제</button>
-                                                        <button type="button" class="btn-default">정답 + 해설</button>
-                                                        <button type="button" class="btn-default">문항정보표</button>
+                                                        <button type="button" class="btn-default"  data-type="A">전체</button>
+                                                        <button type="button" class="btn-default"  data-type="Q">문제</button>
+                                                        <button type="button" class="btn-default" data-type="E">정답 + 해설</button>
+                                                        <button type="button" class="btn-default" data-type="C">문항정보표</button>
                                                     </div>
                                                 </span>
                                             </div>
