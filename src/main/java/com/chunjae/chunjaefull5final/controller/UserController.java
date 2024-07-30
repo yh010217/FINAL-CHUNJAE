@@ -28,7 +28,8 @@ public class UserController {
     /** 회원가입페이지이동 */
     @GetMapping("/join")
     public String join(Model model){
-        model.addAttribute("userDTO", new UserDTO());
+        UserDTO userDTO=new UserDTO();
+        model.addAttribute("userDTO", userDTO);
         model.addAttribute("view","user/join");
         return "main/index";
     }

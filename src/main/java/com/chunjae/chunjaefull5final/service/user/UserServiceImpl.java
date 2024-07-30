@@ -4,6 +4,7 @@ import com.chunjae.chunjaefull5final.domain.SchoolType;
 import com.chunjae.chunjaefull5final.domain.User;
 import com.chunjae.chunjaefull5final.domain.UserRole;
 import com.chunjae.chunjaefull5final.dto.UserDTO;
+import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
    private final UserRepository userRepository;
+
+   private final PaperInfoRepository paperInfoRepository;
    private final PasswordEncoder encoder;
    private final ModelMapper modelMapper;
    private static final Logger log= LoggerFactory.getLogger(UserService.class);
@@ -104,9 +107,11 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
+    /** 회원탈퇴시 paperinfo에서도 업데이트*/
     @Override
     public Long deleteUser(Long uid) {
         userRepository.deleteUser(uid);
+        paperInfoRepository.updatePaperInfoDeleteYn(uid);
         return uid;
     }
 
@@ -143,6 +148,18 @@ public class UserServiceImpl implements UserService {
             User savedUser = userRepository.save(newUser);
             log.info("Saved new user: {}", savedUser);
             return savedUser;
+        }
+    }
+
+    @Override
+    public String getName(Long uidByJWT) {
+        Optional<User> userOptional = userRepository.findById(uidByJWT);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getName();
+        } else {
+            return null;
         }
     }
 

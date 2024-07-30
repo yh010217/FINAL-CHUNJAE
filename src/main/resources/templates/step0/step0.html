@@ -6,14 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>T셀파 문제은행</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <link rel="stylesheet" href="/inc/css/font.css">
 
     <link rel="stylesheet" href="/css/step0/reset_step0.css">
 <!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
     <link rel="stylesheet" href="/css/step0/step0.css">
-    <script src="/js/step0/step0_1.js"></script>
+    <script src="/js/step0/step0.js"></script>
+<!--    <script src="/js/step0/step0_2.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
@@ -21,7 +25,81 @@
     <script src="/inc/js/common.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+<style>
+    .paper{
+        width: 100%; /* 전체 너비를 사용하도록 설정 */
+    }
+    #header_data{
+        width: 93%;
+        height: 60px;
+/*        margin-bottom: 10px;*/
+        margin: auto;
+    }
+    .title_header{
+        width: 76%;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 46px;
+        text-align: center;
+        border-right: 2px solid #ccc;
+    }
+    .class_header{
+        font-size: 13px;
+        text-align: right;
+        height: 23px;
+        line-height: 23px;
+    }
+    .name_header{
+        font-size: 13px;
+        height: 23px;
+        line-height: 23px;
+    }
 
+    .column img {
+        width: 100%; /* 이미지가 열의 너비에 맞게 조절되도록 설정 */
+        height: auto; /* 이미지의 가로세로 비율을 유지하면서 자동으로 조절 */
+    }
+    .item_figure {
+        margin: 0;
+        margin-bottom: 100px;
+    }
+    .item_figure img {
+        display: block;
+    }
+    .item_no{
+        color: #020a26;
+        font-weight: bold;
+        float: left;
+    }
+    .item_answer:after{
+        float: left;
+        height: 20px;
+       /* background: #207a1e;*/
+        width: 35px;
+        font-size: 12px;
+        line-height: 15px;
+        font-weight: bold;
+        color: #207a1e;
+        text-align: center;
+        content: "정답";
+    }
+    .item_explain:after {
+        float: left;
+        height: 20px;
+    /* background: rgba(80, 149, 253, 0.68);
+    */    width: 35px;
+        font-size: 12px;
+        line-height: 15px;
+        font-weight: bold;
+        color: rgba(80, 149, 253, 0.68);
+        text-align: center;
+        content: "해설";
+    }
+    #preview-itemInfo-table{
+        width: 90%;
+        margin: auto;
+    }
+</style>
 <body>
 <div id="wrap" class="full-pop-que">
     <div class="full-pop-wrap">
@@ -95,10 +173,10 @@
                                                 </span>
                                                 <span>
                                                      <div class="btn-wrap">
-                                                        <button type="button" class="btn-default">전체</button>
-                                                        <button type="button" class="btn-default">문제</button>
-                                                        <button type="button" class="btn-default">정답 + 해설</button>
-                                                        <button type="button" class="btn-default">문항정보표</button>
+                                                        <button type="button" class="btn-default"  data-type="A">전체</button>
+                                                        <button type="button" class="btn-default"  data-type="Q">문제</button>
+                                                        <button type="button" class="btn-default" data-type="E">정답 + 해설</button>
+                                                        <button type="button" class="btn-default" data-type="C">문항정보표</button>
                                                     </div>
                                                 </span>
                                             </div>
@@ -144,13 +222,26 @@
 
                     <div class="preview-data">
                         <div class="btn-wrap" id="preview-btn-div">
-                            <button type="button" class="btn-icon preview-download" date-type="D">
+                            <button type="button" class="btn-icon preview-download" date-type="">
                                 <i class="download"></i>다운로드
                             </button>
                         </div>
 
                         <div class="view-box">
+                            <div id="test_paper">
                             <div class="scroll-inner">
+                                <div class="paper">
+                                <div id="header_data">
+                                    <table style="width:100%; border: 5px solid #ccc; border-radius: 15px; margin: 10px 0px">
+                                        <tr>
+                                            <td rowspan="2" class="title_header">시험지명</td>
+                                            <td class="class_header">&nbsp;&nbsp;학년&nbsp;&nbsp;반&nbsp;&nbsp;번&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="name_header">&nbsp;이름 : </td>
+                                        </tr>
+                                    </table>
+                                </div>
                                 <div class="layout-wrap" id="preview-question-data"></div>
 
                                 <!-- 문항 정보표 테이블 -->
@@ -188,6 +279,9 @@
                                         </table>
                                     </div>
                                 </div>
+                                </div>
+                            </div>
+
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,9 @@
 package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.QuestionErrorDTO;
+import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.service.ModelService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -17,18 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class ErrorController {
 
     private final ModelService service;
+    private final JWTUtil jwtUtil;
 
     @PostMapping("/error")
-    public String error(@RequestBody QuestionErrorDTO dto, Model model) {
+    public String error(@RequestBody QuestionErrorDTO dto, Model model, HttpServletRequest request) {
 
         String attachmentFileName = dto.getAttachmentFileName();
         String attachmentFilePath = dto.getAttachmentFilePath();
         String content = dto.getContent();
         Integer itemId = dto.getItemId();
         String error_type = dto.getErrorType();
-        Long uid = 5L; // 세션값 임시
+        Long uidByJWT = jwtUtil.getUidByRequest(request); // uid
 
-        service.insertError(dto, uid);
+        service.insertError(dto, uidByJWT);
 
         return "/step2";
     }

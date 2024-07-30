@@ -21,4 +21,6 @@ public interface UserService {
     UserDTO findUserInfo(String name);
 
     User snsUser(UserDTO dto);
+
+    String getName(Long uidByJWT);
 }

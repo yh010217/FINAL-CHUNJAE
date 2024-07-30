@@ -17,9 +17,16 @@ import java.io.IOException;
 import java.io.InputStream;
 */
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import com.chunjae.chunjaefull5final.domain.PaperDownloadLog;
+import com.chunjae.chunjaefull5final.domain.PaperInfo;
+import com.chunjae.chunjaefull5final.domain.User;
+import com.chunjae.chunjaefull5final.repository.PaperDownloadLogRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,19 +38,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 @Service
 @RequiredArgsConstructor
@@ -53,11 +55,10 @@ public class AWSService {
     private String bucket;
 
     private final AmazonS3 amazonS3;
+    private final PaperDownloadLogRepository repository;
 
     public List<String> uploadFile(List<MultipartFile> multipartFiles, String folderName) {
         List<String> fileNameList = new ArrayList<>();
-
-        // log.info("file......{}",multipartFiles);
 
         if (multipartFiles != null) {
             multipartFiles.forEach(file -> {
@@ -117,24 +118,64 @@ public class AWSService {
     return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
 }
 
-    public void downloadFile(String key, HttpServletResponse response) throws IOException {
+    public void downloadFile(String key, HttpServletResponse response, HttpServletRequest request, Long uidByJWT) throws IOException {
         S3Object s3Object = amazonS3.getObject(bucket, key);
+
         try (InputStream inputStream = s3Object.getObjectContent()) {
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 response.getOutputStream().write(buffer, 0, bytesRead);
             }
+            response.getOutputStream().flush(); // 응답 스트림 플러시
+        } catch (IOException e) {
+            log.error("파일 다운로드 중 오류 발생", e);
+            throw e; // 예외를 다시 던져서 호출자에게 알림
+        } finally {
+            // 다운로드 로그 저장
+            LocalDateTime now = LocalDateTime.now();
+            String clientIp = request.getRemoteAddr();
+            String xForwardedFor = request.getHeader("X-Forwarded-For");
+            if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+                clientIp = xForwardedFor.split(",")[0];
+            }
+
+            log.info("현재 시간: {}", now);
+            log.info("클라이언트 IP 주소: {}", clientIp);
+
+            PaperDownloadLog downloadLog = new PaperDownloadLog();
+            downloadLog.setHostIp(clientIp);
+            downloadLog.setCreatedAt(now);
+
+            PaperInfo paperInfo = new PaperInfo();
+            paperInfo.setPaperId(25L);
+            downloadLog.setPaperInfo(paperInfo);
+
+            User user = new User();
+            user.setUid(uidByJWT);
+            downloadLog.setUid(user);
+
+            try {
+                repository.save(downloadLog); // DB에 저장
+            } catch (Exception e) {
+                log.error("다운로드 로그 저장 중 오류 발생", e);
+            }
         }
     }
 
-
     public void paperDeleteFile(String filepath) {
-        System.out.println(">>>>>>>>> 버킷: "+bucket+"///파일 명:"+filepath);
-        System.out.println(">>>>>>>>> "+bucket+filepath);
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, filepath));
+        try {
+            System.out.println(">>>>>>>>> 버킷: " + bucket + "///파일 명:" + filepath);
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, filepath));
+            System.out.println("파일이 성공적으로 삭제되었습니다.");
+        } catch (AmazonServiceException e) {
+            System.err.println("AmazonServiceException: " + e.getMessage());
+            throw e;
+        } catch (SdkClientException e) {
+            System.err.println("SdkClientException: " + e.getMessage());
+            throw e;
+        }
     }
-
 
 }
 

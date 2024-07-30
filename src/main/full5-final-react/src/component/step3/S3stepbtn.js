@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
 
-function S3stepbtn({ paperTitle, paper }) {
+function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
 
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -69,9 +69,13 @@ function S3stepbtn({ paperTitle, paper }) {
 */
 
 
+    // step2 가는 버튼 구현 ...
+    console.log(paramType.current)
+    console.log(subjectId)
+
     return (
         <>
-            <Link>
+            <Link to={`/step2/${paramType.current}/${subjectId}`}>
                 <button className="btn-step">STEP 2 문항 편집</button>
             </Link>
             <button className="btn-step next" onClick={handleSaveBtn}>
