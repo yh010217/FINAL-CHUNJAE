@@ -113,15 +113,18 @@
                         <span th:text="${paperInfoDTO.createdAt}"></span>
                     </li>
                     <li class="list">
-                        <span>만든회원번호</span>
-                        <span th:text="${paperInfoDTO.uid}"></span>
+                        <span>만든회원번호/이름</span>
+                        <div>
+                            <span th:text="${paperInfoDTO.uid}"></span>
+                            <span th:text="${userNames[paperInfoDTO.uid]}"></span>
+                        </div>
                     </li>
                     <li class="list">
                         <span>삭제여부</span>
                         <span th:text="${paperInfoDTO.delete_yn}"></span>
                     </li>
                     <li>
-                        <span>시험지파일다운</span>
+                        <span>시험지다운로드</span>
                         <span th:text="${paperInfoDTO.saveQuestionPath}"></span>
                         <div>
                             <button type="button" class="download-btn" th:data-attachment-file-name="${paperInfoDTO.saveQuestionPath}">다운로드</button>

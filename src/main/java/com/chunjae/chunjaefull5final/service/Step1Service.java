@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface Step1Service {
-    JSONObject saveExam(String examBody, int subject, List<String> levelCnt) throws ParseException;
+    JSONObject saveExam(String examBody, int subject, List<String> levelCnt, Long uid) throws ParseException;
 
     PaperInfo tempPaperInfo(int subject, int itemCount, long user, String saveName);
 

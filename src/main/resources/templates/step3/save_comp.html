@@ -42,14 +42,24 @@
 							<p>저장된 시험지는 시험지 보관함 메뉴에서 확인 가능합니다. </p>
 						</span>
 						<div class="btn-wrap">
-							<button class="btn-icon">시험지 보관함으로 이동</button>
+							<button class="btn-icon" id="btn">시험지 보관함으로 이동</button>
 						</div>
 					</div>
-					
 				</div>
 			</div>
 		</div>
 		<div class="dim"></div>
+	</div>
+<script>
+	document.getElementById("btn").onclick = function (){
+		if (window.opener) {
+			window.opener.location.href = '/paper';
+			window.close();
+		} else {
+			console.error('부모 창을 찾을 수 없습니다.');
+		}
+	}
+</script>
 </body>
 
 

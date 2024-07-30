@@ -18,13 +18,13 @@ import java.util.Map;
 @Slf4j
 public class Step3Controller {
 
-    @PostMapping("/back/savedpaper")
+/*    @PostMapping("/back/savedpaper")
     public ResponseEntity<String> reactTest(@RequestBody Map<String, Object> requestData) {
 
         log.info("paperContent...{}", requestData);
 
         return ResponseEntity.ok("Paper saved successfully");
-    }
+    }*/
 
     @GetMapping("/save_paper")
     public String savePaper(){
@@ -43,7 +43,7 @@ public class Step3Controller {
     }
 
     @PostMapping("/save")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://10.41.1.61:8080")
     public String postThymeleafPage(
             HttpServletResponse response,
             @RequestParam("paperTitle") String paperTitle,

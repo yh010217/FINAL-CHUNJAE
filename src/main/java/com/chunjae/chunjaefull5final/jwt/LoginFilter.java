@@ -56,6 +56,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             result = authenticationManager.authenticate(authToken);
         }catch (Exception e){
             System.out.println(e);
+            try{
+                response.sendRedirect("/login?error=true");
+            }catch (Exception e2){
+                System.out.println(e2);
+            }
         }
 
         setDetails(request, authToken);
