@@ -33,7 +33,7 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         try {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'http://localhost:8080/save';
+            form.action = '/save';
 
             const input1 = document.createElement('input');
             input1.type = 'hidden';
@@ -54,19 +54,6 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         }
     };
 
-/*      const handleSave = async () => {
-        try {
-            const url = '/back/savedpaper';
-            const data = {
-                paper: [paperTitle, paper]
-            };
-            await axios.post(url, data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-
-    };
-*/
 
 
     // step2 가는 버튼 구현 ...

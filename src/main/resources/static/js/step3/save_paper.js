@@ -757,4 +757,3 @@ function downloadPDF() {
 }
 
 setTimeout(downloadPDF, 3000)
-

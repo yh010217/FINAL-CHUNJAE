@@ -37,7 +37,7 @@ public class Step1ServiceImpl implements Step1Service {
     private final ModelMapper modelMapper;
 
     @Override
-    public JSONObject saveExam(String examBody, int subject, List<String> levelCnt)
+    public JSONObject saveExam(String examBody, int subject, List<String> levelCnt ,Long uid)
             throws ParseException {
 
 
@@ -52,7 +52,7 @@ public class Step1ServiceImpl implements Step1Service {
 
             JSONArray itemList = (JSONArray) examJson.get("itemList");
 
-            PaperInfo temp = tempPaperInfo(subject, itemList.size(), 2L, "save_name");
+            PaperInfo temp = tempPaperInfo(subject, itemList.size(), uid, "save_name");
             PaperInfo saved = paperInfoRepo.save(temp);
             if (saved == null) {
                 result = new JSONObject();
