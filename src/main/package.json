@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "http-proxy-middleware": "^3.0.0"
   }

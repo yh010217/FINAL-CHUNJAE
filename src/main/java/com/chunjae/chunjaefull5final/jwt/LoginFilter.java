@@ -56,6 +56,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             result = authenticationManager.authenticate(authToken);
         }catch (Exception e){
             System.out.println(e);
+            try{
+                response.sendRedirect("/login?error=true");
+            }catch (Exception e2){
+                System.out.println(e2);
+            }
         }
 
         setDetails(request, authToken);
@@ -99,7 +104,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = "";
         if(snsId == null){
-            token = jwtUtil.createJwtNormal(uid,email,realName,role, 1000*60*30L);
+            token = jwtUtil.createJwtNormal(uid,email,role, 1000*60*30L);
         }else{
             token = jwtUtil.createJwtSns(uid,snsId,role, 1000*60*30L);
         }
@@ -107,7 +112,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Cookie jwtCookie = new Cookie("Authorization", token);
 
         jwtCookie.setHttpOnly(true); // 클라이언트 측 스크립트에서 쿠키 접근 불가
-        jwtCookie.setSecure(true); // HTTPS에서만 쿠키 전송
+        jwtCookie.setSecure(false); // HTTPS에서만 쿠키 전송
         jwtCookie.setPath("/"); // 모든 경로에서 쿠키 사용 가능
         jwtCookie.setMaxAge(60 * 60 * 10); // 쿠키의 유효기간 설정 (초 단위)
 

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 
 function ListModal({ open, onClose, data }) {
-    const [list, setList] = useState([]);
 
     if (!open) return null;
+    console.log(data)
 
     return (
         <>
@@ -21,13 +21,13 @@ function ListModal({ open, onClose, data }) {
                                     <h3>{item.largeChapterName}</h3> {/* 대단원 이름 출력 */}
                                     <li>
                                         <h4>{item.mediumChapterName}</h4> {/* 중단원 이름 출력 */}
-                                        <span>
                                             {Object.entries(item.smallChapters).map(([smallChapterName, smallItems]) => (
+                                                <span>
                                                 <React.Fragment key={smallChapterName}> {/* 소단원 이름 출력 */}
                                                     {smallChapterName}
                                                 </React.Fragment>
+                                                    </span>
                                             ))}
-                                        </span>
                                     </li>
                                 </ul>
                             ))}

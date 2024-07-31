@@ -29,19 +29,34 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         handleSave();
     };
 
+
     const handleSave = async () => {
         try {
-            const url = '/back/savedpaper';
-            const data = {
-                paper: [paperTitle, paper]
-            };
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/save';
+            const input1 = document.createElement('input');
+            input1.type = 'hidden';
+            input1.name = 'paperTitle';
+            input1.value = paperTitle;
+            form.appendChild(input1);
 
-            await axios.post(url, data);
+            const input2 = document.createElement('input');
+            input2.type = 'hidden';
+            input2.name = 'paper';
+            input2.value = JSON.stringify(paper);
+            form.appendChild(input2);
+
+            document.body.appendChild(form);
+            form.submit();
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error submitting form:', error);
         }
-
     };
+
+    // step2 가는 버튼 구현 ...
+    console.log(paramType.current)
+    console.log(subjectId)
 
     return (
         <>
@@ -51,7 +66,6 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
             <button className="btn-step next" onClick={handleSaveBtn}>
                 시험지 저장하기
             </button>
-
             {showAlert && (
                 <div className="step-modal">
                     {paperTitle === '' && (
@@ -84,7 +98,7 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
                         <button className="btn-default" onClick={handleCancel}>
                             취소
                         </button>
-                        <button className="btn-default" onClick={handleSaveConfirm}>
+                        <button type="submit" className="btn-default" onClick={handleSaveConfirm}>
                             확인
                         </button>
                     </div>
@@ -93,5 +107,4 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         </>
     );
 }
-
 export default S3stepbtn;

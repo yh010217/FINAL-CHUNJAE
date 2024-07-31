@@ -15,7 +15,9 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
             let data ={};
             if (paramType === 'edit') {
 
-                getUrl = 'http://localhost:8080/step0/examId'
+                //getUrl = 'http://10.41.1.61:8080/step0/examId'
+                //getUrl = 'http://localhost:8080/step0/examId'
+                getUrl = '/step0/examId'
                 const responseGet = await axios.get(getUrl);
                 let examId = responseGet.data.examIdList.map(item=>item);
 
@@ -38,7 +40,9 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
                 getSubjectId(getData);
 
             }else if(paramType === 'new'){
+                url = 'http://10.41.1.61:8080/step1/step2-data/'+getData
                 url = 'http://localhost:8080/step1/step2-data/'+getData
+                url = '/step1/step2-data/'+getData
 
                 const response = await axios.post(url, data);
 

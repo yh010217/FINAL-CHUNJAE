@@ -21,7 +21,10 @@
 
         <div id="tab-2" class="tab-content current">
             <div class="download-fullBox">
-
+                <div th:if="${dto.isEmpty}" class="null-container">
+                    <img src="/images/main/시험지.png" alt="시험지"/>
+                    시험지 보관함이 비어있어요!
+                </div>
                 <div class="download-container" th:each="item:${dto}">
                     <div class="download-box">
                         <div class="download-left">
@@ -29,12 +32,12 @@
                             <div class="left-box1">
                                 <span th:text="${item.title}">과목 이름</span>
                                 <span th:text="|${item.itemCount}개|">문항수</span>
-                                <span th:text="${item.saveQuestionPath}">날짜</span>
+                                <span th:text="${item.updateAt}">날짜</span>
                             </div>
                             <hr>
                             <div class="left-box2">
                                 <span>문항 편집</span>
-                                <span class="del-btn">시험지 삭제</span>
+                                <span class="del-btn">문항 삭제</span>
                             </div>
                         </div>
                         <div class="download-right">
@@ -47,7 +50,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -103,7 +105,6 @@
                 })
                 .catch(error => console.error('Error:', error))
         };
-
     </script>
 
 </body>

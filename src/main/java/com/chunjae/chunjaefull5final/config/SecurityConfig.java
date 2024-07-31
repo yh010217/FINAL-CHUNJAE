@@ -7,9 +7,10 @@ import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.jwt.LoginFilter;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 // import com.chunjae.chunjaefull5final.config.oauth.CustomOAuth2UserService;
+
 import com.chunjae.chunjaefull5final.config.oauth.OAuth2UserService;
-import com.chunjae.chunjaefull5final.service.user.CustomUserDetails;
-import com.chunjae.chunjaefull5final.service.user.UserDetailService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.*;
+
+import java.util.Collections;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -61,10 +71,8 @@ public class SecurityConfig {
     }
 
 
-
-
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
+    public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring()
                 .requestMatchers(
                         //로그인 하지 않고 들어가기 가능(css, js 없이)
@@ -86,6 +94,10 @@ public class SecurityConfig {
                         , "/back/**"
                         , "/step1/**"
                         , "/step2/**"
+                        , "/api/**"
+                        , "/upload"
+                        , "/convertImage"
+                        , "/save"
                         , "/item-img/**"
 
                 );
@@ -99,6 +111,9 @@ public class SecurityConfig {
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .ignoringRequestMatchers("/logout"));
 
+        http.headers(header->{
+            header.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin());
+        });
 
 //     http.csrf(csrf-> csrf.disable());
 
@@ -127,6 +142,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
+                .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/index")
                 .permitAll()
         );
@@ -151,6 +167,23 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
 
+        http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
+                config.setAllowedMethods(Collections.singletonList("*"));
+                config.setAllowCredentials(true);
+                config.setAllowedHeaders(Collections.singletonList("*"));
+                config.setMaxAge(3600L);
+
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", config);
+
+                return config;
+            }
+        }));
 
         //JWTFilter 등록
         http
@@ -172,5 +205,4 @@ public class SecurityConfig {
 
         return new BCryptPasswordEncoder();
     }
-
 }
