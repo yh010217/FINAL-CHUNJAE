@@ -53,12 +53,12 @@ public class Step3Controller {
         List<PaperDTO> itemList = objectMapper.readValue(paper
                 , objectMapper.getTypeFactory().constructCollectionType(List.class, PaperDTO.class));
 
-/*        // 데이터 확인
+        // 데이터 확인
         for (PaperDTO item : itemList) {
             log.info("=====아이템 : {}", item.toString());
         }
 
-        log.info("==========리스트 : {}", itemList);*/
+        log.info("==========리스트 : {}", itemList);
 
         model.addAttribute("saveName", paperTitle);
         model.addAttribute("paperList", paper);

@@ -1,6 +1,7 @@
 package com.chunjae.chunjaefull5final.dto;
 
 import lombok.*;
+import org.springframework.data.relational.core.sql.In;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +15,12 @@ public class PaperDTO {
 
     private Long pqId;
     private Long paperId;
-    private Long itemId;
+    private Integer itemId;
     private Long itemNo;
     private Long passageId;
     private Long setPaperId;
-    private Long setPaperTitle;
+    private String setPaperTitle;
+    private Integer subjectId;
     private String questionFormCode;
     private String questionFormName;
     private String difficultyName;
