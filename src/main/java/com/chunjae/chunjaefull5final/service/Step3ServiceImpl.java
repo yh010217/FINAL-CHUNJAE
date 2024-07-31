@@ -9,6 +9,7 @@ import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
 import com.chunjae.chunjaefull5final.repository.PaperQuestion.PaperQuestionRepository;
 import com.chunjae.chunjaefull5final.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class Step3ServiceImpl implements Step3Service{
 
     private final UserRepository userRepository;

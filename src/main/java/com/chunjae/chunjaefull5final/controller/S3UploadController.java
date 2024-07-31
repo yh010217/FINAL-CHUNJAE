@@ -62,6 +62,7 @@ public class S3UploadController {
 
             // paper_info
             dto.setUid(uid);
+            log.info(dto.getUid() + " >>>>>>>>>>>>>>>>>>>>> 값 확인하기");
             dto.setPaperId(Long.valueOf(paperId));
             dto.setSaveName(saveName);
             dto.setSaveQuestionPath(saveName+"_"+questionPdf.getOriginalFilename());

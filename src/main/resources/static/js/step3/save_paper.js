@@ -700,7 +700,7 @@ function downloadPDF() {
                 .then(response => response.text())
                 .then(data => {
                     console.log('PDF uploaded to S3:', data);
-                    // window.location.href = '/save_comp';
+                    window.location.href = '/save_comp';
                 })
                 .catch(error => {
                     console.error('Error uploading PDF to S3:', error);
