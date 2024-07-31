@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 function ListModal({ open, onClose, data }) {
 
     if (!open) return null;
-    console.log(data)
+    console.log(data, "그룹화 제대로 했따")
 
     return (
         <>
@@ -21,12 +21,14 @@ function ListModal({ open, onClose, data }) {
                                     <h3>{item.largeChapterName}</h3> {/* 대단원 이름 출력 */}
                                     <li>
                                         <h4>{item.mediumChapterName}</h4> {/* 중단원 이름 출력 */}
-                                            {Object.entries(item.smallChapters).map(([smallChapterName, smallItems]) => (
-                                                <span>
-                                                <React.Fragment key={smallChapterName}> {/* 소단원 이름 출력 */}
-                                                    {smallChapterName}
-                                                </React.Fragment>
-                                                    </span>
+                                        {Object.entries(item.smallChapters)
+                                            .sort((a, b) => a[0].localeCompare(b[0])) // 1번부터 출력되게 고정
+                                            .map(([smallChapterName, smallItems]) => (
+                                                <span key={smallChapterName}> {/* key를 span에 설정 */}
+                                                    <React.Fragment>
+                                                        {smallChapterName}
+                                                    </React.Fragment>
+                                                </span>
                                             ))}
                                     </li>
                                 </ul>

@@ -1,6 +1,6 @@
 import React from "react";
 
-function DELLIST({item, addToDelList, delList, setDelList, setItemId, setModal, changeList}) {
+function DELLIST({itemIndex, item, addToDelList, delList, setDelList, setItemId, setModal, changeList}) {
 
     const DelReList =()=> {
 
@@ -17,7 +17,7 @@ function DELLIST({item, addToDelList, delList, setDelList, setItemId, setModal, 
     return <div className="view-que-box" key={item.itemId}>
         <div className="que-top">
             <div className="title">
-                <span className="num">{item.itemNo}</span>
+                <span className="num">{item.index}</span>
                 <div className="que-badge-group">
                     <span
                         className={`que-badge ${

@@ -3,8 +3,6 @@ import DELLIST from "./DELLIST";
 
 function YesDel({delList, setDelList, addToDelList, setModal, setItemId, groupedData, changeList}) {
 
-    console.log(groupedData, "test")
-
     /** 한 번에 지우기 */
     const allDelList = (group) => {
 
@@ -31,46 +29,57 @@ function YesDel({delList, setDelList, addToDelList, setModal, setItemId, grouped
             {Object.values(groupedData).map((group, index) => {
                 const passageId = group.items.map(item => item.passageId);
                 const passageUrl = group.items.map(item => item.passageUrl);
+                console.log(group, "test");
 
                 return (
                     <React.Fragment key={group.passageId}>
-                        {passageId[0] != null && (
-                            <div className="view-que-box">
-                                <div className="que-top">
-                                    <div className="title">
-                                        {group.items.length > 1 ? (
-                                            <span className="num">지문 {group.items[0].itemNo}~{group.items[group.items.length - 1].itemNo}</span>
-                                        ) : (
-                                            <span className="num">지문 {group.items[0].itemNo}</span>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="view-que">
-                                    <img src={passageUrl[0]} alt="지문입니다..." />
-                                    <div className="que-bottom">
-                                        <div className="data-area">
-                                            <button className="btn-default" onClick={() => allDelList(group)}>
-                                                <i className="add-type02"></i>
-                                                전체 추가
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        {group.items.map((item, itemIndex) => (
-                            <DELLIST
-                                key={item.itemId} // 반드시 key prop을 추가해야 함
-                                itemIndex={itemIndex}
-                                item={item}
-                                addToDelList={addToDelList}
-                                setDelList={setDelList}
-                                delList={delList}
-                                setModal={setModal}
-                                setItemId={setItemId}
-                                changeList={changeList}
-                            />
-                        ))}
+                        <React.Fragment key={group.index}>
+                            {group.items.map((item, itemIndex) => (
+                                <React.Fragment key={item.itemId}>
+                                    {itemIndex === 0 && (
+                                        <>
+                                            {item.passageUrl && item.passageUrl !== 'null' && (
+                                                <div className="view-que-box">
+                                                    <div className="que-top">
+                                                        <div className="title">
+                                                            <span className="num">
+                                                                {group.items.length > 1 ? (
+                                                                    <span className="num">지문 {item.index} ~ {(group.items.length + item.index) - 1}</span>
+                                                                ) : (
+                                                                    <span className="num">지문 {item.index}</span>
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="view-que">
+                                                        <img src={passageUrl[0]} alt="지문입니다..." />
+                                                        <div className="que-bottom">
+                                                            <div className="data-area">
+                                                                <button className="btn-default" onClick={() => allDelList(group)}>
+                                                                    <i className="add-type02"></i>
+                                                                    전체 추가
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                    <DELLIST
+                                        key={item.itemId} // 반드시 key prop을 추가해야 함
+                                        itemIndex={itemIndex}
+                                        item={item}
+                                        addToDelList={addToDelList}
+                                        setDelList={setDelList}
+                                        delList={delList}
+                                        setModal={setModal}
+                                        setItemId={setItemId}
+                                        changeList={changeList}
+                                    />
+                                </React.Fragment>
+                            ))}
+                        </React.Fragment>
                     </React.Fragment>
                 );
             })}

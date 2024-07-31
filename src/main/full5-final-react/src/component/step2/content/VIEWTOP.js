@@ -25,8 +25,8 @@ function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
         let largeChapterName = null;
         let mediumChapterName = null;
 
-        if (item.examId !== null) {
-            groupKey = item.examId;
+        if (item.largeChapterId !== null) {
+            groupKey = item.largeChapterId;
             largeChapterName = item.largeChapterName;
             mediumChapterName = item.mediumChapterName;
         }
@@ -54,8 +54,6 @@ function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
 
         return acc;
     }, []); // 초기값을 빈 배열로 설정
-
-
 
     const handleSubject = async () => {
         try {
