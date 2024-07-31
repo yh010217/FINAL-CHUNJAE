@@ -5,7 +5,10 @@ import com.chunjae.chunjaefull5final.dto.PreviewItemDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewItemInfoDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseInfoDTO;
+import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +34,8 @@ import java.util.Map;
 public class Step0Controller {
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final JWTUtil jwtUtil;
+
 
     @GetMapping("/step0/{subjectId}")
     public String selectChapter(@PathVariable Long subjectId, Model model) {
@@ -172,9 +176,42 @@ public class Step0Controller {
         return response;
     }
 
+/*
+    @PostMapping("/step0/examId")
+    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request, HttpServletRequest httpServletRequest, HttpSession session) {
+        Long uid = jwtUtil.getUidByRequest(httpServletRequest); // JWT에서 UID 추출
+        List<String> selectedExamIds = request.get("examIdList"); // examId 배열 받기
 
- //   private List<String> selectedExamIds; // 세션으로 받는 걸로 변경 예정
+        // 세션에 사용자별 examIdList 저장
+        if (selectedExamIds != null) {
+            session.setAttribute("selectedExamIds_" + uid, selectedExamIds);
+        }
 
+        for (String item : selectedExamIds) {
+            log.info("examid.....{}", item);
+        }
+
+        return ResponseEntity.ok("ExamId 받기 성공");
+    }
+
+
+    @GetMapping("/step0/examId")
+    public ResponseEntity<Map<Long, List<String>>> sendExamIds(HttpSession session, HttpServletRequest httpServletRequest) {
+        Long uid = jwtUtil.getUidByRequest(httpServletRequest); // JWT에서 UID 추출
+
+        // 세션에서 사용자별 examIdList 불러오기
+        List<String> selectedExamIds = (List<String>) session.getAttribute("selectedExamIds_" + uid);
+
+        Map<Long, List<String>> response = new HashMap<>();
+
+        // null 체크 후 응답에 추가
+        if (selectedExamIds != null) {
+            response.put(uid, selectedExamIds);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+*/
 
     /**
      * @@@@@@@@@ 선택한 시험지 json 형식으로 받고 보내기
@@ -182,6 +219,8 @@ public class Step0Controller {
     @PostMapping("/step0/examId")
     public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request, HttpSession session) {
         List<String> selectedExamIds = request.get("examIdList");
+
+
 
         session.setAttribute("selectedExamIds", selectedExamIds);  // 세션에 selectedExamIds 저장
 
@@ -191,7 +230,6 @@ public class Step0Controller {
 
         return ResponseEntity.ok("ExamId 받기 성공");
     }
-
     @GetMapping("/step0/examId")
     public ResponseEntity<Map<String, List<String>>> sendExamIds(HttpSession session) {
         Map<String, List<String>> response = new HashMap<>();
@@ -204,7 +242,9 @@ public class Step0Controller {
         return ResponseEntity.ok(response);
     }
 
-    /** 셋팅지 미리보기 */
+    /**
+     * 셋팅지 미리보기
+     */
     @PostMapping("/preview/first")
     public ResponseEntity<PreviewResponseDTO> getPreview(@RequestBody PreviewResponseDTO request) {
         String url = "https://tsherpa.item-factory.com/item-img/exam/item-list";
@@ -249,7 +289,9 @@ public class Step0Controller {
         return ResponseEntity.ok(request);
     }
 
-    /** 셋팅지 미리보기 - 문항 정보표 */
+    /**
+     * 셋팅지 미리보기 - 문항 정보표
+     */
     @PostMapping("/preview/info")
     public ResponseEntity<PreviewResponseInfoDTO> getPreviewInfo(@RequestBody PreviewResponseInfoDTO request) {
 
