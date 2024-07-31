@@ -36,7 +36,7 @@ function CNTLEFT({changeList, onChangeList, onChangeGroup, userSort, setUserSort
                         <ul className="select-list">
                             <li><a onClick={()=>handleViewType('문제만 보기')}>문제만 보기</a></li>
                             <li><a onClick={()=>handleViewType('문제+정답 보기')}>문제+정답 보기</a></li>
-                            <li><a onClick={()=>handleViewType('문제+해설+정답 보기')}>문제+해설+정답 보기</a></li>
+                            <li><a onClick={()=>handleViewType('문제+해설+정답')}>문제+해설+정답 보기</a></li>
                         </ul>
                     )}
                 </div>

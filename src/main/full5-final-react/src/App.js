@@ -11,7 +11,6 @@ function App() {
     /** subjectId 받아오기 **/
     const [subjectId, setSubjectId] = useState('');
     const paramType = useRef('');
-    console.log(subjectId);
     const getSubjectId = (getId) => {
         setSubjectId(getId);
     }

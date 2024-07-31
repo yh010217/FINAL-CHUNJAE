@@ -1,3 +1,7 @@
+*{
+    scroll-behavior: smooth;
+}
+
 .change_margin {
     margin-top: 20px;
 }

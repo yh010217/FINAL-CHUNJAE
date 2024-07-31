@@ -54,8 +54,6 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         }
     };
 
-
-
     // step2 가는 버튼 구현 ...
     console.log(paramType.current)
     console.log(subjectId)
