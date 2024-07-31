@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let previewButton = col.querySelector('.btn-icon2');
 
+        attachDownloadButton(col,paperTitle,itemCnt,examId, itemInfoShow,jsPDF);
+
         previewButton.onclick = function () {
 
             /* All 탭으로 이동함 */
@@ -133,20 +135,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.querySelector(".title_header").textContent = paperTitle;
 
-            previewFirst(urls, examId, paperTitle, itemCnt);
-            itemInfoShow = previewInfo(examId,itemInfoShow);
-
             let previewTabs = document.querySelectorAll('#preview-tab a');
-            attachPreviewButton(previewTabs);
 
-            attachDownloadButton(col,paperTitle,itemCnt,examId);
+            attachPreviewButton(previewTabs,itemInfoShow);
 
+
+            urls = previewFirst(examId, paperTitle, itemCnt);
+
+            itemInfoShow = previewInfo(examId);
+
+            // 미리보기 내용을 설정 (여기에 실제 데이터를 넣어야 합니다)
+            document.getElementById('preview-tit').textContent = `${paperTitle} 미리보기`;
+            document.getElementById('preview-cnt').textContent = `${itemCnt} 문항`;
+
+        }
+
+        document.querySelector('.preview-download').onclick=function (){
+            justDownload(paperTitle,jsPDF);
         }
     }
 });
 
 
 let clickPreview = function (type, itemInfoShow) {
+
     document.querySelector(".preview-download").setAttribute("data-type", type);    // .preview-download 요소의 data-type 속성 설정
     //  document.querySelector(".preview-data .scroll-inner").scrollTop = 0;          // 스크롤 위치를 맨 위로
     document.querySelector('.preview-data .view-box').classList.add('type-line');  // .view-box에 type-line 클래스 추가
@@ -202,8 +214,10 @@ let setStyle = function (selector, displayStyle) {
     })
 };
 
-let previewFirst = function (urls, examId, paperTitle, itemCnt) {
-    fetch('/preview/first', {
+let previewFirst = async function (examId, paperTitle, itemCnt) {
+
+    let urls = [];
+    await fetch('/preview/first', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -229,7 +243,6 @@ let previewFirst = function (urls, examId, paperTitle, itemCnt) {
 
         let html = '';
         let tmpPassageId = '';
-        // console.log('data...', data);
         let half = Math.ceil(data.itemList.length / 2);
         let passageNum = 0; // 지문 구분
         let tmpNum = 0;
@@ -237,8 +250,6 @@ let previewFirst = function (urls, examId, paperTitle, itemCnt) {
             let limit_num = part === 0 ? half : data.itemList.length;
             let start_num = part === 0 ? 0 : half;
 
-            // console.log('limit_num...', limit_num);
-            // console.log('start_num...', start_num);
 
             html += '<div class="view-data">';
             for (let s = start_num; s < limit_num; s++) {
@@ -248,7 +259,6 @@ let previewFirst = function (urls, examId, paperTitle, itemCnt) {
                 obj.answerUrl = '/getImage' + obj.answerUrl.split('tsherpa')[1];
                 obj.explainUrl = '/getImage' + obj.explainUrl.split('tsherpa')[1];
 
-                // console.log('obj...', obj);
                 html += '<div class="example-area"><div class="example-box">';
                 // 지문 문항
                 if (obj.passageId !== null && obj.passageId !== '') {
@@ -338,10 +348,13 @@ let previewFirst = function (urls, examId, paperTitle, itemCnt) {
     }).finally(() => {
         // document.querySelector(".loading-cnt").style.display = 'none'; // 로딩 표시 제거
     });
+
+    return urls;
 }
 
-let previewInfo = function (examId, itemInfoShow) {
-    fetch('/preview/info', {
+let previewInfo = async function (examId) {
+    let itemInfoShow = false;
+    await fetch('/preview/info', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -391,7 +404,7 @@ let previewInfo = function (examId, itemInfoShow) {
     return itemInfoShow;
 }
 
-let attachPreviewButton = function(previewTabs){
+let attachPreviewButton = function(previewTabs,itemInfoShow){
     for(let i = 0 ; i < previewTabs.length; i++){
         let previewButton = previewTabs[i];
 
@@ -404,7 +417,7 @@ let attachPreviewButton = function(previewTabs){
             parentLi.classList.add('active');
 
             let type = previewButton.getAttribute('data-type');
-            clickPreview(type);
+            clickPreview(type,itemInfoShow);
 
             document.querySelector('.preview-download').setAttribute('data-type', type);
 
@@ -413,222 +426,100 @@ let attachPreviewButton = function(previewTabs){
     }
 }
 
-let attachDownloadButton = function (col,paperTitle,itemCnt,examId){
+let attachDownloadButton = async function (col,paperTitle,itemCnt,examId,itemInfoShow,jsPDF){
     let downloads = col.querySelectorAll('.download');
     for(let i = 0 ; i < downloads.length ; i++){
-        let downloadButton = downloads[i];
-        let buttonType = 'A';
+        let button = downloads[i];
         if (button.classList.contains("A")) {
-            buttonType = 'A';
+            button.onclick = async function (){
+                await previewFirst(examId, paperTitle, itemCnt);
+                await clickPreview('A', itemInfoShow);
+                await rightDownload(paperTitle, jsPDF);
+            }
+        }else if (button.classList.contains("Q")) {
+            button.onclick = async function () {
+                await previewFirst(examId, paperTitle, itemCnt);
+                await clickPreview('Q', itemInfoShow);
+                await rightDownload(paperTitle, jsPDF);
+            }
+        }else if (button.classList.contains("E")) {
+            button.onclick = async function () {
+                await previewFirst(examId, paperTitle, itemCnt);
+                await clickPreview('E', itemInfoShow);
+                await rightDownload(paperTitle, jsPDF);
+            }
+        }else if (button.classList.contains("C")) {
+            button.onclick = async function () {
+                itemInfoShow = await previewInfo(examId);
+                await clickPreview('C', itemInfoShow);
+                await rightDownload(paperTitle, jsPDF);
+            }
         }
-        if (button.classList.contains("Q")) {
-            buttonType = 'Q';
-        }
-        if (button.classList.contains("E")) {
-            buttonType = 'E';
-        }
-        if (button.classList.contains("C")) {
-            buttonType = 'C';
-        }
-        clickPreview(buttonType);
     }
+
 }
 
+let justDownload = async function(paperName ,jsPDF){
+    const paperElement = document.querySelector('.paper');
+    paperElement.style.display = 'block'; // 사용자에게 보이지 않게 설정
 
-let urlInjection = async function (examId,paperTitle,itemCnt){
-    let urls = [];
-    let itemInfoShow = false;
+    // 3. html2canvas로 미리보기 창 캡처
+    const canvas = await html2canvas(paperElement, {
+        scrollX: 0,
+        scrollY: 0,
+        useCORS: true,
+        scale: 2,
+    });
 
-    await fetch('/preview/first', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({examId: examId})
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("HTTP error, status = " + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.successYn === 'N') {
-                alert("시험지 준비 중입니다. 관리자에게 문의해 주시기 바랍니다.");
-                return;
-            }
+    // 4. PDF 생성
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [paperElement.offsetWidth, paperElement.scrollHeight],
+        putOnlyUsedFonts: true,
+        floatPrecision: 16,
+        foreignObjectRendering: true,
+    });
 
-            document.getElementById("preview-tit").innerHTML = '[시험지명]&ensp;' + paperTitle;
-            document.getElementById("preview-cnt").innerHTML = '&emsp;[문항수]&ensp;' + itemCnt + '문항';
-            // document.getElementById("preview_paperId").value = examId;
+    const imgData = canvas.toDataURL('image/jpeg');
+    const pageWidth = pdf.internal.pageSize.width;
+    const imgHeight = (canvas.height * pageWidth) / canvas.width;
 
-            let html = '';
-            let tmpPassageId = '';
-            // console.log('data...', data);
-            let half = Math.ceil(data.itemList.length / 2);
-            let passageNum = 0; // 지문 구분
-            let tmpNum = 0;
-            for (let part = 0; part < 2; part++) {
-                let limit_num = part === 0 ? half : data.itemList.length;
-                let start_num = part === 0 ? 0 : half;
+    if (pageWidth > 0 && imgHeight > 0) {
+        pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, imgHeight);
+    } else {
+        console.error('Invalid image dimensions:', pageWidth, imgHeight);
+        return null;
+    }
 
-                // console.log('limit_num...', limit_num);
-                // console.log('start_num...', start_num);
+    pdf.save(`${paperName}.pdf`);
+}
 
-                html += '<div class="view-data">';
-                for (let s = start_num; s < limit_num; s++) {
-                    let obj = data.itemList[s];
+let rightDownload = async function(paperName ,jsPDF){
 
-                    obj.questionUrl = '/getImage' + obj.questionUrl.split('tsherpa')[1];
-                    obj.answerUrl = '/getImage' + obj.answerUrl.split('tsherpa')[1];
-                    obj.explainUrl = '/getImage' + obj.explainUrl.split('tsherpa')[1];
+    // 2. 미리보기 창을 DOM에 추가하되, 숨기기
+    const qPreview = document.querySelector('#q-preview');
 
-                    // console.log('obj...', obj);
-                    html += '<div class="example-area"><div class="example-box">';
-                    // 지문 문항
-                    if (obj.passageId !== null && obj.passageId !== '') {
-                        if (obj.passageId !== tmpPassageId) {
+    //용훈
+    qPreview.style.display = 'block';
+    qPreview.style.zIndex = -100;
+    //용훈 끝
 
-                            obj.passageUrl = '/getImage' + obj.passageUrl.split('tsherpa')[1]
-                            passageNum++;
-                            html += '<div class="passage-area item-question">';
-                            html += '   <span class="numbering numbering-numbers passage-num" data-passageNum="' + passageNum + '"></span>';
-                            html += '   <img src="' + obj.passageUrl + '" alt="' + obj.passageId + '" width="453px">';
-                            html += '</div>';
-                            tmpPassageId = obj.passageId;
+   await justDownload(paperName,jsPDF)
 
-                            // URL을 배열에 추가
-                            urls.push(obj.passageUrl);
-                            //urls.push('/getImage' + obj.passageUrl.split('tsherpa')[1]);
-                        }
-                        tmpNum = passageNum;
-                    }
+    // 6. 미리보기 창 다시 숨기기
+    //paperElement.style.display = 'none'; // 미리보기 창 숨기기
 
-                    html += '<div class="item-question passage-area">';
-                    html += '   <span class="numbering question-num" data-passageNum="' + passageNum + '">' + (s < 9 ? "0" + (s + 1) : (s + 1)) + '.</span>';
-                    html += '   <img class="item-img" src="' + obj.questionUrl + '" alt="' + obj.itemId + '">';
-                    html += '</div>';
+    //용훈
+    qPreview.style.display = 'none';
+    qPreview.style.zIndex = 10;
 
-                    // URL을 배열에 추가
-                    urls.push(obj.questionUrl);
-                    //urls.push('/getImage' + obj.questionUrl.split('tsherpa')[1]);
+}
 
-                    html += '<div class="answer-container">';
-                    html += '   <div class="answer-tit">정답</div>';
-                    html += '   <div class="answer-img"><img src="' + obj.answerUrl + '" alt="' + obj.itemId + '"></div>';
-                    html += '</div>';
-
-                    // URL을 배열에 추가
-                    urls.push(obj.answerUrl);
-                    //urls.push('/getImage' + obj.answerUrl.split('tsherpa')[1]);
-
-
-                    html += '<div class="explain-answer ">';
-                    html += '   <div class="explain-tit">해설</div>';
-                    html += '   <div class="explain-img"><img src="' + obj.explainUrl + '" alt="' + obj.itemId + '"></div>';
-                    html += '</div>';
-
-
-                    // URL을 배열에 추가
-                    urls.push(obj.explainUrl);
-                    //urls.push('/getImage' + obj.explainUrl.split('tsherpa')[1]);
-
-                    html += '</div></div>';
-                    tmpNum = 0;
-                }
-                html += '</div>'; // view-data 끝
-            }
-            document.getElementById('preview-question-data').innerHTML = html;
-
-            // 미리보기 지문 넘버링
-            document.querySelectorAll(".passage-num").forEach(passageNumElement => {
-                let passageNumTmp = passageNumElement.getAttribute("data-passageNum");
-                if (passageNumTmp) {
-                    let que = document.querySelectorAll("[data-passageNum='" + passageNumTmp + "']");
-                    let firstQuestionNum = null;
-                    let lastQuestionNum = null;
-
-                    que.forEach((element, index) => {
-                        if (!element.classList.contains("passage-num")) {
-                            if (firstQuestionNum === null) {
-                                firstQuestionNum = element.textContent.replace('.', '');
-                            }
-                            lastQuestionNum = element.textContent.replace('.', '');
-                        }
-                    });
-
-                    if (firstQuestionNum !== null && lastQuestionNum !== null) {
-                        if (firstQuestionNum < lastQuestionNum) {
-                            passageNumElement.textContent = '[' + firstQuestionNum + '~' + lastQuestionNum + ']';
-                        } else if (firstQuestionNum === lastQuestionNum) {
-                            passageNumElement.textContent = '[' + lastQuestionNum + ']';
-                        }
-                    } else {
-                        console.warn('지문 번호가 올바르지 않습니다:', passageNumElement);
-                    }
-                } else {
-                    console.warn('passage number 값 없음', passageNumElement);
-                }
-            });
-
-        })
-
-        .catch(error => {
-            alert("미리보기를 불러오지 못했습니다. 관리자에게 문의해 주시기 바랍니다.");
-            console.error("Fetch error: ", error);
-        })
-        .finally(() => {
-            // document.querySelector(".loading-cnt").style.display = 'none'; // 로딩 표시 제거
-        });
-
-    // 문항 정보표 데이터 불러오기
-    await fetch('/preview/info', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({examId: examId})
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("HTTP error, status = " + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.successYn === 'Y') {
-                let html = '';
-                for (let s = 0; s < data.itemList.length; s++) {
-                    let item = data.itemList[s];
-
-                    html += `<tr>
-                            <td>${item.itemNo || ''}</td>
-                            <td><span class="latex_equation">${item.answer}</span></td>
-                            <td class="tit">${item.largeChapterName || ''}</td>
-                            <td class="tit">${item.topicChapterName || ''}</td>
-                            <td>${item.achievementCode || ''}</td>
-                            <td>${item.contentAreaName || ''}</td>
-                            <td>${item.activityAreaName || ''}</td>
-                            <td>${item.curriculumCompetencyName || ''}</td>
-                            <td>${item.difficultyName || ''}</td>
-                        </tr>`;
-                }
-                document.getElementById('preview-itemInfo-data').innerHTML = html;
-                updateMathContent(document.getElementById("preview-itemInfo-data"));
-                itemInfoShow = true;
-            } else {
-                itemInfoShow = false;
-            }
-
-        })
-        .catch(error => {
-            alert("미리보기를 불러오지 못했습니다. 관리자에게 문의해 주시기 바랍니다.");
-            console.error("Fetch error: ", error);
-        })
-        .finally(() => {
-            // loadingIndicator.style.display = 'none';
-        });
-    return itemInfoShow;
+let updateMathContent = function(s) {
+    MathJax.typesetPromise().then(() => {
+        console.log("MathJax 렌더링 완료..");
+    }).catch((err) => {
+        console.error("MathJax error: ", err);
+    });
 }

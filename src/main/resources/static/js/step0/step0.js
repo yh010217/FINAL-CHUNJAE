@@ -482,6 +482,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('preview-tit').textContent = `${paperName} 미리보기`;
             document.getElementById('preview-cnt').textContent = `${itemCount} 문항`;
 
+
+
             // 2. 미리보기 창을 DOM에 추가하되, 숨기기
             const qPreview = document.querySelector('#q-preview');
 
