@@ -10,9 +10,16 @@ function App() {
 
     /** subjectId 받아오기 **/
     const [subjectId, setSubjectId] = useState('');
+    const [newSubjectId, newSetSubjectId] = useState('');
+
     const paramType = useRef('');
     const getSubjectId = (getId) => {
         setSubjectId(getId);
+    }
+
+    /** step1 에서 접근할때 subjectId **/
+    const getNewSubjectId = (getId) => {
+        newSetSubjectId(getId);
     }
 
     /** STEP 2 만든 시험지 저장 **/
@@ -35,12 +42,14 @@ function App() {
                            getSubjectId={getSubjectId}
                            getParamType={paramType}
                            subjectId={subjectId}
+                           newSubjectId={newSubjectId}
+                           getNewSubjectId={getNewSubjectId}
                     />
                 }>
                 </Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'}
-                       element={<STEP3 paper={paper} paramType={paramType} subjectId={subjectId}/>}></Route>
+                       element={<STEP3 paper={paper} paramType={paramType} subjectId={subjectId} newSubjectId={newSubjectId}/>}></Route>
             </Routes>
         </BrowserRouter>
     </>

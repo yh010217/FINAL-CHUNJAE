@@ -6,7 +6,7 @@ import React from "react";
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 
-function STEP2({handlePaper, subjectId, getSubjectId, getParamType}) {
+function STEP2({handlePaper, subjectId, newSubjectId, getSubjectId, getNewSubjectId, getParamType}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
     const params = useParams();
@@ -24,6 +24,8 @@ function STEP2({handlePaper, subjectId, getSubjectId, getParamType}) {
             display: 'block'
         };
     }
+
+
 
     return <div id="wrap" className="full-pop-que">
         {/** 신고 페이지 */}
@@ -43,6 +45,7 @@ function STEP2({handlePaper, subjectId, getSubjectId, getParamType}) {
                     paramType={params.type}
                     getData={params.getData}
                     getSubjectId={getSubjectId}
+                    getNewSubjectId={getNewSubjectId}
                 />
             </div>
 
@@ -50,6 +53,7 @@ function STEP2({handlePaper, subjectId, getSubjectId, getParamType}) {
                 <S2stepbtn
                     paramType={params.type}
                     subjectId={subjectId}
+                    newSubjectId={newSubjectId}
                 />
             </div>
         </div>
