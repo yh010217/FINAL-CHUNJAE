@@ -199,18 +199,6 @@ ul li {
 }
 
 /* 모달창 관련 css */
-#modalContainer {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.5);
-}
-
 #modal {
     position: absolute;
     top: 25%;
@@ -222,6 +210,18 @@ ul li {
 
 #modalContainer.block {
     display: none;
+}
+
+#modalContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-top {
@@ -279,4 +279,15 @@ ul li {
     background-color: #f0f3f7;
     font-size: 15px;
     border-radius: 10px;
+}
+
+.btn-notice {
+    background-color: #5670dc;
+    color: white;
+    padding: 10px 0;
+    border-radius: 7px;
+    display: inline-block;
+    width: 130px;
+    text-align: center;
+    border: none;
 }

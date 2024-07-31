@@ -32,7 +32,7 @@ public class MainController {
     private final MainService mainService;
 
     private final JWTUtil jwtUtil;
-    @GetMapping("/index")
+    @GetMapping({"/index", "/"})
     public String main(HttpServletRequest request, Model model) {
 
         Long uidByJWT = jwtUtil.getUidByRequest(request);

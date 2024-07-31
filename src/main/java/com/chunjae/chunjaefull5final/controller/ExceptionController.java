@@ -1,4 +1,3 @@
-/*
 package com.chunjae.chunjaefull5final.controller;
 
 import org.springframework.http.HttpStatus;
@@ -40,4 +39,3 @@ public class ExceptionController {
 
     // 추가적인 예외 처리 메소드 필요 시 여기에 추가
 }
-*/
