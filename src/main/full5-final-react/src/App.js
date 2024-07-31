@@ -49,7 +49,7 @@ function App() {
                 </Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'}
-                       element={<STEP3 paper={paper} paramType={paramType} subjectId={subjectId} newSubjectId={newSubjectId}/>}></Route>
+                       element={<STEP3 paper={paper} paramType={paramType} subjectId={subjectId} newSubjectId={newSubjectId} />}></Route>
             </Routes>
         </BrowserRouter>
     </>

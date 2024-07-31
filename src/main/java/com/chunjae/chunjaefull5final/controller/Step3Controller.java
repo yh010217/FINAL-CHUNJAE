@@ -43,6 +43,7 @@ public class Step3Controller {
             HttpServletResponse response,
             @RequestParam("paperTitle") String paperTitle,
             @RequestParam("paper") String paper,
+            @RequestParam("subjectId") String subjectId,
             Model model
     ) throws JsonProcessingException {
 //       log.info("paperTitle...{}", paperTitle);
@@ -53,16 +54,20 @@ public class Step3Controller {
         List<PaperDTO> itemList = objectMapper.readValue(paper
                 , objectMapper.getTypeFactory().constructCollectionType(List.class, PaperDTO.class));
 
-/*        // 데이터 확인
+        // 데이터 확인
         for (PaperDTO item : itemList) {
+
             log.info("=====아이템 : {}", item.toString());
         }
 
-        log.info("==========리스트 : {}", itemList);*/
+        log.info("==========리스트 : {}", itemList);
+
+        log.info("subjectId : {}", subjectId);
 
         model.addAttribute("saveName", paperTitle);
         model.addAttribute("paperList", paper);
         model.addAttribute("paperId", itemList.get(0).getPaperId());
+        model.addAttribute("subjectId", subjectId);
 
         response.setHeader("X-Frame-Options", "ALLOW-FROM /loading");
         return "/step3/save_paper";

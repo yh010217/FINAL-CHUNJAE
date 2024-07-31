@@ -9,4 +9,6 @@ public interface Step3Service {
     void savePdf(PaperInfoDTO dto);
 
     void updateQuestion(List<PaperDTO> paper);
+
+    void saveSettingPdf(PaperInfoDTO dto, List<PaperDTO> paper);
 }

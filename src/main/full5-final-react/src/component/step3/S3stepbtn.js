@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import {Link} from "react-router-dom";
+import React, {useState} from "react";
 import axios from "axios";
 
-function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
+function S3stepbtn({paperTitle, paper, paramType, subjectId, newSubjectId}) {
 
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -46,6 +46,17 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
             input2.name = 'paper';
             input2.value = JSON.stringify(paper);
             form.appendChild(input2);
+
+
+                const input3 = document.createElement('input');
+                input3.type = 'hidden';
+                input3.name = 'subjectId';
+            if (paramType.current === 'new') {
+                input3.value = newSubjectId;
+            } else if (paramType.current === 'edit') {
+                input3.value = subjectId;
+            }
+                form.appendChild(input3);
 
             document.body.appendChild(form);
             form.submit();
@@ -107,4 +118,5 @@ function S3stepbtn({ paperTitle, paper, paramType, subjectId }) {
         </>
     );
 }
+
 export default S3stepbtn;
