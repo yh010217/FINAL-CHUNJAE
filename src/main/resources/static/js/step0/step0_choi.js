@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log('응답!!!!', data);
                         // 서버로 부터 데이터 성공적으로 받으면 step2로 이동
                         /* !!!!!! 경로 변경시 수정 !!!!!*/
-                        window.location.href = 'http://localhost:8080/step2/edit/' + subjectId;
+                        window.location.href = '/step2/edit/' + subjectId;
                         // examId 없을 때 redirect 처리
                     }).catch(error => {
                     console.log('에러 발생', error);
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             /* All 탭으로 이동함 끝 */
 
-            document.querySelector(".title_header").textContent = paperTitle;
+           // document.querySelector(".title_header").textContent = paperTitle;
 
             let previewTabs = document.querySelectorAll('#preview-tab a');
 
@@ -155,7 +155,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
-
 
 let clickPreview = function (type, itemInfoShow) {
 
@@ -240,6 +239,7 @@ let previewFirst = async function (examId, paperTitle, itemCnt) {
         document.getElementById("preview-tit").innerHTML = '[시험지명]&ensp;' + paperTitle;
         document.getElementById("preview-cnt").innerHTML = '&emsp;[문항수]&ensp;' + itemCnt + '문항';
         // document.getElementById("preview_paperId").value = examId;
+        document.querySelector(".title_header").textContent = paperTitle;
 
         let html = '';
         let tmpPassageId = '';
@@ -428,6 +428,9 @@ let attachPreviewButton = function(previewTabs,itemInfoShow){
 
 let attachDownloadButton = async function (col,paperTitle,itemCnt,examId,itemInfoShow,jsPDF){
     let downloads = col.querySelectorAll('.download');
+    document.querySelector(".title_header").textContent = paperTitle;
+
+
     for(let i = 0 ; i < downloads.length ; i++){
         let button = downloads[i];
         if (button.classList.contains("A")) {
@@ -461,7 +464,8 @@ let attachDownloadButton = async function (col,paperTitle,itemCnt,examId,itemInf
 
 let justDownload = async function(paperName ,jsPDF){
     const paperElement = document.querySelector('.paper');
-    paperElement.style.display = 'block'; // 사용자에게 보이지 않게 설정
+    paperElement.style.display = 'block';
+
 
     // 3. html2canvas로 미리보기 창 캡처
     const canvas = await html2canvas(paperElement, {
@@ -496,6 +500,9 @@ let justDownload = async function(paperName ,jsPDF){
 }
 
 let rightDownload = async function(paperName ,jsPDF){
+
+    document.querySelector(".title_header").textContent = paperName;
+
 
     // 2. 미리보기 창을 DOM에 추가하되, 숨기기
     const qPreview = document.querySelector('#q-preview');
