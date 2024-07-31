@@ -3,7 +3,7 @@ import axios from "axios";
 import VIEWTOP from "./content/VIEWTOP";
 import VIEWBOTTOM from "./content/VIEWBOTTOM";
 
-function S2content({setModal, setItemId, handlePaper, paramType, getData, getSubjectId}) {
+function S2content({setModal, setItemId, handlePaper, paramType, getData, getSubjectId, getNewSubjectId}) {
     const [itemList, setItemList] = useState([]);
     const [subjectId, setSubjectId] = useState();
 
@@ -58,6 +58,8 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
                 const subjectId = response.data.subjectId;
                 setSubjectId(subjectId);
                 getSubjectId(getData);
+                getNewSubjectId(subjectId);
+
 
             }else if(paramType == null){
                 console.log('paramType is null');
