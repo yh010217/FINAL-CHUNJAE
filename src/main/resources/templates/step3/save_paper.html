@@ -15,12 +15,5 @@
 	<input type="hidden" id="paperList" th:value="${paperList}">
 	<input type="hidden" id="paperId" th:value="${paperId}">
 </div>
-<script>
-	let list = [[${paperList}]];
-	const div = document.createElement('div');
-	const div_t = document.createTextNode('ㅁㄴ이라ㅓ민ㅇㄹ : '+list[0].itemNo);
-	div.appendChild(div_t);
-	document.getElementById('wrap').appendChild(div)
-</script>
 </body>
 </html>

@@ -33,18 +33,17 @@ public class SvgToPngController {
     public ResponseEntity<List<ImageDTO>> convertAndSave(@RequestBody List<String> dataList) {
         List<ImageDTO> resultList = new ArrayList<>();
 
-        for(String item: dataList){
-        }
-
 //        log.info("===================!!!!!!!!!!!!!!전달 성공 convertAndSave!!!!!!!!!!!!=====================");
         for (String item : dataList) {
             try {
                 if (isSvgUrl(item)) {
+                    log.info("--------------------- svg 입니다 --------------------- {}", item);
                     String svgData = readSvgDataFromUrl(item);
                     String base64Svg = "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(svgData.getBytes());
                     int[] widthHeight = getRatioSvg(item);
                     resultList.add(new ImageDTO(base64Svg, widthHeight[0], widthHeight[1]));
                 } else {
+                    log.info(" --------------------- svg가 아닙니다 ---------------------");
                     resultList.add(new ImageDTO(item, 310, 21)); // SVG URL이 아닌 경우 그대로 추가
                 }
             } catch (Exception e) {
@@ -148,8 +147,15 @@ public class SvgToPngController {
 
 
     private boolean isSvgUrl(String url) {
-//        log.info("===================!!!!!!!!!!!!!!전달 성공 isSvgUrl!!!!!!!!!!!!=====================");
-        return url.toLowerCase().endsWith(".svg");
+        // log.info("===================!!!!!!!!!!!!!!전달 성공 isSvgUrl!!!!!!!!!!!!=====================");
+        log.info(url + " >>>>>>>>>>>>>>>>>>>>>>> url 값 확인하기 ");
+        if(!url.toLowerCase().endsWith(".svg") || url==null){
+            return false;
+        } else if (url.toLowerCase().endsWith(".svg")){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private String readSvgDataFromUrl(String url) throws IOException {

@@ -38,6 +38,7 @@ public class Step3ServiceImpl implements Step3Service{
         paperInfo.setSaveQuestionPath(dto.getSaveQuestionPath());
         paperInfo.setSaveAnswerPath(dto.getSaveAnswerPath());
         paperInfo.setSaveAllPath(dto.getSaveAllPath());
+        paperInfo.setItemCount(dto.getItemCount());
 
         paperInfoRepo.save(paperInfo);
     }
