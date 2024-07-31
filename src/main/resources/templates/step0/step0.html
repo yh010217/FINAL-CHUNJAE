@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="/inc/css/font.css">
 
     <link rel="stylesheet" href="/css/step0/reset_step0.css">
-<!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
+    <!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
     <link rel="stylesheet" href="/css/step0/step0.css">
     <script src="/js/step0/step0.js"></script>
-<!--    <script src="/js/step0/step0_2.js"></script>-->
+    <!--    <script src="/js/step0/step0_2.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
@@ -27,12 +27,13 @@
 </head>
 <style>
     .paper{
-        width: 100%; /* 전체 너비를 사용하도록 설정 */
+        width: 95%;
+        margin : auto;
     }
     #header_data{
         width: 93%;
         height: 60px;
-/*        margin-bottom: 10px;*/
+        /*        margin-bottom: 10px;*/
         margin: auto;
     }
     .title_header{
@@ -74,7 +75,7 @@
     .item_answer:after{
         float: left;
         height: 20px;
-       /* background: #207a1e;*/
+        /* background: #207a1e;*/
         width: 35px;
         font-size: 12px;
         line-height: 15px;
@@ -86,8 +87,8 @@
     .item_explain:after {
         float: left;
         height: 20px;
-    /* background: rgba(80, 149, 253, 0.68);
-    */    width: 35px;
+        /* background: rgba(80, 149, 253, 0.68);
+        */    width: 35px;
         font-size: 12px;
         line-height: 15px;
         font-weight: bold;
@@ -173,10 +174,10 @@
                                                 </span>
                                                 <span>
                                                      <div class="btn-wrap">
-                                                        <button type="button" class="btn-default"  data-type="A">전체</button>
-                                                        <button type="button" class="btn-default"  data-type="Q">문제</button>
-                                                        <button type="button" class="btn-default" data-type="E">정답 + 해설</button>
-                                                        <button type="button" class="btn-default" data-type="C">문항정보표</button>
+                                                        <button type="button" th:id="'A_'+${exam.examId}" class="btn-default download A" data-type="A">전체</button>
+                                                        <button type="button" th:id="'B_'+${exam.examId}" class="btn-default download Q" data-type="Q">문제</button>
+                                                        <button type="button" th:id="'C_'+${exam.examId}" class="btn-default download E" data-type="E">정답 + 해설</button>
+                                                        <button type="button" th:id="'D_'+${exam.examId}" class="btn-default download C" data-type="C">문항정보표</button>
                                                     </div>
                                                 </span>
                                             </div>
@@ -229,58 +230,58 @@
 
                         <div class="view-box">
                             <div id="test_paper">
-                            <div class="scroll-inner">
-                                <div class="paper">
-                                <div id="header_data">
-                                    <table style="width:100%; border: 5px solid #ccc; border-radius: 15px; margin: 10px 0px">
-                                        <tr>
-                                            <td rowspan="2" class="title_header">시험지명</td>
-                                            <td class="class_header">&nbsp;&nbsp;학년&nbsp;&nbsp;반&nbsp;&nbsp;번&nbsp;&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="name_header">&nbsp;이름 : </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="layout-wrap" id="preview-question-data"></div>
+                                <div class="scroll-inner">
+                                    <div class="paper">
+                                        <div id="header_data">
+                                            <table style="width:100%; border: 5px solid #ccc; border-radius: 15px; margin: 10px 0px">
+                                                <tr>
+                                                    <td rowspan="2" class="title_header">시험지명</td>
+                                                    <td class="class_header">&nbsp;&nbsp;학년&nbsp;&nbsp;반&nbsp;&nbsp;번&nbsp;&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="name_header">&nbsp;이름 : </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="layout-wrap" id="preview-question-data"></div>
 
-                                <!-- 문항 정보표 테이블 -->
-                                <div class="table-wrap" id="preview-itemInfo-table">
-                                    <div class="tbl-view">
-                                        <table>
-                                            <colgroup>
-                                                <col width="5%">
-                                                <col width="12%">
-                                                <col width="15%">
-                                                <col width="*">
-                                                <col width="9.5%">
-                                                <col width="9.5%">
-                                                <col width="9.5%">
-                                                <col width="9.5%">
-                                                <col width="5%">
-                                            </colgroup>
-                                            <thead>
-                                                <tr>
-                                                    <th rowspan="2">번호</th>
-                                                    <th rowspan="2">정답</th>
-                                                    <th colspan="2">단원</th>
-                                                    <th rowspan="2">성취기준</th>
-                                                    <th rowspan="2">내용 영역</th>
-                                                    <th rowspan="2">평가 영역</th>
-                                                    <th rowspan="2">교과 역량</th>
-                                                    <th rowspan="2">난이도</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>대단원</th>
-                                                    <th>평가내용</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="preview-itemInfo-data"></tbody>
-                                        </table>
+                                        <!-- 문항 정보표 테이블 -->
+                                        <div class="table-wrap" id="preview-itemInfo-table">
+                                            <div class="tbl-view">
+                                                <table>
+                                                    <colgroup>
+                                                        <col width="5%">
+                                                        <col width="12%">
+                                                        <col width="15%">
+                                                        <col width="*">
+                                                        <col width="9.5%">
+                                                        <col width="9.5%">
+                                                        <col width="9.5%">
+                                                        <col width="9.5%">
+                                                        <col width="5%">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th rowspan="2">번호</th>
+                                                        <th rowspan="2">정답</th>
+                                                        <th colspan="2">단원</th>
+                                                        <th rowspan="2">성취기준</th>
+                                                        <th rowspan="2">내용 영역</th>
+                                                        <th rowspan="2">평가 영역</th>
+                                                        <th rowspan="2">교과 역량</th>
+                                                        <th rowspan="2">난이도</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>대단원</th>
+                                                        <th>평가내용</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="preview-itemInfo-data"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
-                            </div>
 
                             </div>
                         </div>
