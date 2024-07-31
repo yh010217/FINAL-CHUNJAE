@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/css/step0/reset_step0.css">
     <!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
     <link rel="stylesheet" href="/css/step0/step0.css">
-    <script src="/js/step0/step0.js"></script>
+<!--    <script src="/js/step0/step0.js"></script>-->
     <!--    <script src="/js/step0/step0_2.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -165,7 +165,7 @@
                                                 <span class="que-count" id="itemCnt" th:text="${exam.itemCnt}" ></span>
                                                 <span>
                                                      <input type="hidden" id="examId" th:value="${exam.examId}">
-                                                     <input type="hidden" id="paperName" th:value="${exam.examName}">
+                                                     <input type="hidden" id="paperName" class="choi-paperName" th:value="${exam.examName}">
                                                      <input type="hidden" id="itemCount" th:value="${exam.itemCnt}">
                                                         <button
                                                                 type="button" class="pop-btn btn-icon2"
@@ -292,9 +292,7 @@
     </div>
 </div>
 </body>
-<script>
-
-</script>
+<script th:src="@{/js/step0/step0_choi.js}"></script>
 </html>
 
 
