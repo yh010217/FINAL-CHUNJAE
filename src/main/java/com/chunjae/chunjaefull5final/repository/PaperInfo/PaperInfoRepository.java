@@ -18,7 +18,7 @@ public interface PaperInfoRepository
     @Query( " select p from PaperInfo p where p.paperId=:paperId" )
     PaperInfo findPaperDetail(Long paperId);
 
-    @Query("SELECT p FROM PaperInfo p WHERE p.user.uid = :uid")
+    @Query("SELECT p FROM PaperInfo p WHERE p.user.uid = :uid and p.delete_yn is null ")
     List<PaperInfo> getList(@Param("uid") Long uid);
   
     @Transactional
@@ -41,7 +41,10 @@ public interface PaperInfoRepository
     @Query("update PaperInfo p set p.delete_yn = 'Y' where p.user.uid = :uid")
     void updatePaperInfoDeleteYn(@Param("uid") Long uid);
 
-
+    @Modifying
+    @Transactional
+    @Query("update PaperInfo p set p.delete_yn = 'Y' where p.paperId = :paperId")
+    void paperInfoDeleteYn(Long paperId);
 }
 
 

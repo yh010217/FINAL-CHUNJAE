@@ -101,5 +101,10 @@ public class PaperInfoServiceImpl implements PaperInfoService {
         return userMaps;
     }
 
+    @Override
+    public void deletePaper(Long paperId) {
+        paperInfoRepository.paperInfoDeleteYn(paperId);
+    }
+
 
 }

@@ -21,4 +21,6 @@ public interface PaperInfoService {
     void updateAllPathToNull(Long paperId);
 
     Map<Long,String> userNames();
+
+    void deletePaper(Long paperId);
 }

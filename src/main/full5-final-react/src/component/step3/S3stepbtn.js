@@ -109,7 +109,7 @@ function S3stepbtn({paperTitle, paper, paramType, subjectId, newSubjectId}) {
                         <button className="btn-default" onClick={handleCancel}>
                             취소
                         </button>
-                        <button type="submit" className="btn-default" onClick={handleSaveConfirm}>
+                        <button className="btn-default" onClick={handleSaveConfirm}>
                             확인
                         </button>
                     </div>
