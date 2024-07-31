@@ -44,8 +44,6 @@ public class Step3ServiceImpl implements Step3Service{
         paperInfo.setSaveAnswerPath(dto.getSaveAnswerPath());
         paperInfo.setSaveAllPath(dto.getSaveAllPath());
         paperInfo.setItemCount(dto.getItemCount());
-        paperInfo.setPaperGubun(dto.getPaperGubun());
-        paperInfo.setTitle(dto.getTitle());
 
         paperInfoRepo.save(paperInfo);
     }
@@ -87,8 +85,7 @@ public class Step3ServiceImpl implements Step3Service{
                 .orElseThrow(()-> new IllegalArgumentException("유저 x"));
 
         Subject subject = subjectRepository
-//                .findById(dto.getSubjectId())
-                .findById(1156)
+                .findById(dto.getSubjectId())
                 .orElseThrow(()-> new IllegalArgumentException("유저 x"));
 
         PaperInfo paperInfo = PaperInfo.builder()

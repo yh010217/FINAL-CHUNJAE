@@ -34,6 +34,7 @@ public class S3UploadController {
             , @RequestParam("paperId") String paperId
             , @RequestParam("saveName") String saveName
             , @RequestParam("paperList") String paperList
+            , @RequestParam("subjectId") String subjectId
             , @RequestParam("question") MultipartFile questionPdf
             , @RequestParam("answerExplain") MultipartFile answerExplainPdf
             , @RequestParam("all") MultipartFile allPdf) {
@@ -60,7 +61,7 @@ public class S3UploadController {
                 /* 선택한 시험지 */
                 dto.setPaperGubun(PaperGubun.Edit);
                 dto.setTitle(paper.get(0).getSetPaperTitle());
-                dto.setSubjectId(paper.get(0).getSubjectId());
+                dto.setSubjectId(Integer.valueOf(subjectId));
                 dto.setUid(uid);
                 dto.setSaveName(saveName);
                 dto.setSaveQuestionPath(saveName+"_"+questionPdf.getOriginalFilename());
