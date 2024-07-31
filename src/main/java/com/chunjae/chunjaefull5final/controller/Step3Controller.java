@@ -26,11 +26,6 @@ public class Step3Controller {
         return ResponseEntity.ok("Paper saved successfully");
     }*/
 
-    @GetMapping("/save_paper")
-    public String savePaper(){
-        return "/step3/save_paper";
-    }
-
     @GetMapping("/loading")
     public String loading(){
 
@@ -44,7 +39,7 @@ public class Step3Controller {
 
     @PostMapping("/save")
     @CrossOrigin(origins = "http://localhost:3000")
-    public String postThymeleafPage(
+    public String savePaper(
             HttpServletResponse response,
             @RequestParam("paperTitle") String paperTitle,
             @RequestParam("paper") String paper,
@@ -58,12 +53,12 @@ public class Step3Controller {
         List<PaperDTO> itemList = objectMapper.readValue(paper
                 , objectMapper.getTypeFactory().constructCollectionType(List.class, PaperDTO.class));
 
-        // 데이터 확인
+/*        // 데이터 확인
         for (PaperDTO item : itemList) {
             log.info("=====아이템 : {}", item.toString());
         }
 
-        log.info("==========리스트 : {}", itemList);
+        log.info("==========리스트 : {}", itemList);*/
 
         model.addAttribute("saveName", paperTitle);
         model.addAttribute("paperList", paper);

@@ -158,7 +158,6 @@ window.onload = function () {
 
                     let leftChildHeight = 0;
                     //이전 이미지가 left에 존재하고 있을 때
-                    // console.log(item)
                     if (document.querySelectorAll('.item')[index - 1].parentElement.className === 'left') {
                         let LChildH = 0;
                         for (let i = 0; i < left.children.length; i++) {
@@ -191,7 +190,7 @@ window.onload = function () {
                     // console.log(index,' : rightChildHeight..................', rightChildHeight);
 
 
-                    /* left에 있는 문제 수 > || left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 */
+                    /* left에 있는 문제 높이의 합이 left의 높이보다 커지는 경우 */
                     if (leftChildHeight > leftRightHeight) {
                         // 요소 생성
                         const newRight = document.createElement('div');
@@ -203,12 +202,12 @@ window.onload = function () {
                         left.insertAdjacentElement('afterend', newRight);
                         // console.log('leftChildHeight > leftRightHeight.....',index);
                     }
-                    /* left 문제 수 2개 미만 && left 다음 right가 없는 경우 */
+                    /* left 다음 right가 없는 경우 */
                     else if (leftChildHeight <= leftRightHeight && left.nextElementSibling === null) {
                         left.appendChild(item);
                         // console.log('leftChildHeight <= leftRightHeight.....',index);
                     }
-                    /* right 문제 수 2개 이상 && right 문제 높이가 전체 높이보다 큰 경우 */
+                    /* right 문제 높이가 전체 높이보다 큰 경우 */
                     else if (rightChildHeight > leftRightHeight) {
                         console.log('right 높이 : ', right.firstChild.naturalHeight)
                         const newPage = document.createElement('div');
@@ -229,7 +228,7 @@ window.onload = function () {
                         document.getElementById('wrap').appendChild(newPage);
                         // console.log('rightChildHeight > leftRightHeight.....',index);
                     }
-                    /* right 문제 수 2개 미만 && right 존재하는 경우 */
+                    /* right 존재하는 경우 */
                     else if (rightChildHeight <= leftRightHeight && right !== null) {
                         right.appendChild(item);
                         // console.log('rightChildHeight <= leftRightHeight.....',index);
@@ -238,9 +237,11 @@ window.onload = function () {
                 }
                 index++; // 이미지 번호+1
             })
+        }).catch(() => {
+            console.log("안 됐어")
         })
     }
-    // question();
+    question();
 
     const answerExplain = function (){
 
@@ -446,9 +447,11 @@ window.onload = function () {
                 }
                 index++; // 이미지 번호+1
             })
+        }).catch(() => {
+            console.log("안 됐어2222")
         })
     }
-    // answerExplain();
+    answerExplain();
 
     const all = function (){
 
@@ -654,23 +657,13 @@ window.onload = function () {
                 }
                 index++; // 이미지 번호+1
             })
+        }).catch(() => {
+            console.log("안 됐어3333")
         })
     }
-    // all();
+    all();
 
-    function test() {
-        question()
-        console.log('완려')
-        answerExplain()
-        console.log('완료')
-        all()
-        console.log('완ㄴ료ㅛ')
-        // await  downloadPDF()
-        setTimeout(downloadPDF, 3000)
-    }
-
-    test()
-
+    setTimeout(downloadPDF, 3500);
 }
 
 function downloadPDF() {
@@ -707,7 +700,7 @@ function downloadPDF() {
                 .then(response => response.text())
                 .then(data => {
                     console.log('PDF uploaded to S3:', data);
-                    window.location.href = '/save_comp';
+                    // window.location.href = '/save_comp';
                 })
                 .catch(error => {
                     console.error('Error uploading PDF to S3:', error);
@@ -766,5 +759,4 @@ function downloadPDF() {
     generatePDFs()
 
 }
-
 
