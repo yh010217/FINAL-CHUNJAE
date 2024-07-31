@@ -1,5 +1,3 @@
-let index = 0; //이미지 번호
-
 window.onload = function () {
 
     const saveName = document.getElementById("saveName").value;
@@ -9,31 +7,32 @@ window.onload = function () {
     let answerExplainList = [];
     let allList = [];
 
-/*    const div = document.createElement('div');
-    const div_t = document.createTextNode(paperId);
-    div.appendChild(div_t);
-    document.getElementById('wrap').appendChild(div)*/
-
-
+    let index = 1;
     paperListJson.map(item=>{
         /* 문제 */
-        if(item.passageUrl!=="null"){
-            questionList.push(item.passageUrl);
+        if(questionList.includes(item.passageUrl)===false){
+            if(item.passageUrl!=="null"){
+                questionList.push(item.passageUrl);
+            }
         }
-        questionList.push(item.index);
+        questionList.push(index);
         questionList.push(item.questionUrl);
         /* 정답 + 해설 */
-        answerExplainList.push(item.index);
+        answerExplainList.push(index);
         answerExplainList.push(item.answerUrl);
         answerExplainList.push(item.explainUrl);
         /* 문제 + 정답 + 해설 */
-        if(item.passageUrl!=="null"){
-            allList.push(item.passageUrl);
+        if(allList.includes(item.passageUrl)===false){
+            if(item.passageUrl!=="null"){
+                allList.push(item.passageUrl);
+            }
         }
-        allList.push(item.index);
+        allList.push(index);
         allList.push(item.questionUrl);
         allList.push(item.answerUrl);
         allList.push(item.explainUrl);
+
+        index++;
     });
 
     const question = function (){
@@ -54,7 +53,6 @@ window.onload = function () {
         }).then(result => {
             for (let i = 0; i < result.length; i++) {
                 let item = result[i];
-//item.content.substring(item.content.length - 3) === "svg"
                 if (item.content.substring(0,4) === "data") {
                     const img = document.createElement('img');
                     img.src = item.content;
@@ -674,18 +672,18 @@ function downloadPDF() {
             console.log("pdfBuffer1 : ", pdfBuffer1)
 
             // 클래스 이름이 'page2'인 div 요소들을 PDF로 만들기
-            const pdfBuffer2 = await createPDFs('.page2', 'answer_only.pdf');
+            const pdfBuffer2 = await createPDFs('.page2', 'answerExplain.pdf');
 
             // 클래스 이름이 'page2'인 div 요소들을 PDF로 만들기
-            const pdfBuffer3 = await createPDFs('.page3', 'answer_explain.pdf');
+            const pdfBuffer3 = await createPDFs('.page3', 'all.pdf');
 
             const formData = new FormData();
             formData.append("paperId", paperId);
             formData.append("saveName", saveName);
             formData.append("paperList", paperList);
-            formData.append('question', pdfBuffer1, 'question.pdf', 'application/pdf');
-            formData.append('answer_only', pdfBuffer2, 'answer_only.pdf', 'application/pdf');
-            formData.append('answer_explain', pdfBuffer3, 'answer_explain.pdf', 'application/pdf');
+            formData.append('question', pdfBuffer1, '문제.pdf', 'application/pdf');
+            formData.append('answerExplain', pdfBuffer2, '정답,해설.pdf', 'application/pdf');
+            formData.append('all', pdfBuffer3, '.pdf', 'application/pdf');
 
             fetch('/upload', {
                 method: 'POST',
@@ -759,4 +757,3 @@ function downloadPDF() {
 }
 
 setTimeout(downloadPDF, 3000)
-

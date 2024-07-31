@@ -82,7 +82,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('응답!!!!', data);
                     // 서버로 부터 데이터 성공적으로 받으면 step2로 이동
                     /* !!!!!! 경로 변경시 수정 !!!!!*/
-                    window.location.href = 'http://10.41.1.61:8080/step2/edit/'+subjectId;
+                    //window.location.href = 'http://10.41.1.61:8080/step2/edit/'+subjectId;
+                    //window.location.href = 'http://localhost:8080/step2/edit/'+subjectId;
+                    window.location.href = '/step2/edit/'+subjectId;
                     // examId 없을 때 redirect 처리
                 }).catch(error => {
                 console.log('에러 발생', error);
@@ -302,27 +304,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         // loadingIndicator.style.display = 'none';
                     });
 
-   /*             // 미리보기 tab 이동
-                document.querySelectorAll('#preview-tab a').forEach(function (link) {
-                    link.addEventListener('click', function () {
-
-                        let parentLi = this.parentElement;        // 현재 클릭된 링크의 부모 li 요소를 선택
-
-                        // 모든 형제 li 요소에서 active 클래스 제거
-                        let siblings = parentLi.parentElement.children;
-                        for (let i = 0; i < siblings.length; i++) {
-                            if (siblings[i] !== parentLi) {
-                                siblings[i].classList.remove('active');
-                            }
-                        }
-
-                        parentLi.classList.add('active');     // 현재 li 요소에 active 클래스 추가
-
-                        clickPreview(this.getAttribute('data-type'));    // data-type 속성의 값을 가져와서 changePreview 호출
-
-                    });
-                });*/
-
           // cors 에러  한 페이지만 나옴
            document.querySelector('.preview-download').addEventListener('click', async function () {
 
@@ -414,54 +395,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     pdf.save(paperTitle+'.pdf');
                 });
-
-               /* 페이지는 다 나오는데 문제가 짤림
-               document.querySelector('.preview-download').addEventListener('click', async function () {
-
-                    const paperElement = document.querySelector('.paper');
-                    const pdf = new jspdf.jsPDF({
-                        orientation: 'portrait',
-                        unit: 'mm',
-                        format: 'a4',
-                        putOnlyUsedFonts: true,
-                        floatPrecision: 16,
-                        useCORS: true,
-                    });
-
-                    const scrollHeight = paperElement.scrollHeight;
-
-                    // 전체 캡처
-                    const canvas = await html2canvas(paperElement, {
-                        scrollX: 0,
-                        scrollY: 0,
-                        width: paperElement.offsetWidth,
-                        height: scrollHeight,
-                        scale: 2,
-                    });
-
-                    const imgData = canvas.toDataURL('image/jpeg');
-                    const imgWidth = pdf.internal.pageSize.width;
-                    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 원본 이미지 비율 유지
-
-                    // A4 페이지 크기 조정
-                    const pageHeight = pdf.internal.pageSize.height;
-                    let currentHeight = 0;
-
-                    // 이미지가 A4를 초과할 경우 페이지를 나누어 추가
-                    while (currentHeight < imgHeight) {
-                        const remainingHeight = imgHeight - currentHeight;
-                        const heightToDraw = Math.min(pageHeight, remainingHeight); // 현재 페이지에 그릴 높이
-
-                        pdf.addImage(imgData, 'JPEG', 0, -currentHeight, imgWidth, imgHeight);
-                        currentHeight += heightToDraw;
-
-                        if (currentHeight < imgHeight) {
-                            pdf.addPage(); // 다음 페이지 추가
-                        }
-                    }
-
-                    pdf.save(paperTitle+'.pdf');
-                });*/
 
 
                 document.querySelectorAll('#preview-tab a').forEach(function(link) {

@@ -29,11 +29,13 @@ public interface UserRepository extends JpaRepository<User,Long>,UserQueryDSL {
 
     @Query(" select u " +
             " from User u " +
-            " where u.email like concat('%', :search_txt, '%')  and u.role<>'Admin' ")
+            " where u.email like concat('%', :search_txt, '%')  and u.role<>'Admin' " +
+            " order by u.uid desc ")
     List<User> finUsersEmail(Pageable pageable, String search_txt);
     @Query(" select u " +
             " from User u " +
-            " where u.name like concat('%', :search_txt, '%')  and u.role<>'Admin' ")
+            " where u.name like concat('%', :search_txt, '%')  and u.role<>'Admin' " +
+            " order by u.uid desc ")
     List<User> finUserName(Pageable pageable, String search_txt);
     @Query( "select u from User u where u.uid=:uid ")
     User findUserDetail(Long uid);
