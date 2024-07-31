@@ -188,14 +188,31 @@ public class AWSController {
         }
     }
 
-
-
-
     /** test용 */
     @GetMapping("/csv_download/{fileName}")
     public ResponseEntity<byte[]> download(@PathVariable String fileName) throws IOException {
         return S3Service.getObject(fileName);
     }
 
+    @DeleteMapping("/paperDelete")
+    public ResponseEntity<Map<String, Object>> deletePaper(@RequestParam String saveName, @RequestParam Long paperId) {
+        String savePath = paperDFolderName + "/" + saveName;
+        Map<String, Object> response = new HashMap<>();
+        try {
+            S3Service.paperDeleteFile(savePath+"_문제.pdf");
+            S3Service.paperDeleteFile(savePath+"_정답,해설.pdf");
+            S3Service.paperDeleteFile(savePath+"_.pdf");
+
+            paperInfoService.deletePaper(paperId);
+
+            response.put("success", true);
+            response.put("filepath", savePath);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
 

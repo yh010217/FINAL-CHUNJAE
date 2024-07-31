@@ -37,7 +37,8 @@
                             <hr>
                             <div class="left-box2">
                                 <span>문항 편집</span>
-                                <span class="del-btn">문항 삭제</span>
+                                <span class="del-btn" th:data-attachment-file-name="${item.saveName}"
+                                      th:data-paper-id="${item.paperId}">문항 삭제</span>
                             </div>
                         </div>
                         <div class="download-right">
@@ -85,13 +86,14 @@
                 button.addEventListener('click', (event) => {
                     event.preventDefault();
                     const attachmentFilePath = event.currentTarget.getAttribute('data-attachment-file-name');
-                    delete_file(attachmentFilePath);
+	                const paperId = event.currentTarget.getAttribute('data-paper-id');
+                    delete_file(attachmentFilePath, paperId);
                 });
             });
         });
-        function delete_file(attachmentFilePath) {
+        function delete_file(attachmentFilePath, paperId) {
             const encodedFilePath = encodeURIComponent(attachmentFilePath);
-            fetch(`/file/paperDelete?fileName=${encodedFilePath}`, {
+            fetch(`/file/paperDelete?saveName=${encodedFilePath}&paperId=${paperId}`, {
                 method: 'DELETE',
             })
                 .then(response => response.json())
