@@ -38,7 +38,8 @@ public class Step3Controller {
     }
 
     @PostMapping("/save")
-    @CrossOrigin(origins = "http://10.41.1.61:8080")
+//    @CrossOrigin(origins = "http://10.41.1.61:8080")
+    @CrossOrigin(origins = "http://43.201.252.185:80")
     public String savePaper(
             HttpServletResponse response,
             @RequestParam("paperTitle") String paperTitle,
