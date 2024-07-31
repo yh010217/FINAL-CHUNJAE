@@ -16,6 +16,7 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
     let [remove, setRemove] = useState(changeList.map(item => item.itemId)); // 유사 문제에서 지울 애들
     let [changeId, setChangeId] = useState(null);
     const [delList, setDelList] = useState([]); // 삭제한 애들 담는 곳
+    const [lastAddedIndex, setLastAddedIndex] = useState(null); // 마지막으로 추가된 문제의 인덱스
 
     useEffect(() => {
         setChangeList(itemList);
@@ -81,36 +82,108 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
         if (itemToAdd.passageId === null || itemToAdd.passageId === '') {
             setChangeList(prevList => {
                 const index = prevList.findIndex(item => item.itemId === similar);
-                if (index === -1) { // 값이 못 찾으면 가장 아래로 보내기
-                    return [...prevList, itemToAdd];
-                } else {
-                    return [
+                const newList = index === -1
+                    ? [...prevList, itemToAdd]
+                    : [
                         ...prevList.slice(0, index + 1),
                         itemToAdd,
                         ...prevList.slice(index + 1)
                     ];
-                }
+
+                // 마지막으로 추가된 문제의 인덱스를 저장
+                const resultIndex = newList.indexOf(itemToAdd) + 1
+                setLastAddedIndex(resultIndex);
+
+                // 해당 인덱스로 스크롤
+                setTimeout(() => {
+                    const element = document.getElementById(resultIndex.toString());
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 0);
+
+                return newList;
             });
-            // passageId가 있는 경우
-        } else if (itemToAdd.passageId !== '') {
+        }
+        // passageId가 있는 경우
+        else if (itemToAdd.passageId !== '') {
             for (let key in groupedItems) {
                 if (Number(key) === changeId) {
                     let keyLen = groupedItems[changeId].length;
-                    setChangeList((prevList) => {
-                        const index = prevList.findIndex(
-                            (item) => item.passageId === Number(key)
-                        );
-                        return [
-                            ...prevList.slice(0, index + keyLen),
-                            itemToAdd,
-                            ...prevList.slice(index + keyLen),
-                        ];
+                    setChangeList(prevList => {
+                        const index = prevList.findIndex(item => item.passageId === Number(key));
+                        if (index === -1) {
+                            // 만약 index가 -1이 되면 해당 key에 해당하는 passageId가 없으므로
+                            // 이전 리스트에 itemToAdd를 추가
+                            return [...prevList, itemToAdd];
+                        } else {
+                            // passageId가 존재하는 경우
+                            const newList = [
+                                ...prevList.slice(0, index + keyLen),
+                                itemToAdd,
+                                ...prevList.slice(index + keyLen),
+                            ];
+
+                            // 마지막으로 추가된 문제의 인덱스를 저장
+                            const resultIndex = newList.indexOf(itemToAdd) + 1
+                            setLastAddedIndex(resultIndex);
+
+                            // 해당 인덱스로 스크롤
+                            setTimeout(() => {
+                                const element = document.getElementById(resultIndex.toString());
+                                if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth' });
+                                }
+                            }, 0);
+
+                            return newList;
+                        }
                     });
                 }
             }
         }
     };
+    /* const addToChangeList = (itemToAdd) => {
+         // passageId가 없는 경우 => 클릭한 문제 바로 아래 추가
+         if (itemToAdd.passageId === null || itemToAdd.passageId === '') {
+             setChangeList(prevList => {
+                 const index = prevList.findIndex(item => item.itemId === similar);
 
+                 if (index === -1) { // 값이 못 찾으면 가장 아래로 보내기
+                     setLastAddedIndex(itemToAdd.index);
+                     return [...prevList, itemToAdd];
+                 } else {
+                     const result = [
+                         ...prevList.slice(0, index + 1),
+                         itemToAdd,
+                         ...prevList.slice(index + 1)
+                     ]
+
+                     console.log(result.indexOf(itemToAdd) + 1, "ddd")
+                     console.log(itemToAdd, "g");
+
+                     return result;
+                 }
+             });
+             // passageId가 있는 경우
+         } else if (itemToAdd.passageId !== '') {
+             for (let key in groupedItems) {
+                 if (Number(key) === changeId) {
+                     let keyLen = groupedItems[changeId].length;
+                     setChangeList((prevList) => {
+                         const index = prevList.findIndex(
+                             (item) => item.passageId === Number(key)
+                         );
+                         return [
+                             ...prevList.slice(0, index + keyLen),
+                             itemToAdd,
+                             ...prevList.slice(index + keyLen),
+                         ];
+                     });
+                 }
+             }
+         }
+     };*/
 
     /** 삭제하기 구현하기 */
     const removeList = (itemDelItem) => {
@@ -135,11 +208,23 @@ function VIEWBOTTOM({itemList, setModal, setItemId, handlePaper}) {
                     const index = prevList.findIndex(
                         (item) => item.passageId === Number(key)
                     );
-                    return [
+                    const result = [
                         ...prevList.slice(0, index + keyLen),
                         itemReDelItem,
                         ...prevList.slice(index + keyLen),
                     ];
+
+                    const resultIndex = result.indexOf(itemReDelItem) + 1
+                    setLastAddedIndex(resultIndex);
+
+                    setTimeout(() => {
+                        const element = document.getElementById(resultIndex.toString());
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 0);
+
+                    return result
                 });
                 shouldAddToChangeList = false;
                 break;
