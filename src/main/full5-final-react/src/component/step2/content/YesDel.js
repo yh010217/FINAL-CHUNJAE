@@ -1,13 +1,13 @@
-import React from "react";
+import React, {useRef} from "react";
 import DELLIST from "./DELLIST";
 
 function YesDel({delList, setDelList, addToDelList, setModal, setItemId, groupedData, changeList}) {
+    const topRef = useRef(null);
 
     /** 한 번에 지우기 */
     const allDelList = (group) => {
 
         const itemIds = group.items.map(item => item.itemId);
-
         const totalItemsToAdd = group.items.length + changeList.length;
 
         if (totalItemsToAdd > 100) {
@@ -21,18 +21,27 @@ function YesDel({delList, setDelList, addToDelList, setModal, setItemId, grouped
 
         // 문제 다시 추가하기
         group.items.forEach(item => addToDelList(item));
+        handleScrollToTop(); // 최상단 이동
     };
 
 
+    // 함수: 클릭 시 스크롤 이동
+    const handleScrollToTop = () => {
+        if (topRef.current) {
+            topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     return (
-        <>
+        <div className="view-que-list scroll-inner">
+            <div ref={topRef} /> {/* 최상단 스크롤 이동을 위한 빈 div */}
+
             {Object.values(groupedData).map((group, index) => {
                 const passageId = group.items.map(item => item.passageId);
                 const passageUrl = group.items.map(item => item.passageUrl);
                 console.log(group, "test");
 
                 return (
-                    <React.Fragment key={group.passageId}>
                         <React.Fragment key={group.index}>
                             {group.items.map((item, itemIndex) => (
                                 <React.Fragment key={item.itemId}>
@@ -76,14 +85,14 @@ function YesDel({delList, setDelList, addToDelList, setModal, setItemId, grouped
                                         setModal={setModal}
                                         setItemId={setItemId}
                                         changeList={changeList}
+                                        handleScrollToTop={handleScrollToTop}
                                     />
                                 </React.Fragment>
                             ))}
                         </React.Fragment>
-                    </React.Fragment>
                 );
             })}
-        </>
+        </div>
     );
 
 }

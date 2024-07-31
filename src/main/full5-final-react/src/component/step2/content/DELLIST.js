@@ -1,6 +1,6 @@
 import React from "react";
 
-function DELLIST({itemIndex, item, addToDelList, delList, setDelList, setItemId, setModal, changeList}) {
+function DELLIST({itemIndex, item, addToDelList, delList, setDelList, setItemId, setModal, changeList, handleScrollToTop}) {
 
     const DelReList =()=> {
 
@@ -11,6 +11,7 @@ function DELLIST({itemIndex, item, addToDelList, delList, setDelList, setItemId,
 
         addToDelList(item);
         setDelList(delList.filter(list => list.itemId !== item.itemId)); // 삭제 구현
+        handleScrollToTop();
 
     }
 

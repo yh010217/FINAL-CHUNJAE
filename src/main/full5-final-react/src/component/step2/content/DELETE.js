@@ -28,7 +28,7 @@ function DELETE({changeList ,delList, setDelList, addToDelList, setModal, setIte
 
 
     return (
-        <div className="view-que-list scroll-inner">
+        <>
             {delList.length > 0 ?
                 <YesDel
                     delList={delList}
@@ -41,7 +41,7 @@ function DELETE({changeList ,delList, setDelList, addToDelList, setModal, setIte
                 /> :
                 <NoDel/>
             }
-        </div>
+        </>
     );
 
 }
