@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.dto;
 
 import com.chunjae.chunjaefull5final.domain.PaperGubun;
 import lombok.*;
+import org.springframework.data.relational.core.sql.In;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ public class PaperInfoDTO {
     private Long paperId;
     private PaperGubun paperGubun;
     private String title;
+    private Integer itemId;
     private Integer itemCount;
     private String grade;
     private String term;

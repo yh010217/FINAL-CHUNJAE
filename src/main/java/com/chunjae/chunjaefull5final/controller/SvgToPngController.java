@@ -36,7 +36,7 @@ public class SvgToPngController {
 //        log.info("===================!!!!!!!!!!!!!!전달 성공 convertAndSave!!!!!!!!!!!!=====================");
         for (String item : dataList) {
             try {
-                if (isSvgUrl(item)) {
+                if (item !=null && isSvgUrl(item)) {
                     log.info("--------------------- svg 입니다 --------------------- {}", item);
                     String svgData = readSvgDataFromUrl(item);
                     String base64Svg = "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(svgData.getBytes());
@@ -148,14 +148,11 @@ public class SvgToPngController {
 
     private boolean isSvgUrl(String url) {
         // log.info("===================!!!!!!!!!!!!!!전달 성공 isSvgUrl!!!!!!!!!!!!=====================");
-        log.info(url + " >>>>>>>>>>>>>>>>>>>>>>> url 값 확인하기 ");
-        if(!url.toLowerCase().endsWith(".svg") || url==null){
-            return false;
-        } else if (url.toLowerCase().endsWith(".svg")){
-            return true;
-        } else {
+        if (url == null || !url.toLowerCase().endsWith(".svg")) {
             return false;
         }
+        log.info(url + " >>>>>>>>>>>>>>>>>>>>>>> url 값 확인하기 ");
+        return url.toLowerCase().endsWith(".svg");
     }
 
     private String readSvgDataFromUrl(String url) throws IOException {
