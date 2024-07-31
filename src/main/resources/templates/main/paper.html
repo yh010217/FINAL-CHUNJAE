@@ -32,13 +32,17 @@
                             <div class="left-box1">
                                 <span th:text="${item.title}">과목 이름</span>
                                 <span th:text="|${item.itemCount}개|">문항수</span>
-                                <span th:text="${item.updateAt}">날짜</span>
+
                             </div>
                             <hr>
                             <div class="left-box2">
+
                                 <span>문항 편집</span>
                                 <span class="del-btn" th:data-attachment-file-name="${item.saveName}"
                                       th:data-paper-id="${item.paperId}">문항 삭제</span>
+
+                    
+
                             </div>
                         </div>
                         <div class="download-right">

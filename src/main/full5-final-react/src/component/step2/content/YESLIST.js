@@ -128,6 +128,7 @@ function YESLIST({no, similar, addToChangeList, setRemove, remove, setModal, set
                         setModal={setModal}
                         setItemId={setItemId}
                         changeList={changeList}
+                        no={no}
                     />
                 )}
             </>

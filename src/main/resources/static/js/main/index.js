@@ -5,6 +5,10 @@ function openPopup(code) {
     window.open(`/step0/${code}`, 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
 }
 
+function noPopup() {
+    alert("준비중입니다.");
+}
+
 function notLonginPopup() {
     alert('로그인 후 이용 가능합니다.');
     // 또는 다른 팝업창을 열 수 있습니다.

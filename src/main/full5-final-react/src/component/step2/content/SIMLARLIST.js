@@ -38,7 +38,6 @@ function SIMLARLIST(props) {
                 passageId: item.passageId,
                 passageUrl: item.passageUrl
             };
-
             props.addToChangeList(itemToAdd);
         }
     };
@@ -72,7 +71,7 @@ function SIMLARLIST(props) {
         }
     };
 
-    // 함수: 클릭 시 스크롤 이동
+    // 클릭 시 스크롤 이동
     const handleScrollToTop = () => {
         if (topRef.current) {
             topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -211,6 +210,7 @@ function SIMLARLIST(props) {
                                             {item.mediumChapterName} > {item.smallChapterName} > {item.topicChapterName}
                                         </p>
                                     </div>
+
                                 </div>
                             ))}
                         </React.Fragment>
