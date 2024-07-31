@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
 
-function S2stepbtn({paramType, subjectId}){
+function S2stepbtn({paramType, subjectId, newSubjectId}){
 
     const handlePrevBtn = () => {
         if(paramType === 'new'){
-            window.location.href = `/step1/select-chapter/${subjectId}`;
+            window.location.href = `/step1/select-chapter/${newSubjectId}`;
         }else if (paramType === 'edit'){
             window.location.href = `/step0/${subjectId}`;
         }

@@ -225,7 +225,7 @@ function CNTLIST({
                                     </div>
                                     {viewType !== '문제만 보기' && (
                                         <div className="que-bottom">
-                                            {viewType === '문제+해설+정답 보기' && (
+                                            {viewType === '문제+해설+정답' && (
                                                 <div className="data-area">
                                                     <div className="que-info">
                                                         <p className="answer">
@@ -237,7 +237,7 @@ function CNTLIST({
                                                     </div>
                                                 </div>
                                             )}
-                                            {(viewType === '문제+해설+정답 보기' || viewType === '문제+정답 보기') && (
+                                            {(viewType === '문제+해설+정답' || viewType === '문제+정답 보기') && (
                                                 <div className="data-area type01">
                                                     <div className="que-info">
                                                         <p className="answer">

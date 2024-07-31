@@ -3,7 +3,7 @@ import axios from "axios";
 import VIEWTOP from "./content/VIEWTOP";
 import VIEWBOTTOM from "./content/VIEWBOTTOM";
 
-function S2content({setModal, setItemId, handlePaper, paramType, getData, getSubjectId}) {
+function S2content({setModal, setItemId, handlePaper, paramType, getData, getSubjectId, getNewSubjectId}) {
     const [itemList, setItemList] = useState([]);
     const [subjectId, setSubjectId] = useState();
 
@@ -55,11 +55,12 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
                 })
                 setItemList(indexList);
 
-                let subjectId = response.data.subjectId;
+                const subjectId = response.data.subjectId;
                 setSubjectId(subjectId);
-                getSubjectId(subjectId);
+                getSubjectId(getData);
+                getNewSubjectId(subjectId);
 
-                console.log(subjectId);
+
             }else if(paramType == null){
                 console.log('paramType is null');
             }
@@ -73,15 +74,10 @@ function S2content({setModal, setItemId, handlePaper, paramType, getData, getSub
         fetchItemList();
     }, []);
 
-    /** 재검색 기능 핸들러 (신규 시험지인 경우에만) **/
-    const handleItemList = () => {
-        fetchItemList();
-    };
-
     return (
         <div className="view-box">
             {/** 시험지 정보 / 과목 명칭(선생님 이름) / 재검색 / 출제범위 **/}
-            <VIEWTOP itemList={itemList} onReSearch={handleItemList} paramType={paramType} subjectId={subjectId}/>
+            <VIEWTOP itemList={itemList} subjectId={subjectId}/>
             {/** 문제 목록, 문제 요약, 유사, 삭제 **/}
             <VIEWBOTTOM itemList={itemList} setModal={setModal} setItemId={setItemId} handlePaper={handlePaper}/>
         </div>

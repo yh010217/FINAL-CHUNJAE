@@ -88,9 +88,9 @@ function CNTRIGHT({initialChangeList,
                         </a>
                     </li>
                 </ul>
-                <div>
+                <>
                     {renderContent()}
-                </div>
+                </>
             </div>
         </div>
     );

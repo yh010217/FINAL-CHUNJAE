@@ -81,7 +81,6 @@ public class S3UploadController {
             }
 
 
-
             // paper_question
             service.updateQuestion(paper);
             log.info("===========s3 컨트롤러 : {}", dto.getUid());
