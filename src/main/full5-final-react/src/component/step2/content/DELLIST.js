@@ -1,6 +1,6 @@
 import React from "react";
 
-function DELLIST({item, addToDelList, delList, setDelList, setItemId, setModal, changeList}) {
+function DELLIST({itemIndex, item, addToDelList, delList, setDelList, setItemId, setModal, changeList, handleScrollToTop}) {
 
     const DelReList =()=> {
 
@@ -11,13 +11,14 @@ function DELLIST({item, addToDelList, delList, setDelList, setItemId, setModal, 
 
         addToDelList(item);
         setDelList(delList.filter(list => list.itemId !== item.itemId)); // 삭제 구현
+        handleScrollToTop();
 
     }
 
     return <div className="view-que-box" key={item.itemId}>
         <div className="que-top">
             <div className="title">
-                <span className="num">{item.itemNo}</span>
+                <span className="num">{item.index}</span>
                 <div className="que-badge-group">
                     <span
                         className={`que-badge ${

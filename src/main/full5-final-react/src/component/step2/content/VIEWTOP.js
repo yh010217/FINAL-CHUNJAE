@@ -23,8 +23,8 @@ function VIEWTOP({itemList, subjectId}) {
         let largeChapterName = null;
         let mediumChapterName = null;
 
-        if (item.examId !== null) {
-            groupKey = item.examId;
+        if (item.largeChapterId !== null) {
+            groupKey = item.largeChapterId;
             largeChapterName = item.largeChapterName;
             mediumChapterName = item.mediumChapterName;
         }
