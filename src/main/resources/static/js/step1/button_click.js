@@ -17,6 +17,10 @@ allCheckButton.onclick = function(){
     for(let i = 0 ; i < checks.length ; i++){
         checks[i].checked = setCheck;
     }
+    let topicChecks = document.querySelectorAll('.topic-check');
+    for(let i = 0 ; i < topicChecks.length ; i++){
+        topicChecks[i].checked = setCheck;
+    }
 }
 
 let make_minorClassification = function () {
@@ -187,6 +191,28 @@ document.getElementById('go-step2').onclick = function () {
 
 let canSendCheck = async function (minorClassification, questionForm, activityCategoryList) {
 
+    /*last check*/
+
+    let step_wrap = document.querySelector('.step-wrap');
+
+    let step_wrap_buttons_active = step_wrap.querySelectorAll('.active');
+    let lowExist = false;
+    let midExist = false;
+    let highExist = false;
+    for(let i = 0 ; i < step_wrap_buttons_active.length ; i++){
+        if (step_wrap_buttons_active[i].getAttribute('data-step') === 'stap2') {
+            lowExist = true;
+        }if (step_wrap_buttons_active[i].getAttribute('data-step') === 'stap3') {
+            midExist = true;
+        }if (step_wrap_buttons_active[i].getAttribute('data-step') === 'stap4') {
+            highExist = true;
+        }
+    }
+    if(!lowExist) level_cnt[1] = 0+'';
+    if(!midExist) level_cnt[2] = 0+'';
+    if(!highExist) level_cnt[3] = 0+'';
+
+    /*last check 끝*/
     let send_body = {
         minorClassification: minorClassification
         , levelCnt: level_cnt

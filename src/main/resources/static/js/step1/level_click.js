@@ -3,6 +3,7 @@ let que_num = 30;
 
 let level_cnt = ['0', '0', '0', '0', '0'];
 
+
 let set_que_num = function (num) {
     que_num = num;
     document.querySelector('.que-num').innerHTML = num;
@@ -146,8 +147,6 @@ let change_que_count = function () {
 
 }
 
-
-
 let count_change = function (num) {
 
     set_que_num(num);
@@ -198,9 +197,20 @@ let change_level = function () {
 
 
 }
+document.getElementById('level_count_reset').onclick = function () {
+    document.getElementById('level_low').value = document.getElementById('range-low-count').textContent;
+    document.getElementById('level_mid').value = document.getElementById('range-mid-count').textContent;
+    document.getElementById('level_high').value = document.getElementById('range-high-count').textContent;
+    level_cnt[1] = document.getElementById('range-low-count').textContent;
+    level_cnt[2] = document.getElementById('range-mid-count').textContent;
+    level_cnt[3] = document.getElementById('range-high-count').textContent;
 
+
+    document.getElementById('level_sum').innerHTML = (Number(level_cnt[1])+Number(level_cnt[2])+Number(level_cnt[3])) +'';
+
+
+}
 document.getElementById('level_count_save').onclick = function () {
-
 
     let value_low = document.getElementById('level_low').value;
     let value_mid = document.getElementById('level_mid').value;
@@ -212,6 +222,15 @@ document.getElementById('level_count_save').onclick = function () {
 
     if (low_num + mid_num + high_num !== que_num) {
         alert('문제 수를 맞춰주세요');
+        document.getElementById('level_low').value = document.getElementById('range-low-count').textContent;
+        document.getElementById('level_mid').value = document.getElementById('range-mid-count').textContent;
+        document.getElementById('level_high').value = document.getElementById('range-high-count').textContent;
+        level_cnt[1] = document.getElementById('range-low-count').textContent;
+        level_cnt[2] = document.getElementById('range-mid-count').textContent;
+        level_cnt[3] = document.getElementById('range-high-count').textContent;
+
+        document.getElementById('level_sum').innerHTML = (Number(level_cnt[1])+Number(level_cnt[2])+Number(level_cnt[3])) +'';
+
     } else {
 
         let step_wrap = document.querySelector('.step-wrap');
@@ -224,18 +243,24 @@ document.getElementById('level_count_save').onclick = function () {
                 document.getElementById('range-low-count').innerHTML = value_low + '';
                 level_cnt[1] = low_num + '';
             }else{
+
+                document.getElementById('range-low-count').innerHTML = 0 + '';
                 level_cnt[1] = 0+'';
             }
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
                 document.getElementById('range-mid-count').innerHTML = value_mid + '';
                 level_cnt[2] = mid_num + '';
             }else{
+
+                document.getElementById('range-mid-count').innerHTML = 0 + '';
                 level_cnt[2] = 0+'';
             }
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
                 document.getElementById('range-high-count').innerHTML = value_high + '';
                 level_cnt[3] = high_num + '';
             }else{
+
+                document.getElementById('range-high-count').innerHTML = 0 + '';
                 level_cnt[3] = 0+'';
             }
         }
