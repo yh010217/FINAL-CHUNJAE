@@ -100,7 +100,6 @@ public class SecurityConfig {
                         , "/save"
                         , "/item-img/**"
 
-
                 );
     }
 
@@ -143,6 +142,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")
                 .passwordParameter("pwd")
+                .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/index")
                 .permitAll()
         );

@@ -3,6 +3,8 @@ import DELLIST from "./DELLIST";
 
 function YesDel({delList, setDelList, addToDelList, setModal, setItemId, groupedData, changeList}) {
 
+    console.log(groupedData, "test")
+
     /** 한 번에 지우기 */
     const allDelList = (group) => {
 

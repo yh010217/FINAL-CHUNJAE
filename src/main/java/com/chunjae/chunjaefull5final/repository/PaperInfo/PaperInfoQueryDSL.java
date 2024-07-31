@@ -12,4 +12,6 @@ public interface PaperInfoQueryDSL {
     List<Object[]> subjectName();
 
     int getSubjectId(Long paperId);
+
+    List<Object[]> userNames();
 }

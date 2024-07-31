@@ -89,5 +89,17 @@ public class PaperInfoServiceImpl implements PaperInfoService {
         paperInfoRepository.updateAllPathToNull(paperId);
     }
 
+    @Override
+    public Map<Long, String> userNames() {
+        List<Object[]> results=paperInfoRepository.userNames();
+        Map<Long,String> userMaps=new HashMap<>();
+        for (Object[] result: results){
+            Long uid=(Long) result[0];
+            String name=(String) result[1];
+            userMaps.put(uid,name);
+        }
+        return userMaps;
+    }
+
 
 }

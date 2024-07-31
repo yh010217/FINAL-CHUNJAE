@@ -62,11 +62,13 @@ public class UserController {
     @GetMapping("/login")
     public String login(@RequestParam(name = "error",required = false) String error, Model model){
         if (error!=null){
+            log.error("로그인 오류 발생: {}", error); // 로그 출력
             model.addAttribute("loginError","loginError");
         }
         model.addAttribute("view","user/login");
         return "main/index";
     }
+
     @GetMapping("/admin/user")
     public String adminUser(@PageableDefault(size = 10, page = 0) Pageable pageable
             , @RequestParam(required = false, defaultValue = "") String search

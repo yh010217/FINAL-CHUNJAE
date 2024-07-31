@@ -92,7 +92,7 @@ function VIEWTOP({itemList, onReSearch, paramType, subjectId}) {
                     <i className="research"></i>재검색
                 </button>
                 <button onClick={openModal} className="btn-default pop-btn">출제범위</button>
-                <ListModal data={itemList} open={modalOpen} onClose={closeModal}/>
+                <ListModal data={groupedData} open={modalOpen} onClose={closeModal}/>
             </div>
         </>
     );
