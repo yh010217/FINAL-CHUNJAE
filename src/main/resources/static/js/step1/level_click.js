@@ -242,28 +242,29 @@ document.getElementById('level_count_save').onclick = function () {
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap2') {
                 document.getElementById('range-low-count').innerHTML = value_low + '';
                 level_cnt[1] = low_num + '';
-            }else{
-
-                document.getElementById('range-low-count').innerHTML = 0 + '';
-                level_cnt[1] = 0+'';
             }
+
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap3') {
                 document.getElementById('range-mid-count').innerHTML = value_mid + '';
                 level_cnt[2] = mid_num + '';
-            }else{
-
-                document.getElementById('range-mid-count').innerHTML = 0 + '';
-                level_cnt[2] = 0+'';
             }
             if (step_wrap_buttons[i].getAttribute('data-step') === 'stap4') {
                 document.getElementById('range-high-count').innerHTML = value_high + '';
                 level_cnt[3] = high_num + '';
-            }else{
-
-                document.getElementById('range-high-count').innerHTML = 0 + '';
-                level_cnt[3] = 0+'';
             }
         }
+
+        document.getElementById('level_low').value = document.getElementById('range-low-count').textContent;
+        document.getElementById('level_mid').value = document.getElementById('range-mid-count').textContent;
+        document.getElementById('level_high').value = document.getElementById('range-high-count').textContent;
+        level_cnt[1] = document.getElementById('range-low-count').textContent;
+        level_cnt[2] = document.getElementById('range-mid-count').textContent;
+        level_cnt[3] = document.getElementById('range-high-count').textContent;
+
+
+        document.getElementById('level_sum').innerHTML = (Number(level_cnt[1])+Number(level_cnt[2])+Number(level_cnt[3])) +'';
+
+
 
         document.getElementById('level_sum').innerHTML = (low_num + mid_num + high_num) +'';
 
