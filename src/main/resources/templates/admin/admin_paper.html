@@ -82,7 +82,6 @@
                      <span>시험지번호</span>
                      <span>제목</span>
                      <span>문제개수</span>
-                     <span>학년</span>
                      <span>과목이름</span>
                      <span>삭제여부(null or Y)</span>
                  </li>
@@ -91,7 +90,6 @@
                          <span th:text="${item.paperId}"></span>
                          <span th:text="${item.title}"></span>
                          <span th:text="${item.itemCount}"></span>
-                         <span th:text="${item.grade}"></span>
                          <span th:text="${subjectNames[item.subjectId]}"></span>
                          <span th:text="${item.delete_yn}"></span>
                      </a>

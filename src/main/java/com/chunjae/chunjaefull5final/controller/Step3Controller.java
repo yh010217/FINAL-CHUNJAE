@@ -29,12 +29,12 @@ public class Step3Controller {
     @GetMapping("/loading")
     public String loading(){
 
-        return "/step3/loading";
+        return "step3/loading";
     }
 
     @GetMapping("/save_comp")
     public String saveComp(){
-        return "/step3/save_comp";
+        return "step3/save_comp";
     }
 
     @PostMapping("/save")
@@ -71,7 +71,7 @@ public class Step3Controller {
         model.addAttribute("subjectId", subjectId);
 
         response.setHeader("X-Frame-Options", "ALLOW-FROM /loading");
-        return "/step3/save_paper";
+        return "step3/save_paper";
     }
 
 }

@@ -22,49 +22,49 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/file/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000", "http://43.201.252.185")
                 .allowedMethods("POST")
                 .allowedHeaders("*");
 
         registry.addMapping("/test/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000", "http://43.201.252.185")
                 .allowedMethods("POST")
                 .allowedHeaders("*");
 
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000", "http://43.201.252.185")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
 
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:8080", "https://img.chunjae-platform.com", "http://localhost:3000")
+                .allowedOrigins("http://localhost:8080", "https://img.chunjae-platform.com", "http://localhost:3000", "http://43.201.252.185")
                 .allowedMethods("POST", "GET")
                 .allowedHeaders("*");
 
         registry.addMapping("/upload/**")
-                .allowedOrigins("https://img.chunjae-platform.com", "http://localhost:8080", "http://localhost:3000")
+                .allowedOrigins("https://img.chunjae-platform.com", "http://localhost:8080", "http://localhost:3000", "http://43.201.252.185")
                 .allowedMethods("POST", "GET")
                 .allowedHeaders("*");
 
         registry.addMapping("/save")
-                .allowedOrigins("http://localhost:3000","http://localhost:8080")
+                .allowedOrigins("http://localhost:3000","http://localhost:8080", "http://43.201.252.185")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
 
         registry.addMapping("/loading")
-                .allowedOrigins("http://localhost:3000","http://localhost:8080")
+                .allowedOrigins("http://localhost:3000","http://localhost:8080", "http://43.201.252.185")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
 
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")
+                .allowedOrigins("http://localhost:8080", "http://43.201.252.185")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
 
         registry.addMapping("/convertImage")
-                .allowedOrigins("http://localhost:8080","https://img.chunjae-platform.com")
+                .allowedOrigins("http://localhost:8080","https://img.chunjae-platform.com", "http://43.201.252.185")
                 .allowedMethods("GET", "POST", "PUT", "DELETE","OPTION")
                 .allowedHeaders("*")
                 .allowCredentials(true);
