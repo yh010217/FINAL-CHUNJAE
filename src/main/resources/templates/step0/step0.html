@@ -6,14 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>T셀파 문제은행</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <link rel="stylesheet" href="/inc/css/font.css">
 
     <link rel="stylesheet" href="/css/step0/reset_step0.css">
-<!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
+    <!--    <link rel="stylesheet" href="/css/step0/step0_1.css">-->
     <link rel="stylesheet" href="/css/step0/step0.css">
-    <script src="/js/step0/step0_1.js"></script>
+<!--    <script src="/js/step0/step0.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
@@ -21,7 +23,6 @@
     <script src="/inc/js/common.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-
 <body>
 <div id="wrap" class="full-pop-que">
     <div class="full-pop-wrap">
@@ -31,7 +32,6 @@
             </ul>
             <button type="button" class="del-btn"></button>
         </div>
-
         <div class="pop-content">
             <div class="view-box">
                 <div class="view-top">
@@ -42,14 +42,14 @@
                             <span class="tooltip-wrap">
                               <button class="tip-btn blue" th:id="chk_item_cnt">0</button>
                                 <span class="tooltip type02">
-<!--                                    <div class="tool-type01">선택한 문항</div>-->
+                                    <div class="tool-type01">선택한 문항</div>
                                 </span>
                                 </span>
                         <span>/</span>
                             <span class="tooltip-wrap">
                                 <button class="tip-btn">90</button>
                                 <span class="tooltip type02">
-<!--                                    <div class="tool-type01">최대 문항수</div>-->
+                                    <div class="tool-type01">최대 문항수</div>
                                 </span>
                             </span>
                         </span>
@@ -86,7 +86,7 @@
                                                 <span class="que-count" id="itemCnt" th:text="${exam.itemCnt}" ></span>
                                                 <span>
                                                      <input type="hidden" id="examId" th:value="${exam.examId}">
-                                                     <input type="hidden" id="paperName" th:value="${exam.examName}">
+                                                     <input type="hidden" id="paperName" class="choi-paperName" th:value="${exam.examName}">
                                                      <input type="hidden" id="itemCount" th:value="${exam.itemCnt}">
                                                         <button
                                                                 type="button" class="pop-btn btn-icon2"
@@ -95,10 +95,10 @@
                                                 </span>
                                                 <span>
                                                      <div class="btn-wrap">
-                                                        <button type="button" class="btn-default">전체</button>
-                                                        <button type="button" class="btn-default">문제</button>
-                                                        <button type="button" class="btn-default">정답 + 해설</button>
-                                                        <button type="button" class="btn-default">문항정보표</button>
+                                                        <button type="button" th:id="'A_'+${exam.examId}" class="btn-default download A" data-type="A">전체</button>
+                                                        <button type="button" th:id="'B_'+${exam.examId}" class="btn-default download Q" data-type="Q">문제</button>
+                                                        <button type="button" th:id="'C_'+${exam.examId}" class="btn-default download E" data-type="E">정답 + 해설</button>
+                                                        <button type="button" th:id="'D_'+${exam.examId}" class="btn-default download C" data-type="C">문항정보표</button>
                                                     </div>
                                                 </span>
                                             </div>
@@ -144,50 +144,66 @@
 
                     <div class="preview-data">
                         <div class="btn-wrap" id="preview-btn-div">
-                            <button type="button" class="btn-icon preview-download" date-type="D">
+                            <button type="button" class="btn-icon preview-download" date-type="">
                                 <i class="download"></i>다운로드
                             </button>
                         </div>
 
                         <div class="view-box">
-                            <div class="scroll-inner">
-                                <div class="layout-wrap" id="preview-question-data"></div>
+                            <div id="test_paper">
+                                <div class="scroll-inner">
+                                    <div class="paper">
+                                        <div id="header_data">
+                                            <table style="width:100%; border: 5px solid #ccc; border-radius: 15px; margin: 10px 0px">
+                                                <tr>
+                                                    <td rowspan="2" class="title_header">시험지명</td>
+                                                    <td class="class_header">&nbsp;&nbsp;학년&nbsp;&nbsp;반&nbsp;&nbsp;번&nbsp;&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="name_header">&nbsp;이름 : </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="layout-wrap" id="preview-question-data"></div>
 
-                                <!-- 문항 정보표 테이블 -->
-                                <div class="table-wrap" id="preview-itemInfo-table">
-                                    <div class="tbl-view">
-                                        <table>
-                                            <colgroup>
-                                                <col width="5%">
-                                                <col width="12%">
-                                                <col width="15%">
-                                                <col width="*">
-                                                <col width="9.5%">
-                                                <col width="9.5%">
-                                                <col width="9.5%">
-                                                <col width="9.5%">
-                                                <col width="5%">
-                                            </colgroup>
-                                            <thead>
-                                                <tr>
-                                                    <th rowspan="2">번호</th>
-                                                    <th rowspan="2">정답</th>
-                                                    <th colspan="2">단원</th>
-                                                    <th rowspan="2">성취기준</th>
-                                                    <th rowspan="2">내용 영역</th>
-                                                    <th rowspan="2">평가 영역</th>
-                                                    <th rowspan="2">교과 역량</th>
-                                                    <th rowspan="2">난이도</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>대단원</th>
-                                                    <th>평가내용</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="preview-itemInfo-data"></tbody>
-                                        </table>
+                                        <!-- 문항 정보표 테이블 -->
+                                        <div class="table-wrap" id="preview-itemInfo-table">
+                                            <div class="tbl-view">
+                                                <table>
+                                                    <colgroup>
+                                                        <col width="5%">
+                                                        <col width="12%">
+                                                        <col width="15%">
+                                                        <col width="*">
+                                                        <col width="9.5%">
+                                                        <col width="9.5%">
+                                                        <col width="9.5%">
+                                                        <col width="9.5%">
+                                                        <col width="5%">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th rowspan="2">번호</th>
+                                                        <th rowspan="2">정답</th>
+                                                        <th colspan="2">단원</th>
+                                                        <th rowspan="2">성취기준</th>
+                                                        <th rowspan="2">내용 영역</th>
+                                                        <th rowspan="2">평가 영역</th>
+                                                        <th rowspan="2">교과 역량</th>
+                                                        <th rowspan="2">난이도</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>대단원</th>
+                                                        <th>평가내용</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="preview-itemInfo-data"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -197,9 +213,9 @@
     </div>
 </div>
 </body>
-<script>
 
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script th:src="@{/js/step0/step0_choi.js}"></script>
 </html>
 
 

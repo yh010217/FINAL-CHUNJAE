@@ -37,7 +37,7 @@ public class Step1ServiceImpl implements Step1Service {
     private final ModelMapper modelMapper;
 
     @Override
-    public JSONObject saveExam(String examBody, int subject, List<String> levelCnt)
+    public JSONObject saveExam(String examBody, int subject, List<String> levelCnt ,Long uid)
             throws ParseException {
 
 
@@ -52,7 +52,7 @@ public class Step1ServiceImpl implements Step1Service {
 
             JSONArray itemList = (JSONArray) examJson.get("itemList");
 
-            PaperInfo temp = tempPaperInfo(subject, itemList.size(), 2L, "save_name");
+            PaperInfo temp = tempPaperInfo(subject, itemList.size(), uid, "save_name");
             PaperInfo saved = paperInfoRepo.save(temp);
             if (saved == null) {
                 result = new JSONObject();
@@ -60,9 +60,17 @@ public class Step1ServiceImpl implements Step1Service {
                 return result;
             }
 
-            result = makeQuestionsForm(itemList, saved.getPaperId(), levelCnt);
-            result.put("enable","Y");
 
+            JSONObject tempObject;
+            tempObject = makeQuestionsForm(itemList, saved.getPaperId(), levelCnt);
+            if(tempObject != null) {
+                result = tempObject;
+                result.put("paperId",saved.getPaperId());
+                result.put("enable", "Y");
+            }else{
+                result = new JSONObject();
+                result.put("enable","N");
+            }
 
         } else {
             result = new JSONObject();
@@ -114,7 +122,12 @@ public class Step1ServiceImpl implements Step1Service {
         requestBody.put("itemIdList", itemIdList);
         ResponseEntity<String> itemResponse = postRequest(url, requestBody);
 
-        String itemResponseBody = itemResponse.getBody();
+        String itemResponseBody = null;
+        try {
+            itemResponseBody = itemResponse.getBody();
+        }catch (Exception e){
+            return null;
+        }
         try {
             JSONParser parser = new JSONParser();
             Object parsedBody = parser.parse(itemResponseBody);
@@ -123,7 +136,6 @@ public class Step1ServiceImpl implements Step1Service {
             JSONArray itemInfoList = (JSONArray) itemListJson.get("itemList");
 
             result = toSaveItems(itemInfoList, levelCnt);
-            result.put("paperId",paperId);
 
 
         } catch (Exception e) {
@@ -270,12 +282,51 @@ public class Step1ServiceImpl implements Step1Service {
             }
         }
 
+        /*돌아가서 다시 보면서 순서 맞던게 풀릴수도 잇음*/
+
+
+        Map<Long, List<JSONObject>> secondGroupedItems = new HashMap<>();
+        List<JSONObject> secondNonGroupedItems = new ArrayList<>();
+
+
+        for (int i = 0; i < fitArray.size(); i++) {
+
+            JSONObject item = (JSONObject) fitArray.get(i);
+            if (item.get("passageId") == null) {
+                secondNonGroupedItems.add(item);
+            } else {
+                Long passageId = (Long) item.get("passageId");
+                if (secondGroupedItems.containsKey(passageId)) {
+                    secondGroupedItems.get(passageId).add(item);
+                } else {
+                    List<JSONObject> itemList = new ArrayList<>();
+                    itemList.add(item);
+                    secondGroupedItems.put(passageId, itemList);
+                }
+            }
+        }
+
+        JSONArray resultArray = new JSONArray();
+        Iterator<Long> resultGroupIta = secondGroupedItems.keySet().iterator();
+        while (resultGroupIta.hasNext()){
+            List<JSONObject> passageList = secondGroupedItems.get(resultGroupIta.next());
+            for(int i = 0 ; i < passageList.size() ; i++){
+                resultArray.add(passageList.get(i));
+            }
+
+        }
+
+        for(int i = 0 ; i < nonGroupedItems.size() ; i++){
+            resultArray.add(nonGroupedItems.get(i));
+        }
+
+
         List<Integer> fitCount = new ArrayList<>();
         fitCount.add(lowCount);
         fitCount.add(midCount);
         fitCount.add(highCount);
 
-        result.put("fitArray", fitArray);
+        result.put("fitArray", resultArray);
         result.put("fitCount", fitCount);
 
         return result;
@@ -299,6 +350,11 @@ public class Step1ServiceImpl implements Step1Service {
         }).collect(Collectors.toList());
 
         return result;
+    }
+
+    @Override
+    public int getSubjectId(Long paperId) {
+        return paperInfoRepo.getSubjectId(paperId);
     }
 
 

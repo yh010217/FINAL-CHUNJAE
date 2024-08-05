@@ -1,6 +1,12 @@
 /** step 새로운 창 이런식으로 열기 */
 function openPopup(code) {
-    window.open(`http://localhost:8080/step0/${code}`, 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
+    //window.open(`http://10.41.1.61:8080/step0/${code}`, 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
+    //window.open(`http://localhost:8080/step0/${code}`, 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
+    window.open(`/step0/${code}`, 'popupWindow', 'width=1350, height=1000, scrollbars=yes');
+}
+
+function noPopup() {
+    alert("준비중입니다.");
 }
 
 function notLonginPopup() {
@@ -26,7 +32,7 @@ function closeEx() {
 $(document).ready(function(){
 
     /** 중학 / 시험지 보관함 탭 */
-    $('ul.tabs li').click(function(){
+/*    $('ul.tabs li').click(function(){
         let tab_id = $(this).attr('data-tab');
 
         $('ul.tabs li').removeClass('current');
@@ -34,7 +40,7 @@ $(document).ready(function(){
 
         $(this).addClass('current');
         $("#" + tab_id).addClass('current');
-    });
+    });*/
 
     /** 과목별 탭 */
     $('ul.tab li').click(function(){

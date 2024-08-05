@@ -5,7 +5,10 @@ import com.chunjae.chunjaefull5final.dto.PreviewItemDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewItemInfoDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseDTO;
 import com.chunjae.chunjaefull5final.dto.PreviewResponseInfoDTO;
+import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,34 +34,41 @@ import java.util.Map;
 public class Step0Controller {
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final JWTUtil jwtUtil;
+
 
     @GetMapping("/step0/{subjectId}")
-    public String selectChapter(@PathVariable Long subjectId, Model model) {
+    public String selectChapter(@PathVariable Long subjectId, Model model, HttpServletRequest httpServletRequest) {
 
-        String url = "https://tsherpa.item-factory.com/chapter/chapter-list";
-        String url2 = "https://tsherpa.item-factory.com/chapter/exam-list";
+        Long uid;
+        uid = jwtUtil.getUidByRequest(httpServletRequest); // JWT에서 UID 추출
+        if (uid == null) {
+            return "redirect:/login";
+        } else {
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("subjectId", subjectId);
+            String url = "https://tsherpa.item-factory.com/chapter/chapter-list";
+            String url2 = "https://tsherpa.item-factory.com/chapter/exam-list";
 
-        ResponseEntity<String> chapterResponse = postRequest(url, requestBody);
-        ResponseEntity<String> examResponse = postRequest(url2, requestBody);
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("subjectId", subjectId);
 
-        String chapterBody = chapterResponse.getBody();
-        String examBody = examResponse.getBody();
+            ResponseEntity<String> chapterResponse = postRequest(url, requestBody);
+            ResponseEntity<String> examResponse = postRequest(url2, requestBody);
 
-        // 대단원 목록
-        List<Map<String, Object>> chapterList = chapterParsing(chapterBody);
+            String chapterBody = chapterResponse.getBody();
+            String examBody = examResponse.getBody();
 
-        // 대단원 별 시험지 목록
-        Map<Long, List<Map<String, Object>>> examList = examParsing(examBody);
+            // 대단원 목록
+            List<Map<String, Object>> chapterList = chapterParsing(chapterBody);
 
-        model.addAttribute("chapterList", chapterList);
-        model.addAttribute("examList", examList);
+            // 대단원 별 시험지 목록
+            Map<Long, List<Map<String, Object>>> examList = examParsing(examBody);
 
-//        return "step0/test0";
-        return "step0/step0";
+            model.addAttribute("chapterList", chapterList);
+            model.addAttribute("examList", examList);
+
+            return "step0/step0";
+        }
     }
 
     /**
@@ -172,9 +182,42 @@ public class Step0Controller {
         return response;
     }
 
+/*
+    @PostMapping("/step0/examId")
+    public ResponseEntity<String> receiveExamIds(@RequestBody Map<String, List<String>> request, HttpServletRequest httpServletRequest, HttpSession session) {
+        Long uid = jwtUtil.getUidByRequest(httpServletRequest); // JWT에서 UID 추출
+        List<String> selectedExamIds = request.get("examIdList"); // examId 배열 받기
 
- //   private List<String> selectedExamIds; // 세션으로 받는 걸로 변경 예정
+        // 세션에 사용자별 examIdList 저장
+        if (selectedExamIds != null) {
+            session.setAttribute("selectedExamIds_" + uid, selectedExamIds);
+        }
 
+        for (String item : selectedExamIds) {
+            log.info("examid.....{}", item);
+        }
+
+        return ResponseEntity.ok("ExamId 받기 성공");
+    }
+
+
+    @GetMapping("/step0/examId")
+    public ResponseEntity<Map<Long, List<String>>> sendExamIds(HttpSession session, HttpServletRequest httpServletRequest) {
+        Long uid = jwtUtil.getUidByRequest(httpServletRequest); // JWT에서 UID 추출
+
+        // 세션에서 사용자별 examIdList 불러오기
+        List<String> selectedExamIds = (List<String>) session.getAttribute("selectedExamIds_" + uid);
+
+        Map<Long, List<String>> response = new HashMap<>();
+
+        // null 체크 후 응답에 추가
+        if (selectedExamIds != null) {
+            response.put(uid, selectedExamIds);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+*/
 
     /**
      * @@@@@@@@@ 선택한 시험지 json 형식으로 받고 보내기
@@ -198,12 +241,15 @@ public class Step0Controller {
 
         // 세션에서 selectedExamIds 불러오기
         List<String> selectedExamIds = (List<String>) session.getAttribute("selectedExamIds");
+
         response.put("examIdList", selectedExamIds);
 
         return ResponseEntity.ok(response);
     }
 
-    /** 셋팅지 미리보기 */
+    /**
+     * 셋팅지 미리보기
+     */
     @PostMapping("/preview/first")
     public ResponseEntity<PreviewResponseDTO> getPreview(@RequestBody PreviewResponseDTO request) {
         String url = "https://tsherpa.item-factory.com/item-img/exam/item-list";
@@ -225,6 +271,7 @@ public class Step0Controller {
 
                 request.setSuccessYn(successYn);
                 request.setItemList(new ArrayList<>(itemList));
+
             } else {
                 request.setSuccessYn("N");
                 request.setItemList(null);
@@ -247,8 +294,9 @@ public class Step0Controller {
         return ResponseEntity.ok(request);
     }
 
-
-    /** 셋팅지 미리보기 - 문항 정보표 */
+    /**
+     * 셋팅지 미리보기 - 문항 정보표
+     */
     @PostMapping("/preview/info")
     public ResponseEntity<PreviewResponseInfoDTO> getPreviewInfo(@RequestBody PreviewResponseInfoDTO request) {
 
@@ -296,67 +344,6 @@ public class Step0Controller {
 
         return ResponseEntity.ok(request);
     }
-
- /*  // 셋팅지 미리보기 html ..
-    @PostMapping("/preview/all")
-    public ResponseEntity<String> previewAll(@RequestBody ExamIdDTO request) {
-        String postUrl = "https://tsherpa.item-factory.com/exam/preview"; // 첫 번째 API URL
-
-        try {
-            // 첫 번째 API 호출
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<ExamIdDTO> requestEntity = new HttpEntity<>(request, headers);
-
-            ResponseEntity<String> postResponse = restTemplate.exchange(postUrl, HttpMethod.POST, requestEntity, String.class);
-
-            if (!postResponse.getStatusCode().is2xxSuccessful() || postResponse.getBody() == null) {
-                throw new RuntimeException("preview URL fetch 실패 ..");
-            }
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-            ResponseType responseType = objectMapper.readValue(postResponse.getBody(), ResponseType.class);
-
-            // successYn 확인
-            if (!"Y".equals(responseType.getSuccessYn())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Operation was not successful: " + responseType.getSuccessYn());
-            }
-
-            // previewUrl 확인
-            String previewUrl = responseType.getPreviewUrl();
-            if (previewUrl == null) {
-                throw new RuntimeException("previewUrl is null ..");
-            }
-
-            System.out.println("preview URL: " + previewUrl); // URL 로그 출력
-*//*
-     *//*
-
-
-            // GET 요청으로 HTML 가져오기
-            ResponseEntity<byte[]> getResponse = restTemplate.getForEntity(previewUrl, byte[].class);
-
-            if (!getResponse.getStatusCode().is2xxSuccessful() || getResponse.getBody() == null) {
-                throw new RuntimeException("HTML content fetch 실패..");
-            }
-
-            // 바이트 배열을 UTF-8로 디코딩
-            String htmlContent = new String(getResponse.getBody(), StandardCharsets.UTF_8);
-
-            // HTML 콘텐츠 반환, 인코딩을 UTF-8로 설정
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.setContentType(MediaType.TEXT_HTML); // 텍스트 HTML 타입으로 설정
-            responseHeaders.setContentType(new MediaType("text", "html", StandardCharsets.UTF_8)); // UTF-8 설정
-
-            return new ResponseEntity<>(htmlContent, responseHeaders, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("미리보기 fetch 실패 ..");
-        }
-    }*/
-
 
 }
 

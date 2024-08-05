@@ -1,18 +1,24 @@
 import React from "react";
 
-function DELLIST({item, addToDelList, delList, setDelList, setItemId, setModal}) {
+function DELLIST({itemIndex, item, addToDelList, delList, setDelList, setItemId, setModal, changeList, handleScrollToTop}) {
 
     const DelReList =()=> {
-        // 문제 다시 추가하기 => 최하단으로 가야 함.
+
+        if(changeList.length >= 100) {
+            alert("최대 100개까지만 추가할 수 있습니다.");
+            return;
+        }
+
         addToDelList(item);
         setDelList(delList.filter(list => list.itemId !== item.itemId)); // 삭제 구현
+        handleScrollToTop();
 
     }
 
     return <div className="view-que-box" key={item.itemId}>
         <div className="que-top">
             <div className="title">
-                <span className="num">{item.itemNo}</span>
+                <span className="num">{item.index}</span>
                 <div className="que-badge-group">
                     <span
                         className={`que-badge ${

@@ -3,6 +3,7 @@ package com.chunjae.chunjaefull5final.service.paperinfo;
 import com.chunjae.chunjaefull5final.domain.PaperInfo;
 import com.chunjae.chunjaefull5final.dto.PaperInfoDTO;
 import com.chunjae.chunjaefull5final.repository.PaperInfo.PaperInfoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -71,6 +72,38 @@ public class PaperInfoServiceImpl implements PaperInfoService {
             dto.setUid(paperInfo.getUser().getUid());
         }
         return dto;
+    }
+
+    @Override
+    public void updateQuestionPathToNull(Long paperId) {
+        paperInfoRepository.updateQuestionPathToNull(paperId);
+    }
+
+    @Override
+    public void updateSaveAnswerPathToNull(Long paperId) {
+        paperInfoRepository.updateSaveAnswerPathToNull(paperId);
+    }
+
+    @Override
+    public void updateAllPathToNull(Long paperId) {
+        paperInfoRepository.updateAllPathToNull(paperId);
+    }
+
+    @Override
+    public Map<Long, String> userNames() {
+        List<Object[]> results=paperInfoRepository.userNames();
+        Map<Long,String> userMaps=new HashMap<>();
+        for (Object[] result: results){
+            Long uid=(Long) result[0];
+            String name=(String) result[1];
+            userMaps.put(uid,name);
+        }
+        return userMaps;
+    }
+
+    @Override
+    public void deletePaper(Long paperId) {
+        paperInfoRepository.paperInfoDeleteYn(paperId);
     }
 
 

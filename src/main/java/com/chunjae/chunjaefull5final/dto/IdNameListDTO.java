@@ -18,6 +18,7 @@ public class IdNameListDTO {
     }
     public IdNameListDTO(Long id, String name, List<IdNameListDTO> list, int itemNo) {
         this.id = id;
+        
         this.name = name;
         this.list = list;
         this.itemNo = itemNo;

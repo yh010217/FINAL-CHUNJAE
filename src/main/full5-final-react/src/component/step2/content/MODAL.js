@@ -52,7 +52,7 @@ function MODAL({ setModal, itemId }) {
 
         try {
             const response = await axios({
-                url: "http://localhost:8080/file/uploadImageFile/error",
+                url: "http://43.201.252.185/file/uploadImageFile/error",
                 method: "POST",
                 data: formData,
             });
@@ -75,7 +75,7 @@ function MODAL({ setModal, itemId }) {
             // DB로 값 넘기기
             await axios({
                 method: 'POST',
-                url: "http://localhost:8080/test/error", // 실제 API URL로 변경
+                url: "http://43.201.252.185/test/error", // 실제 API URL로 변경
                 data: dbData
             });
 
@@ -90,7 +90,7 @@ function MODAL({ setModal, itemId }) {
             try {
                 await axios({
                     method: 'POST',
-                    url: "http://localhost:8080/test/error", // 실제 API URL로 변경
+                    url: "http://43.201.252.185/test/error", // 실제 API URL로 변경
                     data: dbData
                 });
 
@@ -101,6 +101,7 @@ function MODAL({ setModal, itemId }) {
             }
         } finally {
             alert('신고가 완료되었습니다.');
+            setModal(false);
         }
     };
 

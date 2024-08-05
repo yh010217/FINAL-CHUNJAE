@@ -3,14 +3,19 @@ import S2content from "./S2content";
 import S2stepbtn from "./S2stepbtn";
 import MODAL from "./content/MODAL";
 import React from "react";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 
-function STEP2({handlePaper}) {
+function STEP2({handlePaper, subjectId, newSubjectId, getSubjectId, getNewSubjectId, getParamType}) {
     const [modal, setModal] = useState(false); // 신고 모달창 관련 이벤트
     const [itemId, setItemId] = useState('');
     const params = useParams();
-    console.log(params.type);
+
+    useEffect(() => {
+        if (params.type) {
+            getParamType.current = params.type;
+        }
+    }, [params.type, getParamType]);
 
     /** 모달 관련 이벤트 */
     let block = {}; // display : block 로 만들기 위한 노력...
@@ -19,6 +24,8 @@ function STEP2({handlePaper}) {
             display: 'block'
         };
     }
+
+
 
     return <div id="wrap" className="full-pop-que">
         {/** 신고 페이지 */}
@@ -37,10 +44,17 @@ function STEP2({handlePaper}) {
                     handlePaper={handlePaper}
                     paramType={params.type}
                     getData={params.getData}
+                    getSubjectId={getSubjectId}
+                    getNewSubjectId={getNewSubjectId}
                 />
             </div>
+
             <div className="step-btn-wrap">
-                <S2stepbtn/>
+                <S2stepbtn
+                    paramType={params.type}
+                    subjectId={subjectId}
+                    newSubjectId={newSubjectId}
+                />
             </div>
         </div>
     </div>

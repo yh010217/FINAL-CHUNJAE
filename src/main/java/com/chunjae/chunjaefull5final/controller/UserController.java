@@ -2,6 +2,7 @@ package com.chunjae.chunjaefull5final.controller;
 
 import com.chunjae.chunjaefull5final.dto.UserDTO;
 
+import com.chunjae.chunjaefull5final.service.UidService;
 import com.chunjae.chunjaefull5final.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +23,22 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UidService uidService;
 
     /** 회원가입페이지이동 */
     @GetMapping("/join")
     public String join(Model model){
-        model.addAttribute("userDTO", new UserDTO());
-        return "user/join";
+        UserDTO userDTO=new UserDTO();
+        model.addAttribute("userDTO", userDTO);
+        model.addAttribute("view","user/join");
+        return "main/index";
     }
     /** 회원가입 */
     @PostMapping("/join")
     public String joinResult(@Valid @ModelAttribute UserDTO dto, BindingResult bindingResult, Model model) {
         boolean emailCheck = userService.findEmailCheck(dto.getEmail());
         if (emailCheck) {
-            model.addAttribute("joinError", "joinError");
+           model.addAttribute("joinError", "joinError");
             model.addAttribute("dto", dto);
             return "user/join";
         } else if (bindingResult.hasErrors()) {
@@ -58,10 +62,13 @@ public class UserController {
     @GetMapping("/login")
     public String login(@RequestParam(name = "error",required = false) String error, Model model){
         if (error!=null){
+            log.error("로그인 오류 발생: {}", error); // 로그 출력
             model.addAttribute("loginError","loginError");
         }
-        return "user/login";
+        model.addAttribute("view","user/login");
+        return "main/index";
     }
+
     @GetMapping("/admin/user")
     public String adminUser(@PageableDefault(size = 10, page = 0) Pageable pageable
             , @RequestParam(required = false, defaultValue = "") String search
@@ -110,7 +117,10 @@ public class UserController {
         UserDTO userDTO = userService.getUserDetail(uid);
         return userDTO;
     }
-
+//    @GetMapping("/currentUser")
+//    public String getCurrentUser() {
+//        return uidService.getCurrentUserUid();
+//    }
 
 
 

@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import {Link} from "react-router-dom";
+import React, {useState} from "react";
 import axios from "axios";
 
-function S3stepbtn({ paperTitle, paper }) {
+function S3stepbtn({paperTitle, paper, paramType, subjectId, newSubjectId}) {
 
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -26,36 +26,59 @@ function S3stepbtn({ paperTitle, paper }) {
 
     const handleSaveConfirm = () => {
         setShowConfirm(false);
-        // 저장 로딩 화면 구현해야됨
         handleSave();
-        // window.href='/';
     };
+
 
     const handleSave = async () => {
         try {
-            const url = '/back/back/savedpaper';
-            const data = {
-                paper: [paperTitle, paper]
-            };
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/save';
+            const input1 = document.createElement('input');
+            input1.type = 'hidden';
+            input1.name = 'paperTitle';
+            input1.value = paperTitle;
+            form.appendChild(input1);
 
-            await axios.post(url, data);
+            const input2 = document.createElement('input');
+            input2.type = 'hidden';
+            input2.name = 'paper';
+            input2.value = JSON.stringify(paper);
+            form.appendChild(input2);
+
+
+                const input3 = document.createElement('input');
+                input3.type = 'hidden';
+                input3.name = 'subjectId';
+            if (paramType.current === 'new') {
+                input3.value = newSubjectId;
+            } else if (paramType.current === 'edit') {
+                input3.value = subjectId;
+            }
+                form.appendChild(input3);
+
+            document.body.appendChild(form);
+            form.submit();
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error submitting form:', error);
         }
-
     };
+
+    // step2 가는 버튼 구현 ...
+    console.log(paramType.current)
+    console.log(subjectId)
 
     return (
         <>
-            <Link to="/step2">
+            <Link to={`/step2/${paramType.current}/${subjectId}`}>
                 <button className="btn-step">STEP 2 문항 편집</button>
             </Link>
             <button className="btn-step next" onClick={handleSaveBtn}>
                 시험지 저장하기
             </button>
-
             {showAlert && (
-                <div className="step3-modal">
+                <div className="step-modal">
                     {paperTitle === '' && (
                         <>
                             <p>시험지명을 입력해주세요.</p>
@@ -80,7 +103,7 @@ function S3stepbtn({ paperTitle, paper }) {
             )}
 
             {showConfirm && (
-                <div className="step3-modal">
+                <div className="step-modal">
                     <p>시험지를 저장하시겠습니까?</p>
                     <div className="btn-wrap">
                         <button className="btn-default" onClick={handleCancel}>

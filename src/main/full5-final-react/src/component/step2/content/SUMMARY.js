@@ -56,7 +56,6 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
             const newChangeList = newGroupedData.flatMap(group => group.items);
 
             // 상태 업데이트
-            // setGroupedData(newGroupedData);
             setChangeList(newChangeList);
             handleChangeList(newChangeList);
         }
@@ -91,10 +90,6 @@ function SUMMARY({ initialChangeList = [], onChangeList, groupData}) {
             handleChangeList(newChangeList);
         }
     };
-
-    // console.log('changeList...', changeList)
-    // console.log('groupedData...', groupedData)
-    // console.log('groupedData...', groupData)
 
     return (
         <div className="contents on">

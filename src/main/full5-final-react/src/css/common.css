@@ -873,7 +873,7 @@ input[type=checkbox]:checked + label::before {
   box-sizing: border-box;
 }
 
-.select-wrap .select-list li {
+.select-wrap .select-list a {
   display: block;
   padding: 9px 12px;
   line-height: 20px;
@@ -884,6 +884,7 @@ input[type=checkbox]:checked + label::before {
   color: #fff;
   background-color: #5670dc;
 }
+
 .select-wrap .select-list button {
   display: block;
   padding: 9px 12px;
@@ -1602,13 +1603,13 @@ input[type=checkbox]:checked + label::before {
   font-weight: 800;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-wrap .select-btn {
-  width: 130px;
+  width: 140px;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-wrap + .select-wrap {
   margin-left: 10px;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-wrap + .select-wrap .select-btn {
-  width: 130px;
+  width: 140px;
 }
 .full-pop-que .full-pop-wrap .view-box .view-bottom .cnt-box .cnt-top .select-list .disabled a {
   color: #666;

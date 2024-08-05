@@ -10,4 +10,8 @@ public interface PaperInfoQueryDSL {
     Page<PaperInfo> findAllPaper(Pageable pageable);
 
     List<Object[]> subjectName();
+
+    int getSubjectId(Long paperId);
+
+    List<Object[]> userNames();
 }

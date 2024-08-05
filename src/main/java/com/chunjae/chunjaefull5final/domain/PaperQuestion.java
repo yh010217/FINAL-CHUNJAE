@@ -1,9 +1,7 @@
 package com.chunjae.chunjaefull5final.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PaperQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

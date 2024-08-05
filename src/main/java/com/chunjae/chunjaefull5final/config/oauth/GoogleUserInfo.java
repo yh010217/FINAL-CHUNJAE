@@ -1,35 +1,3 @@
-//package com.chunjae.chunjaefull5final.config.oauth;
-//
-//import java.util.Map;
-//
-//public class GoogleUserInfo {
-//    public static String snsId;
-//    private String email;
-//
-////    private String name;
-//   // public static Map<String, Object> profile;
-//
-//    public GoogleUserInfo(Map<String, Object> attributes) {
-//        snsId = String.valueOf(attributes.get("id"));
-//        email = String.valueOf(attributes.get("email"));
-//       // profile = (Map<String, Object>) profile.get("profile");
-//    }
-//    public String getSnsId() {
-//        return snsId;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//    public String getName(){
-//        return name;
-//    }
-//
-////    public String getName() {
-////        return String.valueOf(profile.get("name"));
-////    }
-//
-//}
 package com.chunjae.chunjaefull5final.config.oauth;
 
 import java.util.Map;
@@ -42,14 +10,14 @@ public class GoogleUserInfo {
     }
 
     public String getSnsId() {
-        return String.valueOf(attributes.get("sub")); // 구글의 사용자 ID는 "sub" 키에 저장됩니다.
+        return (String) attributes.get("sub"); // 구글 사용자 고유 ID
     }
 
     public String getEmail() {
-        return String.valueOf(attributes.get("email"));
+        return (String) attributes.get("email");
     }
 
-    public String getName() {
-        return String.valueOf(attributes.get("name"));
+    public String getFullName() {
+        return (String) attributes.get("name");
     }
 }

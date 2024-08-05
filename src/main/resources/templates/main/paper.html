@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/main/index.css}">
+    <link rel="stylesheet" th:href="@{/css/main/font.css}">
+    <link rel="stylesheet" th:href="@{/css/main/paper.css}">
+</head>
+<body>
+    <div class="index-top">
+        <h1>문제은행</h1>
+        <p>문제 출제, 시험지 편집까지! 편리하게 시험지 제작 서비스를 제공합니다. </p>
+    </div>
+
+    <div class="container">
+        <ul class="tabs">
+            <li class="tab-link"><a th:href="@{/index}">중학</a></li>
+            <li class="tab-link current"><a th:href="@{/paper}">시험지 보관함</a></li>
+        </ul>
+
+        <div id="tab-2" class="tab-content current">
+            <div class="download-fullBox">
+                <div th:if="${dto.isEmpty}" class="null-container">
+                    <img src="/images/main/시험지.png" alt="시험지"/>
+                    시험지 보관함이 비어있어요!
+                </div>
+                <div class="download-container" th:each="item:${dto}">
+                    <div class="download-box">
+                        <div class="download-left">
+                            <p th:text="${item.saveName}"></p>
+                            <div class="left-box1">
+                                <span th:text="${item.title}">과목 이름</span>
+                                <span th:text="|${item.itemCount}개|">문항수</span>
+
+                            </div>
+                            <hr>
+                            <div class="left-box2">
+
+                                <span>문항 편집</span>
+                                <span class="del-btn" th:data-attachment-file-name="${item.saveName}"
+                                      th:data-paper-id="${item.paperId}">문항 삭제</span>
+
+                    
+
+                            </div>
+                        </div>
+                        <div class="download-right">
+                            <p>시험지 다운로드</p>
+                            <div class="btn-box">
+                                <button type="button" class="button1 btn" th:data-attachment-file-name="${item.saveAllPath}">전체</button>
+                                <button class="button2 two btn" th:data-attachment-file-name="${item.saveQuestionPath}">문제</button>
+                                <button class="button3 three btn" th:data-attachment-file-name="${item.saveAnswerPath}">정답 <br> + <br> 해설 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        /** 다운로드 */
+        document.addEventListener('DOMContentLoaded', () => {
+            const downloadButtons = document.querySelectorAll('.btn'); // 모든 버튼 선택
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const attachmentFilePath = event.currentTarget.getAttribute('data-attachment-file-name');
+                    console.log(attachmentFilePath, "g");
+                    csv_download(attachmentFilePath);
+                });
+            });
+        });
+
+        function csv_download(attachmentFilePath) {
+            const encodedFilePath = encodeURIComponent(attachmentFilePath);
+            window.location.href = '/file/paperDownload?fileName=' + encodedFilePath;
+        }
+
+        /** 삭제하기 */
+        // 기본 null, 삭제시 삭제된 시간 기입, 유저 탈퇴 시 삭제시간 기입
+        // 삭제시간 기입후 일정 시간 지나면 S3 파일 삭제, 행 삭제
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 삭제 버튼 클릭 이벤트 리스너
+            const deleteButtons = document.querySelectorAll('.del-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const attachmentFilePath = event.currentTarget.getAttribute('data-attachment-file-name');
+	                const paperId = event.currentTarget.getAttribute('data-paper-id');
+                    delete_file(attachmentFilePath, paperId);
+                });
+            });
+        });
+        function delete_file(attachmentFilePath, paperId) {
+            const encodedFilePath = encodeURIComponent(attachmentFilePath);
+            fetch(`/file/paperDelete?saveName=${encodedFilePath}&paperId=${paperId}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('파일이 성공적으로 삭제되었습니다.');
+                        // 필요 시 삭제된 파일과 관련된 UI 업데이트
+                    } else {
+                        alert('파일 삭제에 실패했습니다.');
+                    }
+                })
+                .catch(error => console.error('Error:', error))
+        };
+    </script>
+
+</body>
+</html>

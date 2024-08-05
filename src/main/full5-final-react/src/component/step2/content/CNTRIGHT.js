@@ -6,7 +6,22 @@ import DELETE from "./DELETE";
 import "../../../css/mycss.css"
 
 
-function CNTRIGHT({initialChangeList, onChangeList, groupedData, tab, setTab, similar, no, addToChangeList, setRemove, remove, delList, setDelList, addToDelList, setModal, setItemId}) {
+function CNTRIGHT({initialChangeList, 
+                      onChangeList, 
+                      groupedData, 
+                      tab, 
+                      setTab, 
+                      similar, 
+                      no, 
+                      addToChangeList, 
+                      setRemove, 
+                      remove, 
+                      delList, 
+                      setDelList, 
+                      addToDelList, 
+                      setModal, 
+                      setItemId, 
+                    }) {
 
 
     // const [tab, setTab] = useState(0);
@@ -73,9 +88,9 @@ function CNTRIGHT({initialChangeList, onChangeList, groupedData, tab, setTab, si
                         </a>
                     </li>
                 </ul>
-                <div>
+                <>
                     {renderContent()}
-                </div>
+                </>
             </div>
         </div>
     );

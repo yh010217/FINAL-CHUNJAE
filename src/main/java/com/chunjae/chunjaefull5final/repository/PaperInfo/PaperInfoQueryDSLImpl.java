@@ -3,6 +3,7 @@ package com.chunjae.chunjaefull5final.repository.PaperInfo;
 
 import com.chunjae.chunjaefull5final.domain.PaperInfo;
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -35,6 +36,7 @@ public class PaperInfoQueryDSLImpl implements PaperInfoQueryDSL{
                 .fetchJoin()
                 .join(paperInfo.subject, subject)
                 .fetchJoin()
+                .orderBy(paperInfo.paperId.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -55,6 +57,26 @@ public class PaperInfoQueryDSLImpl implements PaperInfoQueryDSL{
 
         return fetch.stream()
                 .map(tuple -> new Object[]{tuple.get(subject.subjectId), tuple.get(subject.subjectName)})
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getSubjectId(Long paperId) {
+        int subjectId = queryFactory.select(paperInfo.subject.subjectId)
+                .from(paperInfo)
+                .where(paperInfo.paperId.eq(paperId))
+                .fetchOne();
+
+        return subjectId;
+    }
+
+    @Override
+    public List<Object[]> userNames() {
+        List<Tuple> fetch = queryFactory.select(user.uid, user.name)
+                .from(user)
+                .fetch();
+        return fetch.stream()
+                .map(tuple -> new Object[]{tuple.get(user.uid),tuple.get(user.name)})
                 .collect(Collectors.toList());
     }
 

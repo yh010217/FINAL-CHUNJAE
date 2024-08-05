@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+	<script defer th:src="@{/js/step3/save_paper.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/step3/save_paper.css}">
+</head>
+<body>
+<iframe src="/loading" id="loading"></iframe>
+<div id="wrap">
+	<input type="hidden" id="saveName" th:value="${saveName}">
+	<input type="hidden" id="paperList" th:value="${paperList}">
+	<input type="hidden" id="paperId" th:value="${paperId}">
+	<input type="hidden" id="subjectId" th:value="${subjectId}">
+</div>
+</body>
+</html>

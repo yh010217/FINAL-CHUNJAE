@@ -3,12 +3,15 @@ package com.chunjae.chunjaefull5final.controller;
 import com.chunjae.chunjaefull5final.dto.EvaluationDTO;
 import com.chunjae.chunjaefull5final.dto.IdNameListDTO;
 import com.chunjae.chunjaefull5final.dto.QuestionsDTO;
+import com.chunjae.chunjaefull5final.jwt.JWTUtil;
 import com.chunjae.chunjaefull5final.service.Step1Service;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,16 +30,17 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class Step1Controller {
-
-    private final RestTemplate restTemplate;
-
     private final Step1Service step1Service;
 
+    private final JWTUtil jwtUtil;
+
     @GetMapping("/step1/select-chapter/{subjectId}")
-    public String selectChapter(@PathVariable Long subjectId, Model model){
+    public String selectChapter(@PathVariable Long subjectId, HttpServletRequest request, Model model){
 
         String chapterUrl = "https://tsherpa.item-factory.com/chapter/chapter-list";
 
+        Long uid = jwtUtil.getUidByRequest(request);
+        System.out.println(uid);
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("subjectId",subjectId);
@@ -68,8 +72,11 @@ public class Step1Controller {
 
     @PostMapping("step1/make_exam/{subject}")
     @ResponseBody
-    public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject){
+    public JSONObject makeExam(@RequestBody JSONObject body, @PathVariable Integer subject
+    ,HttpServletRequest request){
         JSONObject result;
+
+        Long uid = jwtUtil.getUidByRequest(request);
 
         if(body == null){
             result = new JSONObject();
@@ -93,13 +100,14 @@ public class Step1Controller {
         String examBody = examApi.getBody();
 
         try {
-            result = step1Service.saveExam(examBody,subject,levelCnt);
+            result = step1Service.saveExam(examBody,subject,levelCnt, uid);
         }catch (ParseException e){
             System.out.println(e);
             result = new JSONObject();
             result.put("enable","N");
         }
 
+        System.out.println(result);
         return result;
     }
 
@@ -124,14 +132,16 @@ public class Step1Controller {
 
     @GetMapping("/step1/step2-go/{paperId}")
     public String step2Go(@PathVariable Long paperId){
-        return "redirect:http://localhost:8080/step2/new/"+paperId;
+        return "redirect:/step2/new/"+paperId;
     }
     @PostMapping("/step1/step2-data/{paperId}")
     @ResponseBody
     public Map<String,Object> step2Data(@PathVariable Long paperId){
         Map<String,Object> result = new HashMap<>();
+        int subjectId = step1Service.getSubjectId(paperId);
         List<QuestionsDTO> itemList = step1Service.getQuestions(paperId);
         result.put("itemList",itemList);
+        result.put("subjectId",subjectId);
         return result;
     }
 

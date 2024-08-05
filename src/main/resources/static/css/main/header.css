@@ -3,8 +3,19 @@ header {
     align-items: center;
 }
 
-ul li {
+header ul li {
     display: inline-block;
+}
+
+header .header-2 ul li {
+    margin-left: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+header .header-2 ul li:hover {
+    text-decoration: underline;
+    text-underline-position: under;
 }
 
 .header-1, .header-2, .header-3 {
@@ -55,4 +66,14 @@ ul li {
     width: 90px;
     text-align: center;
     border: none;
+}
+
+.name-logout {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.name-logout span {
+    margin-right: 20px;
 }
