@@ -69,4 +69,4 @@
 
 
 ## ✏️ 시연영상
-[![Video Label](http://img.youtube.com/vi/59USvjy2toI/0.jpg)](https://www.youtube.com/watch?v=e-32g30iVSI)
+<iframe width="956" height="538" src="https://www.youtube.com/watch?v=e-32g30iVSI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
