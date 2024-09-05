@@ -69,4 +69,4 @@
 
 
 ## ✏️ 시연영상
-<iframe width="956" height="538" src="https://www.youtube.com/watch?v=e-32g30iVSI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+![Video Thumbnail](https://www.youtube.com/watch?v=e-32g30iVSI)
