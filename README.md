@@ -1,5 +1,5 @@
 # 문제은행프로젝트 
-![logo2](![제목](https://github.com/user-attachments/assets/6ed0b36f-e492-4ba2-b2f9-898ff4c6c2d9)
+![제목](https://github.com/user-attachments/assets/6ed0b36f-e492-4ba2-b2f9-898ff4c6c2d9)
 천재교육 풀스택 5기 FINAL프로젝트 
 
 -프로젝트 기간: 2024-07-08~2024-07-31
