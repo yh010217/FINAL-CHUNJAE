@@ -25,7 +25,7 @@
 ## ✏️ 기술스택
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![Spring Security](https://img.shields.io/badge/Spring_Secyrity-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)
-![React](https://img.icons8.com/?size=100&id=wPohyHO_qO1a&format=png&color=000000)
+![React](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![QueryDSL](https://img.shields.io/badge/QueryDSL-4E7E5A?style=for-the-badge&logoColor=white)
 ![JPA](https://img.shields.io/badge/JPA-6DB33F?style=for-the-badge&logo=hibernate&logoColor=white)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white) 
