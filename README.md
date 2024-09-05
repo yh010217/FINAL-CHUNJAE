@@ -49,15 +49,16 @@
 - 해결 방법 : 이미지 정보 url  서버 단위로 호출하여 해결 
 
 ##  ✏️ ERD
-![erd](![erd](https://github.com/user-attachments/assets/c9d080a5-b1ad-4150-9340-6adf6b96a449))
+![image (5)](https://github.com/user-attachments/assets/36362069-5302-4555-894f-a095a2f64e48)
+
 
 ## ✏️ 엔티티 설계
-![entities](![엔티티](https://github.com/user-attachments/assets/6fd6388b-cbc7-4951-9f47-57642d841efd))
+![엔티티](https://github.com/user-attachments/assets/6fd6388b-cbc7-4951-9f47-57642d841efd)
 
 ## ✏️ 클래스 다이어그램
-![dtos](![dto](https://github.com/user-attachments/assets/cc862ffe-d721-4547-bc62-2e27757cfde9))
-![controller](![controller](https://github.com/user-attachments/assets/3a5a3c73-c030-491e-9841-0e240c90a7ea))
-![service](![service](https://github.com/user-attachments/assets/bf1f3190-01d2-437e-8f47-dc37a32fc229))
+![dto](https://github.com/user-attachments/assets/cc862ffe-d721-4547-bc62-2e27757cfde9)
+![controller](https://github.com/user-attachments/assets/3a5a3c73-c030-491e-9841-0e240c90a7ea)
+![service](https://github.com/user-attachments/assets/bf1f3190-01d2-437e-8f47-dc37a32fc229)
 
 
 ## ✏️ 시퀀스 다이어그램
@@ -68,4 +69,4 @@
 
 
 ## ✏️ 시연영상
-[![Video Thumbnail](https://www.youtube.com/watch?v=e-32g30iVSI)
+![Video Thumbnail](https://www.youtube.com/watch?v=e-32g30iVSI)
