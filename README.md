@@ -1,16 +1,16 @@
-# 문제은행프로젝트 
+# 📒 문제은행프로젝트 
 ![제목](https://github.com/user-attachments/assets/6ed0b36f-e492-4ba2-b2f9-898ff4c6c2d9)
 천재교육 풀스택 5기 FINAL프로젝트 
 
 -프로젝트 기간: 2024-07-08~2024-07-31
 
-## 프로젝트 개요
-### 프로젝트 목적/ 기능
+## ✏️ 프로젝트 개요
+### ✏️ 프로젝트 목적/ 기능
 
 ![개요](https://github.com/user-attachments/assets/d6b32a3c-ca89-4dae-9829-5d9708b2862b)
 
 
-## 팀구성
+## ✏️ 팀구성
 
 | 이름 | 역할 | 연락처 | GitHub |
 |------|-----------------------|---------------|---------------|
@@ -22,7 +22,7 @@
 | 홍유나 | 팀원/ 회원가입, 로그인, 관리자페이지 | yunahong815@gmail.com | [홍유나](https://github.com/yuyuyu1123) |
 
 
-## 🐸 기술스택
+## ✏️ 기술스택
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![Spring Security](https://img.shields.io/badge/Spring_Secyrity-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)
 ![React](https://img.icons8.com/?size=100&id=wPohyHO_qO1a&format=png&color=000000)
@@ -42,30 +42,30 @@
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 
 
-## 프로젝트 주요이슈
+## ✏️프로젝트 주요이슈
 #### 셋팅지 문항 리스트 API 호출시 Cors(Cross-Origin Resource Sharing) 에러 발생
 
 - 원인 :  프로토콜이 달라 발생 (웹페이지  url  =  http  / API url  = https) 
 - 해결 방법 : 이미지 정보 url  서버 단위로 호출하여 해결 
 
-##  ERD
+##  ✏️ ERD
 ![erd](![erd](https://github.com/user-attachments/assets/c9d080a5-b1ad-4150-9340-6adf6b96a449))
 
-##  엔티티 설계
+## ✏️ 엔티티 설계
 ![entities](![엔티티](https://github.com/user-attachments/assets/6fd6388b-cbc7-4951-9f47-57642d841efd))
 
-## 클래스 다이어그램
+## ✏️ 클래스 다이어그램
 ![dtos](![dto](https://github.com/user-attachments/assets/cc862ffe-d721-4547-bc62-2e27757cfde9))
 ![controller](![controller](https://github.com/user-attachments/assets/3a5a3c73-c030-491e-9841-0e240c90a7ea))
 ![service](![service](https://github.com/user-attachments/assets/bf1f3190-01d2-437e-8f47-dc37a32fc229))
 
 
-## 시퀀스 다이어그램
+## ✏️ 시퀀스 다이어그램
 ![image (1)](https://github.com/user-attachments/assets/b5cd95c7-90d2-4207-95a6-82b85937023e)
 ![image (2)](https://github.com/user-attachments/assets/51c4a83f-9d60-4db9-9ca1-46372e649680)
 ![image (3)](https://github.com/user-attachments/assets/8631af61-243a-4be2-b8e1-f91165cb84f4)
 ![image (4)](https://github.com/user-attachments/assets/fca93c27-6a29-4c0d-b776-b42a166aa743)
 
 
-##  시연영상
+## ✏️ 시연영상
 [![Video Thumbnail](https://www.youtube.com/watch?v=e-32g30iVSI)
